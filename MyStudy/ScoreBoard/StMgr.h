@@ -1,9 +1,11 @@
 #pragma once
 #include "LinkedList.h"
-
+using T = User;
 class StMgr
 {
 private:
+	using FPtrType = std::function<bool(const std::string& name, const T& User)>;
+
 	static inline bool Save();
 	static inline bool Load();
 	static inline void AddStu();
@@ -12,6 +14,14 @@ private:
 	static uint32_t  Menu();
 	static inline LinkedList List;
 	static inline std::string FileName = "ScoreBoard.txt";
+	static inline FPtrType FPtr = [](const std::string& name, const T& User)->bool
+	{
+		return name != User.getName() ; };
+
+	//static FPtrType retFPtr() 
+	//{
+
+	//}
 public:
 	static bool Run()
 	{
@@ -116,8 +126,8 @@ public:
 		 break;
 	 case 3:
 		 Utility::InputHelper(std::cin, "입력하신 학생위치에 삽입됩니다.", SearchName);
-		 Temp.SetName(SearchName);
-		 List.Insert(Temp, Arg);
+		 /*Temp.SetName(SearchName);*/
+		 List.Insert(SearchName,FPtr, Arg);
 		 break;
 	 case 4:
 		 List.SortInsert(Arg);
@@ -132,9 +142,10 @@ public:
  {
 	 std::string modiname;
 	 Utility::InputHelper(std::cin, " 수정을 원하는 학생 이름 입력 : ", modiname);
-	 User Temp;
-	 Temp.SetName(modiname);
-	 User& Ref = List.SearchData(Temp);
+	 /*User Temp;
+	 Temp.SetName(modiname);*/
+
+	 User& Ref = List.SearchData(modiname,FPtr);
 	 std::cin >> Ref;
  };
 
@@ -142,9 +153,10 @@ public:
  {
 	 std::string Name;
 	 Utility::InputHelper(std::cin, " 삭제할 학생 이름 : ", Name);
-	 User Target;
-	 Target.SetName(Name);
-	 List.Erase(Target);
+	/* User Target;
+	 Target.SetName(Name);*/
+
+	 List.Erase(Name,FPtr);
  };
 
  inline uint32_t StMgr::Menu()

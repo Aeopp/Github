@@ -27,7 +27,13 @@ private:
 	struct Node* Tail;
 
 	FunType SortCompare;
-	inline Node* SearchNode(const T& Search)const;;
+
+	template<typename Ty>
+	inline Node* SearchNode(const Ty& Target,
+	std::function<bool(const Ty&Lhs,const T& Rhs)>Compare)const;;
+	
+
+	inline Node* SearchDataNode(const T& Search)const;;
 public:
 	LinkedList();;
 	/*virtual*/ ~LinkedList()
@@ -53,13 +59,26 @@ public:
 	inline void Sort();
 	inline Node* nthNode(uint32_t offset)const;
 	inline void SetSortFunction(const FunType&);
-	inline T& SearchData(const T& Search)const;
 
+	template<typename Ty>
+	inline T& SearchData(const Ty& Target,std::function<bool(const Ty&Lhs,const T& Rhs)>Compare)const;
+	/*inline T& SearchData(const T& Search)const;*/
 
-	inline void Insert(const T& Search, const T& Data)const;;
-	inline T GetData(const T& Search)const;;
-	inline void SetData(const T& Search, const T& ParamSetUp)const;
-	inline void Erase(const T& Search)const;
+	template<typename Ty>
+	inline void Insert(const Ty& Target, std::function<bool(const Ty&Lhs, const T& Rhs)>Compare,
+	const T& Data)const;;
+
+	template<typename Ty>
+	inline T GetData(const Ty& Target, std::function<bool(const Ty&Lhs, const T& Rhs)>Compare, 
+	const T& Search)const;;
+
+	template<typename Ty>
+	inline void SetData(const Ty& Target, std::function<bool(const Ty&Lhs, const T& Rhs)>Compare, 
+	const T& ParamSetUp)const;
+
+	template<typename Ty>
+	inline void Erase(const Ty& Target, 
+	std::function<bool(const Ty&Lhs, const T& Rhs)>Compare)const;
 
 	inline void front_Insert(const T& Data)const;;
 	inline void back_Insert(const T& Data)const;;
@@ -80,6 +99,26 @@ inline std::ostream& operator<<(std::ostream& Conout, const LinkedList& Llist)
 	return Conout;
 	// TODO: 여기에 반환 구문을 삽입합니다.
 }
+
+
+inline LinkedList::Node * LinkedList::SearchDataNode(const T & Search) const
+{
+	Node* SearchPrev = Head;
+	Node* SearchNext;
+
+	while (SearchPrev &&  (Search!=  SearchPrev->Data ))
+	{
+		SearchPrev = SearchPrev->Next;
+	};
+	if (SearchPrev == nullptr)
+	{
+		/*assert(false && " 데이터를 찾을 수 없습니다.");*/
+		std::cout << "데이터를 찾을 수 없습니다 . : ";
+		return nullptr;
+	};
+	return SearchPrev;
+};
+
 inline LinkedList::LinkedList() : Head(new Node), Tail(new Node)
 {
 	Head->Prev = nullptr;
@@ -94,17 +133,17 @@ inline LinkedList::LinkedList() : Head(new Node), Tail(new Node)
 	});
 };
 
-inline T LinkedList::GetData(const T & Search) const
-{
-	Node* RetVal = SearchNode(Search);
-	return RetVal->Data;
-};
-
-inline void LinkedList::SetData(const T & Search, const T & ParamSetUp) const
-{
-	SearchNode(Search)->Data = ParamSetUp;
-	// TODO :: 데이터를 가져와서 무엇인가를 한다........
-}
+//inline T LinkedList::GetData(const T & Search) const
+//{
+//	Node* RetVal = SearchNode(Search);
+//	return RetVal->Data;
+//};
+//
+//inline void LinkedList::SetData(const T & Search, const T & ParamSetUp) const
+//{
+//	SearchNode(Search)->Data = ParamSetUp;
+//	// TODO :: 데이터를 가져와서 무엇인가를 한다........
+//}
 
 inline T &LinkedList::operator[](uint32_t offset)
 {
@@ -134,18 +173,18 @@ inline void LinkedList::InsertHelper(const T& Data, Node * Lhs, Node * Rhs) cons
 
 	Rhs->Prev = Inserter;
 	Inserter->Next = Rhs;
-	
-}
-inline void LinkedList::Erase(const T & Search)const
-{
-	Node* Target = SearchNode(Search);
-	Node* NPrev = Target->Prev;
-	Node* NNext = Target->Next;
-	NPrev->Next = NNext;
-	NNext->Prev = NPrev;
-
-	Utility::SAFE_DELETE(Target);
 };
+
+//inline void LinkedList::Erase(const T & Search)const
+//{
+//	Node* Target = SearchNode(Search);
+//	Node* NPrev = Target->Prev;
+//	Node* NNext = Target->Next;
+//	NPrev->Next = NNext;
+//	NNext->Prev = NPrev;
+//
+//	Utility::SAFE_DELETE(Target);
+//};
 inline void LinkedList::Print() const
 {
 	Node* PrintNode = Head->Next;
@@ -161,28 +200,28 @@ inline bool LinkedList::IsEmpty() const
 	return (Head->Next == Tail);
 };
 
-inline LinkedList::Node*LinkedList::SearchNode(const T& Search)const
-{
-	Node* SearchPrev = Head;
-	Node* SearchNext;
-
-	while (SearchPrev && SearchPrev->Data != Search)
-	{
-		SearchPrev = SearchPrev->Next;
-	};
-	if (SearchPrev == nullptr)
-	{
-		/*assert(false && " 데이터를 찾을 수 없습니다.");*/
-		std::cout << "데이터를 찾을 수 없습니다 . : ";
-		return nullptr;
-	};
-	return SearchPrev;
-}
+//inline LinkedList::Node*LinkedList::SearchNode(const T& Search)const
+//{
+//	Node* SearchPrev = Head;
+//	Node* SearchNext;
+//
+//	while (SearchPrev && SearchPrev->Data != Search)
+//	{
+//		SearchPrev = SearchPrev->Next;
+//	};
+//	if (SearchPrev == nullptr)
+//	{
+//		/*assert(false && " 데이터를 찾을 수 없습니다.");*/
+//		std::cout << "데이터를 찾을 수 없습니다 . : ";
+//		return nullptr;
+//	};
+//	return SearchPrev;
+//}
 
 inline bool LinkedList::Swap(const T & LhsTarget, const T & RhsTarget)
 {
-	auto* Lhs = SearchNode(LhsTarget);
-	auto* Rhs = SearchNode(RhsTarget);
+	auto* Lhs = SearchDataNode(LhsTarget);
+	auto* Rhs = SearchDataNode(RhsTarget);
 
 	assert((Lhs&&Rhs) && "Swap Fail");
 	/*return false */
@@ -247,22 +286,91 @@ inline void LinkedList::SetSortFunction(const FunType & SetSortFun)
 {
 	SortCompare = SetSortFun;
 }
+template<typename Ty>
+inline LinkedList::Node * LinkedList::SearchNode
+(const Ty & Target, std::function<bool(const Ty&Lhs, const T&Rhs)> Compare) const
+{
+	Node* SearchPrev = Head;
+	Node* SearchNext;
 
-inline T & LinkedList::SearchData(const T & Search) const
+	while (SearchPrev && Compare(Target, SearchPrev->Data))
+	{
+		SearchPrev = SearchPrev->Next;
+	};
+	if (SearchPrev == nullptr)
+	{
+		/*assert(false && " 데이터를 찾을 수 없습니다.");*/
+		std::cout << "데이터를 찾을 수 없습니다 . : ";
+		return nullptr;
+	};
+	return SearchPrev;
+}
+//template<typename Ty>
+//inline Node * LinkedList::SearchNode(const Ty & Target, std::function<bool(const Ty&Lhs, const T&Rhs)> Compare) const
+//{
+//	
+//
+//}
+template<typename Ty>
+inline T & LinkedList::SearchData(const Ty& Target ,
+std::function<bool(const Ty& Target ,const T&Rhs)> Compare) const
 {
 	//Node* Target = SearchNode(Search);
 	//if (Target == nullptr) return;
-	return SearchNode(Search)->Data;
-};
 
-inline void LinkedList::Insert(const T &Search, const T & Data) const
+	return SearchNode(Target,Compare)->Data;
+}
+
+template<typename Ty>
+inline void LinkedList::Insert(const Ty & Target, std::function<bool(const Ty&Lhs, const T&Rhs)> Compare, const T & Data) const
 {
-	Node* SearchPrev = SearchNode(Search);
+	Node* SearchPrev = SearchNode(Target,Compare);
 
 	Node* SearchNext = SearchPrev->Next;
 	InsertHelper(Data, SearchPrev, SearchNext);
-
 }
+
+template<typename Ty>
+inline T LinkedList::GetData(const Ty & Target, std::function<bool(const Ty&Lhs, const T&Rhs)> Compare, const T & Search) const
+{
+	Node* RetVal = SearchNode(Target,Compare);
+	return RetVal->Data;
+};
+
+template<typename Ty>
+inline void LinkedList::SetData(const Ty & Target, std::function<bool(const Ty&Lhs, const T&Rhs)> Compare, 
+	const T & ParamSetUp) const
+{
+	SearchNode(Target,Compare)->Data = ParamSetUp;
+};
+template<typename Ty>
+inline void LinkedList::Erase(const Ty & Target, 
+	std::function<bool(const Ty&Lhs, const T&Rhs)> Compare) const
+{
+	Node * Deleter = SearchNode<std::string>(Target,Compare);
+	Node* NPrev = Deleter->Prev;
+	Node* NNext = Deleter->Next;
+	NPrev->Next = NNext;
+	NNext->Prev = NPrev;
+
+	Utility::SAFE_DELETE(Deleter);
+}
+
+//inline T & LinkedList::SearchData(const T & Search) const
+//{
+//	//Node* Target = SearchNode(Search);
+//	//if (Target == nullptr) return;
+//	return SearchNode(Search)->Data;
+//};
+
+//inline void LinkedList::Insert(const T &Search, const T & Data) const
+//{
+//	Node* SearchPrev = SearchNode(Search);
+//
+//	Node* SearchNext = SearchPrev->Next;
+//	InsertHelper(Data, SearchPrev, SearchNext);
+//
+//}
 inline void LinkedList::back_Insert(const T & Data) const
 {
 	InsertHelper(Data, Tail->Prev, Tail);

@@ -34,11 +34,11 @@ private:
 	inline void Calc();
 
 	friend inline std::ofstream& operator<<(std::ofstream& FileWrite,const User& Rhs);
-
 	friend inline std::ostream& operator<<(std::ostream& ConOut, const User& Rhs);
 	friend inline std::istream& operator>>(std::istream& Conin, User& Rhs);
 public:
 	User();
+	const inline  std::string getName() const;
 	void FileSetUpData(const std::string& Str, const std::string & Sepa = ":");
 	void inline Write(std::ofstream& FileWrite, const User& Rhs);
 	inline void SetData(const int32_t PAge, std::string&& PName,
@@ -55,7 +55,6 @@ inline void User::SetName(const std::string PName)
 };
 inline std::ofstream& operator<<(std::ofstream& FileWrite, const User& Rhs)
 {
-	std::cout << "FWQEWEQWEQWEQWEQWEQWEQWEQWEQWEQWEWQ";
 	std::string Buf;
 
 	Buf += " 이름 : " + Rhs.Name +
@@ -130,7 +129,7 @@ inline void User::Calc()
 }
 inline void User::Write(std::ofstream & FileWrite, const User & Rhs)
 {
-	std::cout << "FWQEWEQWEQWEQWEQWEQWEQWEQWEQWEQWEWQ";
+
 	std::string Buf;
 
 	Buf += " 이름 : " + Rhs.Name +
@@ -148,6 +147,11 @@ inline void User::Write(std::ofstream & FileWrite, const User & Rhs)
 };
 
 inline User::User(){}
+
+inline const std::string User::getName() const
+{
+	return Name;
+}
 
  inline void User::SetData(const int32_t PAge, 
 	 std::string && PName, const int32_t PMath, 
