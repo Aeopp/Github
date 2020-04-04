@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{1EA0A33D-211D-43E4-95FA-52BA7BEBF0E6}</ProjectGuid>
-    <RootNamespace>TemplateStudy</RootNamespace>
+    <ProjectGuid>{AB3921DC-DCBA-46FF-B92B-20F343D3B10D}</ProjectGuid>
+    <RootNamespace>TemplateTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,8 +71,6 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../</OutDir>
-    <IntDir>../</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -142,14 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Imple.hpp" />
-    <ClCompile Include="Temp.hpp" />
-    <ClCompile Include="Type.cpp" />
+    <ClCompile Include="Te.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sample.h" />
-    <ClInclude Include="Temp.h" />
-    <ClInclude Include="Type.h" />
+    <ClInclude Include="Te.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,6 +5,5 @@ int main()
 	StMgr::Run();
 	
 	int d = fod();
-	
-	
+
 }

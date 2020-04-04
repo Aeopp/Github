@@ -13,36 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\TemplateClass">
-      <UniqueIdentifier>{ee6e93b9-2dee-4330-a541-a9982acb200c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Type">
-      <UniqueIdentifier>{09a795ec-716f-4273-8e71-7297bfbf722e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Type.cpp">
-      <Filter>소스 파일</Filter>
+    <ClInclude Include="Te.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Te.hpp">
+      <Filter>헤더 파일</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>소스 파일\TemplateClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Imple.hpp">
-      <Filter>소스 파일\TemplateClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Temp.hpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Sample.h">
-      <Filter>소스 파일\TemplateClass</Filter>
-    </ClInclude>
-    <ClInclude Include="Type.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Temp.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>
