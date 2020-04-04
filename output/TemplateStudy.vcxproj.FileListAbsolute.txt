@@ -1,0 +1,2 @@
+D:\Github\output\TemplateStudy.exe
+D:\Github\output\TemplateStudy.pdb

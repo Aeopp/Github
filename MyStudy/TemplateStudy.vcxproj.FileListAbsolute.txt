@@ -1,0 +1,2 @@
+D:\Github\MyStudy\TemplateStudy.exe
+D:\Github\MyStudy\TemplateStudy.pdb

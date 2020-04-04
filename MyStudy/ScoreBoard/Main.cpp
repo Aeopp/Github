@@ -6,5 +6,5 @@ int main()
 	
 	int d = fod();
 	
-
+	
 }
