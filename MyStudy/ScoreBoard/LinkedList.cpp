@@ -10,6 +10,7 @@ void LinkedList::DeleteAll() const
 		Node* NextTarget = Target->Next;
 		Utility::SAFE_DELETE(Target);
 		Target = NextTarget;
+		/*Ok*/
 	};
 
 }
