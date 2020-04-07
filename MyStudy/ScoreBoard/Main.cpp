@@ -1,10 +1,9 @@
-#include "StMgr.h"
-int fod() { return 2; };
+#pragma once
+#include "StMgr.cpp"
+
 int main()
 {
-	StMgr::Run();
-	
-	int d = fod();
-	
+    auto Program = StMgr<User,std::string>::getStMgr();
 
-}
+    Program->Run();
+};
