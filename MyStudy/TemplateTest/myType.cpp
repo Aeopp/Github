@@ -1,0 +1,1 @@
+#include "myType.h"

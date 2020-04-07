@@ -18,6 +18,9 @@
     <ClInclude Include="Te.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="myType.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Te.hpp">
@@ -25,6 +28,9 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>헤더 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="myType.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
