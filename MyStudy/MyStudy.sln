@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1062
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyStudy", "MyStudy\MyStudy.vcxproj", "{27A07355-1C5E-478B-B53A-BFE92E96C2A8}"
 EndProject
@@ -58,6 +58,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScoreBoard", "ScoreBoard\ScoreBoard.vcxproj", "{FC899DA9-B8CE-48E4-8C4F-CE605781507D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StudyStream", "StudyStream\StudyStream.vcxproj", "{A745523F-2CE5-4FF6-A21A-EEA0838C7C2F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BitSet", "BitSet\BitSet.vcxproj", "{F6264C1B-9398-419D-BFD7-5EA136850F1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -259,6 +261,14 @@ Global
 		{A745523F-2CE5-4FF6-A21A-EEA0838C7C2F}.Release|x64.Build.0 = Release|x64
 		{A745523F-2CE5-4FF6-A21A-EEA0838C7C2F}.Release|x86.ActiveCfg = Release|Win32
 		{A745523F-2CE5-4FF6-A21A-EEA0838C7C2F}.Release|x86.Build.0 = Release|Win32
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Debug|x64.ActiveCfg = Debug|x64
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Debug|x64.Build.0 = Debug|x64
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Debug|x86.ActiveCfg = Debug|Win32
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Debug|x86.Build.0 = Debug|Win32
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Release|x64.ActiveCfg = Release|x64
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Release|x64.Build.0 = Release|x64
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Release|x86.ActiveCfg = Release|Win32
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -288,6 +298,7 @@ Global
 		{5969603A-ED68-4C0A-BCD6-E04ACC976840} = {604DA44D-BF35-405D-97B5-58F5883EEA6C}
 		{FC899DA9-B8CE-48E4-8C4F-CE605781507D} = {F1BF1115-7B85-4971-B118-9F5356E9543B}
 		{A745523F-2CE5-4FF6-A21A-EEA0838C7C2F} = {F1BF1115-7B85-4971-B118-9F5356E9543B}
+		{F6264C1B-9398-419D-BFD7-5EA136850F1D} = {F1BF1115-7B85-4971-B118-9F5356E9543B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DCB6F1B-BC78-403E-BF2D-BF944F097D51}

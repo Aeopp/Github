@@ -1,12 +1,28 @@
 #include <iostream>
-using namespace std;
+#include <functional>
 
-#include <string >
+using namespace std;
+template<class Arg, class Ret>
+class FPtr
+{
+public:
+	using FunType = 
+	template<class Arg, class Ret>
+	std::function<Ret(const Arg& A, const int32_t i)>;
+
+	FunType fptr;
+
+	FPtr(FunType&& set)
+	{
+		fptr = set;
+	};
+
+	Ret operator(const Arg& A,const int32_t i) 
+	{return fptr(A, i);};
+};
+
 
 int main()
 {
-	string str = R"-(The characters)" are embedded
-in this string)-";
-	cout << str << endl;
 
 }

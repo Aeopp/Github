@@ -12,7 +12,6 @@ class LinkedList
 private:
 	template<class Arg> 
 	using FPtrType = std::function<bool(const Arg&, const T&)>;
-
 	template<class T>
 	struct Node
 	{
@@ -89,7 +88,8 @@ public:
 	 size_t getSize()const;
 
 	template<class T>
-	friend inline std::ostream& operator<<(std::ostream& Conout, const LinkedList<T>& Llist);
+	friend inline std::ostream& operator<<
+	(std::ostream& Conout, const LinkedList<T>& Llist);
 };
 
 template<class T>
