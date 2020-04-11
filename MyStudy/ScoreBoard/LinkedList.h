@@ -19,7 +19,7 @@ private:
 		Node<T>& operator=(Node&&) = delete;
 		Node<T>(const Node&) = delete;
 		Node<T>(Node&&) = delete;
-		~Node<T>() = default;
+		/*virtual */~Node<T>() = default;
 	private:
 		friend class LinkedList;
 		T Data = User();
@@ -87,9 +87,9 @@ public:
 
 	 size_t getSize()const;
 
-	template<class T>
-	friend inline std::ostream& operator<<
-	(std::ostream& Conout, const LinkedList<T>& Llist);
+	 template<class T>
+	 friend inline std::ostream& operator<<
+		 (std::ostream& Conout, const LinkedList<T>& Llist);
 };
 
 template<class T>
@@ -242,23 +242,22 @@ void LinkedList<T>::SortInsert(const T& Data) const
 template<class T>
  void LinkedList<T>::Sort() 
 {
-	 int32_t i = getSize() - 1;
-	 int32_t j = 0;
+	 T  key;
+	int32_t  j = 0;
+	int32_t i = static_cast<int32_t>(getSize() - 1);
 
-	T  key;
-
-	int32_t ConSize = this->getSize();
-
-	 auto& Ref = *this;
+	auto& Ref = *this;
 
 	 for (i; i > 0; i--)
 	 {
 		 for (j = 0; j < i; j++ )
 		 {
-			 if (SortCompare
-			 (Ref[j], Ref[j + 1]))
+			 auto& Lhs = Ref[j];
+			 auto& Rhs = Ref[j + 1];
+
+			 if (SortCompare (Lhs, Rhs))
 			 {
-				 Utility::Swap(Ref[j], Ref[j + 1]);
+				 Utility::Swap(Lhs, Rhs);
 			 }
 		 };
 	 }

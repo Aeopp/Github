@@ -10,7 +10,7 @@ StMgr<T, Arg>* StMgr<T, Arg>::getStMgr()
 
 	RetVal->Init([](const Arg& Lhs, const T& Rhs)
 	{return Lhs != Rhs.getName();  });
-
+	
 	return RetVal;
 };
 
@@ -18,10 +18,10 @@ template<class T, class Arg>
 void StMgr<T, Arg>::Delete()
 {
 	auto Deleter = getStMgr();
-
+	
 	if (Deleter)
 	{
-		delete getStMgr();
+		delete Deleter;
 	}
 };
 

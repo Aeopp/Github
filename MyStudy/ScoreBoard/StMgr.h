@@ -1,6 +1,8 @@
 #pragma once
 #include "LinkedList.h"
-template<class T=User,class Arg=std::string>
+
+template<class T=/*관리데이터*/User,
+class Arg/*데이터를 비교할때 사용할 타입*/=std::string>
 class StMgr
 {
 	using FuncType = std::function<bool

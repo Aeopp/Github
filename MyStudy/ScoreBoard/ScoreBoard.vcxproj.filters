@@ -32,7 +32,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="LinkedList.cpp">
+    <ClCompile Include="LinkedList.inl">
       <Filter>LinkedList</Filter>
     </ClCompile>
     <ClCompile Include="Utility.cpp">
