@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{115E84FB-D878-43D8-8F38-08A01A4BDD88}</ProjectGuid>
-    <RootNamespace>HashTableSTLStyle</RootNamespace>
+    <ProjectGuid>{02BF35A6-7F80-4CAE-822A-66807BB3ADB3}</ProjectGuid>
+    <RootNamespace>hashmap</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,8 +71,6 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../output</OutDir>
-    <IntDir>../../output</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -141,17 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="hash_map.cpp" />
+    <ClCompile Include="Iterator.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="const_hash_map_iterator.h" />
-    <ClInclude Include="Hash.h" />
     <ClInclude Include="hash_map.h" />
-    <ClInclude Include="hash_map_iterator.h" />
-    <ClInclude Include="const_reverse_iterator.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClInclude Include="Iterator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

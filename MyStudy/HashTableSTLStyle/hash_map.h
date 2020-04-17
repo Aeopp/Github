@@ -7,7 +7,7 @@
 #include "hash_map_iterator.h"
 
 template<typename Key,typename T,
-typename Compare= std::equal_to<Key>,
+typename compare= std::equal_to<Key>,
 typename Hash = Hash<Key>>
 class HashMap
 {
@@ -16,12 +16,12 @@ public:
 	using mapped_type = T;
 	using value_type = std::pair<const Key, T>;
 	using ListType = std::list<value_type>;
-	using key_compare = Compare;
+	using key_compare = compare;
 	using reference = std::pair<const Key, T>&;
 	using const_reference = const std::pair<const Key, T>&;
 	using size_type = uint64_t;
 	using difference_type = ptrdiff_t;
-	using hash_map_type = HashMap<Key, T, Compare, Hash>; 
+	using hash_map_type = HashMap<Key, T, compare, Hash>; 
 
 	using iterator =   hash_map_iterator<hash_map_type>;
 	using const_iterator = const_hash_map_iterator<hash_map_type>;
@@ -30,7 +30,7 @@ public:
 	using const_reverse_iterator = const_hash_map_iterator<hash_map_type>;
 
 	class value_compare :
-		public std::binary_function<value_type,value_type,bool>
+		public std::binary_function<typename value_type, typename value_type,bool>
 	{
 	public:
 		bool operator()(const value_type& x, const value_type& y)const 
@@ -38,18 +38,18 @@ public:
 			return comp(x.first, y.first); 
 		}
 	protected:
-		Compare comp;
-		value_compare(Compare c) :comp(c) {};
+		compare comp;
+		value_compare(compare c) :comp(c) {};
 	};
 
 	friend class hash_map_iterator<hash_map_type>	   ;
 	
 	template<typename InputIterator>
 	HashMap(InputIterator first, InputIterator last,
-	const Compare& comp = Compare(),
+	const compare& comp = compare(),
 	uint64_t numBuckets = 101, const Hash& hash = Hash());
 
-	explicit HashMap(std::initializer_list<value_type> il, const Compare& comp = Compare(),
+	explicit HashMap(std::initializer_list<value_type> il, const compare& comp = compare(),
 	uint64_t numBuckets = 10, const Hash& hash = Hash());
 
 	hash_map_type& operator=(std::initializer_list<value_type> il);
@@ -70,11 +70,11 @@ public:
 	explicit HashMap(HashMap&&) noexcept = delete;
 	explicit HashMap(const HashMap&) = delete;
 
-	explicit HashMap(const Compare& comp = Compare(),
+	explicit HashMap(const compare& comp = compare(),
 	uint64_t numBuckets = 101, const Hash& hash = Hash());
 
 	void insert(const value_type& x)noexcept;
-	void erase(const key_type& k);
+	
 	value_type* find(const key_type& k);
 	const value_type* find(const key_type& k)const;
 	
@@ -85,7 +85,7 @@ public:
 
 	void swap(hash_map_type& hashIn);
 
-	T& operator[](const key_type& x);
+
 
 	std::pair<iterator, bool> insert(const value_type& x)
 	{
@@ -98,7 +98,7 @@ public:
 			it = mBuckets[bucket].insert(std::end(mBuckets[bucket]), x);
 			inserted = true;
 			mSize++;
-		}
+		};
 		return pair(hash_map_iterator<hash_map_type>(bucket, it, this), inserted);
 	};
 
@@ -111,11 +111,12 @@ public:
 	std::pair<iterator,bool>emplace(value_type&& x);
 	iterator emplace_hint(iterator hint, value_type&& x);
 
+
 	uint64_t erase(const key_type& x);
 	iterator erase(iterator position);
 	iterator erase(iterator first, iterator last); 
 
-	void swap(hash_map_type& hashIn);
+	
 	void clear()noexcept;
 
 	key_compare key_comp() const;
@@ -123,12 +124,19 @@ public:
 
 	iterator find(const key_type& x);
 	const_iterator find(const key_type& x)const;
-	std::pair<iterator, iterator> equal_range(const key_type& x);
+
+	std::pair<iterator, iterator> 
+	equal_range(const key_type& x);
+
+	const std::pair<const_iterator,const_iterator> 
+	equal_range(const key_type& x)const; 
+
 	uint64_t count(const key_type& x)const;
 
 
 	
-	typename HashMap<Key, T, Compare, Hash>::ListType::iterator findElement(const key_type& k,
+	typename HashMap<Key, T, compare, Hash>::ListType::iterator findElement
+	(const key_type& k,
 	uint64_t& bucket)
 	{
 		bucket = mHash(k) % mBuckets.size();
@@ -144,18 +152,18 @@ public:
 		return std::end(mBuckets[bucket]);
 	};
 	
-	
+	friend class hash_map_iterator<hash_map_type>; 
 	friend class const_hash_map_iterator<hash_map_type>;
 private:
 	std::vector<ListType> mBuckets;
 	size_t mSize;
-	Compare mComp;
+	compare mComp;
 	Hash mHash; 
 };
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline HashMap<Key, T, Compare, Hash>::HashMap
-(std::initializer_list<value_type> il, const Compare& comp, 
+template<typename Key, typename T, typename compare, typename Hash>
+inline HashMap<Key, T, compare, Hash>::HashMap
+(std::initializer_list<value_type> il, const compare& comp, 
 uint64_t numBuckets, const Hash& hash)
 {
 	if (numBuckets == 0)
@@ -165,9 +173,9 @@ uint64_t numBuckets, const Hash& hash)
 	insert(std::begin(il), std::end(il));
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::
-hash_map_type& HashMap<Key, T, Compare, Hash>::
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::
+hash_map_type& HashMap<Key, T, compare, Hash>::
 operator=(std::initializer_list<value_type> il)
 {
 	this->clear();
@@ -175,9 +183,9 @@ operator=(std::initializer_list<value_type> il)
 	return *this; 
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare,
-Hash>::iterator HashMap<Key, T, Compare, Hash>::begin()
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare,
+Hash>::iterator HashMap<Key, T, compare, Hash>::begin()
 {
 	if (mSize == 0)
 	{
@@ -195,9 +203,9 @@ Hash>::iterator HashMap<Key, T, Compare, Hash>::begin()
 	return end();
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::iterator HashMap
-<Key, T, Compare, Hash>::end()
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::iterator HashMap
+<Key, T, compare, Hash>::end()
 {
 	// Hash Map 의 종료 반복자는 마지막 버킷 리스트이 종료 반복자와 같다.
 	uint64_t bucket = mBuckets.size() - 1;
@@ -206,36 +214,36 @@ inline typename HashMap<Key, T, Compare, Hash>::iterator HashMap
 		(bucket, std::end(mBuckets[bucket]), this);
 };
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::
-const_iterator HashMap<Key, T, Compare, Hash>::begin() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::
+const_iterator HashMap<Key, T, compare, Hash>::begin() const
 {
 	return const_cast< hash_map_type*>(this)->begin();
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>
-::const_iterator HashMap<Key, T, Compare, Hash>::end() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>
+::const_iterator HashMap<Key, T, compare, Hash>::end() const
 {
 	return const_cast< hash_map_type*>(this)->end();
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::
-const_iterator HashMap<Key, T, Compare, Hash>::cbegin() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::
+const_iterator HashMap<Key, T, compare, Hash>::cbegin() const
 {
 	return this->begin();
 };
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::const_iterator 
-HashMap<Key, T, Compare, Hash>::cend() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::const_iterator 
+HashMap<Key, T, compare, Hash>::cend() const
 {
 	return this->end();
 };
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline HashMap<Key, T, Compare, Hash>::HashMap(const Compare& comp, uint64_t numBuckets, const Hash& hash)
+template<typename Key, typename T, typename compare, typename Hash>
+inline HashMap<Key, T, compare, Hash>::HashMap(const compare& comp, uint64_t numBuckets, const Hash& hash)
 	:mSize(0), mComp(comp), mHash(hash)
 {
 	if (numBuckets == 0)
@@ -247,53 +255,76 @@ inline HashMap<Key, T, Compare, Hash>::HashMap(const Compare& comp, uint64_t num
 
 
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>
-::iterator HashMap<Key, T, Compare, Hash>::
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>
+::iterator HashMap<Key, T, compare, Hash>::
 insert(iterator position/*무시*/, const value_type& x)
 {
 	return insert(x).first;
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline std::pair<typename HashMap<Key, T, Compare, Hash>::iterator, bool> HashMap<Key, T, Compare, Hash>::emplace(value_type&& x)
-{
-	return std::pair<iterator, bool>();
-}
-
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::iterator HashMap<Key, T, Compare, Hash>::emplace_hint(iterator hint, value_type&& x)
-{
-	return iterator();
-}
-
-template<typename Key, typename T, typename Compare, typename Hash>
-inline void HashMap<Key, T, Compare, Hash>::erase(const key_type& k)
+template<typename Key, typename T, typename compare, typename Hash>
+inline std::pair<typename HashMap<Key, T, compare, Hash>::iterator, bool> 
+HashMap<Key, T, compare, Hash>::emplace(value_type&& x)
 {
 	uint64_t bucket;
-	auto it = findElement(k, bucket);
+	auto it = findElement(x.first, bucket);
+	bool inserted = false;
+
+	if (it == std::end(mBuckets[bucket]))
+	{
+		it = mBuckets[bucket].emplace(std::end(mBuckets[bucket]), x);
+		inserted = true;
+		mSize++;  
+	}
+
+	return std::make_pair(hash_map_iterator<hash_map_type>
+	(bucket, it, this), inserted); 
+}
+
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::iterator HashMap<Key, T, compare, Hash>::emplace_hint(iterator hint, value_type&& x)
+{
+	return emplace(std::forward<value_type>(x)); 
+}
+
+template<typename Key, typename T, typename compare, typename Hash>
+inline uint64_t HashMap<Key, T, compare, Hash>::erase(const key_type& x)
+{
+	uint64_t bucket;
+	auto it = findElement(x, bucket);
 	if (it != std::end(mBuckets[bucket]))
 	{
 		mBuckets[bucket].erase(it);
 		mSize--;
+		return 1;
 	}
+	else return 0; 
 }
-
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::iterator HashMap<Key, T, Compare, Hash>::erase(iterator position)
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T,
+compare, Hash>::iterator HashMap<Key, T, compare, Hash>::erase(iterator position)
 {
-	return iterator();
+	iterator next = position;
+	++next;
+	mBuckets[position.mBucketIndex].erase(position.mListIterator);
+	mSize--;
+	return next; 
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::iterator HashMap<Key, T, Compare, Hash>::erase(iterator first, iterator last)
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::iterator HashMap<Key, T, compare, Hash>::erase(iterator first, iterator last)
 {
-	return iterator();
+	for (iterator next = first; next != last; )
+	{
+		next = erase(next);  
+	}
+	return last; 
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
+template<typename Key, typename T, typename compare, typename Hash>
 inline typename
-HashMap<Key, T, Compare, Hash>::value_type* HashMap<Key, T, Compare, Hash>::find(const key_type& k)
+HashMap<Key, T, compare, Hash>::value_type* HashMap<Key, T, compare, Hash>::find(const key_type& k)
 {
 	uint64_t bucket;
 
@@ -301,35 +332,61 @@ HashMap<Key, T, Compare, Hash>::value_type* HashMap<Key, T, Compare, Hash>::find
 
 	if (it == std::end(mBuckets[bucket]))
 	{
-		return nullptr;
+		return end();
 	}
-	return &(*it);
+
+	return hash_map_iterator<hash_map_type>(bucket, it, this); 
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
-inline const typename HashMap<Key, T, Compare, Hash>::value_type*
-HashMap<Key, T, Compare, Hash>::find(const key_type& k) const
+template<typename Key, typename T, typename compare, typename Hash>
+inline const typename HashMap<Key, T, compare, Hash>::value_type*
+HashMap<Key, T, compare, Hash>::find(const key_type& x) const
 {
-	const auto RetVal = find(k);
-	return RetVal;
+	uint64_t bucket;
+	auto it = const_cast<hash_map_type*>(this)->findElement(x, bucket);
+
+	if (it == std::end(mBuckets[bucket]))
+	{
+		return end(); 
+	}
+
+	return const_hash_map_iterator<hash_map_type>(bucket, it, this); 
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline std::pair<typename HashMap<Key, T, Compare, Hash>::iterator, typename HashMap<Key, T, Compare, Hash>::iterator> HashMap<Key, T, Compare, Hash>::equal_range(const key_type& x)
+template<typename Key, typename T, typename compare, typename Hash>
+inline std::pair<typename HashMap<Key, T, compare, Hash>::iterator,
+	typename HashMap<Key, T, compare, Hash>::iterator> HashMap<Key, T, compare, Hash>
+	::equal_range(const key_type& x)
 {
-	return std::pair<iterator, iterator>();
+	auto it = find(x);
+
+	return std::pair(it, it);
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline uint64_t HashMap<Key, T, Compare, Hash>::count(const key_type& x) const
+template<typename Key, typename T, typename compare, typename Hash>
+inline const std::pair<
+typename HashMap<Key,T,compare,Hash>::const_iterator, 
+typename HashMap<Key, T, compare, Hash>::const_iterator> 
+HashMap<Key, T, compare, Hash>::equal_range(const key_type& x) const
 {
-	return uint64_t();
+	auto it = find(x);
+
+	return std::pair(it, it);
 }
 ;
-
-
-template<typename Key, typename T, typename Compare, typename Hash>
-inline T& HashMap<Key, T, Compare, Hash>::operator[](const key_type& k)
+template<typename Key, typename T, typename compare, typename Hash>
+inline uint64_t HashMap<Key, T, compare, Hash>::count(const key_type& x) const
 {
-	value_type* found = find(k);
+	if (find(x) == end()) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+};
+
+template<typename Key, typename T, typename compare, typename Hash>
+inline T& HashMap<Key, T, compare, Hash>::operator[](const key_type& x)
+{
+	/*value_type* found = find(k);
 
 	if (found == nullptr)
 	{
@@ -339,48 +396,56 @@ inline T& HashMap<Key, T, Compare, Hash>::operator[](const key_type& k)
 
 		insert(std::move_if_noexcept(Inserter));
 		return Second;;
-	};
+	};*/
+	return ((insert(std::make_pair(x, T()))).first)->second;
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline bool HashMap<Key, T, Compare, Hash>::empty() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline bool HashMap<Key, T, compare, Hash>::empty() const
 {
 	return mSize == 0;
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::size_type HashMap<Key, T, Compare, Hash>::size() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::size_type HashMap<Key, T, compare, Hash>::size() const
 {
 	return this->mSize;
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::size_type HashMap<Key, T, Compare, Hash>::max_size() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::size_type HashMap<Key, T, compare, Hash>::max_size() const
 {
 	return mBuckets[0].max_size();
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline void HashMap<Key, T, Compare, Hash>::swap(hash_map_type& hashIn)
+template<typename Key, typename T, typename compare, typename Hash>
+inline void HashMap<Key, T, compare, Hash>::swap(hash_map_type& hashIn)
 {
 	std::swap(*this, hashIn);
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline void HashMap<Key, T, Compare, Hash>::clear() noexcept
+template<typename Key, typename T, typename compare, typename Hash>
+inline void HashMap<Key, T, compare, Hash>::clear() noexcept
 {
+	for (auto& bucket : mBuckets)
+	{
+		bucket.clear(); 
+	}
+	mSize = 0;  
 }
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key,T,Compare,Hash>::key_compare HashMap<Key, T, Compare, Hash>::key_comp() const
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap
+<Key, T, compare, Hash>::key_compare HashMap<Key, T, compare, Hash>::
+key_comp() const
 {
-	return key_compare();
-}
-template<typename Key, typename T, typename Compare, typename Hash>
-inline typename HashMap<Key, T, Compare, Hash>::value_compare HashMap<Key, T, Compare, Hash>::value_comp() const
+	return mComp;
+};
+template<typename Key, typename T, typename compare, typename Hash>
+inline typename HashMap<Key, T, compare, Hash>::value_compare 
+HashMap<Key, T, compare, Hash>::value_comp() const
 {
-	return value_compare();
-}
-;
+	return value_compare(mComp); 
+};
 
-template<typename Key, typename T, typename Compare, typename Hash>
+template<typename Key, typename T, typename compare, typename Hash>
 template<typename InputIterator>
-inline HashMap<Key, T, Compare, Hash>::HashMap
-(InputIterator first, InputIterator last, const Compare& comp, 
+inline HashMap<Key, T, compare, Hash>::HashMap
+(InputIterator first, InputIterator last, const compare& comp, 
 uint64_t numBuckets, const Hash& hash)
 	:
 	mSize(0),mComp(comp),mHash(hash)
@@ -394,9 +459,9 @@ uint64_t numBuckets, const Hash& hash)
 	insert(first,last);
 }
 
-template<typename Key, typename T, typename Compare, typename Hash>
+template<typename Key, typename T, typename compare, typename Hash>
 template<typename InputIterator>
-inline void HashMap<Key, T, Compare, Hash>::insert(InputIterator first, InputIterator last)
+inline void HashMap<Key, T, compare, Hash>::insert(InputIterator first, InputIterator last)
 {
     auto Istr = std::inserter(*this,this->begin());
 

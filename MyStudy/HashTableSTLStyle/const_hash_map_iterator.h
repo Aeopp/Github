@@ -2,10 +2,12 @@
 #include <iostream>
 #include <xutility>
 #include "hash_map.h"
+
 template<typename HashMap>
 class const_hash_map_iterator 
 {
 public:
+	friend class typename HashMap; 
 	using list_iterator_type = 
 	typename HashMap::ListType::const_iterator;
 
@@ -15,8 +17,8 @@ public:
 	using iterator_category = std::bidirectional_iterator_tag;
 	using difference_type = ptrdiff_t;
 
-	const_hash_map_iterator(uint64_t bucket,
-	list_iterator_type listIt,const HashMap* inHashmap);
+	const_hash_map_iterator<HashMap>(uint64_t bucket,
+	typename HashMap::ListType::const_iterator listIt,const HashMap* inHashmap);
 
 	const value_type& operator*() const;
 	const value_type* operator->()const;
@@ -48,7 +50,7 @@ public:
 	protected:
 	uint64_t mBucketIndex;
 	list_iterator_type mListIterator;
-	const HashMap* mHashmap;
+	const typename HashMap* mHashmap;
 	void increment();
 	void decrement();
 };
@@ -60,7 +62,7 @@ inline const_hash_map_iterator<HashMap>::const_hash_map_iterator()
 
 template<typename HashMap>
 inline  const_hash_map_iterator<HashMap>::const_hash_map_iterator
-(uint64_t bucket, list_iterator_type listIt, const HashMap* inHashmap)
+(uint64_t bucket, typename HashMap::ListType::const_iterator listIt, const HashMap* inHashmap)
 	:mBucketIndex(bucket), mListIterator(listIt), mHashmap(inHashmap){}
 
 template<typename HashMap>

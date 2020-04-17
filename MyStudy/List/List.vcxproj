@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{115E84FB-D878-43D8-8F38-08A01A4BDD88}</ProjectGuid>
-    <RootNamespace>HashTableSTLStyle</RootNamespace>
+    <ProjectGuid>{0D66E758-7E9B-4DD9-80A9-D5B3DD5A2D61}</ProjectGuid>
+    <RootNamespace>List</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -141,17 +141,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClInclude Include="iterator.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="const_hash_map_iterator.h" />
-    <ClInclude Include="Hash.h" />
-    <ClInclude Include="hash_map.h" />
-    <ClInclude Include="hash_map_iterator.h" />
-    <ClInclude Include="const_reverse_iterator.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClCompile Include="iterator.cpp" />
+    <ClCompile Include="TMP study.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

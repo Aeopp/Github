@@ -6,6 +6,7 @@ template<typename HashMap>
 class hash_map_iterator :public const_hash_map_iterator<HashMap> 
 {
 public :
+	
 	using Super = const_hash_map_iterator<HashMap>;
 
 	explicit hash_map_iterator(const hash_map_iterator&) = default;
