@@ -9,6 +9,8 @@
 using std::string;
 int main()
 {
+
+
 	using hash_map_type = hash_map<int32_t,string>;
 	using iter_type = hash_iterator<hash_map_type>;
 
@@ -78,8 +80,8 @@ int main()
 		std::cout << "============= \n \n "  << std::endl;
 
 		auto hash_begin = std::begin(hashmap);
-		auto hash_end = std::end (hashmap);
-
+		auto hash_end = std::end(hashmap);
+		
 		while (hash_begin != hash_end)
 		{
 			auto &[f, s] = *hash_begin; 

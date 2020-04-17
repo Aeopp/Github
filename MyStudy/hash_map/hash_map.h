@@ -18,11 +18,10 @@ public:
 	friend ConTy;
 	using value_type = typename ConTy::value_type;
 	using iter_type = typename ConTy::list_iter_type;
-	using bucket_type = typename ConTy::table_type; 
 	hash_iterator();
 	hash_iterator(int64_t idx,
 	iter_type list_iter,
-	 bucket_type* param_container);
+	ConTy* param_container);
 
 
 	hash_iterator(hash_iterator&&) noexcept = default;
@@ -45,7 +44,7 @@ public:
 private:
 	mutable int64_t _cur_idx;
 	typename ConTy::list_iter_type  _list_iter;
-	bucket_type* _container = nullptr;
+	ConTy* _container = nullptr;
 
 	void increment();
 	//void increment()const; 
@@ -82,7 +81,7 @@ public:
 	/* auto inline begin() const; */
 	 auto inline begin();
 	 /*hash_iterator_type inline end() const;*/
-	 hash_iterator_type inline end() ;
+	 auto inline end() ;
 	// 템플릿 파라미터 ?? 
 	//using Ty = std::wstring;
 	//using key = std::wstring;
@@ -124,9 +123,7 @@ public:
 			_table[Index].erase(iter);
 			if (std::empty(_table[Index]))
 			{
-				std::_Erase_nodes_if(invalids,[&Index]
-				(const auto&element) 
-				{return element == Index;});
+				invalids.erase(Index);
 			}
 			--_cur_tablesize;
 			return true;
@@ -185,7 +182,7 @@ template<typename ConTy>
 inline hash_iterator<ConTy>::hash_iterator(
 	int64_t idx,
 	iter_type list_iter,
-	 bucket_type* param_container)
+	ConTy* param_container)
 	:
 	_cur_idx(idx), _container(param_container), _list_iter(list_iter)
 {};
@@ -256,24 +253,33 @@ inline hash_iterator<ConTy> hash_iterator<ConTy>::operator++(int)
 //	increment();
 //	return return_iter;
 //};
-
 template<typename ConTy>
 inline void hash_iterator<ConTy>::increment()
 {
-	auto& curtable = (*_container)[_cur_idx];
+	auto& curtable = _container->_table; 
 
 	++_list_iter;
 
-	if (_list_iter == std::end(curtable))
+	if (_list_iter == std::end(curtable[_cur_idx]))
 	{
-		while (++_cur_idx < (*_container).size()
-			&&(*_container)[_cur_idx].empty() );
+		if (auto find_iter = std::find_if(
+			std::begin(_container->invalids), std::end(_container->invalids),
+			[_cur_idx = this->_cur_idx](const auto& element) {return _cur_idx  < element; });
 
-		auto non_const_Conty = const_cast<bucket_type*>(_container);
+			find_iter != std::end(_container->invalids) )
+		{
+			_cur_idx = *find_iter;
+			_list_iter = std::begin(curtable[_cur_idx]);
+		};
+		//
 
-		_list_iter = std::begin((*non_const_Conty)[_cur_idx]);
+		//while (++_cur_idx < curtable.size()
+		//	&&(*_container)[_cur_idx].empty() );
+
+		//auto non_const_Conty = const_cast<Conty_type*>(_container);
+
+		//_list_iter = std::begin((*non_const_Conty)[_cur_idx]);
 	};
-
 };
 //
 //template<typename ConTy>
@@ -310,17 +316,32 @@ inline void hash_iterator<ConTy>::increment()
 
 template<typename ConTy>
 inline void hash_iterator<ConTy>::decrement()
-{
-	if (_list_iter == std::begin(*_container[_cur_idx]))
+{	
+	auto& curtable = _container->_table; 
+
+	if (_list_iter == std::begin(curtable[_cur_idx]))
 	{
-		while (-- _cur_idx > -1 &&
+		if (auto find_iter = std::find_if(
+			std::begin(_container->invalids), std::end(_container->invalids),
+			[_cur_idx = this->_cur_idx](const auto& element) {return _cur_idx > element; });
+
+			find_iter != std::end(_container->invalids))
+		{
+			_cur_idx = *find_iter;
+			_list_iter = (--std::end(curtable[_cur_idx]));
+			return;
+		};
+
+		/*while (-- _cur_idx > -1 &&
 			std::empty(*_container[_cur_idx]) );
 
-		_list_iter = (std::end(*_container[_cur_idx])-1);
-		return;  
-	};
+		*/
 
-	--_list_iter;
+
+		//_list_iter = (std::end(*_container[_cur_idx])-1);
+		//return;  
+	}else
+		--_list_iter;
 };
 //
 //template<typename ConTy>
@@ -386,7 +407,7 @@ inline auto hash_map<key, Ty>::begin()
 	auto list_iter  = _table[index]; 
 
 	hash_iterator_type return_iter
-	(index, std::begin(_table[index]), &_table);
+	(index, std::begin(_table[index]),this);
 	return return_iter; 
 	/*for (int64_t index = 0; index < _table.size(); ++index)
 	{
@@ -422,7 +443,7 @@ inline auto hash_map<key, Ty>::begin()
 //	};*/
 //}
 template<typename key, typename Ty>
-inline typename hash_map<key, Ty>::hash_iterator_type 
+inline auto 
 hash_map<key, Ty>::end()
 {
 	if (invalids.empty()) return hash_iterator_type();
@@ -431,7 +452,7 @@ hash_map<key, Ty>::end()
 	auto list_iter = _table[index];
 
 	hash_iterator_type return_iter
-	(index, (--std::end(_table[index])), &_table);
+	(index, (std::end(_table[index])), this);
 	return return_iter;
 
 	/*for (int64_t index = _table.size()-1; -1 < index; --index)
@@ -453,7 +474,7 @@ inline void hash_map<key, Ty>::rehash(const int64_t size)noexcept
 {
 	//decltype(*this)change(size); 
 	hash_map<key, Ty> change(size); 
-
+	 
 	// 리스트의 모든원소를 이동시켜서 다시 삽입(재해쉬)
 	auto rehash_inserter=[&change](auto&pair)noexcept
 	{
