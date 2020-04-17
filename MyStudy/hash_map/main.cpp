@@ -7,7 +7,6 @@
 #include "hash_map.h"
 
 using std::string;
-// const non const overloading
 int main()
 {
 	using hash_map_type = hash_map<int32_t,string>;
@@ -78,15 +77,15 @@ int main()
 
 		std::cout << "============= \n \n "  << std::endl;
 
-		 auto hash_begin = std::begin(hashmap);
-		 auto hash_end = std::end (hashmap);
+		auto hash_begin = std::begin(hashmap);
+		auto hash_end = std::end (hashmap);
+
 		while (hash_begin != hash_end)
 		{
 			auto &[f, s] = *hash_begin; 
 			std::cout << f << std::endl;
 			std::cout << s << std::endl;
 			++hash_begin;
-		}
-
+		};
 }
 

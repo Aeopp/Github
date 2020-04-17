@@ -459,7 +459,9 @@ inline void hash_map<key, Ty>::rehash(const int64_t size)noexcept
 	{
 		change.insert(std::move(pair));
 	};
+
 	// 유효한 버킷만 리스트를 순회 (원소가 하나라도 들어있는)
+
 	auto rehashfunc=[*this,&change,&rehash_inserter](const auto& invalid_idx)noexcept
 	{
 		auto& list_ref = _table[invalid_idx]; 
@@ -467,13 +469,10 @@ inline void hash_map<key, Ty>::rehash(const int64_t size)noexcept
 		std::for_each(std::begin(list_ref), 
 		std::end(list_ref),rehash_inserter);
 	}; 
-
-	decltype(invalids) new_set; 
-	new_set.swap(invalids); 
-
-	std::for_each(new_set.begin(),new_set.end(),rehashfunc);
+	std::for_each(invalids.begin(), invalids.end(),rehashfunc);
 
 	_table.swap(change._table);
+	invalids = std::move_if_noexcept(change.invalids); 
 };
 
 
