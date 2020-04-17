@@ -7,14 +7,9 @@
 #include "hash_map.h"
 
 using std::string;
-
+// const non const overloading
 int main()
 {
-
-	/*std::list<int>::const_iterator citer;
-	std::list<int>::iterator iter;
-
-	
 	using hash_map_type = hash_map<int32_t,string>;
 	using iter_type = hash_iterator<hash_map_type>;
 
@@ -91,7 +86,7 @@ int main()
 			std::cout << f << std::endl;
 			std::cout << s << std::endl;
 			++hash_begin;
-		}*/
+		}
 
 }
 

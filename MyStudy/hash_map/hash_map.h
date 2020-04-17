@@ -22,7 +22,7 @@ public:
 	hash_iterator();
 	hash_iterator(int64_t idx,
 	iter_type list_iter,
-	const bucket_type* param_container);
+	 bucket_type* param_container);
 
 
 	hash_iterator(hash_iterator&&) noexcept = default;
@@ -33,24 +33,24 @@ public:
 
 	inline value_type& operator*();
 	inline value_type* operator->();
-	inline const value_type& operator*()const; 
-	inline const value_type* operator->()const; 
+//	inline const value_type& operator*(); 
+//	inline const value_type* operator->(); 
 	bool operator==(const hash_iterator<ConTy>& rhs)const;
 	bool operator!=(const hash_iterator<ConTy>& rhs)const;
 
     hash_iterator<ConTy>& operator++();
 	hash_iterator<ConTy> operator++(int);
-	hash_iterator<ConTy>& operator++()const; 
-	hash_iterator<ConTy> operator++(int)const; 
+// 	hash_iterator<ConTy>& operator++()const; 
+// 	hash_iterator<ConTy> operator++(int)const; 
 private:
 	mutable int64_t _cur_idx;
 	typename ConTy::list_iter_type  _list_iter;
-	const bucket_type* _container = nullptr;
+	bucket_type* _container = nullptr;
 
 	void increment();
-	void increment()const; 
+	//void increment()const; 
 	void decrement(); 
-	void decrement()const;
+	//void decrement()const;
 };
 
 template<typename key, typename Ty>
@@ -79,9 +79,9 @@ public:
 	/*virtual */~hash_map() noexcept = default;
 	  hash_map(const int64_t table_size); 
 
-	 auto inline begin() const; 
+	/* auto inline begin() const; */
 	 auto inline begin();
-	 hash_iterator_type inline end() const;
+	 /*hash_iterator_type inline end() const;*/
 	 hash_iterator_type inline end() ;
 	// 템플릿 파라미터 ?? 
 	//using Ty = std::wstring;
@@ -185,7 +185,7 @@ template<typename ConTy>
 inline hash_iterator<ConTy>::hash_iterator(
 	int64_t idx,
 	iter_type list_iter,
-	const bucket_type* param_container)
+	 bucket_type* param_container)
 	:
 	_cur_idx(idx), _container(param_container), _list_iter(list_iter)
 {};
@@ -203,18 +203,18 @@ hash_iterator<ConTy>::operator->()
 {
 	return static_cast<value_type*>(&(*_list_iter));
 };
-template<typename ConTy>
-inline const typename hash_iterator<ConTy>::
-value_type& hash_iterator<ConTy>::operator*() const
-{
-	return *_list_iter;
-};
-template<typename ConTy>
-inline const typename hash_iterator<ConTy>::
-value_type* hash_iterator<ConTy>::operator->() const
-{
-	return &(*_list_iter);
-};
+//template<typename ConTy>
+//inline const typename hash_iterator<ConTy>::
+//value_type& hash_iterator<ConTy>::operator*() const
+//{
+//	return *_list_iter;
+//};
+//template<typename ConTy>
+//inline const typename hash_iterator<ConTy>::
+//value_type* hash_iterator<ConTy>::operator->() const
+//{
+//	return &(*_list_iter);
+//};
 template<typename ConTy>
 inline bool hash_iterator<ConTy>::operator==
 (const hash_iterator<ConTy>& rhs) const
@@ -243,20 +243,19 @@ inline hash_iterator<ConTy> hash_iterator<ConTy>::operator++(int)
 	increment();
 	return return_iter; 
 }
-template<typename ConTy>
-inline hash_iterator<ConTy>& hash_iterator<ConTy>::operator++() const
-{
-	increment();
-	return *this;
-}
-template<typename ConTy>
-inline hash_iterator<ConTy> hash_iterator<ConTy>::operator++(int) const
-{
-	auto return_iter = *this;
-	increment();
-	return return_iter;
-}
-;
+//template<typename ConTy>
+//inline hash_iterator<ConTy>& hash_iterator<ConTy>::operator++() const
+//{
+//	increment();
+//	return *this;
+//}
+//template<typename ConTy>
+//inline hash_iterator<ConTy> hash_iterator<ConTy>::operator++(int) const
+//{
+//	auto return_iter = *this;
+//	increment();
+//	return return_iter;
+//};
 
 template<typename ConTy>
 inline void hash_iterator<ConTy>::increment()
@@ -276,38 +275,38 @@ inline void hash_iterator<ConTy>::increment()
 	};
 
 };
-
-template<typename ConTy>
-inline void hash_iterator<ConTy>::increment()const
-{
-	auto& curtable = (*_container)[_cur_idx];
-
-	++_list_iter;
-
-	if (_list_iter == std::end(curtable))
-	{
-		while (++_cur_idx < (*_container).size()
-			&& (*_container)[_cur_idx].empty());
-
-		_list_iter = std::begin((*_container)[_cur_idx]);
-	};
-
-	// 테이블을 가져온다
-	// 내부 이터레이터 증가시키기
-	// 내부 이터레이터 증가시켰는데 현재테이블 end 가 아니면 종료
-	// 내부이터레이터 증가시켰는데 현재테이블 end이면 다음 테이블 가져와서
-	// 그 테이블 begin 으로 세팅
-	// 테이블 만약 비어있다면 현재인덱스 증가시키며 비어있는 테이블 찾기
-
-	// 테이블을 가져왔는데 테이블이 비어있다면 그 테이블의 begin 으로 세팅
-	// 테이블이 비어있지 않다면 _list_iter를 증가시킨다.
-	// _list_iter 를 증가시켰는데 end 라면 테이블 인덱스를 증가시키고
-	// 그 인덱스의 테이블의 리스트의 begin 으로 세팅
-
-	// 테이블이 비어있다면 begin 을 자신으로 세팅
-
-	// 테이블 인덱스가 max를 초과하면 리턴
-};
+//
+//template<typename ConTy>
+//inline void hash_iterator<ConTy>::increment()const
+//{
+//	auto& curtable = (*_container)[_cur_idx];
+//
+//	++_list_iter;
+//
+//	if (_list_iter == std::end(curtable))
+//	{
+//		while (++_cur_idx < (*_container).size()
+//			&& (*_container)[_cur_idx].empty());
+//
+//		_list_iter = std::begin((*_container)[_cur_idx]);
+//	};
+//
+//	// 테이블을 가져온다
+//	// 내부 이터레이터 증가시키기
+//	// 내부 이터레이터 증가시켰는데 현재테이블 end 가 아니면 종료
+//	// 내부이터레이터 증가시켰는데 현재테이블 end이면 다음 테이블 가져와서
+//	// 그 테이블 begin 으로 세팅
+//	// 테이블 만약 비어있다면 현재인덱스 증가시키며 비어있는 테이블 찾기
+//
+//	// 테이블을 가져왔는데 테이블이 비어있다면 그 테이블의 begin 으로 세팅
+//	// 테이블이 비어있지 않다면 _list_iter를 증가시킨다.
+//	// _list_iter 를 증가시켰는데 end 라면 테이블 인덱스를 증가시키고
+//	// 그 인덱스의 테이블의 리스트의 begin 으로 세팅
+//
+//	// 테이블이 비어있다면 begin 을 자신으로 세팅
+//
+//	// 테이블 인덱스가 max를 초과하면 리턴
+//};
 
 template<typename ConTy>
 inline void hash_iterator<ConTy>::decrement()
@@ -323,27 +322,27 @@ inline void hash_iterator<ConTy>::decrement()
 
 	--_list_iter;
 };
-
-template<typename ConTy>
-inline void hash_iterator<ConTy>::decrement()const
-{
-	if (_list_iter == std::begin(*_container[_cur_idx]))
-	{
-		while (--_cur_idx > -1 &&
-			std::empty(*_container[_cur_idx]));
-
-		_list_iter = (std::end(*_container[_cur_idx]) - 1);
-		return;
-	};
-
-	--_list_iter; 
-	// 현재테이블 가져오기
-	// 현재 테이블 begin 과 이터레이터가 같다면
-	// 인덱스 낮춰가면서 비어있지않은 테이블 찾기
-	// 비어있지않은 테이블 찾았다면 그 테이블 end-1 에 세팅
-
-	// 현재테이블 begin과 이터레이터가 같지않으면 그냥 빼기
-};
+//
+//template<typename ConTy>
+//inline void hash_iterator<ConTy>::decrement()const
+//{
+//	if (_list_iter == std::begin(*_container[_cur_idx]))
+//	{
+//		while (--_cur_idx > -1 &&
+//			std::empty(*_container[_cur_idx]));
+//
+//		_list_iter = (std::end(*_container[_cur_idx]) - 1);
+//		return;
+//	};
+//
+//	--_list_iter; 
+//	// 현재테이블 가져오기
+//	// 현재 테이블 begin 과 이터레이터가 같다면
+//	// 인덱스 낮춰가면서 비어있지않은 테이블 찾기
+//	// 비어있지않은 테이블 찾았다면 그 테이블 end-1 에 세팅
+//
+//	// 현재테이블 begin과 이터레이터가 같지않으면 그냥 빼기
+//};
 
 template<typename key, typename Ty>
 inline  hash_map<key, Ty>::hash_map(const int64_t table_size)
@@ -352,32 +351,32 @@ inline  hash_map<key, Ty>::hash_map(const int64_t table_size)
 {
 
 };
-
-template<typename key, typename Ty>
-inline auto
-hash_map<key, Ty>::begin() const
-{
-	if (invalids.empty()) return hash_iterator_type();
-
-	auto index = *std::begin(invalids);
-	auto list_iter = _table[index];
-
-	mutable auto list_iter = std::begin(_table[index]);  
-	hash_iterator_type return_iter
-	(index, list_iter, &_table);
-	return return_iter;
-
-	/*for (int64_t index = 0; index < _table.size(); ++index)
-	{
-		if (!std::empty(_table[index]))
-		{
-			hash_iterator_type return_iter
-			(index, std::begin(_table[index]), &_table);
-
-			return return_iter;
-		}
-	};*/
-};
+//
+//template<typename key, typename Ty>
+//inline auto
+//hash_map<key, Ty>::begin() const
+//{
+//	if (invalids.empty()) return hash_iterator_type();
+//
+//	auto index = *std::begin(invalids);
+//	auto list_iter = _table[index];
+//
+//	mutable auto list_iter = std::begin(_table[index]);  
+//	hash_iterator_type return_iter
+//	(index, list_iter, &_table);
+//	return return_iter;
+//
+//	/*for (int64_t index = 0; index < _table.size(); ++index)
+//	{
+//		if (!std::empty(_table[index]))
+//		{
+//			hash_iterator_type return_iter
+//			(index, std::begin(_table[index]), &_table);
+//
+//			return return_iter;
+//		}
+//	};*/
+//};
 template<typename key, typename Ty>
 inline auto hash_map<key, Ty>::begin()
 {
@@ -400,28 +399,28 @@ inline auto hash_map<key, Ty>::begin()
 		}
 	};*/
 };
-
-template<typename key, typename Ty>
-inline typename hash_map<key,Ty>::
-hash_iterator_type hash_map<key, Ty>::end()const
-{
-	if (invalids.empty()) return hash_iterator_type();
-
-	auto index = *(--std::end(invalids));
-	auto list_iter = _table[index];
-
-	hash_iterator_type return_iter
-	(index, (--std::end(_table[index])), &_table);
-	return return_iter;
-	/*for (int64_t index = _table.size(); -1 < index; --index)
-	{
-		if (!std::empty(_table[index]))
-		{
-		return
-		hash_iterator_type(index, std::end(_table[index]),&_table);
-		}
-	};*/
-}
+//
+//template<typename key, typename Ty>
+//inline typename hash_map<key,Ty>::
+//hash_iterator_type hash_map<key, Ty>::end()const
+//{
+//	if (invalids.empty()) return hash_iterator_type();
+//
+//	auto index = *(--std::end(invalids));
+//	auto list_iter = _table[index];
+//
+//	hash_iterator_type return_iter
+//	(index, (--std::end(_table[index])), &_table);
+//	return return_iter;
+//	/*for (int64_t index = _table.size(); -1 < index; --index)
+//	{
+//		if (!std::empty(_table[index]))
+//		{
+//		return
+//		hash_iterator_type(index, std::end(_table[index]),&_table);
+//		}
+//	};*/
+//}
 template<typename key, typename Ty>
 inline typename hash_map<key, Ty>::hash_iterator_type 
 hash_map<key, Ty>::end()
