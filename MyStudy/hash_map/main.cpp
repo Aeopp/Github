@@ -7,6 +7,7 @@
 #include "iterator.h"
 #include "hash_map.h"
 #include <memory>
+#include <functional>
 
 using std::string;
 
@@ -38,6 +39,7 @@ std::ostream& operator<<(std::ostream& out,A& rhs)
 	out << rhs.second << std::endl;
 	return out;
 };
+
 int main()
 {
 	/*std::vector<int> a;

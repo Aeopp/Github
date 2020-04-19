@@ -77,6 +77,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_list", "_list\_list.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hash_map", "hash_map\hash_map.vcxproj", "{02BF35A6-7F80-4CAE-822A-66807BB3ADB3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BubbleSort", "BubbleSort\BubbleSort.vcxproj", "{36545748-DC3A-4F64-8810-6D137569B0D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -341,6 +343,14 @@ Global
 		{02BF35A6-7F80-4CAE-822A-66807BB3ADB3}.Release|x64.Build.0 = Release|x64
 		{02BF35A6-7F80-4CAE-822A-66807BB3ADB3}.Release|x86.ActiveCfg = Release|Win32
 		{02BF35A6-7F80-4CAE-822A-66807BB3ADB3}.Release|x86.Build.0 = Release|Win32
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Debug|x64.ActiveCfg = Debug|x64
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Debug|x64.Build.0 = Debug|x64
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Debug|x86.ActiveCfg = Debug|Win32
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Debug|x86.Build.0 = Debug|Win32
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Release|x64.ActiveCfg = Release|x64
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Release|x64.Build.0 = Release|x64
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Release|x86.ActiveCfg = Release|Win32
+		{36545748-DC3A-4F64-8810-6D137569B0D6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -378,6 +388,7 @@ Global
 		{0D66E758-7E9B-4DD9-80A9-D5B3DD5A2D61} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
 		{8F45F275-4CDB-4E14-BFDF-5FCC87E8AFEA} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
 		{02BF35A6-7F80-4CAE-822A-66807BB3ADB3} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
+		{36545748-DC3A-4F64-8810-6D137569B0D6} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DCB6F1B-BC78-403E-BF2D-BF944F097D51}
