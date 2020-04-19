@@ -3,91 +3,111 @@
 #include <vector>
 #include <list>
 #include <iterator> 
+#include <map>
 #include "iterator.h"
 #include "hash_map.h"
+#include <memory>
 
 using std::string;
+
+template<typename f_arg,typename s_arg>
+std::ostream& operator<<(std::ostream& out,const std::pair< f_arg, s_arg>
+& rhs)
+{
+	out << rhs.first << std::endl;
+	out << rhs.second << std::endl;
+	return out; 
+};
+template<typename f_arg, typename s_arg>
+std::ostream& operator<<(std::ostream& out, const std::pair<const f_arg,const s_arg>
+	& rhs)
+{
+	out << rhs.first << std::endl;
+	out << rhs.second << std::endl;
+	return out;
+};
+struct A
+{
+	int first = 1;
+	int second = 1;
+	friend std::ostream& operator<<(std::ostream& out, A& rhs);
+};
+std::ostream& operator<<(std::ostream& out,A& rhs)
+{
+	out << rhs.first << std::endl;
+	out << rhs.second << std::endl;
+	return out;
+};
 int main()
 {
+	/*std::vector<int> a;
+	std::insert_iterator(a, a.begin());*/
 
-
-	using hash_map_type = hash_map<int32_t,string>;
-	using iter_type = hash_iterator<hash_map_type>;
+	using hash_map_type = hash_map<int32_t, string>;
 
 	hash_map_type  hashmap;
-	iter_type iter;
-	std::cout << " One Step \n\n\n";
-	for (int i = 1; i < 9; ++i)
-	{
-		if (const auto &[f, s] = hashmap.find(i); f == true)
-		{
-			auto& [pf, ps] = s;
-			std::cout << pf << std::endl;
-			std::cout << ps << std::endl;
-		};
-	}
-		hashmap.insert({ 1,"홍길동" });
-		hashmap.insert({ 2,"정상길" });
-		hashmap.insert({ 3,"이상혁" });
-		hashmap.insert({ 4,"조희건" });
-		hashmap.insert({ 5,"이강현" });
-		hashmap.insert({ 6,"이현아" });
-		hashmap.insert({ 7,"이하나" });
-		hashmap.insert({ 8,"김진경" });
 
-		std::cout << " Two Step \n\n\n";
+	hashmap.insert(std::pair(1, "A"));
+	hashmap.insert(std::pair(2, "AB"));
+	hashmap.insert(std::pair(2, "BA"));
+	hashmap.insert(std::pair(3, "ABC"));
+	hashmap.insert(std::pair(3, "BCA"));
+	hashmap.insert(std::pair(3, "QWE"));
+	hashmap.insert(std::pair(4, "SDAX"));
+	hashmap.insert(std::pair(4, "SDAX"));
+	hashmap.insert(std::pair(4, "WQED"));
+	hashmap.insert(std::pair(4, "EWFD"));
+	
+	hashmap.erase(4);
+	hashmap.erase(4);
+	hashmap.erase(4);
+	hashmap.erase(4);
 
-		for (int i = 1; i < 9; ++i)
-		{
-			if (const auto &[f, s] = hashmap.find(i); f == true)
-			{
-				auto& [pf, ps] = s;
-				std::cout << pf << std::endl;
-				std::cout << ps << std::endl;
-			};
-		}
-		hashmap.erase(1);
-		hashmap.erase(2);
-		hashmap.erase(3);
-		hashmap.erase(4);
-		std::cout << " Third Step \n\n\n";
-		for (int i = 1; i < 9; ++i)
-		{
-			if (const auto&[f, s] = hashmap.find(i); f == true)
-			{
-				auto& [pf, ps] = s;
-				std::cout << pf << std::endl;
-				std::cout << ps << std::endl;
-			};
-		};
+	hash_map_type hash_map
+	(std::begin(hashmap), std::end(hashmap));
+	
+	/* auto [f, s] = hash_map.equal_range(3);
+	 if (f != std::end(hash_map))
+	 {
+		 std::cout << "찾음";
+		 while (f != s)
+		 {
+			auto [fi, se] = *f;
+			std::cout << fi << " " << se << std::endl;
+			++f;
+		 }; 
+	 }
+	 else
+		 std::cout << "못찾음";*/
 
-		hashmap.rehash(64);
+	 std::for_each(std::begin(hash_map), std::end(hash_map),
+		 [](const auto& element) {std::cout << element.first << " "
+		 << element.second << std::endl; });
 
-		std::cout << " Four Step \n\n\n";
+	 hash_map_type b{ {111,"qwe"} ,{222,"asd"} ,{333,"qwe"} };
 
-		for (int i = 1; i < 9; ++i)
-		{
-			if (const auto& [f, s] = hashmap.find(i); f == true)
-			{
-				auto& [pf, ps] = s;
-				std::cout << pf << std::endl;
-				std::cout << ps << std::endl;
-			};
-		};
+	 std::for_each(std::begin(b), std::end(b),
+		 [](const auto& element) {std::cout << element.first << " "
+		 << element.second << std::endl; });
 
-		std::cout << " Five Step \n\n\n";
+	 b.insert({ { 777,"Lucky Seven !! " }, { 444,"$$$" } });
 
-		std::cout << "============= \n \n "  << std::endl;
+	 std::for_each(std::begin(b), std::end(b),
+		 [](const auto& element) {std::cout << element.first << " "
+		 << element.second << std::endl; });
 
-		auto hash_begin = std::begin(hashmap);
-		auto hash_end = std::end(hashmap);
-		
-		while (hash_begin != hash_end)
-		{
-			auto &[f, s] = *hash_begin; 
-			std::cout << f << std::endl;
-			std::cout << s << std::endl;
-			++hash_begin;
-		};
-}
+	 b.insert(std::begin(hashmap), std::end(hashmap));
+	 std::cout << "\n\n\n\n\n";
+	 if (auto find_iter = b.find(8658956);
+		 find_iter != std::end(b))
+	 {
+		 auto [f, s] = *find_iter;
+		 std::cout << f << " "   << s << std::endl;
+	 };
+	 std::for_each(std::begin(b), std::end(b),
+		 [](const auto& element) {std::cout << element.first << " "
+		 << element.second << std::endl; });
+};
+
+
 
