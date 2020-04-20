@@ -1,0 +1,2 @@
+D:\Github\output\thread.exe
+D:\Github\output\thread.pdb

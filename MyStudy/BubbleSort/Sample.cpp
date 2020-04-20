@@ -173,9 +173,9 @@ template<typename Ty,size_t N>
 void quick_sort(std::array<Ty,N>& arr,int32_t left, int32_t right)
 {
     if (left >= right) return;
-    int32_t pivot = arr[(left + right) / 2];
-    int32_t begin = left;
-    int32_t end = right;
+    constexpr int32_t pivot = arr[(left + right) / 2];
+    constexpr int32_t begin = left;
+    constexpr int32_t end = right;
 
     while (left <= right)
     {

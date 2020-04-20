@@ -10,38 +10,46 @@
 #include <functional>
 
 using std::string;
-
-template<typename f_arg,typename s_arg>
-std::ostream& operator<<(std::ostream& out,const std::pair< f_arg, s_arg>
-& rhs)
+//
+//template<typename f_arg,typename s_arg>
+//std::ostream& operator<<(std::ostream& out,const std::pair< f_arg, s_arg>
+//& rhs)
+//{
+//	out << rhs.first << std::endl;
+//	out << rhs.second << std::endl;
+//	return out; 
+//};
+//template<typename f_arg, typename s_arg>
+//std::ostream& operator<<(std::ostream& out, const std::pair<const f_arg,const s_arg>
+//	& rhs)
+//{
+//	out << rhs.first << std::endl;
+//	out << rhs.second << std::endl;
+//	return out;
+//};
+//struct A
+//{
+//	int first = 1;
+//	int second = 1;
+//	friend std::ostream& operator<<(std::ostream& out, A& rhs);
+//};
+//std::ostream& operator<<(std::ostream& out,A& rhs)
+//{
+//	out << rhs.first << std::endl;
+//	out << rhs.second << std::endl;
+//	return out;
+//};
+class A
 {
-	out << rhs.first << std::endl;
-	out << rhs.second << std::endl;
-	return out; 
+public :
+	void foo()const&&{ std::cout << " const&& ";  };
+	void foo()&&{ std::cout << " && ";  };
+	void foo()const& { std::cout << " const& "; };
+	void foo()&{ std::cout << " & "; };
 };
-template<typename f_arg, typename s_arg>
-std::ostream& operator<<(std::ostream& out, const std::pair<const f_arg,const s_arg>
-	& rhs)
-{
-	out << rhs.first << std::endl;
-	out << rhs.second << std::endl;
-	return out;
-};
-struct A
-{
-	int first = 1;
-	int second = 1;
-	friend std::ostream& operator<<(std::ostream& out, A& rhs);
-};
-std::ostream& operator<<(std::ostream& out,A& rhs)
-{
-	out << rhs.first << std::endl;
-	out << rhs.second << std::endl;
-	return out;
-};
-
 int main()
 {
+	
 	/*std::vector<int> a;
 	std::insert_iterator(a, a.begin());*/
 
@@ -106,6 +114,23 @@ int main()
 		 auto [f, s] = *find_iter;
 		 std::cout << f << " "   << s << std::endl;
 	 };
+	 std::for_each(std::begin(b), std::end(b),
+		 [](const auto& element) {std::cout << element.first << " "
+		 << element.second << std::endl; });
+
+	 decltype(b) def;
+	 def.rehash(b.size());
+
+	 auto inserter = std::insert_iterator<decltype(def)>(def, std::begin(def));
+	 std::remove_copy_if(std::begin(b), std::end(b), inserter,
+		 []( auto& element) {return true;  });
+
+	 std::cout << "refefef " << b.size() << " ";
+
+	 std::for_each(std::begin(def), std::end(def),
+		 [](const auto& element) {std::cout << element.first << " "
+		 << element.second << std::endl; });
+
 	 std::for_each(std::begin(b), std::end(b),
 		 [](const auto& element) {std::cout << element.first << " "
 		 << element.second << std::endl; });

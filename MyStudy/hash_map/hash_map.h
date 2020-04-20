@@ -282,7 +282,7 @@ class hash_map
 public:
 	using key_type = key;
 	using mapped_type = Ty;
-	using value_type = std::pair<const key,Ty>;
+	using value_type = std::pair< key,Ty>;
 	using value_compare = std::equal_to<Ty>;  
 	using hash_type = std::hash<key>;
 	using list_type = std::list<value_type>;
