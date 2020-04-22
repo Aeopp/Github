@@ -6,8 +6,8 @@
 #include <algorithm>
 #include <numeric>
 #include <vector>
-using namespace std;
 
+using namespace std;
 namespace util
 {
     template <class Ty,int64_t size,
@@ -122,55 +122,76 @@ constexpr void insert_sort(std::array<Ty, N>& arr)noexcept
     }
     std::cout << " Count ? : " << count << std::endl;
 };
-//template<typename Ty, size_t N>
-//constexpr void quick_sort(std::array<Ty, N>& arr,int32_t left,int32_t right)noexcept
+template<typename Ty, size_t N>
+constexpr void quick_sort(std::array<Ty, N>& arr,int32_t left,int32_t right)noexcept
+{
+    if (left >= right) return; 
+    int32_t count = 0; 
+    int32_t pivot = left; 
+    int32_t end = right; 
+
+    while (left < right)
+    {
+        while (arr[pivot] < arr[right])
+            right--; 
+        while (left < right && arr[pivot] >= arr[left])
+            left++; 
+        
+        std::remove_reference_t<Ty> temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+
+    }
+};
+template<typename Ty>
+constexpr void quick_sort(std::vector<Ty>& arr,int32_t left, int32_t right)noexcept
+{
+    if (left >= right)return; 
+    int32_t pivot = (left + right) / 2; 
+    const int32_t begin = left;
+    const int32_t end = right;  
+
+    while (left <= right)
+    {
+        while ( arr[left] < arr[pivot])
+            ++left;
+        while ( arr[right] > arr[pivot])
+            --right;
+
+        if (left <= right)
+        {
+            int temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+            left++; right--;
+        }
+    };
+    quick_sort(arr,begin , right); 
+    quick_sort(arr, left,end);
+}
+//template<typename Ty,size_t N>
+//constexpr void quick_sort(std::array<Ty,N>& arr,int32_t left, int32_t right)
 //{
-//    if (left >= right) return; 
-//    int32_t count = 0; 
-//    int32_t pivot = left; 
-//    int32_t end = right; 
-//
-//    while (left < right)
-//    {
-//        while (arr[pivot] < arr[right])
-//            right--; 
-//        while (left < right && arr[pivot] >= arr[left])
-//            left++; 
-//        
-//        std::remove_reference_t<Ty> temp = arr[left];
-//        arr[left] = arr[right];
-//        arr[right] = temp;
-//
-//    }
-//};
-//template<typename Ty>
-//constexpr void quick_sort(std::vector<Ty>& arr,int32_t left, int32_t right)noexcept
-//{
-//    if (left >= right)return; 
-//    int32_t pivot = (left + right) / 2; 
-//    const int32_t begin = left;
-//    const int32_t end = right;  
-//
+//    if (left >= right) return;
+//    constexpr int32_t pivot = arr[(left + right) / 2];
+//    constexpr int32_t begin = left;
+//    constexpr int32_t end = right;
+//   
 //    while (left <= right)
 //    {
-//        while ( arr[left] < arr[pivot])
-//            ++left;
-//        while ( arr[right] > arr[pivot])
-//            --right;
-//
+//        while (arr[left] < pivot) left++;
+//        while (arr[right] > pivot) right--;
 //        if (left <= right)
 //        {
-//            int temp = arr[left];
-//            arr[left] = arr[right];
-//            arr[right] = temp;
+//            std::swap(arr[left], arr[right]);
 //            left++; right--;
 //        }
-//    };
-//    quick_sort(arr,begin , right); 
-//    quick_sort(arr, left,end);
+//    }
+//    quick_sort(arr, begin, right);
+//    quick_sort(arr,left, end);
 //}
-template<typename Ty,size_t N>
-void quick_sort(std::array<Ty,N>& arr,int32_t left, int32_t right)
+template<typename Ty, size_t N>
+void quick_sort(std::vector<Ty>& arr, int32_t left, int32_t right)
 {
     if (left >= right) return;
     constexpr int32_t pivot = arr[(left + right) / 2];
@@ -188,14 +209,21 @@ void quick_sort(std::array<Ty,N>& arr,int32_t left, int32_t right)
         }
     }
     quick_sort(arr, begin, right);
-    quick_sort(arr,left, end);
+    quick_sort(arr, left, end);
 }
-
-
 
 int main()
 {
-    std::array<int32_t,100> arr;
+    int* ptr = new int(100000);
+    int* ptr2 = new int(100000);
+    int* ptr3 = new int(100000);
+    int* ptr4 = new int(100000);
+    int* ptr5 = new int(100000);
+            
+    int* ptr6 = new int(100000);
+    
+
+  /*  std::array<int32_t,100> arr;
 
     std::random_device rand_device;
     std::mt19937 gen(rand_device());
@@ -208,14 +236,15 @@ int main()
 
     std::cout << "Before \n";
     std::copy(std::begin(arr), std::end(arr),
-        std::ostream_iterator<decltype(arr[0])>(std::cout, " "));
-    
-   
+    std::ostream_iterator<decltype(arr[0])>(std::cout, " "));
+
     std::cout << "\nAfter \n";
     quick_sort(arr,0,99);
- 
+
     for (int32_t a : arr)
     {
         std::cout << a << " ";
-    }
+    }*/
+    
+
 }

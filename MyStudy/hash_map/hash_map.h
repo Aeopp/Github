@@ -112,9 +112,7 @@ private:
 				return;
 			}
 			else
-			{
 				*this = _container->end(); 
-			}
 		}
 		else
 			++_list_iter;
@@ -136,9 +134,7 @@ private:
 				return;
 			}
 			else
-			{
 				*this = _container->end();
-			}
 		}
 		else
 			--_list_iter;
@@ -244,9 +240,7 @@ private:
 				return;
 			}
 			else
-			{
 				*this = _container->end();
-			}
 		}
 		else
 			++_list_iter;
@@ -267,9 +261,8 @@ private:
 				_list_iter = (--std::end(curtable[_cur_idx]));
 				return;
 			}
-			{
+			else
 				*this = _container->end();
-			}
 		}
 		else
 			--_list_iter;
@@ -530,9 +523,8 @@ operator=(std::initializer_list<value_type>ilist)
 		 }
 		 else*/
 		 {
-			 if (_cur_tablesize > _table.size()) {
+			 if (_cur_tablesize > _table.size())
 				 rehash(_table.size() * 2);
-			 };
 
 			 const auto& _key = _value.first;
 
@@ -582,16 +574,13 @@ operator=(std::initializer_list<value_type>ilist)
 
 		if (auto [isfind, iter] = findElement(_findkey, Index);
 			isfind == false)
-		{
 			return 0;
-		}
 		else
 		{
 			_table[Index].erase(iter);
 			if (std::empty(_table[Index]))
-			{
 				_invalids.erase(Index);
-			}
+
 			--_cur_tablesize;
 			return 1;
 		}
@@ -603,9 +592,7 @@ operator=(std::initializer_list<value_type>ilist)
 
 		  --_cur_tablesize;
 		  if (std::empty(_table[delete_idx]))
-		  {
 			  _invalids.erase(delete_idx);
-		  }
 		 
 		//  std::remove_reference_t<iterator> ret_iter = ++pos;
 		 _table[delete_idx].erase(del_pos._list_iter);
@@ -614,9 +601,8 @@ operator=(std::initializer_list<value_type>ilist)
 	 iterator erase(iterator first ,iterator end)noexcept
 	 {
 		 while (first != end)
-		 {
 			first =erase(first);
-		 };
+
 		 return end;
 	 };
 	auto inline gethash(const key& _key)const
@@ -629,13 +615,9 @@ operator=(std::initializer_list<value_type>ilist)
 
 		if (auto [isfind, iter] = findElement(_key, Index);
 			isfind == true)
-		{
 			return std::pair(true, *iter);
-		}
 		else
-		{
 			return std::pair(false,value_type());
-		};
 	};
 	 constexpr bool empty()const
 	 {
@@ -656,13 +638,9 @@ operator=(std::initializer_list<value_type>ilist)
 
 		 if (auto [isfind, iter] = findElement(_key, index);
 			 isfind == true)
-		 {
 			 return *iter.second;
-		 }
 		 else
-		 {
 			 insert(std::pair(_key,Ty())); 
-		 }
 	 }; 
 	 template<typename _valty,
 		 typename = std::enable_if_t<std::is_constructible_v<value_type, _valty>>>
@@ -694,14 +672,11 @@ operator=(std::initializer_list<value_type>ilist)
 
 		if (auto [isfind, iter] = findElement(_key, Index);
 			isfind == true)
-		{
 			return std::pair(iterator(_key, iter, this), false);
-		}
 		else
 		{
-			if (_cur_tablesize > _table.size()){
+			if (_cur_tablesize > _table.size())
 				rehash(_table.size() * 2);
-			};
 
 			const auto& _key = _value.first;
 
@@ -737,7 +712,6 @@ operator=(std::initializer_list<value_type>ilist)
 			bucket.clear(); 
 		}
 	}
-
 	key_compare key_comp() const
 	{
 		return _compare; 
@@ -753,13 +727,9 @@ operator=(std::initializer_list<value_type>ilist)
 		if (auto [isfind, iter] =
 			const_cast<decltype(this)>(this)->findElement(_key, index);
 			isfind == true)
-		{
 			return iterator(index, iter, this);
-		}
 		else
-		{
 			return end();
-		}
 	}
 	/*const_iterator find(const key_type& _key)const
 	{
@@ -802,7 +772,8 @@ operator=(std::initializer_list<value_type>ilist)
 			}
 			else
 			{
-
+				 // throw 
+				/*nothing......... TODO Exception throw*/
 			}
 		}
 		auto&& ret_left = iterator(index, std::move(left), this);
@@ -835,35 +806,24 @@ private:
 		});
 
 		if (isfind == std::end(bucket))
-		{
 			return std::pair(false, (isfind));
-		}
 		else
-		{
 			return std::pair(true, (isfind));
-		};
 	};
 	auto findElement
-	(const key& _key,
-		int64_t& Index)
+	(const key& _key,int64_t& Index)
 	{
 		Index = gethash(_key);
 		auto& bucket = _table[Index];
 
 		auto isfind = std::find_if(std::begin(bucket), std::end(bucket),
 			[&_key, *this](const auto& element)
-		{
-			return _compare(element.first, _key);
-		});
+			{return _compare(element.first, _key);	});
 
 		if (isfind == std::end(bucket))
-		{
 			return std::pair(false, (isfind));
-		}
 		else
-		{
 			return std::pair(true, (isfind));
-		};
 	};
 	constexpr auto next_index(const int64_t cur_index)noexcept 
 	{

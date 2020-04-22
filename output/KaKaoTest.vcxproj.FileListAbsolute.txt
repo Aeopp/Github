@@ -1,0 +1,2 @@
+D:\Github\output\KaKaoTest.exe
+D:\Github\output\KaKaoTest.pdb

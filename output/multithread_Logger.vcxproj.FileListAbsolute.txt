@@ -1,0 +1,2 @@
+D:\Github\output\multithread_Logger.exe
+D:\Github\output\multithread_Logger.pdb
