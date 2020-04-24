@@ -46,7 +46,18 @@ constexpr void _Typrint(T&& a)
 {
 
 };
+class Tester
+{
+private:
+	int a, b, c, d, e, f, g;
+public:
+	//template<typename... params>
+	//explicit Tester(params... params)
+	//{
 
+	//}
+	Tester(int a, string b, pair<int, float> pair) {} ;
+};
 int main()
 {
 	int a = 2;
@@ -56,4 +67,8 @@ int main()
 	_Typrint(a);
 	_Typrint(b);
 	_Typrint(c);
+
+
+	Tester{ 1, "string"s, { 1,2.f } }; 
+
 }

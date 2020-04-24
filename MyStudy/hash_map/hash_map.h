@@ -316,8 +316,8 @@ public:
 	{
 		insert(std::begin(ilist), std::end(ilist));
 	};
-hash_map&
-operator=(std::initializer_list<value_type>ilist)
+	hash_map&
+	operator=(std::initializer_list<value_type>ilist)
 	{
 			_table.clear();
 			_table.shrink_to_fit(); 

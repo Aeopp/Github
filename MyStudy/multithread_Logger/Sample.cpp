@@ -33,7 +33,7 @@ private:
 Logger::~Logger()
 {
 	{
-		unique_lock<mutex> lock(mMutex);
+  		unique_lock<mutex> lock(mMutex);
 		mExit = true; 
 		mCondVar.notify_all(); 
 	}
@@ -67,7 +67,7 @@ void Logger::processEntries()
 			this_thread::sleep_for(chrono::milliseconds(1000));
 			mCondVar.wait(lock);
 		}
-		//알림 대기 
+		//알림 대기   
 		mCondVar.wait(lock);
 		// 조건 변수 알림 수신. 큐에 항목이 들어있을 가능성이 높다.
 		lock.unlock();
@@ -92,20 +92,87 @@ void logSomeMessages(int id, Logger& logger) {
 		logger.log(ss.str());
 	}
 };
+void foo(int& a) 
+{
+	a = 127;
+};
+
+void print(int& test) {
+	std::cout << test << '\n';
+	test = 99999999;
+};
+
+struct ABC {
+	ABC() { std::cout << __FUNCTION__ << endl; };
+	ABC(ABC& a)
+	{
+		std::cout << __FUNCTION__ << endl;
+	};
+	ABC(ABC&& a)
+
+
+
+	{
+		std::cout << __FUNCTION__ << endl;
+	};
+	ABC&operator=(ABC&& a)noexcept(true) 
+	{
+		std::cout << __FUNCTION__ << endl;
+	};
+	ABC& operator=(ABC&  a)
+	{
+		std::cout << __FUNCTION__ << endl;
+	};
+	void foo() {
+		std::cout << __FUNCTION__ << endl; 
+	}; 
+};
+template<typename _Ty> 
+class ref_
+{
+public  : 
+	_Ty& _Ty_ref;
+	// ref_(_Ty& param) : _Ty_ref(param) {}; 
+	void foo() { 
+		cout << _Ty_ref;  
+	};
+};
 int main()
 {
-	Logger logger;
-	vector<thread> threads;
+	ABC ads;
 
-	auto makethread = [&logger,i = 0]()mutable{
-		return thread{ logSomeMessages, ++i, ref(logger) };
-	};
-	  generate_n(inserter(threads, begin(threads)), 10, makethread);
-	/*for (int32_t i = 0; i < 10; ++i) {
-		threads.emplace_back(logSomeMessages, ++i, ref(logger));
-	}*/
-	
-	for_each(begin(threads), end(threads), mem_fn(&thread::join)); 
+	auto qwe = thread{ &ABC::foo,ABC() };
+	qwe.join(); 
+	auto zxc = thread{ &ABC::foo,ref(ads)}; 
+	zxc.join(); 
+
+	int qweqwe; 
+	/*
+	int i = 10;
+
+	auto f1 = std::bind(print, i);
+	auto f2 = std::bind(print, std::ref(i));
+
+	i = 99999;
+
+	f1();
+	f2();
+	i = 33;
+	f2();
+	f1();*/
+
+	//Logger logger;
+	//vector<thread> threads;
+
+	//auto makethread = [&logger,i = 0]()mutable{
+	//	return thread{ logSomeMessages, ++i, ref(logger) };
+	//};
+	//  generate_n(inserter(threads, begin(threads)), 10, makethread);
+	///*for (int32_t i = 0; i < 10; ++i) {
+	//	threads.emplace_back(logSomeMessages, ++i, ref(logger));
+	//}*/
+	//
+	//for_each(begin(threads), end(threads), mem_fn(&thread::join)); 
 
 	/*for (int i = 0; i < 10; ++i) {
 		threads.emplace_back(logSomeMessages, i, ref(logger));
