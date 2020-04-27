@@ -123,6 +123,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hash equal_to template spec
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "C++istream_iterator", "C++istream_iterator\C++istream_iterator.vcxproj", "{BABEAC72-6F10-40C0-BF5D-5C1A9F2232AB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "priority_queue", "priority_queue\priority_queue.vcxproj", "{53A44AD3-1730-4314-A1EA-8D24ED4E4958}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -547,6 +549,14 @@ Global
 		{BABEAC72-6F10-40C0-BF5D-5C1A9F2232AB}.Release|x64.Build.0 = Release|x64
 		{BABEAC72-6F10-40C0-BF5D-5C1A9F2232AB}.Release|x86.ActiveCfg = Release|Win32
 		{BABEAC72-6F10-40C0-BF5D-5C1A9F2232AB}.Release|x86.Build.0 = Release|Win32
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Debug|x64.ActiveCfg = Debug|x64
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Debug|x64.Build.0 = Debug|x64
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Debug|x86.ActiveCfg = Debug|Win32
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Debug|x86.Build.0 = Debug|Win32
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Release|x64.ActiveCfg = Release|x64
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Release|x64.Build.0 = Release|x64
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Release|x86.ActiveCfg = Release|Win32
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -604,6 +614,7 @@ Global
 		{C069C9C3-CD73-4AFD-AF37-7EDAAB84CF8B} = {1104DD7A-A3C7-413A-818B-E06CB35D3F49}
 		{A3EF0489-3924-4DDD-83A1-DFF6A82AA62C} = {1104DD7A-A3C7-413A-818B-E06CB35D3F49}
 		{BABEAC72-6F10-40C0-BF5D-5C1A9F2232AB} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
+		{53A44AD3-1730-4314-A1EA-8D24ED4E4958} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DCB6F1B-BC78-403E-BF2D-BF944F097D51}
