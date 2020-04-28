@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{fef13c28-9dd8-427e-9209-e09a22cb6622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Sound">
+      <UniqueIdentifier>{fea6afae-8aee-43d4-a69c-0e7673deadfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{dbf82302-5162-4099-a898-2a127c9ecd10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{65726164-3b8b-4a8e-b222-779e51c8f01d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SoungMgr">
+      <UniqueIdentifier>{2f9b7de3-cb56-4dbe-9d17-0c4e2719b35e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Timer">
+      <UniqueIdentifier>{d8fa9b22-79a7-470b-9da8-70076b6e05b5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SoundMgr.h">
+      <Filter>Manager\SoungMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectSuper.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Object\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="manager_Interface.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Object\Timer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SoundMgr.cpp">
+      <Filter>Manager\SoungMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Object\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Object\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+</Project>
