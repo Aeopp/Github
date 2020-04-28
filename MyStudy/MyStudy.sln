@@ -127,6 +127,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "priority_queue", "priority_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Manager", "Manager\Manager.vcxproj", "{D0BA3BBA-CEB7-4C22-AF67-E38A14AB970F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STL_Compatible_Custom_Iterator", "STL_Compatible_Custom_Iterator\STL_Compatible_Custom_Iterator.vcxproj", "{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -567,6 +569,14 @@ Global
 		{D0BA3BBA-CEB7-4C22-AF67-E38A14AB970F}.Release|x64.Build.0 = Release|x64
 		{D0BA3BBA-CEB7-4C22-AF67-E38A14AB970F}.Release|x86.ActiveCfg = Release|Win32
 		{D0BA3BBA-CEB7-4C22-AF67-E38A14AB970F}.Release|x86.Build.0 = Release|Win32
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Debug|x64.ActiveCfg = Debug|x64
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Debug|x64.Build.0 = Debug|x64
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Debug|x86.ActiveCfg = Debug|Win32
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Debug|x86.Build.0 = Debug|Win32
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Release|x64.ActiveCfg = Release|x64
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Release|x64.Build.0 = Release|x64
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Release|x86.ActiveCfg = Release|Win32
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -627,6 +637,7 @@ Global
 		{BABEAC72-6F10-40C0-BF5D-5C1A9F2232AB} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
 		{53A44AD3-1730-4314-A1EA-8D24ED4E4958} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
 		{D0BA3BBA-CEB7-4C22-AF67-E38A14AB970F} = {621CE85E-FEBB-4572-A3A4-721159530532}
+		{0CB0AA2F-CFBB-46A3-AEDE-2086A533F912} = {696F3BF0-00A8-4EE2-BF22-E6F0A89624B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DCB6F1B-BC78-403E-BF2D-BF944F097D51}
