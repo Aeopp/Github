@@ -9,7 +9,7 @@
 #define DEBUG
 
 #ifdef DEBUG 
-#define Log(x) (__FUNCTION__##__LINE__##x);
+#define Log(x) (__FUNCTION__##x)
 #endif
 
 namespace debug {
@@ -21,9 +21,16 @@ namespace debug {
 	// debug Helper 
 }
 
+class time {
+public:
+	static inline float_t delta_sec{0.f};
+	static inline float_t Elapsed_time{0.f};
+};
+
 class  util
 {
 public : 
+
 	template<typename _manager_Type,typename... ParamTypes>
 	static _manager_Type& GetInstance(ParamTypes&&... Params) {
 		// 매니저 인터페이스를 상속받은 객체라면 싱글톤 인스턴스 생성 허용

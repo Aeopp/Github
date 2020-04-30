@@ -14,6 +14,10 @@ public:
 	ObjectSuper(ObjectSuper&&) noexcept = default;
 	ObjectSuper(const ObjectSuper&) = default; 
 	ObjectSuper&operator=(ObjectSuper&&) noexcept = default;
-	ObjectSuper&operator=(const ObjectSuper&) = default;
+	ObjectSuper& operator=(const ObjectSuper&);
 };
+
+
+
+   
 

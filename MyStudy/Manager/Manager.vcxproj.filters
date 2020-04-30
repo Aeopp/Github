@@ -23,6 +23,9 @@
     <Filter Include="Object\Timer">
       <UniqueIdentifier>{d8fa9b22-79a7-470b-9da8-70076b6e05b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\Input">
+      <UniqueIdentifier>{c12daa27-a907-4fb3-bc01-411588f38c20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SoundMgr.h">
@@ -43,6 +46,9 @@
     <ClInclude Include="Timer.h">
       <Filter>Object\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Manager\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SoundMgr.cpp">
@@ -55,5 +61,8 @@
       <Filter>Object\Timer</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Input.cpp">
+      <Filter>Manager\Input</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
