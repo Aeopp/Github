@@ -17,14 +17,12 @@ bool Input::Frame()
 
 bool Input::Render() 
 {
-	for (const auto& [func, _Key, _KeyState] : Func_Register) 
-		// 사용자가 원했던 Key == KeyState 상황
-		if (key_check(_Key) == _KeyState) 
-			func();
-
+	// 사용자가 원했던 Key == KeyState 상황일때 함수호출
+		for (const auto& [func, _Key, _KeyState] : Func_Register)
+			if (key_check(_Key) == _KeyState)
+				func();
 
 	return true;
-
 }
 
 bool Input::Clear() noexcept
@@ -61,7 +59,24 @@ typename Input::EKey Input::key_check(input_type p_key)
 	return key_state[p_key];
 }
 
+template<typename func_Ty>
+bool Input::delete_func(std::function<bool(const func_Ty&)> pred) noexcept
+{
+	if (auto find_iter = std::find_if(std::begin(Func_Register), std::end(Func_Register), pred);
 
+		find_iter != std::end(Func_Register))
+	{
+		Func_Register.erase(find_iter);
+		return true;
+	}
+	else return false; 
+}
+
+void Input::func_clear() & noexcept
+{
+	Func_Register.clear();
+	Func_Register.shrink_to_fit();
+}
 
 Input::Input()
 {

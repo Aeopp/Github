@@ -23,39 +23,38 @@ int main() {
 	LocalTimer.Init();
 	Input_Manager.Init();
 	Sound_Manager.Init();
-
+	
 	// 소스파일 폴더위치기준
-	std::wstring _key1 = L"../../Sound/romance.mid";
-	std::wstring _key2 = L"../../Sound/MyLove.mp3";
-	std::wstring _key3 = L"../../Sound/GunShot.mp3";
+	const std::wstring _key1 = L"../../Sound/romance.mid";
+	const std::wstring _key2 = L"../../Sound/MyLove.mp3";
+	const std::wstring _key3 = L"../../Sound/GunShot.mp3";
 	
 	Sound_Manager.Load(_key1);
 	Sound_Manager.Load(_key2);
 	Sound_Manager.Load(_key3);
 
-	auto BGM = Sound_Manager.getSound(_key1);
-	BGM->Play();
+	const auto BGM = Sound_Manager.getSound(_key1);
+	if(auto bgm_play  = BGM.lock())
+		bgm_play->Play(); 
 
 	using std::bind;
 	using std::ref;
 
-	Input_Manager.Func_Regist(bind(&Sound::Play,Sound_Manager.getSound(_key1)),
-	'1', _KEY::Press);
-
-	Input_Manager.Func_Regist(bind(&Sound::Play, Sound_Manager.getSound(_key2)),
-		'2', _KEY::Press);
-
-	Input_Manager.Func_Regist(
-		bind(&Sound::PlayEffect, Sound_Manager.getSound(_key3)),'3', _KEY::Press);
+	// weak_ptr -> shared_ptr  Input Manager 도 Sound 수명에 관여함
+	// 필요없어진 함수를 지워야 Sound 객체도 사라짐
+	Input_Manager.Func_Regist('1', _KEY::Press, &Sound::Play, Sound_Manager.getSound(_key1).lock());
 	
-	Input_Manager.Func_Regist(
-		bind(&Sound::Pause,BGM),'P', _KEY::Press);
+	Input_Manager.Func_Regist('2', _KEY::Press, &Sound::Play, Sound_Manager.getSound(_key2).lock());
 
-	Input_Manager.Func_Regist(
-		bind(&Sound::Volume_Up, BGM), 0x24, _KEY::Hold);
+	Input_Manager.Func_Regist('3', _KEY::Press, &Sound::PlayEffect, Sound_Manager.getSound(_key3).lock());
+	
+	Input_Manager.Func_Regist('P', _KEY::Press, &Sound::Pause, BGM.lock());
 
-	Input_Manager.Func_Regist(
-	bind(&Sound::Volume_Down, BGM), 0x23, _KEY::Hold);
+	Input_Manager.Func_Regist(0x24, _KEY::Hold,
+		&Sound::Volume_Up, BGM.lock());
+
+	Input_Manager.Func_Regist(0x23, _KEY::Hold,
+		&Sound::Volume_Down, BGM.lock());
 
 	while (true) {
 		LocalTimer.Frame();
@@ -68,4 +67,6 @@ int main() {
 		// 슬립으로 프레임 조절
 		std::this_thread::sleep_for(Delay);
 	};
+
+
 }

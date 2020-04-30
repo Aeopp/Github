@@ -43,15 +43,18 @@ bool Sound::Frame(){
 	uint32_t milisec{};
 	F_Channel->getPosition(&milisec, FMOD_TIMEUNIT_MS);
 	// 재생하고나서의 시간을 구하고 포매팅하여 저장
-	
-	played_time =  L"Played Time : " +
-	to_wstring(milisec / 1000 / 60) + L":" +
-	to_wstring(milisec / 1000 % 60) + L":" +
-	to_wstring(milisec / 10 % 100) + L" " +
-	to_wstring(Length / 1000 / 60) + L":" +
-	to_wstring(Length / 1000 % 60) + L":" +
-	to_wstring(Length / 10 % 100) + L" ";
 
+	std::wstringstream wss;
+
+	wss << milisec / 1000 / 60 << L":"
+		<< milisec / 1000 % 60 << L":"
+		<< milisec / 10 % 100 << L" "
+		<< Length / 1000 / 60 << L":"
+		<< Length / 1000 % 60 << L":"
+		<< Length / 10 % 100;
+
+	played_time = L"Played Time : " + wss.str();
+	
 	return true;
 }
 
@@ -89,7 +92,7 @@ bool Sound::Load(ReadType P_ReadType, FMOD::System* const P_System){
 		throw std::invalid_argument(__FUNCTION__"Param Empty");
 		// return false; 
 	F_System = P_System;
-	Name = std::move_if_noexcept(P_ReadType);
+	Name = std::move(P_ReadType);
 	FMOD_RESULT HR;
 
 	std::string convert_string(std::begin(Name), std::end(Name));

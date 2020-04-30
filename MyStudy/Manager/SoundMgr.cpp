@@ -70,17 +70,13 @@ bool SoundMgr::Render()
 	return true; 
 }
 
-typename SoundMgr::Sound_ptr SoundMgr::getSound(const Key_Type& Param_key)
+std::weak_ptr<Sound> SoundMgr::getSound(const Key_Type& Param_key)
 {
-	// Map 에서 해당키에 맞는 사운드 검색
-	// 사용자는 유니크포인터가 유효한지 검사하고 사용해야한다.
 	if (auto Iter = Map.find(Param_key);
 		Iter != std::end(Map))
-
 		return Iter->second;
-	
 	else
-		return typename SoundMgr::Sound_ptr{};
+		return std::weak_ptr<Sound>{};
 }
 
 SoundMgr::SoundMgr() :F_System{ nullptr }

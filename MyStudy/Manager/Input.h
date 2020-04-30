@@ -32,9 +32,13 @@ public:
 	bool Frame(); 
 	bool Render(); 
 	bool Clear()noexcept; 
+
+	template<typename func_Ty,typename ... param_Tys>
+	void inline Func_Regist(const input_type P_Input, const typename Input::EKey P_KeyState,func_Ty&& Func, param_Tys&&... Params)&;
 	
-	void inline Func_Regist(std::function<void()> P_Func,
-				input_type P_Input, typename Input::EKey P_KeyState)&;
+	template<typename param_Ty>
+	bool delete_func(std::function<bool(const param_Ty&)>pred)noexcept;
+	void func_clear()& noexcept;
 private:
 	Input();
 
@@ -49,8 +53,11 @@ private:
 	friend class util; 
 };
 
-inline void Input::Func_Regist(std::function<void()> P_Func,
-	input_type P_Input, typename Input::EKey P_KeyState)&
+template<typename func_Ty, typename ... param_Tys>
+void inline Input::Func_Regist(const input_type P_Input, const typename Input::EKey P_KeyState,func_Ty&& Func, param_Tys&&... Params )&
 {
-	Func_Register.emplace_back(P_Func,P_Input,P_KeyState);
-}
+	auto&& binder = std::bind(std::forward<func_Ty>(Func),
+	std::forward<param_Tys>(Params)...);
+	
+	Func_Register.emplace_back(binder, P_Input, P_KeyState);
+};

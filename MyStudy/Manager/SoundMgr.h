@@ -31,7 +31,7 @@ public:
 
 	// unique_ptr 로 반환함 사용자는 Sound 사용이후 재사용을 원한다면 다시
 	// 삽입해야함 
-	Sound_ptr getSound(const Key_Type& Param_key);
+	std::weak_ptr<Sound> getSound(const Key_Type& Param_key);
 private: 
 	SoundMgr();
 	virtual ~SoundMgr() noexcept;
