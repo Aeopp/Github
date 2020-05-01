@@ -26,6 +26,9 @@
     <Filter Include="Manager\Input">
       <UniqueIdentifier>{c12daa27-a907-4fb3-bc01-411588f38c20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{1c62ba53-6fff-45f3-ab37-c1ec90ff39f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SoundMgr.h">
@@ -49,6 +52,9 @@
     <ClInclude Include="Input.h">
       <Filter>Manager\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SoundMgr.cpp">
@@ -63,6 +69,9 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Input.cpp">
       <Filter>Manager\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

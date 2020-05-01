@@ -2,7 +2,7 @@
              ../../fmod Equal to ..\\..\\fmod
 
 링커->일반->추가 라이브러리 디렉터리 :  ../../fmod/lib/x64; (Lib 파일추가) (Cpp파일)
-C++->일반->추가포함->디렉터리 :  ../../fmod/int;   (헤더파일추가)
+C++->일반->추가포함->디렉터리 :  ../../fmod/inc;   (헤더파일추가)
 링커->입력->추가종속성 :  fmod_vc.lib; (.lib 파일추가) (.lib 파일 소스코드or실행파일옆에)
 
 #pragma comment (lib, "TCoreLib.dll")

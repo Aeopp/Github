@@ -1,9 +1,9 @@
+#pragma once
 #include "manager_Interface.h"
 #include <array>
 #include <vector>
 #include <functional>
 #include <tuple>
-#pragma once
 
 class Input : private manager_Interface<Input>
 {
