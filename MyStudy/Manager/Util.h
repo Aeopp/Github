@@ -13,7 +13,6 @@
 #endif
 
 namespace debug {
-	// 펑션과 라인을 이곳에서 만들어버리는게 문제....
 	template<typename _Msg_Ty>
 	constexpr auto log(_Msg_Ty msg) {
 		return (std::move(msg) + __FUNCTION__ + __LINE__);

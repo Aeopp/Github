@@ -1,36 +1,39 @@
 #pragma once
 #include "SoundMgr.h"
 #include "Timer.h"
-#include "Util.h"
 #include "Input.h"
-#include <thread>
-#include <chrono>
-#include <iostream>
-#include <thread>
-
-class Core
+class Core : private manager_Interface<Core>
 {
 private:
 	
+	Timer _Timer;
+	bool isExit;
+	bool Core_Init()noexcept;
+	bool Core_Clear()noexcept;
+	bool Core_Frame();
+	bool Core_Render();
+
+	Core();
+	virtual ~Core() noexcept override = default; 
+	Core(const Core&) = delete;
+	Core& operator=(const Core&) = delete;
+	Core(Core&&) noexcept = delete;
+	Core& operator=(Core&&) noexcept = delete;
 public:
-	
+	virtual bool Frame(); 
+	virtual bool Render(); 
+	virtual bool Init()noexcept;
+	virtual bool Clear()noexcept;
+
+	bool Run()&;
 };
 
 int main() {
-	using namespace std::literals::chrono_literals;
+	
 	// std::invoke(foo, 1, 2, 3);
-	constexpr std::chrono::milliseconds Delay = 15ms;
 	using _KEY = typename Input::EKey;
 
 	// unique-ptr Ref 
-	Timer LocalTimer;
-	auto& Input_Manager = util::GetInstance<Input>();
-	auto& Sound_Manager = util::GetInstance<SoundMgr>();
-
-	LocalTimer.Init();
-	Input_Manager.Init();
-	Sound_Manager.Init();
-
 	// 소스파일 폴더위치기준
 	const std::wstring _key1 = L"../../Sound/romance.mid";
 	const std::wstring _key2 = L"../../Sound/MyLove.mp3";
@@ -72,7 +75,7 @@ int main() {
 		Sound_Manager.Render();
 		Input_Manager.Render();
 		// 슬립으로 프레임 조절
-		std::this_thread::sleep_for(Delay);
+		
 	};
 
 
