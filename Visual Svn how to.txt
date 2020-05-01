@@ -1,0 +1,9 @@
+
+KGCA Visual SVN URL Path :    https:://112.216.123.139/svn/kgca38
+
+계정 정보 지우는 방법 : %appdata% -> Subversion -> auth -> svn.simple
+
+Password list
+school38
+
+1111
