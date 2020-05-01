@@ -1,2 +1,0 @@
-D:\GitHub\output\DiamongAndMagicSquare.exe
-D:\GitHub\output\DiamongAndMagicSquare.pdb

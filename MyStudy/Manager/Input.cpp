@@ -1,38 +1,38 @@
 #include "Input.h"
-#include <Windows.h>
+#include <windows.h>
 
 Input::~Input() noexcept(true)
 {
 	Clear(); 
 }
-bool Input::Init()
+bool Input::Init()noexcept(false) 
 {
 	return true;
-}
+};
 
 bool Input::Frame()
 {
+	// 사용자가 원했던 Key == KeyState 상황일때 함수호출
+	for (const auto& [func, _Key, _KeyState] : Func_Register)
+		if (key_check(_Key) == _KeyState) 	func();
+
 	return true;
-}
+}; 
 
 bool Input::Render() 
 {
-	// 사용자가 원했던 Key == KeyState 상황일때 함수호출
-		for (const auto& [func, _Key, _KeyState] : Func_Register)
-			if (key_check(_Key) == _KeyState)
-				func();
-
 	return true;
 }
 
 bool Input::Clear() noexcept
 {
+	func_clear();
 	return true;
 }
 
 typename Input::EKey Input::key_check(input_type p_key) 
 {
-	auto Cur_key = GetAsyncKeyState(p_key);
+	const auto Cur_key = GetAsyncKeyState(p_key);
 	// 눌렸다면 최상위비트는 무조건 1 
 	// 10000000 0000000 과 And 연산 이후 0이 아니라면
 	// 키는 무조건 눌렸음

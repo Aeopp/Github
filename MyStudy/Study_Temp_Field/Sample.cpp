@@ -12,7 +12,6 @@ void print(const M& m) {
 	cout << "Race placement:\n"; 
 	for (const auto& [placement, driver] : m) {
 		cout << placement << ":" << driver << endl; 
-		
 	};  
 };
 /*
@@ -69,4 +68,3 @@ int main() {
 	_hash.insert(move(_hash_node));
 
 	
-};

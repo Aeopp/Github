@@ -27,22 +27,23 @@ public:
 	Input(Input&&) = delete;
 	Input(const Input&) = delete;
 	virtual ~Input()noexcept(true) ;
+	
+	virtual bool Frame(); 
+	virtual bool Render();
+	virtual bool Init()noexcept(false) ;
+	virtual bool Clear()noexcept ;
 
-	bool Init(); 
-	bool Frame(); 
-	bool Render(); 
-	bool Clear()noexcept; 
 
+	// string 객체 사용할 경우 레퍼런스로 파라미터 넘길경우 문제생김
 	template<typename func_Ty,typename ... param_Tys>
 	void inline Func_Regist(const input_type P_Input, const typename Input::EKey P_KeyState,func_Ty&& Func, param_Tys&&... Params)&;
 	
 	template<typename param_Ty>
 	bool delete_func(std::function<bool(const param_Ty&)>pred)noexcept;
+	typename Input::EKey key_check(input_type p_key);
 	void func_clear()& noexcept;
 private:
 	Input();
-
-	typename Input::EKey key_check(input_type p_key);
 
 	std::vector<call_back_Ty> Func_Register;
 	static inline constexpr size_t key_buffer_size = 256; 

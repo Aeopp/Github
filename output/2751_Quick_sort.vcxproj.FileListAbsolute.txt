@@ -1,2 +1,0 @@
-D:\Github\output\2751_Quick_sort.exe
-D:\Github\output\2751_Quick_sort.pdb

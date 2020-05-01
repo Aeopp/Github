@@ -18,9 +18,6 @@ bool Timer::Render() const
 
 bool Timer::Clear() noexcept
 {
-
-	
-
 	return true; 
 }
 

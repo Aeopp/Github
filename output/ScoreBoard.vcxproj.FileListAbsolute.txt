@@ -1,2 +1,0 @@
-D:\Github\output\ScoreBoard.exe
-D:\Github\output\ScoreBoard.pdb

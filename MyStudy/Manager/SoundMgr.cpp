@@ -25,7 +25,7 @@ bool SoundMgr::Load(Key_Type LoadName) noexcept(false)
 	return false;
 }
 
-bool SoundMgr::clear() noexcept
+bool SoundMgr::Clear() noexcept
 {
 	Map.clear();
 	// FMOD 라이브러리 함수호출
@@ -68,15 +68,101 @@ bool SoundMgr::Render()
 		Sound->Render();
 
 	return true; 
-}
+};
 
 std::weak_ptr<Sound> SoundMgr::getSound(const Key_Type& Param_key)
+{
+	return this->get_sound_ptr(Param_key);
+};
+void SoundMgr::play_sound(const Key_Type& Param_key) &{
+	
+	auto _sound_weak = getSound(Param_key);
+	
+	if (auto _sound = _sound_weak.lock()) {
+		_sound->Play();
+		
+		// Current_Bgm 이 만료되었을때는 현재재생중인 음악이 없을 경우
+		// Current_Bgm 을 갱신하고 리턴
+		if(Current_Bgm.expired())	{
+			Current_Bgm = _sound_weak;
+			return; 
+		}
+		else if(auto Current = Current_Bgm.lock();
+			Current->getReadKey() == Param_key)
+		{
+			Current->Play();
+			return;
+		}
+	}
+	else return;
+	
+	if (auto Stop = Current_Bgm.lock();
+		Stop->isPlay())
+	{
+		Current_Bgm.swap(_sound_weak); 
+		Stop->Stop();
+	};
+}
+
+void SoundMgr::play_effect(const Key_Type& Param_key) &
+{
+	auto _sound = get_sound_ptr(Param_key);
+	_sound->PlayEffect(); 
+}
+
+bool SoundMgr::pause(const Key_Type& Param_key) &
+{
+	if (auto sound_ptr = get_sound_ptr(Param_key))
+	{
+		sound_ptr->Pause();
+		return true;
+	}
+	else  return false; 
+}
+
+bool SoundMgr::stop(const Key_Type& Param_key) &
+{
+	if ( auto _sound = get_sound_ptr(Param_key))
+	{
+		if (_sound->isPlay())
+		{
+			_sound->Stop();
+			return true;
+		}
+		else
+			return false; 
+	}
+}
+
+bool SoundMgr::Volume_Up(const Key_Type& Param_key) &
+{
+	if ( auto _sound = get_sound_ptr(Param_key) ) 
+	{
+		_sound->Volume_Up();
+		return true; 
+	}
+	else
+		return false; 
+}
+
+bool SoundMgr::Volume_Down(const Key_Type& Param_key)&
+{
+	if (auto _sound = get_sound_ptr(Param_key))
+	{
+		_sound->Volume_Up();
+		return true;
+	}
+	else
+		return false;
+}
+
+typename SoundMgr::Sound_ptr SoundMgr::get_sound_ptr(const Key_Type& Param_key)&
 {
 	if (auto Iter = Map.find(Param_key);
 		Iter != std::end(Map))
 		return Iter->second;
 	else
-		return std::weak_ptr<Sound>{};
+		return typename SoundMgr::Sound_ptr{};
 }
 
 SoundMgr::SoundMgr() :F_System{ nullptr }
@@ -85,5 +171,5 @@ SoundMgr::SoundMgr() :F_System{ nullptr }
 
 SoundMgr::~SoundMgr() noexcept
 {
-	clear(); 
+	Clear(); 
 }

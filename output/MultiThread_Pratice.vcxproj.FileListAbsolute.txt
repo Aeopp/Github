@@ -1,2 +1,0 @@
-D:\Github\output\MultiThread_Pratice.exe
-D:\Github\output\MultiThread_Pratice.pdb

@@ -1,2 +1,0 @@
-D:\Github\output\CppStudy.exe
-D:\Github\output\CppStudy.pdb

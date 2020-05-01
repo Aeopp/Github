@@ -10,7 +10,6 @@ public:
 	virtual bool Clear() noexcept override;
 	virtual bool Frame()  override;
 
-
 	Timer();
 	virtual ~Timer()  noexcept;
 	Timer(Timer&&) noexcept = default;

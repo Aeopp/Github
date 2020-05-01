@@ -148,6 +148,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
+    <ClCompile Include="Tester.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="ObjectSuper.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundMgr.h" />
+    <ClInclude Include="Tester.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>

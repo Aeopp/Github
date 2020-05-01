@@ -1,2 +1,0 @@
-D:\GitHub\output\Joseph.exe
-D:\GitHub\output\Joseph.pdb

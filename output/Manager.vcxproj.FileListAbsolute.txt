@@ -1,2 +1,2 @@
-D:\Github\output\Manager.exe
-D:\Github\output\Manager.pdb
+D:\GitHub\output\Manager.exe
+D:\GitHub\output\Manager.pdb

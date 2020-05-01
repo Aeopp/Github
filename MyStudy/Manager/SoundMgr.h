@@ -24,19 +24,29 @@ public:
 	SoundMgr& operator=(SoundMgr&&) noexcept = delete;
 
 	bool Load(Key_Type LoadName)noexcept(false); 
-	bool clear()noexcept;
+	bool Clear()noexcept;
 	bool Init()noexcept(false);
 	bool Frame();
-	bool Render(); 
+	bool Render();
 
-	// unique_ptr 로 반환함 사용자는 Sound 사용이후 재사용을 원한다면 다시
-	// 삽입해야함 
+	// 사용자는 Sound 객체 수명에 관여하지 못한다.
 	std::weak_ptr<Sound> getSound(const Key_Type& Param_key);
-private: 
+	
+	// 배경음악일 경우 기존 재생중이던 음악을 멈춰주고 Key 에 해당하는 음악을 재생
+	void play_sound(const Key_Type& Param_key)&;
+	void play_effect(const const Key_Type& Param_key)&;
+	bool pause(const Key_Type& Param_key)&;
+	bool stop(const Key_Type& Param_key)&;
+	bool Volume_Up(const Key_Type& Param_key)&;
+	bool Volume_Down(const Key_Type& Param_key)&;
+private:
+	// 구현 편의용 메소드
+	typename SoundMgr::Sound_ptr get_sound_ptr(const Key_Type& Param_key)&;
 	SoundMgr();
 	virtual ~SoundMgr() noexcept;
 	std::map</*const */Key_Type, Sound_ptr> Map;
-
+	std::weak_ptr<Sound> Current_Bgm;
 	FMOD::System* F_System; 
 };
+
 

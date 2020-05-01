@@ -1,79 +1,73 @@
 #include "Core.h"
+
 using namespace std::literals::chrono_literals;
+
 bool Core::Core_Init() noexcept
 {
+	_Timer.Init();
+	_Sound_Mgr.Init();
+	_Input_Helper.Init();
+	Init();
 	return true; 
 }
 
 bool Core::Core_Clear() noexcept
 {
-	return true; 
-}
+	_Timer.Clear();
+	_Sound_Mgr.Clear();
+	_Input_Helper.Clear();
+	Clear();
+	return true;
+};
 
 bool Core::Core_Frame()
 {
+	_Timer.Frame();
+	_Sound_Mgr.Frame();
+	_Input_Helper.Frame();
+	// Input 에서 VK_ESCAPE 를 검사
+	if (isExit == true) return false;
+	Frame(); 
 	return true;
-}
+};
 
 bool Core::Core_Render()
 {
-	this->Render();
-
 	_Timer.Render();
-	util::GetInstance<SoundMgr>().Render();
-	util::GetInstance<Input>().Render();
-
+	_Sound_Mgr.Render();
+	_Input_Helper.Render();
+	
+	Render();
 	return true;
 }
 
-Core::Core()
+Core::Core() : _Input_Helper{util::GetInstance<Input>()} ,
+				_Sound_Mgr{util::GetInstance<SoundMgr>()},
+				Delay{50ms},
+				isExit{false } 
+				{}
+
+Core::~Core() noexcept
 {
-	isExit = false; 
+	Core_Clear(); 
 }
 
-bool Core::Frame()
-{
-	_Timer.Frame();
-	util::GetInstance<SoundMgr>().Frame();
-	util::GetInstance<Input>().Frame(); 
-
-	this->Frame();
-
-	return true; 
-}
-
-bool Core::Render()
-{
-	return false;
-}
-
-bool Core::Init() noexcept
-{
-	_Timer.Init();
-	util::GetInstance<SoundMgr>().Init();
-	util::GetInstance<Input>().Init();
-
-	this->Init();
-	return true; 
-}
-
-bool Core::Clear() noexcept
-{
-	return false;
-}
 
 bool Core::Run()&
 {
-	auto Delay = 15ms; 
-
 	Core_Init();
 
-	while (!isExit) {
-		Core_Frame();
+	while (isExit==false) {
+		
+		if (Core_Frame() == false && isExit == true)
+			break;
+		
 		Core_Render();
-
 		std::this_thread::sleep_for(Delay);
 	};
-	Core_Clear();
+
+	// TODO :: RAII 
+	//Core_Clear();
+	
 	return true; 
 }

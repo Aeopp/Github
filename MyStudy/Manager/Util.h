@@ -12,6 +12,7 @@
 #define Log(x) (__FUNCTION__##x)
 #endif
 
+// TODO :: __FUNCTION__ 이 제대로 작동할 법한 방법이 없어서 매크로 사용  
 namespace debug {
 	template<typename _Msg_Ty>
 	constexpr auto log(_Msg_Ty msg) {
@@ -40,14 +41,11 @@ public :
 			static std::once_flag Flag;
 
 			// 스레드 개수와 상관없이 단 한번의 실행이 보장됨 
-			std::call_once(Flag, []
-			(auto&&... Params)
+			std::call_once(Flag, []	(auto&&... Params)
 				{
 					manager_Ptr.reset(new _manager_Type(std::forward<ParamTypes>(Params)...));
-					/*= std::make_unique<_manager_Type>
-						(std::forward<ParamTypes>(Params)...);*/
 				});
-
+			
 			return *manager_Ptr.get();
 		}
 		else

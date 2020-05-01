@@ -27,6 +27,8 @@ public:
 	void Pause(); 
 	void Stop();
 	void SetMode(uint32_t mode_param = FMOD_LOOP_NORMAL); 
+	bool inline isPlay() const&;
+
 	
 	bool Load(ReadType P_ReadType,FMOD::System*const P_System);
 	bool Play();
@@ -34,9 +36,11 @@ public:
 
 	void inline Volume_Up()&;
 	void inline Volume_Down()&;
+
+	inline typename Sound::ReadType getReadKey()const&;
 private:
 	void inline Volume_Impl(bool updown_tag)&;
-	ReadType Name;
+	ReadType ReadKey;
 	FMOD::System* F_System;
 	FMOD::Sound* F_Sound;
 	FMOD::Channel* F_Channel;
@@ -67,4 +71,19 @@ inline void Sound::Volume_Impl(bool updown_tag)&{
 	F_Channel->getVolume(&L_Volume);  
 	L_Volume = std::clamp(L_Volume + (change_width * Delta) , 0.0f,1.0f);
 	F_Channel->setVolume(L_Volume); 
+}
+
+bool inline Sound::isPlay() const&{
+	
+	bool _Isplay{ false };
+	
+	if (F_Channel != nullptr)
+		F_Channel->isPlaying(&_Isplay);
+	
+	return _Isplay; 
+}
+
+inline typename Sound::ReadType Sound::getReadKey()const&
+{
+	return ReadKey; 
 }

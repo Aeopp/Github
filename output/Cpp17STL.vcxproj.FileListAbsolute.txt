@@ -1,2 +1,0 @@
-D:\GitHub\output\Cpp17STL.exe
-D:\GitHub\output\Cpp17STL.pdb

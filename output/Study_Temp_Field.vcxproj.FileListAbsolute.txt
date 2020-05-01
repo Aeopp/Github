@@ -1,2 +1,0 @@
-D:\Github\output\C++17 Node_Extract.exe
-D:\Github\output\C++17 Node_Extract.pdb

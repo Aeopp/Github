@@ -1,2 +1,0 @@
-D:\Github\output\Sort_Study.exe
-D:\Github\output\Sort_Study.pdb

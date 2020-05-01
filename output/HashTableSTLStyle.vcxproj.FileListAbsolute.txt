@@ -1,2 +1,0 @@
-D:\Github\output\HashTableSTLStyle.exe
-D:\Github\output\HashTableSTLStyle.pdb
