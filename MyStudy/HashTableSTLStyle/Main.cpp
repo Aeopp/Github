@@ -395,7 +395,7 @@ int main()
 
 	//cout << "----" << endl;
 
-	//// Create a map with all the elements in the hashmap
+	//// Create integer map with all the elements in the hashmap
 	//map<string, int> myMap(cbegin(myHash), cend(myHash));
 	//for (auto& p : myMap) {
 	//	cout << p.first << " maps to " << p.second << endl;

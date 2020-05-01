@@ -60,7 +60,7 @@ int main() {
 		LocalTimer.Frame();
 		Sound_Manager.Frame();
 		Input_Manager.Frame();
-		
+
 		LocalTimer.Render();
 		Sound_Manager.Render();
 		Input_Manager.Render();
@@ -68,5 +68,5 @@ int main() {
 		std::this_thread::sleep_for(Delay);
 	};
 
-
+	
 }

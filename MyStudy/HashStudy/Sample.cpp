@@ -60,7 +60,7 @@ static const char* const testCases[] =
 {
 "this",
 "is"
-"a",
+"integer",
 "test",
 "but",
 "i",

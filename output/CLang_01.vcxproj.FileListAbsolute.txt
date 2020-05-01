@@ -1,0 +1,2 @@
+D:\GitHub\output\CLang_01.exe
+D:\GitHub\output\CLang_01.pdb

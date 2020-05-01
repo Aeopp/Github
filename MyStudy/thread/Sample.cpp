@@ -46,7 +46,7 @@ void doSomeWork()
 {
 	for (int32_t i = 0; i < 5; ++i)
 		cout << i << endl;
-	cout << "Thread throwing a reuntime_error exception..." << endl;
+	cout << "Thread throwing integer reuntime_error exception..." << endl;
 	
 	throw runtime_error("Exception from thread");   
 }
@@ -198,10 +198,10 @@ int main() {
 //
 //	
 //
-//	/*std::list a{ 1,2,3,4,5,6,7,8,9,10 };
+//	/*std::list integer{ 1,2,3,4,5,6,7,8,9,10 };
 //	std::list<string> b;
 //
-//	transform(a.begin(), a.end(), back_inserter(b),
+//	transform(integer.begin(), integer.end(), back_inserter(b),
 //	[](const auto&element )
 //		{
 //			return " qweqweqwe";

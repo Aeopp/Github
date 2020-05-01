@@ -32,15 +32,15 @@ using namespace std;
 //ostream& operator<<(ostream& out, T& target)
 //{
 //		if constexpr (std::is_pointer_v<T>)
-//			out << target->a;
+//			out << target->integer;
 //		else
 //		{
-//			out << target.a;
+//			out << target.integer;
 //
 //			if constexpr (std::is_pointer_v<T>)
 //			{
 //				// ???? 
-//				target->a;
+//				target->integer;
 //				using qwe = typename T::qwe;
 //				qwe asd;
 //				std::vector<qwe> asd;

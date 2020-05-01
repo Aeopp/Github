@@ -30,7 +30,7 @@ int main()
 	std::result_of<S(int)>::type x = 3.14; // x has type float
 	static_assert(std::is_same<decltype(x), float>::value, "");
 
-	// result_of can be used with a pointer to member function as follows
+	// result_of can be used with integer pointer to member function as follows
 	struct C { double Func(char, int&); };
 	std::result_of<decltype(&C::Func)(C, char, int&)>::type g = 3.14;
 	static_assert(std::is_same<decltype(g), double>::value, "");

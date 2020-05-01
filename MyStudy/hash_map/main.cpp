@@ -50,8 +50,8 @@ public :
 int main()
 {
 	
-	/*std::vector<int> a;
-	std::insert_iterator(a, a.begin());*/
+	/*std::vector<int> integer;
+	std::insert_iterator(integer, integer.begin());*/
 
 	using hash_map_type = hash_map<int32_t, string>;
 

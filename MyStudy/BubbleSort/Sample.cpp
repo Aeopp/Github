@@ -241,9 +241,9 @@ int main()
     std::cout << "\nAfter \n";
     quick_sort(arr,0,99);
 
-    for (int32_t a : arr)
+    for (int32_t integer : arr)
     {
-        std::cout << a << " ";
+        std::cout << integer << " ";
     }*/
     
 

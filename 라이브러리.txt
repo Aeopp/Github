@@ -1,0 +1,7 @@
+라이브러리->일반->추가 라이브러리 디렉터리
+
+
+ Lib build ???   -> windows desktop app 정적라이브러리
+
+Include ->  header file only
+Lib->x64-> build after lib file only
