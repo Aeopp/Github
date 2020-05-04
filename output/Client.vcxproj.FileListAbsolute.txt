@@ -1,2 +1,0 @@
-D:\GitHub\output\Client.exe
-D:\GitHub\output\Client.pdb

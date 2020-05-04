@@ -13,10 +13,12 @@ bool Core::Core_Init() noexcept
 
 bool Core::Core_Clear() noexcept
 {
+	Clear();
+	
 	_Timer.Clear();
 	_Sound_Mgr.Clear();
 	_Input_Helper.Clear();
-	Clear();
+	
 	return true;
 };
 
@@ -26,26 +28,26 @@ bool Core::Core_Frame()
 	_Sound_Mgr.Frame();
 	_Input_Helper.Frame();
 	// Input 에서 VK_ESCAPE 를 검사
-	if (isExit == true) return false;
+	if (/*MyWindow::*/IsExit == true) return false;
 	Frame(); 
 	return true;
 };
 
 bool Core::Core_Render()
 {
+	Render();
+	
 	_Timer.Render();
 	_Sound_Mgr.Render();
 	_Input_Helper.Render();
-	
-	Render();
 	return true;
 }
 
 Core::Core() : _Input_Helper{util::GetInstance<Input>()} ,
 				_Sound_Mgr{util::GetInstance<SoundMgr>()},
-				Delay{50ms},
-				isExit{false } 
-				{}
+				Delay{50ms}
+				/*MyWindow::*/
+{ /*MyWindow::*/IsExit = false; }
 
 Core::~Core() noexcept
 {
@@ -56,14 +58,16 @@ Core::~Core() noexcept
 bool Core::Run()&
 {
 	Core_Init();
+	
 
-	while (isExit==false) {
-		
-		if (Core_Frame() == false && isExit == true)
-			break;
-		
-		Core_Render();
-		std::this_thread::sleep_for(Delay);
+	while (/*MyWindow::*/IsExit==false) {
+
+		if(WinRun())
+		{
+			Core_Frame();
+			Core_Render();
+			std::this_thread::sleep_for(Delay);
+		}
 	};
 
 	// TODO :: RAII 

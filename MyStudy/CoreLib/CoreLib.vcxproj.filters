@@ -32,6 +32,9 @@
     <Filter Include="Header">
       <UniqueIdentifier>{1dfe42f5-9f8b-4222-8ec0-4675f701cb1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{1cf92a99-7c78-45b9-b584-2bf9c32bd4ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tester.h">
@@ -61,6 +64,10 @@
     <ClInclude Include="Util.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="Dependency.h" />
+    <ClInclude Include="MyWindow.h">
+      <Filter>Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tester.cpp">
@@ -80,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="Core.cpp">
       <Filter>Manager\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MyWindow.cpp">
+      <Filter>Window</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

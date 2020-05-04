@@ -1,4 +1,4 @@
-//#include "../CoreLib/Core.h"
+ï»¿//#include "../CoreLib/Core.h"
 #include "Core.h"
 
 class _Tester : public Core
@@ -9,7 +9,7 @@ protected:
 bool _Tester::Init()
 {
 	// TODO ::  Test Code
-	const std::wstring _key1 = L"../../Data/Sound/romance.mid";
+	const std::wstring _key1 = L"â€ª../../Data/Sound/romance.mid";
 	const std::wstring _key2 = L"../../Data/Sound/MyLove.mp3";
 	const std::wstring _key3 = L"../../Data/Sound/GunShot.mp3";
 
@@ -40,9 +40,9 @@ bool _Tester::Init()
 	_Input_Ref.Func_Regist(0x23, _Key::Hold, &SoundMgr::Volume_Down,
 		std::ref(_Sound_Ref), _key1);
 
-	//TODO :: ESC Push -> Core Run ¿¡ Notify ÇØ¼­ ·çÇÁ¸¦ ¹Ù·Î Á¾·áÇÒ¼ö ÀÖ´Ù¸é Àû¿ëÇÒ °Í
-	//TODO :: Àû¿ëÇÏ°í Core::Run Å° Ã¼Å· ÄÚµå Áö¿ï°Í
-	auto Exit = [this] {this->isExit = true; };
+	//TODO :: ESC Push -> Core Run ì— Notify í•´ì„œ ë£¨í”„ë¥¼ ë°”ë¡œ ì¢…ë£Œí• ìˆ˜ ìˆë‹¤ë©´ ì ìš©í•  ê²ƒ
+	//TODO :: ì ìš©í•˜ê³  Core::Run í‚¤ ì²´í‚¹ ì½”ë“œ ì§€ìš¸ê²ƒ
+	auto Exit = [this] {IsExit = true; };
 
 	_Input_Ref.Func_Regist(0x18, _Key::Press, Exit);
 	// TODO :: Delete plz...

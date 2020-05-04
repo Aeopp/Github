@@ -1,18 +1,18 @@
 #pragma once
+#include "MyWindow.h"
 #include "manager_Interface.h"
 #include "SoundMgr.h"
 #include "Timer.h"
 #include "Input.h"
-
-class Core : manager_Interface<Core>
+#include "Dependency.h"
+class Core : public MyWindow, manager_Interface<Core>
 {
 public:
 	Timer _Timer;
 	// 레퍼런스이기 때문에 반드시 생성자에서 초기화
 	SoundMgr& _Sound_Mgr;
 	Input& _Input_Helper;
-	bool isExit;
-
+	
 	void inline set_delay(uint32_t p_delay)&;
 	virtual bool Frame() { return true;  }
 	virtual bool Render() { return true; }

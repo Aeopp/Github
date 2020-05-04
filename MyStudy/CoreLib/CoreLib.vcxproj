@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h" />
+    <ClInclude Include="Dependency.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="manager_Interface.h" />
     <ClInclude Include="ObjectSuper.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="Tester.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Util.h" />
+    <ClInclude Include="MyWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
@@ -36,6 +38,7 @@
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="Tester.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="MyWindow.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -92,7 +95,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\output\CoreLib\</OutDir>
-    <IntDir>..\..\output\CoreLib\</IntDir>
+    <IntDir>..\..\output\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -119,7 +122,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>fmod_vc.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>..\..\Library\fmod\lib\x64</AdditionalLibraryDirectories>

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Example">
+      <UniqueIdentifier>{53962aab-4117-48b0-9659-7a5fdb656a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{a86b3a88-f449-413e-aecc-a18af8a7735c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{d92a3f96-0288-465b-a495-014c34c17beb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SoundManager">
+      <UniqueIdentifier>{4db8559e-ec4c-4bf2-8b1e-05714b28aa31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\InputHelper">
+      <UniqueIdentifier>{b8866727-2c61-4e74-a0d3-6c26fefebb50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\Core">
+      <UniqueIdentifier>{10d508ba-bf17-4c84-9214-78543bb5d3d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Window">
+      <UniqueIdentifier>{933f899a-dedf-4e36-981c-e09d5a4b1f16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{0e0134e6-e865-4d02-ac57-2de0f267e45d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Sound">
+      <UniqueIdentifier>{9b63191c-97ef-46c1-8a2b-ed16e2bcafc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Timer">
+      <UniqueIdentifier>{ad4c8569-1542-4486-b69b-22deadfac49a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CoreLib_Manager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CoreLib\Tester.cpp">
+      <Filter>Example</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CoreLib\SoundMgr.cpp">
+      <Filter>Manager\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CoreLib\Input.cpp">
+      <Filter>Manager\InputHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CoreLib\Core.cpp">
+      <Filter>Manager\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CoreLib\MyWindow.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CoreLib\Sound.cpp">
+      <Filter>Object\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CoreLib\Timer.cpp">
+      <Filter>Object\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\CoreLib\Tester.h">
+      <Filter>Example</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\Util.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\manager_Interface.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\SoundMgr.h">
+      <Filter>Manager\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\Input.h">
+      <Filter>Manager\InputHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\Core.h">
+      <Filter>Manager\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\MyWindow.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\ObjectSuper.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\Sound.h">
+      <Filter>Object\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CoreLib\Timer.h">
+      <Filter>Object\Timer</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

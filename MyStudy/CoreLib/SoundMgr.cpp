@@ -45,7 +45,11 @@ bool SoundMgr::Init() noexcept(false)
 	F_Result = F_System->init(32, FMOD_INIT_NORMAL, 0);
 	if (F_Result != FMOD_OK) 
 		throw std::exception(Log("FMOD SYSTEM Initaliaze Fail"));
-		//return false; 
+		//return false;
+
+	// TODO ::Load 시 첫번째 사운드를 제대로 로드하지 못하는 버그때문에
+	// TODO :: 더미데이터로 로딩시킴
+	this->Load(Key_Type{});
 
 	return true; 
 }

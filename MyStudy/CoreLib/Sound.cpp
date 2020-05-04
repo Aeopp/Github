@@ -84,12 +84,13 @@ void Sound::SetMode(uint32_t mode_param){
 }
 
 bool Sound::Load(ReadType P_ReadType, FMOD::System* const P_System) {
-	if (P_ReadType.empty() || P_System == nullptr)
-		// Param 이 비어있을시 확장자가 유효하지 않을시
+	    // Param 이 비어있을시 확장자가 유효하지 않을시
 		// Param 으로 된 Sound 를 로드할수 없을 시
 		// System 이 준비되지 않았을시
-		throw std::invalid_argument(__FUNCTION__"Param Empty");
-	// return false; 
+	if (P_System == nullptr)
+		return false;
+		//throw std::invalid_argument(__FUNCTION__"Param Empty");
+	
 	F_System = P_System;
 	ReadKey = std::move(P_ReadType);
 	FMOD_RESULT HR;
