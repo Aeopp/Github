@@ -1,0 +1,2 @@
+D:\GitHub\output\TesterClient.exe
+D:\GitHub\output\TesterClient.pdb

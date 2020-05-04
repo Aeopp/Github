@@ -1,0 +1,2 @@
+D:\GitHub\output\Static\Static.lib
+D:\GitHub\output\Static\Static.pdb

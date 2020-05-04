@@ -1,0 +1,2 @@
+D:\GitHub\output\Beta\Beta.exe
+D:\GitHub\output\Beta\Beta.pdb

@@ -1,0 +1,2 @@
+D:\GitHub\output\CoreLib\CoreLib.lib
+D:\GitHub\output\CoreLib\CoreLib.pdb

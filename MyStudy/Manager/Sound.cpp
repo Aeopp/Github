@@ -119,6 +119,11 @@ bool Sound::Play() {
 	// 채널을 검사하고 플레이중인지 아닌지 체킹
 	if (F_Channel != nullptr)
 		F_Channel->isPlaying(&isplay);
+
+	if(isplay==true)
+	{
+		Stop();
+	}
 	
 	{
 		HR = F_System->playSound(F_Sound,nullptr, false, &F_Channel); 
