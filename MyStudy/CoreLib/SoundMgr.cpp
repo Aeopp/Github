@@ -6,7 +6,7 @@
 bool SoundMgr::Load(Key_Type LoadName) noexcept(false)
 {
 	if (F_System == nullptr )
-		throw std::exception(Log("Sound Manager FMOD_System NotReady")); 
+		throw std::exception(Debug::Log("Sound Manager FMOD_System NotReady").c_str()); 
 	// 사운드를 동적 할당 이후 초기화 작업 수행
 	// 초기화가 실패시 (파라미터가 잘못되었을경우) 아무것도 안한다
 	
@@ -40,16 +40,16 @@ bool SoundMgr::Init() noexcept(false)
 	F_Result = FMOD::System_Create(&F_System); 
 	// FMOD 시스템 로딩 실패
 	if (F_Result != FMOD_OK)
-		throw std::exception(Log("FMOD SYSTEM Create Fail"));
+		throw std::exception(Debug::Log("FMOD SYSTEM Create Fail").c_str());
 		//return false;
 	F_Result = F_System->init(32, FMOD_INIT_NORMAL, 0);
 	if (F_Result != FMOD_OK) 
-		throw std::exception(Log("FMOD SYSTEM Initaliaze Fail"));
+		throw std::exception(Debug::Log("FMOD SYSTEM Initaliaze Fail").c_str());
 		//return false;
 
 	// TODO ::Load 시 첫번째 사운드를 제대로 로드하지 못하는 버그때문에
 	// TODO :: 더미데이터로 로딩시킴
-	this->Load(Key_Type{});
+	//this->Load(Key_Type{});
 
 	return true; 
 }

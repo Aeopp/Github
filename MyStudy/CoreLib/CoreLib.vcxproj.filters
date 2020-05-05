@@ -5,9 +5,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Example">
-      <UniqueIdentifier>{4b5abecc-1019-4802-9295-be9b9d4d859f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{ada3d778-d1b0-4faf-a4e0-c321623133c7}</UniqueIdentifier>
     </Filter>
@@ -29,11 +26,17 @@
     <Filter Include="Manager\Core">
       <UniqueIdentifier>{da3e99d3-937e-467e-8ddd-87e35b472bb6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header">
-      <UniqueIdentifier>{1dfe42f5-9f8b-4222-8ec0-4675f701cb1c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Window">
       <UniqueIdentifier>{1cf92a99-7c78-45b9-b584-2bf9c32bd4ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Convenience_function">
+      <UniqueIdentifier>{86a8bbba-c85f-4db0-bf0f-aeaaa380eebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Example">
+      <UniqueIdentifier>{4b5abecc-1019-4802-9295-be9b9d4d859f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{1dfe42f5-9f8b-4222-8ec0-4675f701cb1c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -62,11 +65,14 @@
       <Filter>Manager\Core</Filter>
     </ClInclude>
     <ClInclude Include="Util.h">
-      <Filter>Header</Filter>
+      <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="Dependency.h" />
     <ClInclude Include="MyWindow.h">
       <Filter>Window</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowTester.h">
+      <Filter>Example</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +96,9 @@
     </ClCompile>
     <ClCompile Include="MyWindow.cpp">
       <Filter>Window</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowTester.cpp">
+      <Filter>Example</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

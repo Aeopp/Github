@@ -30,6 +30,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="MyWindow.h" />
+    <ClInclude Include="WindowTester.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="Tester.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="MyWindow.cpp" />
+    <ClCompile Include="WindowTester.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

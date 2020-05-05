@@ -59,7 +59,7 @@ inline void Sound::Volume_Down()&{
 
 inline void Sound::Volume_Impl(bool updown_tag)&{
 	if (F_Channel == nullptr)
-		throw std::exception(Log("F_Channel == nullptr"));
+		throw std::exception(Debug::Log("F_Channel == nullptr").c_str());
 
 	auto Delta = time::delta_sec; 
 	float_t L_Volume = 1.f;

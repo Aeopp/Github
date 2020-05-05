@@ -8,6 +8,7 @@ protected :
 public:
 	// my manager Type
 	using Type = Management_Type;
+	using Super = manager_Interface<Management_Type>;
 	
 	friend class std::unique_ptr<manager_Interface>;
 	friend struct std::unique_ptr<manager_Interface>::deleter_type;

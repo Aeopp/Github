@@ -8,7 +8,7 @@ protected:
 bool _Tester::Init()
 {
 	// TODO ::  Test Code
-	const std::wstring Dummy = L"‪../../Data/Sound/romanse.mid";
+	//const std::wstring Dummy = L"‪../../Data/Sound/romanse.mid";
 	
 	const std::wstring _key1 = L"../../Data/Sound/MyLove.mp3";
 	const std::wstring _key2 = L"../../Data/Sound/OnlyLove.mp3";
@@ -20,7 +20,7 @@ bool _Tester::Init()
 	auto& _Sound_Ref = Super::_Sound_Mgr;
 	auto& _Input_Ref = Super::_Input_Helper;
 	
-	_Sound_Ref.Load(Dummy);
+	//_Sound_Ref.Load(Dummy);
 	
 	_Sound_Ref.Load(_key1);
 	_Sound_Ref.Load(_key2);

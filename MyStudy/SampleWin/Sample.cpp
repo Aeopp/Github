@@ -2,6 +2,11 @@
 
 // 윈도우 프로시저
 // 윈도우에서 이벤트가 발생할때마다 호출
+// 	// WM_DESTROY = Window 종료버튼을 눌렀을때
+// 		// window msg queue 에 post 에
+		// WM_QUITMESSAGE 를 추가한다
+		// // Client 에서 처리하지 못한 msg 에 대한 처리를
+	// 윈도우의 Default 처리 함수에 따라서 처리한다.
 LRESULT CALLBACK WndProc(
 	HWND hWnd,
 	UINT msg,
@@ -9,17 +14,15 @@ LRESULT CALLBACK WndProc(
 	LPARAM TParam) {
 	
 	switch (msg) {
-		// WM_DESTROY = Window 종료버튼을 눌렀을때
+	
 	case WM_DESTROY:
-		// window msg queue 에 post 에
-		// WM_QUITMESSAGE 를 추가한다
+	
 		PostQuitMessage(0);
 		break;
 	default :
 		break;
 	};
-	// Client 에서 처리하지 못한 msg 에 대한 처리를
-	// 윈도우의 Default 처리 함수에 따라서 처리한다.
+	
 	return DefWindowProc(hWnd, msg, wParam, TParam);
 };
 // 유니코드 사용 wWinMain                 
