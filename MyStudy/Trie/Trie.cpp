@@ -65,6 +65,7 @@ private:
 	std::map<_Ty, Trie> Tries;
 };
 
+
 int main()
 {
 	Trie<std::string > Tester;
@@ -84,7 +85,7 @@ int main()
 		Stance->get().print();
 
 
-	
+
 }
 
 

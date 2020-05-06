@@ -43,17 +43,12 @@ namespace Example
 
 		auto even{ [](int i) {return i % 2 == 0; } };
 		auto twice{ [](int i) {return i * 2;  } };
-
-		auto copy_and_advance([](auto it, auto input)
-			{
-				*it = input;
-				return ++it;
-			});
+		
 
 		std::accumulate(it, end_it,
 			std::ostream_iterator<int>{std::cout, ","},
 			util::filter(even)
-			(util::Map(twice)(copy_and_advance)  )  );
+			(util::Map(twice)(util::copy_and_advance() )  )  );
 	}
 
 	auto multiinterface_Example()

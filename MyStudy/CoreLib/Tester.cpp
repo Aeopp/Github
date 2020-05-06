@@ -1,24 +1,41 @@
 #include "Tester.h"
 #include "Core.h"
 #include <windows.h>
+#include <Convenience_function.h>
 using namespace std::literals::chrono_literals;
 
 bool Tester::Frame()
 {
-	return true; 
-}
+	_Hero.Frame();
+
+	for (auto& Npc : _Npcs)
+		Npc.Frame();
+
+	return true;
+};
 
 bool Tester::Render()
 {
+	_BackGround.Render(_HOffScreenDC);
+	_Hero._Mesh.Render(_HOffScreenDC);
+
+	for (auto& Npc : _Npcs)
+		Npc._Mesh.Render(_HOffScreenDC);
+	
+	auto& _WorldRect = world::RectClient;
+	
+	BitBlt(_HScreenDC.get(), 0, 0, world::RectClient.right, world::RectClient.bottom,
+	_HOffScreenDC.get(),0,0,SRCCOPY	);
+
 	return true; 
 };
 
 bool Tester::Init() 
 {
 	// TODO ::  Test Code
-	const std::wstring _key1 = L"../../Data/Sound/romance.mid";
-	const std::wstring _key2 = L"../../Data/Sound/MyLove.mp3";
-	const std::wstring _key3 = L"../../Data/Sound/GunShot.mp3";
+	const std::wstring _key1 = L"../../../Data/Sound/romance.mid";
+	const std::wstring _key2 = L"../../../Data/Sound/MyLove.mp3";
+	const std::wstring _key3 = L"../../../Data/Sound/GunShot.mp3";
 
 	using _Key = Input::EKey;
 	
@@ -53,11 +70,86 @@ bool Tester::Init()
 	
 	_Input_Ref.Func_Regist(0x18, _Key::Press, Exit); 
 	// TODO :: Delete plz...
+	auto& _HWnd = this->_HWnd;
+
+	// shared_ptr 이 소멸할때 ReleaseDC 를 호출해 핸들 안전하게 해제 
+	auto ScreenDC_Deleter = [&_HWnd](HDC _delete) {ReleaseDC(_HWnd.get(), _delete); };
+	auto Bitmap_Deleter = [](HBITMAP _deleter) {DeleteObject(_deleter); };
+	
+	_HScreenDC = std::make_shared<HDC_ptr>(GetDC(_HWnd.get()),
+		ScreenDC_Deleter);
+	
+	_HOffScreenDC = std::make_shared<HDC_ptr>(
+		CreateCompatibleDC(_HScreenDC.get()), ScreenDC_Deleter);
+	
+	_HOffScreenBitmap = std::make_shared<HBITMAP_ptr>
+	(CreateCompatibleBitmap(_HScreenDC.get(),
+	world::RectClient.right, world::RectClient.bottom),
+		Bitmap_Deleter);
+
+	SelectObject(_HOffScreenDC.get(), _HOffScreenBitmap.get());
+	
+	_BackGround.Load(_HScreenDC, L"../../../Data/kgcabk.bmp");
+	
+	if (_Hero._Mesh.Load(_HScreenDC, L"../../../Data/bitmap1.bmp"))
+	{
+		RECT _RectSrc, _RectDest;
+
+		_RectSrc.left = 133;
+		_RectSrc.top = 1;
+
+		auto& [_DestLeft, _DestTop, _DestRight, _DestBottom] = _RectDest;
+
+		_DestLeft = world::RectClient.right / 2;
+		_DestTop = world::RectClient.bottom / 2;
+		_DestRight = 42;
+		_DestBottom = 60;
+
+		_Hero._Mesh.SetRect(_RectSrc, _RectDest);
+	}
+
+	// 로딩이 성공적인 객체는 Rect 를 세팅해주고 그렇지 않은 객체는 지웁니다.
+	
+	auto Pred = [this](ANpc& Npc)
+	{
+		return Npc._Mesh.Load(_HScreenDC, L"../../../data/bitmap1.bmp");
+	};
+	
+	auto transform = [](ANpc& Npc)
+	{
+		RECT Rect_Src, Rect_Dest;
+		
+		Rect_Src.left = 46;
+		Rect_Src.top = 63;
+		
+		Rect_Dest.left = world::Random.Get(0, 800, 1).back();
+		Rect_Dest.top = world::Random.Get(0, 600, 1).back();
+		Rect_Dest.right = 68;
+		Rect_Dest.bottom = 78;
+		
+		Npc._Mesh.SetRect(Rect_Src, Rect_Dest);
+	};
+	
+	auto new_end = std::transform_if(std::begin(_Npcs), std::end(_Npcs), std::begin(_Npcs),Pred, transform);
+	
+	_Npcs.erase(new_end, std::end(_Npcs));
+	
 	return true; 
 }
 
 bool Tester::Clear() noexcept
 {
-	return true;
+	/*_BackGround.Clear();
+	_Hero.Clear();*/
+
+	/*for(auto& Npc : _Npcs)
+	{
+		
+	}
+	*/
+	/*DeleteObject(_HOffScreenBitmap.get());
+	ReleaseDC(_hwnd)*/
+
+		return true; 
 };
 

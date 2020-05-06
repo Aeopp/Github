@@ -2,7 +2,9 @@
 
 bool MyWindow::SetWindow(HINSTANCE hinstance) &
 {
-	this->hInstance = hinstance;
+	_HInstance.reset(hinstance);
+	world::HInstance=_HInstance;
+	
 	WNDCLASSEXW wc;
     ZeroMemory(&wc, sizeof(wc));
 	wc.cbSize = sizeof(wc);
@@ -30,14 +32,22 @@ bool MyWindow::SetWindow(HINSTANCE hinstance) &
 	{
 		return false; 
 	}
-	this->hWnd = CreateWindowEx(0,
+	this->_HWnd =std::make_shared<HWND>(CreateWindowEx(0,
 		L"KGCAWIN",
 		L"SAMPLEMyWindow",
 		WS_OVERLAPPEDWINDOW,
-		100, 100, 300, 300, 0, 0, hInstance, 0);
+		100, 100, 300, 300, 0, 0, world::HInstance.get(), 0));
 
-	if (hWnd == NULL)return 1;
-	ShowWindow(hWnd, SW_SHOW);
+	if (_HWnd == NULL)return 1;
+
+	GetClientRect(_HWnd.get(), &_RectClient);
+	GetWindowRect(_HWnd.get(), &_RectWindow);
+
+	// 편의를 위해 소유권을 공유함
+	world::RectClient = _RectClient;
+	world::HWnd = _HWnd;
+	
+	ShowWindow(_HWnd.get(), SW_SHOW);
 	return true; 
 }
 

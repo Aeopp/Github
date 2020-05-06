@@ -1,2 +1,0 @@
-D:\GitHub\output\CoreLib\CoreLib.pdb
-D:\GitHub\output\CoreLib.pdb

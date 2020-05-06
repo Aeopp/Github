@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <functional>
 #include "Util.h"
+#include "Convenience_function.h"
 
 class Sound : public ObjectSuper 
 {
@@ -15,7 +16,7 @@ public:
 	Sound();
 	
 	virtual bool Init()noexcept override;
-	virtual bool Render() const override;
+	bool Render() const;
 	virtual bool Clear()noexcept override;
 	virtual bool Frame() override;
 	// 1. 소멸자에서 clear 호출해주거나

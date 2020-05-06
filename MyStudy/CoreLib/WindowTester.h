@@ -1,9 +1,19 @@
 ﻿#include "Core.h"
-
+#include "Mesh.h"
 class _Tester : public Core
 {
-protected:
+public:
 	virtual bool Init() override;
+	virtual bool Frame() override;
+	virtual bool Render() override;
+	virtual bool Clear() noexcept override;
+
+private:
+	HDC_ptr _HScreenDC;
+	HDC_ptr _HOffScreenDC;
+	HBITMAP_ptr _HOffScreenBitmap;
+	
+	Mesh _BackGround;
 };
 bool _Tester::Init()
 {

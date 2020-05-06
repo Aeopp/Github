@@ -3,6 +3,7 @@
 #include "Util.h"
 #include <algorithm>
 #include <functional>
+#include "Convenience_function.h"
 bool SoundMgr::Load(Key_Type LoadName) noexcept(false)
 {
 	if (F_System == nullptr )

@@ -29,14 +29,26 @@
     <Filter Include="Window">
       <UniqueIdentifier>{1cf92a99-7c78-45b9-b584-2bf9c32bd4ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Convenience_function">
-      <UniqueIdentifier>{86a8bbba-c85f-4db0-bf0f-aeaaa380eebd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Example">
       <UniqueIdentifier>{4b5abecc-1019-4802-9295-be9b9d4d859f}</UniqueIdentifier>
     </Filter>
     <Filter Include="util">
       <UniqueIdentifier>{1dfe42f5-9f8b-4222-8ec0-4675f701cb1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Mesh">
+      <UniqueIdentifier>{9ee13350-217a-4bc0-a899-c653ccf25dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Bitmap">
+      <UniqueIdentifier>{769249de-2477-4f81-a53a-e08fb4b47aa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor">
+      <UniqueIdentifier>{ced94fe0-7a9c-4e51-a29a-a77ad0f84038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Hero">
+      <UniqueIdentifier>{d2d07a01-53c6-4874-9e78-1fa57dbe218f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor\Npc">
+      <UniqueIdentifier>{9034484b-8a7d-4a52-8976-bb43ea2b04c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +86,21 @@
     <ClInclude Include="WindowTester.h">
       <Filter>Example</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Object\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitmap.h">
+      <Filter>Bitmap</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>Actor\Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="Hero.h">
+      <Filter>Actor\Hero</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tester.cpp">
@@ -98,6 +125,21 @@
       <Filter>Window</Filter>
     </ClCompile>
     <ClCompile Include="WindowTester.cpp">
+      <Filter>Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Object\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Bitmap.cpp">
+      <Filter>Bitmap</Filter>
+    </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>Actor\Npc</Filter>
+    </ClCompile>
+    <ClCompile Include="Hero.cpp">
+      <Filter>Actor\Hero</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
       <Filter>Example</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,7 +11,8 @@
 #include <numeric>
 // 사용방법 Sample.cpp 올려놨음
 
-namespace util
+
+namespace func
 {
 	// 클라이언트가 F,G,H 함수를 제공하면
 // F(G(H(Params...))) 로 평가.
@@ -110,6 +111,14 @@ namespace util
 		};
 	}
 
+	
+	auto copy_and_advance(){
+		return [](auto it, auto input)
+		{
+			*it = input;
+			return ++it;
+		};
+	}
 	
 	template<typename ...Tys>
 	class multiinterface : public Tys...{
@@ -229,4 +238,31 @@ namespace Debug
 	};
 	
 	#define Log(Target) Log_Impl(__FUNCTION__,__LINE__,Target)
+}
+
+
+namespace std
+{
+	//template<typename ForwardIt,typename OutIt,typename Pred,typename Fn>
+	//auto transform_if(ForwardIt first,ForwardIt end,OutIt out_first,
+	//	Pred pred,Fn func)
+	//{
+	//	 // [first,end) -> [out_first)
+	//	// lhs 컨테이너의 원소가 pred 에 만족한다면 out_first 로 트랜스폼
+	//	return std::accumulate(first, end,out_first,
+	//		util::filter(pred)
+	//		(util::Map(func)(util::copy_and_advance())));
+	//}
+
+	template<typename ForwardIt, typename OutIt, typename Pred, typename Fn>
+	OutIt transform_if(ForwardIt first, ForwardIt end, OutIt out_first, Pred pred, Fn func)
+	{
+		for (; first != end; ++first) {
+			if (pred(*first)) {
+				*out_first = func(*first);
+				++out_first;
+			};
+			return out_first;
+		}
+	};
 }

@@ -41,9 +41,7 @@ private:
 	typename SoundMgr::Sound_ptr get_sound_ptr(const Key_Type& Param_key)&;
 	SoundMgr();
 	virtual ~SoundMgr() noexcept;
-	std::map</*const */Key_Type, Sound_ptr> Map;
+	std::map</*const */Key_Type,Sound_ptr> Map;
 	std::weak_ptr<Sound> Current_Bgm;
 	FMOD::System* F_System; 
 };
-
-
