@@ -74,7 +74,7 @@ bool Tester::Init()
 	// shared_ptr 이 소멸할때 ReleaseDC 를 호출해 핸들 안전하게 해제 
 	auto ScreenDC_Deleter = util::ScreenDC_Deleter(_HWnd);
 	
-	_HScreenDC = std::make_shared<HDC_ptr>(GetDC(_HWnd.get()),
+	/*_HScreenDC = HDC_ptr(GetDC(_HWnd.get()),
 		ScreenDC_Deleter);
 	
 	_HOffScreenDC = HDC_ptr(
@@ -83,7 +83,7 @@ bool Tester::Init()
 	_HOffScreenBitmap = HBITMAP_ptr
 	(CreateCompatibleBitmap(_HScreenDC.get(),
 	world::RectClient.right, world::RectClient.bottom),
-		util::Bitmap_Deleter());
+		util::Bitmap_Deleter());*/
 
 	SelectObject(_HOffScreenDC.get(), _HOffScreenBitmap.get());
 	

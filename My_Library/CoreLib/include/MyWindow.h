@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include "Util.h"
 class MyWindow
 {
 public:
@@ -11,9 +12,15 @@ public:
 	virtual ~MyWindow() noexcept= default;
 protected:
 	bool IsExit;
+protected:
+	//  World 와 소유권 공유중인 포인터
+	HINSTANCE_ptr _HInstance;
+	HWND_ptr _HWnd;
+	//  World 와 소유권 공유중인 포인터
 private:
-	HINSTANCE hInstance;
-	HWND hWnd;
+	RECT _RectClient;
+	RECT _RectWindow;
+	
 	MSG msg;
 };
 

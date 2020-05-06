@@ -5,7 +5,7 @@ Mesh::~Mesh() noexcept
 	Clear();
 }
 
-bool Mesh::Load(const HDC_ptr& Arg_HDC, const std::wstring& FileName)
+bool Mesh::Load(/*const*/ HDC_ptr/*&*/ Arg_HDC, const std::wstring& FileName)
 {
 	_Bitmap.Load(Arg_HDC, FileName);
 
@@ -28,7 +28,7 @@ bool Mesh::Load(const HDC_ptr& Arg_HDC, const std::wstring& FileName)
 	return true;
 };
  
-bool Mesh::Render(const HDC_ptr& hOffScreenDC) const
+bool Mesh::Render(/*const*/ HDC_ptr/*&*/ hOffScreenDC) const
 {
 	const auto& _Dest = _RectDestination;
 	const auto& _Src = _RectSource;

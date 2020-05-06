@@ -6,7 +6,7 @@ class Timer : public ObjectSuper
 {
 public:
 	virtual bool Init()noexcept override;
-	virtual bool Render() const override;
+	bool Render() const ;
 	virtual bool Clear() noexcept override;
 	virtual bool Frame()  override;
 

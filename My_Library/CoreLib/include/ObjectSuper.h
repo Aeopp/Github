@@ -2,10 +2,15 @@
 class ObjectSuper
 {
 public:
-	virtual bool Init() noexcept= 0;
-	virtual bool Render() const = 0;
-	virtual bool Clear() noexcept= 0; 
-	virtual bool Frame()  = 0;
+	virtual bool Init() noexcept {
+		return true;
+	}                             
+	virtual bool Clear() noexcept{
+		return true;
+	}                              
+	virtual bool Frame()  {
+		return true;
+	} 
 
 	virtual ~ObjectSuper()  noexcept = default;
 	ObjectSuper(ObjectSuper&&) noexcept = default;

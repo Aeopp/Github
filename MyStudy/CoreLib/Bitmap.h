@@ -35,19 +35,19 @@ inline bool Bitmap::Clear() noexcept
 //template <typename _HDCptr/*, typename*/>
 bool Bitmap::Load(HDC_ptr ScreenHandle, std::wstring Name) noexcept
 {
-	_HScreenDC = std::forward<HDC_ptr>(ScreenHandle);
-	//_HScreenDC = ScreenHandle;
+	//_HScreenDC = std::forward<HDC_ptr>(ScreenHandle);
+	////_HScreenDC = ScreenHandle;
 
-	_HBitmap =
-		std::move(HBITMAP_ptr(util::LoadImage_To_BitMap(Name)(), util::Bitmap_Deleter()));
+	//_HBitmap =
+	//	std::move(HBITMAP_ptr(util::LoadImage_To_BitMap(Name)(), util::Bitmap_Deleter()));
 
-	GetObject(_HBitmap.get(), sizeof(HBITMAP__), &_BmpInfo);
+	//GetObject(_HBitmap.get(), sizeof(HBITMAP__), &_BmpInfo);
+	//
+	//_HMemDc =std::move(HDC_ptr
+	//(CreateCompatibleDC(_HScreenDC.get()),
+	//	util::ScreenDC_Deleter(world::HWnd)));
 	
-	_HMemDc =std::move(HDC_ptr
-	(CreateCompatibleDC(_HScreenDC.get()),
-		util::ScreenDC_Deleter(world::HWnd)));
-	
-	SelectObject(_HMemDc.get(), _HBitmap.get());
+	/*SelectObject(_HMemDc.get(), _HBitmap.get());*/
 	
 	return true; 
 }

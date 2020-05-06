@@ -19,10 +19,10 @@ public :
 	template<typename _RECT,
 	typename = std::enable_if_t<std::is_same_v<std::decay_t<_RECT>,RECT>,int>>
 	void inline SetRect(_RECT&& Arg_RectSource, _RECT&& Arg_RectDestination)noexcept;
-	bool Load(const HDC_ptr& Arg_HDC, const std::wstring& FileName);
+	bool Load(/*const*/ HDC_ptr/*&*/ Arg_HDC, const std::wstring& FileName);
 
 	
-	bool Render(const HDC_ptr& hOffScreenDC)const;
+	bool Render(/*const*/ HDC_ptr/*&*/ hOffScreenDC)const;
 	
 	virtual bool Init() noexcept override;
 	virtual bool Clear() noexcept override;

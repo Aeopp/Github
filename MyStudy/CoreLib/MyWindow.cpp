@@ -32,7 +32,7 @@ bool MyWindow::SetWindow(HINSTANCE hinstance) &
 	{
 		return false; 
 	}
-	this->_HWnd =std::make_shared<HWND>(CreateWindowEx(0,
+	_HWnd = HWND_ptr(CreateWindowEx(0,
 		L"KGCAWIN",
 		L"SAMPLEMyWindow",
 		WS_OVERLAPPEDWINDOW,
