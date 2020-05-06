@@ -1,19 +1,14 @@
 #include <iostream>
 #include <type_traits>
 #include <memory>
+struct HWND__ {};
 
+typedef HWND__* HWND;
 
 int main()
 {
 	
-	auto f = [](int* p) {delete p; };
-
-	int* p = new int(2);
 	
-	auto qwe = std::shared_ptr<int>(p, f);
-	
-	
-
 	
 	
 }

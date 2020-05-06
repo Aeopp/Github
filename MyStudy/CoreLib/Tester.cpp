@@ -70,22 +70,20 @@ bool Tester::Init()
 	
 	_Input_Ref.Func_Regist(0x18, _Key::Press, Exit); 
 	// TODO :: Delete plz...
-	auto& _HWnd = this->_HWnd;
 
 	// shared_ptr 이 소멸할때 ReleaseDC 를 호출해 핸들 안전하게 해제 
-	auto ScreenDC_Deleter = [&_HWnd](HDC _delete) {ReleaseDC(_HWnd.get(), _delete); };
-	auto Bitmap_Deleter = [](HBITMAP _deleter) {DeleteObject(_deleter); };
+	auto ScreenDC_Deleter = util::ScreenDC_Deleter(_HWnd);
 	
 	_HScreenDC = std::make_shared<HDC_ptr>(GetDC(_HWnd.get()),
 		ScreenDC_Deleter);
 	
-	_HOffScreenDC = std::make_shared<HDC_ptr>(
+	_HOffScreenDC = HDC_ptr(
 		CreateCompatibleDC(_HScreenDC.get()), ScreenDC_Deleter);
 	
-	_HOffScreenBitmap = std::make_shared<HBITMAP_ptr>
+	_HOffScreenBitmap = HBITMAP_ptr
 	(CreateCompatibleBitmap(_HScreenDC.get(),
 	world::RectClient.right, world::RectClient.bottom),
-		Bitmap_Deleter);
+		util::Bitmap_Deleter());
 
 	SelectObject(_HOffScreenDC.get(), _HOffScreenBitmap.get());
 	
@@ -130,9 +128,9 @@ bool Tester::Init()
 		Npc._Mesh.SetRect(Rect_Src, Rect_Dest);
 	};
 	
-	auto new_end = std::transform_if(std::begin(_Npcs), std::end(_Npcs), std::begin(_Npcs),Pred, transform);
-	
-	_Npcs.erase(new_end, std::end(_Npcs));
+	/*auto new_end = std::transform_if(std::begin(_Npcs), std::end(_Npcs), std::begin(_Npcs),Pred, transform);
+	*/
+//	_Npcs.erase(new_end, std::end(_Npcs));
 	
 	return true; 
 }

@@ -98,10 +98,9 @@ public:
 		return *manager_Ptr.get();
 	};
 
-	template<typename _HWndTy>
-	static constexpr inline  auto ScreenDC_Deleter(_HWndTy _HWnd)
+	static  inline  auto ScreenDC_Deleter(HWND_ptr _HWnd)
 	{
-		return [&_HWnd](HDC _delete) {ReleaseDC(_HWnd, _delete); };
+		return [&_HWnd](HDC _delete) {ReleaseDC(_HWnd.get(), _delete); };
 	};
 	
 	static  constexpr inline  auto Bitmap_Deleter() {

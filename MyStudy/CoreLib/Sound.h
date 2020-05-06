@@ -28,7 +28,6 @@ public:
 	void Stop();
 	void SetMode(uint32_t mode_param = FMOD_LOOP_NORMAL); 
 	bool inline isPlay() const&;
-
 	
 	bool Load(ReadType P_ReadType,FMOD::System*const P_System);
 	bool Play();
