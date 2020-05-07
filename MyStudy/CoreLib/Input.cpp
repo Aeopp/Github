@@ -1,30 +1,38 @@
 #include "Input.h"
 #include <windows.h>
+#include "Util.h"
 
 Input::~Input() noexcept(true)
 {
-	Clear(); 
+	Clear();
 }
 bool Input::Init()noexcept(false) 
 {
+	key_state.fill(EKey::None);
 	return true;
 };
 
 bool Input::Frame()
 {
-	GetCursorPos  마우스 위치를 얻어온다
-	ScreenToClient   윈도우 핸들러를 넘겨서 마우스 좌표를
-		스크린 좌표로 변환한다
-	월드 마우스 좌표를 세팅한다
-
-	// 사용자가 원했던 Key == KeyState 상황일때 함수호출
-	for (const auto& [func, _Key, _KeyState] : Func_Register)
-		if (key_check(_Key) == _KeyState) 	func();
-
+	// 마우스좌표의 변환은 Input 이 담당한다. 
+	world::CursorPosConversion();
+	
+	for (const auto& [_func, _KeyList, _Mappeds] : Func_Register)
+	{
+		for (auto& _Key : _KeyList)
+		{
+			// 해당키가 어떠한 상태인지 검사
+			auto Cur_Key = key_check(_Key);
+			// 해당 키의 상태가 사용자가 원하는 상황중 하나라도 맞는다면 호출
+			if (Cur_Key == _Mappeds.first || Cur_Key == _Mappeds.second)
+				_func();
+		}
+	};
+	
 	return true;
 }; 
 
-bool Input::Render() 
+bool Input::Render()
 {
 	return true;
 }
@@ -33,7 +41,7 @@ bool Input::Clear() noexcept
 {
 	func_clear();
 	return true;
-}
+};
 
 typename Input::EKey Input::key_check(input_type p_key) 
 {
@@ -74,7 +82,8 @@ bool Input::delete_func(std::function<bool(const func_Ty&)> pred) noexcept
 		Func_Register.erase(find_iter);
 		return true;
 	}
-	else return false; 
+	else 
+		return false; 
 }
 
 void Input::func_clear() & noexcept
@@ -85,5 +94,5 @@ void Input::func_clear() & noexcept
 
 Input::Input()
 {
-	key_state.fill(EKey::None);
+	Init();
 }

@@ -4,10 +4,8 @@ using namespace std::literals::chrono_literals;
 
 bool Core::Core_Init() noexcept
 {
-	_Timer.Init();
-	_Sound_Mgr.Init();
-	_Input_Helper.Init();
-	Init();
+
+
 	return true; 
 }
 

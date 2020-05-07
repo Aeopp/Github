@@ -34,7 +34,7 @@ bool SoundMgr::Clear() noexcept
 	return true; 
 };
 
-bool SoundMgr::Init() noexcept(false)
+bool SoundMgr::Init() noexcept
 {
 	FMOD_RESULT F_Result; 
 	F_Result = FMOD::System_Create(&F_System); 

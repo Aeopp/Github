@@ -8,10 +8,6 @@
 class Input : private manager_Interface<Input>
 {
 public:
-	Point 구조체 선언
-	포인트 구조체는 월드에서 관리
-	using input_type = uint32_t;
-
 	enum class EKey :uint8_t {
 		None = 0,
 		Free,
@@ -19,10 +15,16 @@ public:
 		Hold,
 		Release,
 	};
+	
+	//TODO :: Point 구조체 선언
+	//TODO :: 포인트 구조체는 월드에서 관리
+	using input_type = uint32_t;
+	using _InitInputList = std::initializer_list<input_type>;
+	using _Mapped_Type = std::pair<typename Input::EKey, typename Input::EKey>;
+	
 	// 희망하는 키와 그 키의상태를 알려주고 함수를 등록시켜놓으면
 	// 키와 키의상태가 일치할때 함수 실행
-	using call_back_Ty = std::tuple<std::function<void()>,
-	input_type, typename Input::EKey>;
+	using call_back_Ty = std::tuple<std::function<void()>, _InitInputList, _Mapped_Type>;
 
 	Input& operator=(Input&&) = delete;
 	Input& operator=(const Input&) = delete;
@@ -30,15 +32,17 @@ public:
 	Input(const Input&) = delete;
 	virtual ~Input()noexcept(true) ;
 	
-	virtual bool Frame(); 
-	virtual bool Render();
-	virtual bool Init()noexcept(false) ;
-	virtual bool Clear()noexcept ;
+	virtual bool Frame_Implementation(); 
+	virtual bool Render_Implementation();
+	virtual bool Init_Implementation()noexcept(false) ;
+	virtual bool Clear_Implementation()noexcept ;
 
 
 	// string 객체 사용할 경우 레퍼런스로 파라미터 넘길경우 문제생김
-	template<typename func_Ty,typename ... param_Tys>
-	void inline Func_Regist(const input_type P_Input, const typename Input::EKey P_KeyState,func_Ty&& Func, param_Tys&&... Params)&;
+	template<typename func_Ty, typename ... param_Tys>
+	void  Func_Regist(std::initializer_list<input_type> InitInput,
+		std::pair<typename Input::EKey, typename Input::EKey>
+		Mapped_Keys, func_Ty&& Func, param_Tys&&... Params)&;
 	
 	template<typename param_Ty>
 	bool delete_func(std::function<bool(const param_Ty&)>pred)noexcept;
@@ -57,10 +61,11 @@ private:
 };
 
 template<typename func_Ty, typename ... param_Tys>
-void inline Input::Func_Regist(const input_type P_Input, const typename Input::EKey P_KeyState,func_Ty&& Func, param_Tys&&... Params )&
+void  Input::Func_Regist(_InitInputList InitInput,
+	_Mapped_Type Mapped_Keys,       func_Ty&& Func, param_Tys&&... Params )&
 {
 	auto&& binder = std::bind(std::forward<func_Ty>(Func),
 	std::forward<param_Tys>(Params)...);
 	
-	Func_Register.emplace_back(binder, P_Input, P_KeyState);
+	Func_Register.emplace_back(binder, InitInput, Mapped_Keys);
 };

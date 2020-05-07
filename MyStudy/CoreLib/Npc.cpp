@@ -1,7 +1,6 @@
 #include "Npc.h"
 #include <algorithm>
 
-
 	static constexpr auto _Move_Pos_Helper(
 	float_t& _Mesh_Pos,
 	LONG& compare_Lhs, LONG& compare_Rhs,

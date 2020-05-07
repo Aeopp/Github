@@ -38,9 +38,6 @@
     <Filter Include="Object\Mesh">
       <UniqueIdentifier>{9ee13350-217a-4bc0-a899-c653ccf25dfe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Bitmap">
-      <UniqueIdentifier>{769249de-2477-4f81-a53a-e08fb4b47aa7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Actor">
       <UniqueIdentifier>{ced94fe0-7a9c-4e51-a29a-a77ad0f84038}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,9 @@
     </Filter>
     <Filter Include="Manager\BitmapManager">
       <UniqueIdentifier>{eeaf78c4-65fa-4458-9913-6f932723fc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Bitmap">
+      <UniqueIdentifier>{769249de-2477-4f81-a53a-e08fb4b47aa7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,7 +93,7 @@
       <Filter>Object\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Bitmap.h">
-      <Filter>Bitmap</Filter>
+      <Filter>Object\Bitmap</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Actor</Filter>
@@ -106,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="BitmapManager.h">
       <Filter>Manager\BitmapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Type_Aliases.h">
+      <Filter>util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,7 +140,7 @@
       <Filter>Object\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Bitmap.cpp">
-      <Filter>Bitmap</Filter>
+      <Filter>Object\Bitmap</Filter>
     </ClCompile>
     <ClCompile Include="Npc.cpp">
       <Filter>Actor\Npc</Filter>

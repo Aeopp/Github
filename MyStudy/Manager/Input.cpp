@@ -1,15 +1,14 @@
 #include "Input.h"
 #include <windows.h>
 
-Input::~Input() noexcept(true)
+Input::~Input() noexcept
 {
 	Clear(); 
 }
-bool Input::Init()noexcept(false) 
+bool Input::Init()noexcept
 {
-	return true;
+	return true; 
 };
-
 bool Input::Frame()
 {
 	// 사용자가 원했던 Key == KeyState 상황일때 함수호출
@@ -19,7 +18,7 @@ bool Input::Frame()
 	return true;
 }; 
 
-bool Input::Render() 
+bool Input::Render()
 {
 	return true;
 }

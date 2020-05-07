@@ -13,20 +13,26 @@ public:
 	SoundMgr& _Sound_Mgr;
 	Input& _Input_Helper;
 	
+	HFONT_ptr _HFont;
+	HBRUSH_ptr _HBrush;
+	HDC_ptr _HScreenDC;
+	HDC_ptr _HOffScreenDC;
+	HBITMAP_ptr _HOffScreenBitmap;
+	
 	void inline set_delay(uint32_t p_delay)&;
-	virtual bool Frame() { return true;  }
-	virtual bool Render() { return true; }
-	virtual bool Init() { return true; }
-	virtual bool Clear()noexcept {return true;}
+	bool Frame_Implementation()              { return true; };
+	bool Render_Implementation()             { return true; };
+	bool Init_Implementation()   noexcept;
+	bool Clear_Implementation()noexcept      { return true; };
+	
     bool Run()&;
 	
 	Core();
+	std::chrono::milliseconds Delay;
 	virtual ~Core() noexcept override;
 protected:
 	using Super = Core;
 private:
-	std::chrono::milliseconds Delay; 
-	
 	Core(const Core&) = delete;
 	Core& operator=(const Core&) = delete;
 	Core(Core&&) noexcept = delete;
@@ -43,4 +49,7 @@ void inline Core::set_delay(uint32_t p_delay)&
 	Delay = static_cast<std::chrono::milliseconds>(p_delay);
 } 
 
-
+bool inline Core::Init_Implementation()   noexcept
+{
+	
+}

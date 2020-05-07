@@ -7,11 +7,10 @@ bool AHero::Frame()
 	_Mesh._RectDestination.left = _Mesh._PosX;
 	_Mesh._RectDestination.top = _Mesh._PosY;
 	return true;
-	
 }
 
 template<typename binary_func,
-	// 함수객체만 템플릿 파라미터로 허용합니다.
+	// 함수객체만 템플릿 파라미터로 허용.
 	typename = binary_func::is_transparent>
 	static constexpr auto _Move_Pos_Helper(float_t& _Mesh_Pos, const binary_func& Bi_func)
 {

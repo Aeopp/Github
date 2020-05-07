@@ -2,7 +2,7 @@
 
 bool MyWindow::SetWindow(HINSTANCE hinstance) &
 {
-	_HInstance.reset(hinstance);
+	_HInstance = HINSTANCE_ptr(hinstance);
 	world::HInstance=_HInstance;
 	
 	WNDCLASSEXW wc;
@@ -29,16 +29,16 @@ bool MyWindow::SetWindow(HINSTANCE hinstance) &
 	wc.hbrBackground = static_cast<HBRUSH>(GetStockObject(GRAY_BRUSH));
 
 	if(RegisterClassEx(&wc)==false)
-	{
 		return false; 
-	}
+	
+	
 	_HWnd = HWND_ptr(CreateWindowEx(0,
 		L"KGCAWIN",
 		L"SAMPLEMyWindow",
 		WS_OVERLAPPEDWINDOW,
 		100, 100, 300, 300, 0, 0, world::HInstance.get(), 0));
 
-	if (_HWnd == NULL)return 1;
+	if (_HWnd == NULL)return false; 
 
 	GetClientRect(_HWnd.get(), &_RectClient);
 	GetWindowRect(_HWnd.get(), &_RectWindow);

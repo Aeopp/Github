@@ -8,17 +8,11 @@
 #include <Windows.h>
 #include <type_traits>
 #include <random>
-//
-//using HINSTANCE_ptr		= std::shared_ptr<std::remove_pointer_t<HINSTANCE>>;
-//using HWND_ptr			= std::shared_ptr<std::remove_pointer_t<HWND>>;
-//using HBITMAP_ptr		= std::shared_ptr<std::remove_pointer_t<HBITMAP>>;
-//using HDC_ptr			= std::shared_ptr<std::remove_pointer_t<HDC>>;
-using HINSTANCE_ptr = std::shared_ptr<HINSTANCE__>;
-using HWND_ptr = std::shared_ptr<HWND__>;
-using HBITMAP_ptr = std::shared_ptr<HBITMAP__>;
-using HDC_ptr = std::shared_ptr<HDC__>;
+#include "Type_Aliases.h"
+#include <fmod.hpp>
 
-인풋 로직 표현
+
+//인풋 로직 표현
 struct InputAction{
 
 };
@@ -76,6 +70,14 @@ public :
 	static inline HWND_ptr HWnd = nullptr;
 	static inline RECT RectClient{};
 	static inline random Random{};
+	static inline POINT MousePos;
+
+	//  스크린 좌표를 클라이언트 좌표로 변환
+	static void inline CursorPosConversion()
+	{
+		GetCursorPos(&world::MousePos);// 스크린좌표
+		ScreenToClient(world::HWnd.get(), &world::MousePos);
+	};
 };
 
 
@@ -90,7 +92,6 @@ public:
 		_manager_Type>::type,
 		typename... ParamTypes>
 		static _manager_Type& GetInstance(ParamTypes&&... Params) {
-
 		
 		static std::unique_ptr<_manager_Type> manager_Ptr = nullptr;
 		static std::once_flag Flag;
@@ -112,6 +113,14 @@ public:
 	return 	[](HBITMAP _deleter) {DeleteObject(_deleter); };
 	};
 
+	static  constexpr inline  auto FModSystem_Release()
+	{
+		return [](FMOD::System* _delete) {
+			_delete->close();
+			_delete->release();
+		};
+	};
+	
 	static   inline  auto LoadImage_To_BitMap(const std::wstring& Name)
 	{
 		return  [Name]()->HBITMAP
@@ -123,4 +132,37 @@ public:
 				LR_DEFAULTSIZE | LR_LOADFROMFILE));
 		};
 	};
+
+	// 스마트포인터의 포인터 (더블포인터)
+	// 얻기위해서는 L Value 로 캐스팅한다음 주소값을 구하거나 해야함
+	template<typename Ptr_Ty>
+	static constexpr auto Return_DoublePtr(Ptr_Ty& Handle)
+	{
+		auto ReturnDoublePtr = Handle.get();
+		return &ReturnDoublePtr;
+	}
+
+	template<typename Key>
+	static constexpr inline bool EquivalenceCompare(const Key& Lhs, const Key& Rhs)
+	{
+		return (!(Lhs < Rhs)) && (!(Rhs < Lhs));
+	};
 };
+
+namespace File
+{
+	template<typename _string>
+	constexpr auto inline PathDelete(const _string& filename)
+	{
+		_string _filename = filename;
+		
+		auto erase_first = _filename.find_first_of('.');
+		auto erase_last = _filename.find_last_of('/');
+	
+		if(erase_last != _string::npos)
+		{
+			_filename.erase(erase_first, erase_last+1);
+		}
+		return _filename; 
+	}
+}

@@ -1,18 +1,11 @@
 #include "Mesh.h"
 
-Mesh::~Mesh() noexcept
+bool Mesh::Load( HDC_ptr Arg_HDC, const std::wstring& FileName)
 {
-	Clear();
-}
-
-bool Mesh::Load(/*const*/ HDC_ptr/*&*/ Arg_HDC, const std::wstring& FileName)
-{
-	비트맵 매니저에게 로딩을 요청한다.
-	메쉬는 비트맵을 소유하지 않는다.
-	메쉬를 포인터로 전환
+	// TODO :: 비트맵 매니저에게 로딩을 요청한다.
+	// TODO :: 메쉬는 비트맵을 소유하지 않는다.
+	// TODO :: 메쉬를 포인터로 전환
 	_Bitmap.Load(Arg_HDC, FileName);
-
-
 
 	auto& [_Srcleft, _Srctop, _Srcright, _Srcbottom] = _RectSource;
 	auto& [_Destleft, _Desttop, _Destright, _Destbottom] = _RectDestination;
@@ -33,7 +26,7 @@ bool Mesh::Load(/*const*/ HDC_ptr/*&*/ Arg_HDC, const std::wstring& FileName)
 	return true;
 };
  
-bool Mesh::Render(/*const*/ HDC_ptr/*&*/ hOffScreenDC) const
+bool Mesh::Render(HDC_ptr hOffScreenDC) const
 {
 	const auto& _Dest = _RectDestination;
 	const auto& _Src = _RectSource;
@@ -47,23 +40,6 @@ bool Mesh::Render(/*const*/ HDC_ptr/*&*/ hOffScreenDC) const
 		_Src.top,
 		_Src.top, SRCCOPY);
 
-	return true; 
-}
-
-bool Mesh::Init() noexcept
-{
-	return true; 
-}
-
-
-
-bool Mesh::Clear() noexcept
-{
-	return _Bitmap.Clear();
-}
-
-bool Mesh::Frame()
-{
 	return true; 
 }
 

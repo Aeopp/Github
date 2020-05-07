@@ -7,7 +7,7 @@ class ANpc : public Actor
 	float_t _DirY_Speed;
 	const float_t speed;
 public:
-	bool Frame() override;
+	bool Frame();
 	
 	ANpc();
 	~ANpc() noexcept = default;

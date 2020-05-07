@@ -5,12 +5,14 @@
 #include "manager_Interface.h"
 #include "Sound.h"
 #include "Util.h"
+#include "Type_Aliases.h"
+#include <optional>
 
-
+// TODO :: FMOD::System 생성지점 찾아서 
+// TODO :: 딜리터 세팅 
 class SoundMgr : private manager_Interface<SoundMgr>
 {
 public:
-	using Key_Type = std::wstring; 
 	using Sound_ptr = std::shared_ptr<Sound>; 
 	friend class std::unique_ptr<SoundMgr>;
 	friend struct std::unique_ptr<SoundMgr>::deleter_type;
@@ -21,11 +23,11 @@ public:
 	SoundMgr(SoundMgr&&) noexcept = delete;
 	SoundMgr& operator=(SoundMgr&&) noexcept = delete;
 
-	bool Load(Key_Type LoadName)noexcept(false); 
-	bool Clear()noexcept;
-	bool Init()noexcept(false);
-	bool Frame();
-	bool Render();
+	std::optional<typename SoundMgr::Sound_ptr> Load(const Key_Type& FullPath)noexcept(false);
+	bool Clear_Implementation()noexcept;
+	bool Init_Implementation()noexcept(false);
+	bool Frame_Implementation();
+	bool Render_Implementation();
 
 	// 사용자는 Sound 객체 수명에 관여하지 못한다.
 	std::weak_ptr<Sound> getSound(const Key_Type& Param_key);
@@ -39,10 +41,23 @@ public:
 	bool Volume_Down(const Key_Type& Param_key)&;
 private:
 	// 구현 편의용 메소드
-	typename SoundMgr::Sound_ptr get_sound_ptr(const Key_Type& Param_key)&;
+	std::optional<typename SoundMgr::Sound_ptr> get_sound_ptr(const Key_Type& Param_key)&;
+	
 	SoundMgr();
 	virtual ~SoundMgr() noexcept;
-	std::map</*const */Key_Type,Sound_ptr> Map;
+	
+	std::map<Key_Type,Sound_ptr> Map;
 	std::weak_ptr<Sound> Current_Bgm;
-	FMOD::System* F_System; 
+	HFMod_System F_System; 
 };
+
+SoundMgr::SoundMgr() :F_System{ nullptr }
+{
+	Init_Implementation();
+};
+
+SoundMgr::~SoundMgr() noexcept
+{
+	Clear_Implementation();
+};
+

@@ -1,17 +1,23 @@
 #pragma once
-#include <map>
-#include <memory>
-#include <string>
-#include "manager_Interface.h"
 #include "Bitmap.h"
-#include "Util.h"
+#include "Type_Aliases.h"
+#include <map>
+#include <optional>
 
-
-class BitmapManager : private manager_Interface<BitmapManager>
-{
+class BitmapManager : public manager_Interface<BitmapManager>{
+private:
+	using Bitmap_ptr = std::shared_ptr<Bitmap>;
+	std::map<std::wstring, Bitmap_ptr> Map;
+	const ReadType Path;
 public:
-	using Key_Type = std::wstring;
-	using Sound_ptr = std::shared_ptr<Bitmap>;
+		bool Init_Implementation() noexcept;
+		bool Clear_Implementation()noexcept;
+		bool Frame_Implementation();
+		bool Render_Implementation();
+
+		Bitmap_ptr GetPtr(const ReadType& _Key);
+		typename BitmapManager::Bitmap_ptr Load(HDC_ptr _HScreenDC, std::wstring FullPath);
+public : 
 	friend class std::unique_ptr<BitmapManager>;
 	friend struct std::unique_ptr<BitmapManager>::deleter_type;
 	friend class util;
@@ -20,29 +26,81 @@ public:
 	BitmapManager& operator=(const BitmapManager&) = delete;
 	BitmapManager(BitmapManager&&) noexcept = delete;
 	BitmapManager& operator=(BitmapManager&&) noexcept = delete;
-
-	bool Load(Key_Type LoadName)noexcept(false);
-	bool Clear()noexcept;
-	bool Init()noexcept(false);
-	bool Frame();
-	bool Render();
-
-	// 사용자는 Sound 객체 수명에 관여하지 못한다.
-	std::weak_ptr<Bitmap> getBitmap(const Key_Type& Param_key);
-
-	// 배경음악일 경우 기존 재생중이던 음악을 멈춰주고 Key 에 해당하는 음악을 재생
-	void play_sound(const Key_Type& Param_key)&;
-	void play_effect(const const Key_Type& Param_key)&;
-	bool pause(const Key_Type& Param_key)&;
-	bool stop(const Key_Type& Param_key)&;
-	bool Volume_Up(const Key_Type& Param_key)&;
-	bool Volume_Down(const Key_Type& Param_key)&;
 private:
-	// 구현 편의용 메소드
-	typename BitmapManager::Sound_ptr get_sound_ptr(const Key_Type& Param_key)&;
-	BitmapManager();
-	virtual ~BitmapManager() noexcept;
-	std::map</*const */Key_Type, Sound_ptr> Map;
-	std::weak_ptr<BitmapManager> Current_Bgm;
-	FMOD::System* F_System;
+	BitmapManager(std::wstring setDefaultPath = L"../../../Bitmap/");
+	virtual ~BitmapManager()noexcept; 
 };
+
+BitmapManager::BitmapManager(std::wstring setDefaultPath ) :
+	Path{ std::move(setDefaultPath) }
+{
+	Init_Implementation(); 
+};
+
+inline bool BitmapManager::Init_Implementation() noexcept
+{
+	return true;
+};
+
+inline bool BitmapManager::Clear_Implementation() noexcept
+{
+	Map.clear();
+};
+
+inline bool BitmapManager::Frame_Implementation()
+{
+	for (auto& [_key, _Bitmap] : Map)
+		_Bitmap->Frame();
+
+	return true;
+};
+
+inline bool BitmapManager::Render_Implementation()
+{
+	for (auto& [_key, _Bitmap] : Map)
+		_Bitmap->Render();
+
+	return true;
+};
+
+inline BitmapManager::Bitmap_ptr BitmapManager::GetPtr(const ReadType& _Key)
+{
+	if (auto find_iter = Map.find(_Key);
+		find_iter != std::end(Map))
+	{
+		return find_iter->second;
+	}
+	else
+	{
+		return typename::BitmapManager::Bitmap_ptr{};
+	};
+};
+
+inline BitmapManager::Bitmap_ptr BitmapManager::Load(HDC_ptr _HScreenDC, std::wstring FullPath)
+{
+	// ../../../data/path/filename.mp3 -> filename.mp3
+	// 문자열이 올바른 경로인지는 검사하지 않는다.
+	auto filename = File::PathDelete(FullPath);
+
+	if (auto find_iter = Map.lower_bound(filename);
+		find_iter != std::end(Map) || find_iter->first > filename)
+	{
+		// 데이터가 없으니 로딩
+		if (auto _bitmap = std::make_shared<Bitmap>();
+			_bitmap->Init())
+		{
+			if (_bitmap->Load(std::move(_HScreenDC), FullPath, filename))
+			{
+				return Map.try_emplace(std::move(find_iter), std::move(filename),
+					std::move(_bitmap))->second;
+			}
+		}
+	}
+	else
+		return typename BitmapManager::Bitmap_ptr{};
+};
+
+inline BitmapManager::~BitmapManager() noexcept
+{
+	Clear_Implementation(); 
+}

@@ -2,7 +2,7 @@
 #include "ObjectSuper.h"
 #include "Mesh.h"
 class Actor :
-	public ObjectSuper
+	public ObjectSuper<Actor>
 {
 public:
 	using Super = Actor;

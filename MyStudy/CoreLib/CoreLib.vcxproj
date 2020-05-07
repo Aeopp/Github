@@ -34,6 +34,7 @@
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Tester.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Type_Aliases.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="MyWindow.h" />
     <ClInclude Include="WindowTester.h" />
