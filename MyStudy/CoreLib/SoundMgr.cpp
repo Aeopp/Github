@@ -10,13 +10,34 @@ bool SoundMgr::Load(Key_Type LoadName) noexcept(false)
 		throw std::exception(Debug::Log("Sound Manager FMOD_System NotReady").c_str()); 
 	// 사운드를 동적 할당 이후 초기화 작업 수행
 	// 초기화가 실패시 (파라미터가 잘못되었을경우) 아무것도 안한다
-	
+
 	// 스마트 포인터용 커스텀 딜리터
+	// ../../../data/sound/xxx.mp3
+	// 토큰을 분리한다. 이름만 저장하는것이 효율적
+	TCHAR szDrive[MAX_PATH] = { 0, };
+	TCHAR szDir[MAX_PATH] = { 0, };
+	TCHAR szName[MAX_PATH] = { 0, };
+	TCHAR szExt[MAX_PATH] = { 0, };
+
+	_wsplitpath_s(P_ReadType.c_str(),
+		szDrive, szDir, szName, szExt);
+
+	TCHAR szFileName = szName;
+	csFileName += szExt;
+	
+	// 이미 로딩되어있는 사운드라면 새로이 로딩하지않고 반환
+	for (auto& [first, second] : Map) {
+		if (second.Name == LoadName) {
+			return first; 
+		}
+	}
+
 
 	if (auto load_sound = std::make_shared<Sound>();
 		load_sound->Init()) {
 
 		if (load_sound->Load(LoadName, F_System)) {
+			// TODO :: 사운드자체에 이름을 저장하는 로직 추가
 			auto [Iter, IsInsert] =
 				Map.try_emplace(std::move(LoadName), load_sound);
 			// 삽입 성공여부 리턴

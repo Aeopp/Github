@@ -12,6 +12,11 @@ bool Input::Init()noexcept(false)
 
 bool Input::Frame()
 {
+	GetCursorPos  마우스 위치를 얻어온다
+	ScreenToClient   윈도우 핸들러를 넘겨서 마우스 좌표를
+		스크린 좌표로 변환한다
+	월드 마우스 좌표를 세팅한다
+
 	// 사용자가 원했던 Key == KeyState 상황일때 함수호출
 	for (const auto& [func, _Key, _KeyState] : Func_Register)
 		if (key_check(_Key) == _KeyState) 	func();

@@ -18,6 +18,11 @@ using HWND_ptr = std::shared_ptr<HWND__>;
 using HBITMAP_ptr = std::shared_ptr<HBITMAP__>;
 using HDC_ptr = std::shared_ptr<HDC__>;
 
+인풋 로직 표현
+struct InputAction{
+
+};
+
 class time {
 public:
 	static inline float_t delta_sec{ 0.f };

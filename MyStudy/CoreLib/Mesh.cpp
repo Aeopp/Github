@@ -7,7 +7,12 @@ Mesh::~Mesh() noexcept
 
 bool Mesh::Load(/*const*/ HDC_ptr/*&*/ Arg_HDC, const std::wstring& FileName)
 {
+	비트맵 매니저에게 로딩을 요청한다.
+	메쉬는 비트맵을 소유하지 않는다.
+	메쉬를 포인터로 전환
 	_Bitmap.Load(Arg_HDC, FileName);
+
+
 
 	auto& [_Srcleft, _Srctop, _Srcright, _Srcbottom] = _RectSource;
 	auto& [_Destleft, _Desttop, _Destright, _Destbottom] = _RectDestination;

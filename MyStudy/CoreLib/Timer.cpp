@@ -6,7 +6,7 @@ using namespace std::chrono;
 bool Timer::Init()noexcept
 {
 	// 생성자와 Init 에서 Delta에 타임을 마킹해준다. 
-	 Delta = system_clock::now();
+	Delta = system_clock::now();
 	return true; 
 }
 

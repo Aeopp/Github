@@ -90,6 +90,7 @@ bool Sound::Load(ReadType P_ReadType, FMOD::System* const P_System) {
 	if (P_System == nullptr)
 		return false;
 		//throw std::invalid_argument(__FUNCTION__"Param Empty");
+
 	
 	F_System = P_System;
 	ReadKey = std::move(P_ReadType);

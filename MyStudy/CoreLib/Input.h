@@ -8,6 +8,8 @@
 class Input : private manager_Interface<Input>
 {
 public:
+	Point 구조체 선언
+	포인트 구조체는 월드에서 관리
 	using input_type = uint32_t;
 
 	enum class EKey :uint8_t {

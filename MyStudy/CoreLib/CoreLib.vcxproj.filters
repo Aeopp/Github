@@ -50,6 +50,9 @@
     <Filter Include="Actor\Npc">
       <UniqueIdentifier>{9034484b-8a7d-4a52-8976-bb43ea2b04c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\BitmapManager">
+      <UniqueIdentifier>{eeaf78c4-65fa-4458-9913-6f932723fc50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tester.h">
@@ -101,6 +104,9 @@
     <ClInclude Include="Hero.h">
       <Filter>Actor\Hero</Filter>
     </ClInclude>
+    <ClInclude Include="BitmapManager.h">
+      <Filter>Manager\BitmapManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tester.cpp">
@@ -141,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Example</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapManager.cpp">
+      <Filter>Manager\BitmapManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
