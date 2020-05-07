@@ -5,7 +5,7 @@
 #include <functional>
 #include <tuple>
 
-class Input : private manager_Interface<Input>
+class Input : public manager_Interface<Input>
 {
 public:
 	enum class EKey :uint8_t {

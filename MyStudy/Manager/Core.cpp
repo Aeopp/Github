@@ -2,12 +2,7 @@
 
 using namespace std::literals::chrono_literals;
 
-bool Core::Core_Init() noexcept
-{
 
-
-	return true; 
-}
 
 bool Core::Core_Clear() noexcept
 {

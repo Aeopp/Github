@@ -10,7 +10,7 @@
 
 // TODO :: FMOD::System 생성지점 찾아서 
 // TODO :: 딜리터 세팅 
-class SoundMgr : private manager_Interface<SoundMgr>
+class SoundMgr : public manager_Interface<SoundMgr>
 {
 public:
 	using Sound_ptr = std::shared_ptr<Sound>; 

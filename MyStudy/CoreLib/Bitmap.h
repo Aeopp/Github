@@ -48,7 +48,7 @@ bool Bitmap::Load(HDC_ptr ScreenHandle,const std::wstring& Fullpath,
 	_HScreenDC = std::move(ScreenHandle);
 	
 	if (_HBitmap =
-		HBITMAP_ptr(util::LoadImage_To_BitMap(Fullpath)(), util::Bitmap_Deleter()))
+		HBITMAP_ptr(util::LoadImage_To_BitMap(Fullpath)(), util::_DeleteObject()))
 	{
 		_Name = filename;
 	}

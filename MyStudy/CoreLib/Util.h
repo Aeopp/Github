@@ -10,6 +10,7 @@
 #include <random>
 #include "Type_Aliases.h"
 #include <fmod.hpp>
+#include <map>
 
 
 //인풋 로직 표현
@@ -103,16 +104,48 @@ public:
 			});
 		return *manager_Ptr.get();
 	};
-
+	
 	static  inline  auto ScreenDC_Deleter(HWND_ptr _HWnd)
 	{
-		return [&_HWnd](HDC _delete) {ReleaseDC(_HWnd.get(), _delete); };
-	};
-	
-	static  constexpr inline  auto Bitmap_Deleter() {
-	return 	[](HBITMAP _deleter) {DeleteObject(_deleter); };
+		return [HWnd = std::move(_HWnd)](HDC _delete) {ReleaseDC(HWnd.get(), _delete); };
 	};
 
+	static  constexpr inline  auto _DeleteObject() {
+	return 	[](auto _deleter) {DeleteObject(_deleter); };
+	};
+	
+	template<typename... Params>
+	static inline auto _CreateFont(Params&&... params)
+	{
+		return HFONT_ptr(CreateFont(
+
+			std::forward< Params>(params)...), _DeleteObject());
+	}
+	
+	static inline auto _CreateCompatibleDC(HDC_ptr _Hdc, HWND_ptr _HWnd)
+	{
+		return HDC_ptr(CreateCompatibleDC(_Hdc.get()), ScreenDC_Deleter(
+			std::move(_HWnd)));
+	};
+
+	static inline auto _CreateSolidBrush(COLORREF _ColorRef)
+	{
+		return HBRUSH_ptr(CreateSolidBrush(std::move(_ColorRef)),
+			_DeleteObject());
+	};
+	
+	static inline auto _CreateCompatibleBitmap(HDC_ptr _Hdc,const LONG right, const LONG bottom)
+	{
+		return HBITMAP_ptr( CreateCompatibleBitmap(_Hdc.get(), right, bottom),
+			_DeleteObject() ,util::_DeleteObject());
+	};
+	
+	static inline auto  _GetDC(HWND_ptr _HWnd)
+	{
+		return HDC_ptr(GetDC(_HWnd.get()), ScreenDC_Deleter(
+		std::move(_HWnd)));
+	}
+	
 	static  constexpr inline  auto FModSystem_Release()
 	{
 		return [](FMOD::System* _delete) {

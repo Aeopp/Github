@@ -5,16 +5,17 @@
 #include <optional>
 
 class BitmapManager : public manager_Interface<BitmapManager>{
-private:
+public:
 	using Bitmap_ptr = std::shared_ptr<Bitmap>;
-	std::map<std::wstring, Bitmap_ptr> Map;
-	const ReadType Path;
+
 public:
 		bool Init_Implementation() noexcept;
 		bool Clear_Implementation()noexcept;
 		bool Frame_Implementation();
 		bool Render_Implementation();
 
+	
+	
 		Bitmap_ptr GetPtr(const ReadType& _Key);
 		typename BitmapManager::Bitmap_ptr Load(HDC_ptr _HScreenDC, std::wstring FullPath);
 public : 
@@ -27,11 +28,13 @@ public :
 	BitmapManager(BitmapManager&&) noexcept = delete;
 	BitmapManager& operator=(BitmapManager&&) noexcept = delete;
 private:
+	std::map<std::wstring, Bitmap_ptr> Map;
+	const ReadType Path;
 	BitmapManager(std::wstring setDefaultPath = L"../../../Bitmap/");
 	virtual ~BitmapManager()noexcept; 
 };
 
-BitmapManager::BitmapManager(std::wstring setDefaultPath ) :
+BitmapManager::BitmapManager(ReadType setDefaultPath ) :
 	Path{ std::move(setDefaultPath) }
 {
 	Init_Implementation(); 

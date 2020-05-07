@@ -1,10 +1,10 @@
 #pragma once
 #include "ObjectSuper.h"
-#include "Bitmap.h"
+#include "BitmapManager.h"
 #include <type_traits>
 class Mesh : private ObjectSuper{
 private:
-	Bitmap _Bitmap;
+	typename BitmapManager::Bitmap_ptr _Bitmap;
 	RECT _RectSource;
 public :
 	float_t _PosX;
@@ -20,7 +20,6 @@ public :
 	
 	bool Load(HDC_ptr Arg_HDC, const std::wstring& FileName);
 	bool Render(HDC_ptr hOffScreenDC)const;
-	
 	bool inline Clear()noexcept override  ;
 };
 
