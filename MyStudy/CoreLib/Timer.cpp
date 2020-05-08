@@ -1,7 +1,7 @@
 #include "Timer.h"
 #include "Util.h"
+#include <sstream>
 using namespace std::chrono;
-
 bool Timer::Frame()
 {
 	const auto Current = system_clock::now();
@@ -27,7 +27,11 @@ bool Timer::Frame()
 
 	++Fps_Count;
 	Delta = Current;
-
+	
+	std::wstringstream WSS;
+	WSS << L"Sec : " << Elapsed << "  " << L"FPS : " << FPS << std::endl; 
+	CurrentTime = std::move(WSS.str()); 
+	
 	return true;
 }
 

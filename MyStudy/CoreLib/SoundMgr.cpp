@@ -1,11 +1,11 @@
+#pragma once
 #include "SoundMgr.h"
 #include <utility>
 #include "Util.h"
 #include <algorithm>
 #include <functional>
-#include "Convenience_function.h"
 
-std::optional<typename SoundMgr::Sound_ptr> SoundMgr::Load(const Key_Type& FullPath) noexcept(false)
+std::weak_ptr<Sound> SoundMgr::Load(const Key_Type& FullPath) noexcept(false)
 {
 	{
 		if (F_System == nullptr)
@@ -17,9 +17,9 @@ std::optional<typename SoundMgr::Sound_ptr> SoundMgr::Load(const Key_Type& FullP
 	// ../../../data/sound/filename.mp3 -> filename.mp3
 	// 문자열이 올바른 경로인지는 검사하지 않는다.
 	auto filename = File::PathDelete(FullPath);
-	
-	std::optional<typename SoundMgr::Sound_ptr> ReturnValue;
-	
+
+	std::weak_ptr<Sound> ReturnValue;
+
 	if (auto find_iter = Map.lower_bound(filename);
 		find_iter == std::end(Map) || find_iter->first > filename)
 	{
@@ -27,50 +27,50 @@ std::optional<typename SoundMgr::Sound_ptr> SoundMgr::Load(const Key_Type& FullP
 			_Sound->Init())
 		{
 			//				TODO:: 로딩은 FullPath
-			if (_Sound->Load(F_System,FullPath, filename)) {
+			if (_Sound->Load(F_System, FullPath, filename)) {
 				// TODO :: 사운드자체에 이름을 저장하는 로직 추가
 				auto iter = Map.try_emplace(
-					std::move(find_iter),std::move( filename), std::move(_Sound));
-				// 삽입이 성공적일때만 std::optional 에 유효한 값을 세팅해준다.
+					std::move(find_iter), std::move(filename), std::move(_Sound));
+				// 삽입이 성공적일때만 약포인터 에 유효한 값을 세팅해준다.
 				if (std::end(Map) != iter)
-					ReturnValue.emplace(iter->second);
+					ReturnValue = iter->second;
 			}
 		};
 	};
 	return ReturnValue;
-}
+};
 
-bool SoundMgr::Clear_Implementation() noexcept
+bool SoundMgr::Clear() noexcept
 {
 	Map.clear();
+	// 핸들 반환
+	F_System->close();
+	F_System->release();
 	return true; 
 };
 
-bool SoundMgr::Init_Implementation() noexcept(false)
+bool SoundMgr::Init() noexcept
 {
 	FMOD_RESULT F_Result;
 	
-	F_Result = FMOD::System_Create(util::Return_DoublePtr(F_System));
+	F_Result = FMOD::System_Create(&F_System);
 
 	{
 		// FMOD 시스템 로딩 실패
 		if (F_Result != FMOD_OK)
-			throw std::exception(Debug::Log("FMOD SYSTEM Create Fail").c_str());
-		//return false;
+		return false;
 		F_Result = F_System->init(32, FMOD_INIT_NORMAL, 0);
 		if (F_Result != FMOD_OK)
-			throw std::exception(Debug::Log("FMOD SYSTEM Initaliaze Fail").c_str());
-		//return false;
+			return false; 
 	}
 
 	return true; 
 }
 
-bool SoundMgr::Frame_Implementation()
+bool SoundMgr::Frame()
 {
-	
-		if (F_System == nullptr) return false;
-		// throw std::exception(Log("FMOD System Not Ready"));	
+	if (F_System == nullptr) return false;
+		throw std::exception(Debug::Log("FMOD System Not Ready").c_str());	
 	
 	for (auto&[_key,Sound] : Map) 
 		Sound->Frame(); 
@@ -80,7 +80,7 @@ bool SoundMgr::Frame_Implementation()
 	return true; 
 }
 
-bool SoundMgr::Render_Implementation()
+bool SoundMgr::Render()
 {
 	for (auto& [_key, Sound] : Map)
 		Sound->Render();
@@ -90,15 +90,15 @@ bool SoundMgr::Render_Implementation()
 
 std::weak_ptr<Sound> SoundMgr::getSound(const Key_Type& Param_key)
 {
-	return get_sound_ptr(Param_key).value_or(std::shared_ptr<Sound>{});
+	return get_sound_ptr(Param_key);
 };
 
 void SoundMgr::play_effect(const Key_Type& Param_key)&
 {
-	if(auto _sound = get_sound_ptr(Param_key);
-		_sound.has_value())
+	if(auto _sound = get_sound_ptr(Param_key).lock();
+		_sound)
 	{
-		_sound->get()->PlayEffect();
+		_sound->PlayEffect();
 	}
 }
 
@@ -135,55 +135,63 @@ void SoundMgr::play_sound(const Key_Type& Param_key) &{
 
 bool SoundMgr::pause(const Key_Type& Param_key) &
 {
-	if (auto sound_ptr = get_sound_ptr(Param_key);
-	bool isValid = 	sound_ptr.has_value())
+	if (auto sound_ptr = get_sound_ptr(Param_key).lock() ; 
+		sound_ptr)
 	{
-		sound_ptr->get()->Pause();
-		return isValid;
+		sound_ptr->Pause();
+		return true; 
 	}
+	return false; 
 }
 
 bool SoundMgr::stop(const Key_Type& Param_key) &
 {
-	if ( auto _sound = get_sound_ptr(Param_key);
-		bool isValid = _sound.has_value())
+	if ( auto _sound = get_sound_ptr(Param_key).lock() ; 
+		_sound)
 	{
-		if (_sound->get()->isPlay())
-		
-			_sound->get()->Stop();
-		
-		return isValid;
+		if (_sound->isPlay())
+		{
+			_sound->Stop();
+			return true;
+		}
 	}
 }
 
 bool SoundMgr::Volume_Up(const Key_Type& Param_key) &
 {
-	if ( auto _sound = get_sound_ptr(Param_key);
-		bool isValid = _sound.has_value())
+	if ( auto _sound = get_sound_ptr(Param_key).lock();
+		_sound)
 	{
-		_sound->get()->Volume_Up();
-		return isValid;
+		_sound->Volume_Up();
+		return true; 
 	}
 }
 
 bool SoundMgr::Volume_Down(const Key_Type& Param_key)&
 {
-	if (auto _sound = get_sound_ptr(Param_key);
-		bool isValid = _sound.has_value())
+	if (auto _sound = get_sound_ptr(Param_key).lock();
+		_sound)
 	{
-		_sound->get()->Volume_Up();
-		return isValid; 
+		_sound->Volume_Up();
+		return true; 
 	}
+	return false; 
+}
+
+void SoundMgr::SetDefaultPath(const ReadType& SetPath)
+{
+	DefaultPath = SetPath; 
 };
 
-std::optional<typename SoundMgr::Sound_ptr> SoundMgr::get_sound_ptr(const Key_Type& Param_key)&
+std::weak_ptr<Sound> SoundMgr::get_sound_ptr(const Key_Type& Param_key)&
 {
-	std::optional<typename SoundMgr::Sound_ptr> ReturnValue;
-	
+	std::weak_ptr<Sound> ReturnValue;
+
 	if (auto Iter = Map.find(Param_key);
-		Iter != std::end(Map))
-	
-		ReturnValue.emplace(Iter->second);
-	
+		Iter != std::end(Map)) {
+		ReturnValue = (Iter->second);
+	};
+
 	return ReturnValue;
-}
+};
+

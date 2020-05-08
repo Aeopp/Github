@@ -1,52 +1,73 @@
 #pragma once
+
 #include <windows.h>
 #include <string>
 #include <type_traits>
 #include "Util.h"
+#include "ObjectSuper.h"
 
-class Bitmap
+class Bitmap : public Object
 {
 private:
-	HBITMAP_ptr _HBitmap;
-	HDC_ptr _HScreenDC;
+	HBITMAP _HBitmap;
+	HDC _HScreenDC;
 public:
-	HDC_ptr _HMemDc;
+	HDC _HMemDc;
 	BITMAP _BmpInfo;
-	//template<typename _HDCptr/*,
-	//typename =std::enable_if_t<std::is_same_v<HDC_ptr, _HDCptr>,int>*/>
-	bool Load(HDC_ptr ScreenHandle,std::wstring Name)noexcept;
-	inline bool Clear()noexcept;
-	
-	Bitmap() = default;
-	~Bitmap() noexcept = default;
+	ReadType _Name;
+
+	virtual bool  Init() noexcept override {  return true;}
+	virtual bool Frame() override {  return true; }
+	virtual bool Render()override {	return true;}
+	bool Clear() noexcept override
+	{
+		DeleteObject(_HBitmap);
+		ReleaseDC(world::HWnd, _HMemDc);
+		return true;
+	};
+
+
+	bool Load(HDC ScreenHandle, const ReadType& Fullpath,
+		const ReadType& filename) noexcept
+	{
+		// TODO :: DDB Device Dependency Bitmap 디바이스 종속적 비트맵
+	// TODO :: DIB Device InDependency Bitmap 디바이스 독립적 비트맵
+		_HScreenDC = std::move(ScreenHandle);
+
+		if (_HBitmap = static_cast<HBITMAP>(LoadImage(world::HInstance,
+			filename.c_str(),
+			IMAGE_BITMAP,
+			0, 0,
+			LR_DEFAULTSIZE | LR_LOADFROMFILE)))
+		{
+			_Name = filename;
+		}
+		else
+		{
+			return false;
+		}
+
+		GetObject(_HBitmap, sizeof(HBITMAP__), &_BmpInfo);
+
+		_HMemDc = HDC
+		(CreateCompatibleDC(_HScreenDC));
+
+		SelectObject(_HMemDc, _HBitmap);
+
+		return true;
+	}
+
+
+	Bitmap()
+	{
+		Init();
+	}
+	~Bitmap() noexcept
+	{
+		Clear();
+	}
 	Bitmap(Bitmap&&) noexcept = default;
 	Bitmap(const Bitmap&) = default;
 	Bitmap& operator=(Bitmap&&) noexcept = default;
 	Bitmap& operator=(const Bitmap&) = default;
 };
-
-inline bool Bitmap::Clear() noexcept
-{
-	DeleteObject(_HBitmap.get());
-	ReleaseDC(world::HWnd.get(), _HMemDc.get());
-	return true;
-};
-
-//template <typename _HDCptr/*, typename*/>
-bool Bitmap::Load(HDC_ptr ScreenHandle, std::wstring Name) noexcept
-{
-	_HScreenDC = std::move(ScreenHandle);
-
-	_HBitmap =
-		HBITMAP_ptr(util::LoadImage_To_BitMap(Name)(), util::Bitmap_Deleter());
-
-	GetObject(_HBitmap.get(), sizeof(HBITMAP__), &_BmpInfo);
-	
-	_HMemDc =HDC_ptr
-	(CreateCompatibleDC(_HScreenDC.get()),
-		util::ScreenDC_Deleter(world::HWnd));
-	
-	SelectObject(_HMemDc.get(), _HBitmap.get());
-	
-	return true; 
-}

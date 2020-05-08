@@ -1,3 +1,4 @@
+#pragma once
 #include "Hero.h"
 #include "Input.h"
 #include <functional>
@@ -26,17 +27,27 @@ bool AHero::Init() noexcept
 
 	// TODO :: Press or Hold 로 바꾸어야함
 	// 사용자의 키 입력에 따라 메쉬의 포지션 좌표값을 조정해줍니다.
-	util::GetInstance<Input>().Func_Regist('W', _Key::Hold,
+	util::GetInstance<Input>().Func_Regist({ 'W' }, { _Key::Hold, _Key::Press },
 		_Move_Pos_Helper(_Mesh._PosY, std::minus<>{}));
 
-	util::GetInstance<Input>().Func_Regist('S', _Key::Hold,
+	util::GetInstance<Input>().Func_Regist({ 'S' }, { _Key::Hold, _Key::Press },
 		_Move_Pos_Helper(_Mesh._PosY, std::plus<>{}));
 
-	util::GetInstance<Input>().Func_Regist('A', _Key::Hold,
+	util::GetInstance<Input>().Func_Regist({'A'
+}, { _Key::Hold, _Key::Press },
 		_Move_Pos_Helper(_Mesh._PosX, std::minus<>{}));
 
-	util::GetInstance<Input>().Func_Regist('D', _Key::Hold,
+	util::GetInstance<Input>().Func_Regist({ 'D' }, { _Key::Hold, _Key::Press },
 		_Move_Pos_Helper(_Mesh._PosX, std::plus<>{}));
 
 	return true;
-};
+}
+bool AHero::Clear() noexcept
+{
+	return true;
+}
+AHero::~AHero() noexcept
+{
+	Clear(); 
+}
+;

@@ -90,12 +90,12 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>..\..\My_Library\CoreLib\include;..\..\Library\fmod\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\My_Library\CoreLib\include\;..\..\Library\fmod\inc\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\My_Library\CoreLib\lib\;..\..\Library\fmod\lib\x64;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\My_Library\CoreLib\lib\;..\..\Library\fmod\lib\x64\;</AdditionalLibraryDirectories>
       <AdditionalDependencies>fmod_vc.lib;CoreLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

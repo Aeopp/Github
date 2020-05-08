@@ -1,3 +1,4 @@
+#pragma once
 #include "Npc.h"
 #include <algorithm>
 
@@ -45,4 +46,10 @@ bool ANpc::Frame()
 
 ANpc::ANpc():_DirX_Speed{1.f},_DirY_Speed{1.f},speed{100.f}
 {
+}
+
+ANpc::~ANpc() noexcept
+{
+	Clear();
+	
 }

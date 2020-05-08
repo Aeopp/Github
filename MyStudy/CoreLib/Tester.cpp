@@ -1,7 +1,7 @@
+#pragma once
 #include "Tester.h"
 #include "Core.h"
 #include <windows.h>
-#include <Convenience_function.h>
 using namespace std::literals::chrono_literals;
 
 bool Tester::Frame()
@@ -24,13 +24,13 @@ bool Tester::Render()
 	
 	auto& _WorldRect = world::RectClient;
 	
-	BitBlt(_HScreenDC.get(), 0, 0, world::RectClient.right, world::RectClient.bottom,
-	_HOffScreenDC.get(),0,0,SRCCOPY	);
+	BitBlt(_HScreenDC, 0, 0, world::RectClient.right, world::RectClient.bottom,
+	_HOffScreenDC,0,0,SRCCOPY	);
 
 	return true; 
 };
 
-bool Tester::Init() 
+bool Tester::Init()noexcept
 {
 	// TODO ::  Test Code
 	const std::wstring _key1 = L"../../../Data/Sound/romance.mid";
@@ -38,54 +38,58 @@ bool Tester::Init()
 	const std::wstring _key3 = L"../../../Data/Sound/GunShot.mp3";
 
 	using _Key = Input::EKey;
-	
+
 	auto& _Sound_Ref = Super::_Sound_Mgr;
-	auto& _Input_Ref  = Super::_Input_Helper;
-	
+	auto& _Input_Ref = Super::_Input_Helper;
+
 	_Sound_Ref.Load(_key1);
 	_Sound_Ref.Load(_key2);
 	_Sound_Ref.Load(_key3);
 
-	_Input_Ref.Func_Regist('1', _Key::Press,&SoundMgr::play_sound,
-	std::ref(_Sound_Ref),_key1);
-	
-	_Input_Ref.Func_Regist('2', _Key::Press,&SoundMgr::play_sound, 
-	std::ref(_Sound_Ref),_key2);
+	_Input_Ref.Func_Regist({ '1' }, { _Key::Press,_Key::Press }  ,&SoundMgr::play_sound,
+		std::ref(_Sound_Ref), _key1);
 
-	_Input_Ref.Func_Regist('3', _Key::Press,&SoundMgr::play_effect,
-	std::ref(_Sound_Ref),_key3);
+	_Input_Ref.Func_Regist({ '2'
+		}, { _Key::Press , _Key::Press }, &SoundMgr::play_sound,
+		std::ref(_Sound_Ref), _key2);
 
-	_Input_Ref.Func_Regist('P', _Key::Press,&SoundMgr::pause,
-	std::ref(_Sound_Ref), _key1);
-							//VK_HOME
-	_Input_Ref.Func_Regist(0x24, _Key::Hold, &SoundMgr::Volume_Up,
-	std::ref(_Sound_Ref),_key1);
-							//VK_END
-	_Input_Ref.Func_Regist(0x23, _Key::Hold, &SoundMgr::Volume_Down,
+	_Input_Ref.Func_Regist({ '3' }, {_Key::Press, _Key::Press
+}, & SoundMgr::play_effect,
+		std::ref(_Sound_Ref), _key3);
+
+	_Input_Ref.Func_Regist({'P'
+		}, { _Key::Press,_Key::Press } ,  &SoundMgr::pause,
+		std::ref(_Sound_Ref), _key1);
+	//VK_HOME
+	_Input_Ref.Func_Regist({ 0x24 }, { _Key::Hold,_Key::Hold }, &SoundMgr::Volume_Up,
+		std::ref(_Sound_Ref), _key1);
+	//VK_END
+	_Input_Ref.Func_Regist({0x23
+}, { _Key::Hold,_Key::Hold }, & SoundMgr::Volume_Down,
 	std::ref(_Sound_Ref), _key1);
 
 	//TODO :: ESC Push -> Core Run 에 Notify 해서 루프를 바로 종료할수 있다면 적용할 것
 	//TODO :: 적용하고 Core::Run 키 체킹 코드 지울것
 	auto Exit = [this] {IsExit = true; };
 	
-	_Input_Ref.Func_Regist(0x18, _Key::Press, Exit); 
+	_Input_Ref.Func_Regist({ 0x18 }, { _Key::Press,_Key::Press }, Exit);
 	// TODO :: Delete plz...
 
 	// shared_ptr 이 소멸할때 ReleaseDC 를 호출해 핸들 안전하게 해제 
-	auto ScreenDC_Deleter = util::ScreenDC_Deleter(_HWnd);
+	auto ScreenDC_Deleter = _HWnd;
 	
-	/*_HScreenDC = HDC_ptr(GetDC(_HWnd.get()),
+	/*_HScreenDC = HDC(GetDC(_HWnd),
 		ScreenDC_Deleter);
 	
-	_HOffScreenDC = HDC_ptr(
-		CreateCompatibleDC(_HScreenDC.get()), ScreenDC_Deleter);
+	_HOffScreenDC = HDC(
+		CreateCompatibleDC(_HScreenDC), ScreenDC_Deleter);
 	
-	_HOffScreenBitmap = HBITMAP_ptr
-	(CreateCompatibleBitmap(_HScreenDC.get(),
+	_HOffScreenBitmap = HBITMAP
+	(CreateCompatibleBitmap(_HScreenDC,
 	world::RectClient.right, world::RectClient.bottom),
 		util::Bitmap_Deleter());*/
 
-	SelectObject(_HOffScreenDC.get(), _HOffScreenBitmap.get());
+	SelectObject(_HOffScreenDC, _HOffScreenBitmap);
 	
 	_BackGround.Load(_HScreenDC, L"../../../Data/kgcabk.bmp");
 	
@@ -145,7 +149,7 @@ bool Tester::Clear() noexcept
 		
 	}
 	*/
-	/*DeleteObject(_HOffScreenBitmap.get());
+	/*DeleteObject(_HOffScreenBitmap);
 	ReleaseDC(_hwnd)*/
 
 		return true; 

@@ -18,12 +18,12 @@ public:
 	Input& _Input_Helper;
 	BitmapManager& _BitmapManager;
 
-	HFONT_ptr _HDefaultFont; 
-	HFONT_ptr _HFont;
-	HBRUSH_ptr _HBrushBackGround;
-	HDC_ptr _HScreenDC;
-	HDC_ptr _HOffScreenDC;
-	HBITMAP_ptr _HOffScreenBitmap;
+	HFONT _HDefaultFont; 
+	HFONT _HFont;
+	HBRUSH _HBrushBackGround;
+	HDC _HScreenDC;
+	HDC _HOffScreenDC;
+	HBITMAP _HOffScreenBitmap;
 	
 	void inline set_delay(uint32_t p_delay)&;
 
@@ -32,13 +32,16 @@ public:
 	bool Init_Implementation()   noexcept; 
 	bool Clear_Implementation()noexcept;
 
+	bool Frame()	override { return true; } 
+
+	bool Render()	override { return true; }
+	bool Init()noexcept     override { return true; }
+	bool Clear() noexcept   override { return true; }
+
+	
 	bool PreRender();
 	bool PostRender();
 	// TODO :: Core 가상 함수를 재정의 하고 부모의 함수를 반드시 선행으로 부를것
-	virtual bool Frame() = 0;
-	virtual bool Render() = 0;
-	virtual bool Init()   noexcept = 0;
-	virtual bool Clear()noexcept = 0;
 	
     bool Run()&;
 	

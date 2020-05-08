@@ -2,7 +2,7 @@
 #include "ObjectSuper.h"
 #include "Mesh.h"
 class Actor :
-	public ObjectSuper<Actor>
+	public Object
 {
 public:
 	using Super = Actor;
@@ -14,11 +14,25 @@ public:
 	Actor& operator=(Actor&&) noexcept = default;
 	Actor& operator=(const Actor&) = default;
 
-	//virtual bool Load(const HDC_ptr& Arg_HDC, const std::wstring& FileName)
+	virtual bool Render() {
+		return true;
+	};
+	virtual bool Frame() {
+		return true;
+	};
+	virtual bool Init() noexcept{
+		return true;
+	};
+	virtual bool Clear() noexcept {
+		return true;
+	};
+
+
+	//virtual bool Load(const HDC& Arg_HDC, const std::wstring& FileName)
 	//{
 	//	return std::invoke(&Mesh::Load, std::ref(_Mesh), Arg_HDC, FileName);
 	//}
-	//virtual bool SetRect(const HDC_ptr& Arg_HDC, const std::wstring& FileName)
+	//virtual bool SetRect(const HDC& Arg_HDC, const std::wstring& FileName)
 	//{
 	//	return std::invoke(&Mesh::Load, std::ref(_Mesh), Arg_HDC, FileName);
 	//}

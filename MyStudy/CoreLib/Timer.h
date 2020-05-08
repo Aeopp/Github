@@ -3,17 +3,31 @@
 #include <chrono>
 #include <iostream>
 #include <string>
-class Timer : public ObjectSuper
+
+class Timer : public Object
 {
 public:
+	std::wstring CurrentTime; 
 	//_Implementation
 	bool Frame();
 	bool inline Init()noexcept;
 	bool inline Render();
 
-
-	Timer();
-	virtual ~Timer() noexcept;
+	Timer() :
+		Elapsed{ 0 },
+		FrameTime{ 0 },
+		Name{ 0 },
+		Fps_Count{ 0 },
+		FPS{ 0 },
+		Delta{ std::chrono::system_clock::now() }
+	{
+		Init();
+	};
+	
+	virtual ~Timer() noexcept
+	{
+		Clear();
+	}
 
 	Timer(Timer&&) noexcept = default;
 	Timer(const Timer&) = default;
@@ -32,23 +46,9 @@ public:
 	uint64_t FPS; 
 };
 
-Timer::Timer() :
-	Elapsed{ 0 },
-	FrameTime{ 0 },
-	Name{ 0 },
-	Fps_Count{ 0 },
-	FPS{ 0 },
-	Delta{std::chrono::system_clock::now() }
-{
-	Init();
-}
 
-Timer::~Timer() noexcept
-{
-	//TODO :: 추후에 가상함수로 바꾼다면 Clear 호출해선 안됨
-	// 소멸 or 생성 스코프에서 가상함수는 작동하지 않는다.
-	Clear();
-}
+
+
 
 bool inline Timer::Init()noexcept
 {
@@ -58,6 +58,7 @@ bool inline Timer::Init()noexcept
 }
 bool inline Timer::Render()
 {
-	std::wcout << L"Sec : " << Elapsed << "  " << L"FPS : " << FPS << std::endl;
+	std::wcout << CurrentTime;
+	
 	return true;
 }

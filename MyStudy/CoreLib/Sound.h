@@ -4,45 +4,48 @@
 #include "fmod.hpp"
 #include <algorithm>
 #include "Util.h"
-#include "Convenience_function.h"
-
+#include <iostream>
 // TODO::Sound <-> Manager Dependency names...
-using HFMod_System = std::shared_ptr<FMOD::System>;
-using HFMod_Sound = std::shared_ptr<FMOD::Sound>;
-using HFMod_Channel = std::shared_ptr<FMOD::Channel>;
-
-class Sound : public ObjectSuper
+class Sound : public Object
 {
 public:
-	Sound();
-	bool Frame();
-	bool inline Init()      noexcept override;
-	bool inline Render()override;
-	bool inline Clear()      noexcept override;
+	Sound() :
+		F_System{ nullptr },
+		F_Sound{ nullptr },
+		Volume{ 0.5f },
+		Length{}
+	{
+		Init();
+	};
+	
+	bool Frame() override; 
+	bool Init()      noexcept override;
+	bool Render()override;
+	bool Clear()      noexcept override;
 	// 1. 소멸자에서 clear 호출해주거나
 	// 2. 클래스 사용측에서 clear 호출해주거나
 	// 3. 스마트포인터에 딜리터 세팅해서 신경안쓰기
-	virtual ~Sound();
+	virtual ~Sound()noexcept { Clear(); }; 
 	
 	void Pause(); 
 	void inline Stop();
 	void inline SetMode(uint32_t mode_param = FMOD_LOOP_NORMAL);
 	bool inline isPlay() const&;
 	
-	bool Load(HFMod_System P_System,const std::wstring& Fullpath,const std::wstring& filename);
+	bool Load(FMOD::System* P_System,const std::wstring& Fullpath,const std::wstring& filename);
 	bool Play();
 	bool PlayEffect();
 
 	void inline Volume_Up()&;
 	void inline Volume_Down()&;
-	inline ReadType getReadKey()const&;
+	 ReadType inline getReadKey()const&;
 	ReadType ReadKey;
 private:
 	void inline Volume_Impl(bool updown_tag)&;
 	
-	HFMod_System F_System;
-	HFMod_Sound F_Sound;
-	HFMod_Channel F_Channel;
+	FMOD::System* F_System;
+	FMOD::Sound* F_Sound;
+	FMOD::Channel* F_Channel;
 	
 	float_t Volume;
 	uint32_t Length;
@@ -96,23 +99,17 @@ inline ReadType Sound::getReadKey()const&
 	return ReadKey; 
 }
 
-Sound::Sound() :
-	F_System{ nullptr },
-	F_Sound{ nullptr },
-	Volume{ 0.5f },
-	Length{}
-{
-	Init();
-};
 
-Sound::~Sound()noexcept
-{
-	Clear();
-};
 
 
 bool inline Sound::Render()
 {
 	std::wcout << played_time << std::endl;
+	return true; 
+}
+
+inline bool Sound::Clear() noexcept
+{
+	return true; 
 }
 

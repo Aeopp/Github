@@ -1,3 +1,4 @@
+#pragma once
 #include "Input.h"
 #include <windows.h>
 #include "Util.h"
@@ -6,9 +7,8 @@ Input::~Input() noexcept(true)
 {
 	Clear();
 }
-bool Input::Init()noexcept(false) 
+bool Input::Init()noexcept
 {
-	key_state.fill(EKey::None);
 	return true;
 };
 
@@ -19,13 +19,18 @@ bool Input::Frame()
 	
 	for (const auto& [_func, _KeyList, _Mappeds] : Func_Register)
 	{
-		for (auto& _Key : _KeyList)
+		for (const auto& _Key : _KeyList)
 		{
 			// 해당키가 어떠한 상태인지 검사
 			auto Cur_Key = key_check(_Key);
 			// 해당 키의 상태가 사용자가 원하는 상황중 하나라도 맞는다면 호출
-			if (Cur_Key == _Mappeds.first || Cur_Key == _Mappeds.second)
-				_func();
+			auto is_find = 
+			std::find(std::begin(_Mappeds),std::end(_Mappeds), Cur_Key);
+			
+			if (is_find != std::end(_Mappeds))
+			{
+				_func(); 
+			}
 		}
 	};
 	
@@ -43,7 +48,7 @@ bool Input::Clear() noexcept
 	return true;
 };
 
-typename Input::EKey Input::key_check(input_type p_key) 
+typename Input::input_type Input::key_check(input_type p_key)
 {
 	const auto Cur_key = GetAsyncKeyState(p_key);
 	// 눌렸다면 최상위비트는 무조건 1 
@@ -51,24 +56,23 @@ typename Input::EKey Input::key_check(input_type p_key)
 	// 키는 무조건 눌렸음
 	if (Cur_key & 0x8000) {
 
-		if (key_state[p_key] == EKey::Free ||
-			key_state[p_key] == EKey::Release)
-
-			key_state[p_key] = EKey::Press;
-
+		if (key_state[p_key] == Free ||
+			key_state[p_key] == Release)
+		{
+			key_state[p_key] = Press;
+		}
 		else
-			key_state[p_key] = EKey::Hold; 
+			key_state[p_key] = Hold; 
 	}
 	else{
-		if (key_state[p_key] == EKey::Press ||
-			key_state[p_key] == EKey::Hold)
-
-			key_state[p_key] = EKey::Release;
-
+		if (key_state[p_key] == Press ||
+			key_state[p_key] == Hold)
+		{
+			key_state[p_key] = Release;
+		}
 		else
-			key_state[p_key] = EKey::Free; 
+			key_state[p_key] = Free; 
 	}
-	
 	return key_state[p_key];
 }
 

@@ -4,9 +4,9 @@
 class _Tester : public Core
 {
 protected:
-	virtual bool Init() override;
+	virtual bool Init_Implementation() override;
 };
-bool _Tester::Init()
+bool _Tester::Init_Implementation()
 {
 	// TODO ::  Test Code
 	const std::wstring _key1 = L"‪../../Data/Sound/romance.mid";

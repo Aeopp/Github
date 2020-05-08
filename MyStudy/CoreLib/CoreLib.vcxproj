@@ -130,7 +130,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>..\..\Library\fmod\inc;..\..\My_Library\Convenience_Lib\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Library\fmod\inc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

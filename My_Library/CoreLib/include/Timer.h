@@ -1,17 +1,34 @@
 #pragma once
 #include "ObjectSuper.h"
 #include <chrono>
+#include <iostream>
 #include <string>
-class Timer : public ObjectSuper 
+
+class Timer : public Object
 {
 public:
-	virtual bool Init()noexcept override;
-	bool Render() const ;
-	virtual bool Clear() noexcept override;
-	virtual bool Frame()  override;
+	std::wstring CurrentTime; 
+	//_Implementation
+	bool Frame();
+	bool inline Init()noexcept;
+	bool inline Render();
 
-	Timer();
-	virtual ~Timer()  noexcept;
+	Timer() :
+		Elapsed{ 0 },
+		FrameTime{ 0 },
+		Name{ 0 },
+		Fps_Count{ 0 },
+		FPS{ 0 },
+		Delta{ std::chrono::system_clock::now() }
+	{
+		Init();
+	};
+	
+	virtual ~Timer() noexcept
+	{
+		Clear();
+	}
+
 	Timer(Timer&&) noexcept = default;
 	Timer(const Timer&) = default;
 	Timer& operator=(Timer&&) noexcept = default;
@@ -29,3 +46,19 @@ public:
 	uint64_t FPS; 
 };
 
+
+
+
+
+bool inline Timer::Init()noexcept
+{
+	// 생성자와 Init 에서 Delta에 타임을 마킹해준다. 
+	Delta = std::chrono::system_clock::now();
+	return true;
+}
+bool inline Timer::Render()
+{
+	std::wcout << CurrentTime;
+	
+	return true;
+}

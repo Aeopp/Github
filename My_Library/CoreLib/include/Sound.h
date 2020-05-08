@@ -1,45 +1,48 @@
 #pragma once
 #include "ObjectSuper.h"
 #include <string>
-//#include "fmod.h"
 #include "fmod.hpp"
 #include <algorithm>
-#include <functional>
 #include "Util.h"
-#include "Convenience_function.h"
-
-class Sound : public ObjectSuper 
+#include <iostream>
+// TODO::Sound <-> Manager Dependency names...
+class Sound : public Object
 {
 public:
-	using ReadType = std::wstring; 
-
-	Sound();
+	Sound() :
+		F_System{ nullptr },
+		F_Sound{ nullptr },
+		Volume{ 0.5f },
+		Length{}
+	{
+		Init();
+	};
 	
-	virtual bool Init()noexcept override;
-	bool Render() const;
-	virtual bool Clear()noexcept override;
-	virtual bool Frame() override;
+	bool Frame() override; 
+	bool Init()      noexcept override;
+	bool Render()override;
+	bool Clear()      noexcept override;
 	// 1. 소멸자에서 clear 호출해주거나
 	// 2. 클래스 사용측에서 clear 호출해주거나
 	// 3. 스마트포인터에 딜리터 세팅해서 신경안쓰기
-	virtual ~Sound();
+	virtual ~Sound()noexcept { Clear(); }; 
 	
 	void Pause(); 
-	void Stop();
-	void SetMode(uint32_t mode_param = FMOD_LOOP_NORMAL); 
+	void inline Stop();
+	void inline SetMode(uint32_t mode_param = FMOD_LOOP_NORMAL);
 	bool inline isPlay() const&;
 	
-	bool Load(ReadType P_ReadType,FMOD::System*const P_System);
+	bool Load(FMOD::System* P_System,const std::wstring& Fullpath,const std::wstring& filename);
 	bool Play();
 	bool PlayEffect();
 
 	void inline Volume_Up()&;
 	void inline Volume_Down()&;
-
-	inline typename Sound::ReadType getReadKey()const&;
+	 ReadType inline getReadKey()const&;
+	ReadType ReadKey;
 private:
 	void inline Volume_Impl(bool updown_tag)&;
-	ReadType ReadKey;
+	
 	FMOD::System* F_System;
 	FMOD::Sound* F_Sound;
 	FMOD::Channel* F_Channel;
@@ -48,7 +51,14 @@ private:
 	uint32_t Length;
 	std::wstring played_time; 
 };
-  
+void inline Sound::Stop() {
+
+	F_Channel->stop();
+}
+
+void inline Sound::SetMode(uint32_t mode_param) {
+	F_Sound->setMode(mode_param);
+};
 inline void Sound::Volume_Up()&{
 	Volume_Impl(true); 
 }
@@ -61,9 +71,11 @@ inline void Sound::Volume_Impl(bool updown_tag)&{
 	if (F_Channel == nullptr)
 		throw std::exception(Debug::Log("F_Channel == nullptr").c_str());
 
-	auto Delta = time::delta_sec; 
+	auto Delta = time::delta_sec;
+	
 	float_t L_Volume = 1.f;
 	float_t change_width = 0.1f;
+	
 	if (updown_tag == false) 
 		change_width *= -1; 
 
@@ -82,7 +94,22 @@ bool inline Sound::isPlay() const&{
 	return _Isplay; 
 }
 
-inline typename Sound::ReadType Sound::getReadKey()const&
+inline ReadType Sound::getReadKey()const&
 {
 	return ReadKey; 
 }
+
+
+
+
+bool inline Sound::Render()
+{
+	std::wcout << played_time << std::endl;
+	return true; 
+}
+
+inline bool Sound::Clear() noexcept
+{
+	return true; 
+}
+

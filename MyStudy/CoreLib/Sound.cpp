@@ -33,8 +33,10 @@ bool Sound::Frame() {
 	return true;
 }
 
-
-
+bool Sound::Init() noexcept
+{
+	return true; 
+}
 
 void Sound::Pause() {
 	bool isplay = false;
@@ -49,7 +51,7 @@ void Sound::Pause() {
 	}
 };
 
-bool Sound::Load(HFMod_System P_System, const std::wstring& Fullpath, const std::wstring& filename) {
+bool Sound::Load(FMOD::System* P_System, const std::wstring& Fullpath, const std::wstring& filename) {
 	    // Param 이 비어있을시 확장자가 유효하지 않을시
 		// Param 으로 된 Sound 를 로드할수 없을 시
 		// System 이 준비되지 않았을시
@@ -63,7 +65,7 @@ bool Sound::Load(HFMod_System P_System, const std::wstring& Fullpath, const std:
 	std::string convert_string(std::begin(Fullpath), std::end(Fullpath));
 	//  사운드를 불러오고 사운드의 상태 체크를 한다
 	
-	auto SoundHandle = F_Sound.get();
+	auto* SoundHandle = F_Sound;
 	
 	HR = F_System->createSound
 	(convert_string.c_str(), FMOD_DEFAULT, 0,&SoundHandle);
@@ -95,8 +97,8 @@ bool Sound::Play() {
 	if(isplay==true)
 		this->Stop(); 
 	
-	HR = F_System->playSound(F_Sound.get(), nullptr, false, 
-		util::Return_DoublePtr(F_Channel));
+	HR = F_System->playSound(F_Sound, nullptr, false, 
+		&F_Channel);
 
 	if (HR != FMOD_OK) {
 		return false;
@@ -109,8 +111,8 @@ bool Sound::Play() {
 bool Sound::PlayEffect() {
 	FMOD_RESULT HR;
 	
-	HR = F_System->playSound(F_Sound.get(), nullptr, false,
-	util::Return_DoublePtr(F_Channel));
+	HR = F_System->playSound(F_Sound, nullptr, false,
+	&F_Channel);
 
 	// 사운드 재생 실패
 	if (HR != FMOD_OK)
