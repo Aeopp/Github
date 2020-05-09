@@ -1,0 +1,15 @@
+#pragma once
+#include "TObject.h"
+class TNpcObj : public TObject
+{
+public:
+	bool		m_bDead;
+	float fDirectionX = 1.0f;
+	float fDirectionY = 1.0f;
+public:
+	bool	Frame();
+public:
+	TNpcObj();
+	virtual ~TNpcObj();
+};
+

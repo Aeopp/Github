@@ -36,6 +36,11 @@ public:
 	//{
 	//	return std::invoke(&Mesh::Load, std::ref(_Mesh), Arg_HDC, FileName);
 	//}
+protected:
+	bool bDead = false; 
+	float_t DirX = 1.f; 
+	float_t DirY = 1.f;
+	float_t Speed = 200.f; 
 private:
 };
 

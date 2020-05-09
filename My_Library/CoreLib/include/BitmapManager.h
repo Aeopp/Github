@@ -99,7 +99,7 @@ inline std::weak_ptr<Bitmap> BitmapManager::Load(HDC _HScreenDC, std::wstring Fu
 		if (auto _bitmap = std::make_shared<Bitmap>();
 			_bitmap->Init())
 		{
-			if (_bitmap->Load(std::move(_HScreenDC), FullPath, filename))
+			if (_bitmap->Load(_HScreenDC, FullPath, filename))
 			{
 				return Map.try_emplace(std::move(find_iter), std::move(filename),
 					std::move(_bitmap))->second;

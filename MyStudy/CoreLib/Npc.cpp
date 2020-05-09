@@ -21,9 +21,9 @@ bool ANpc::Frame()
 	auto& [_worldleft,_worldtop, _worldright,_worldbottom] = world::RectClient;
 
 	static auto Ping = 
-	_Move_Pos_Helper(_PosY, _worldtop, _worldbottom, _DirY_Speed);
+	_Move_Pos_Helper(_PosY, _worldtop, _worldbottom, DirY);
 	static auto Pong = 
-	_Move_Pos_Helper(_PosX, _worldleft, _worldright, _DirX_Speed);
+	_Move_Pos_Helper(_PosX, _worldleft, _worldright, DirX);
 
 	Ping();
 	Pong();
@@ -32,20 +32,21 @@ bool ANpc::Frame()
 
 	_Mesh._RectDestination.top=
 		_PosY = std::clamp<float_t>
-	(	_PosY + (_DirY_Speed * _delta_sec * speed), 
+	(	_PosY + (DirY* _delta_sec * Speed), 
 		_worldtop, _worldbottom);
 	
 	_Mesh._RectDestination.left = 
 		_PosX = 
 		std::clamp<float_t>
-	(	_PosX + (_DirX_Speed * _delta_sec * speed), 
+	(	_PosX + (DirX * _delta_sec * Speed),
 		_worldleft, _worldright);
 	
 	return true; 
 }
 
-ANpc::ANpc():_DirX_Speed{1.f},_DirY_Speed{1.f},speed{100.f}
+ANpc::ANpc()
 {
+	Speed = 100.f; 
 }
 
 ANpc::~ANpc() noexcept

@@ -32,10 +32,10 @@ public:
 	{
 		// TODO :: DDB Device Dependency Bitmap 디바이스 종속적 비트맵
 	// TODO :: DIB Device InDependency Bitmap 디바이스 독립적 비트맵
-		_HScreenDC = std::move(ScreenHandle);
+		_HScreenDC = ScreenHandle;
 
 		if (_HBitmap = static_cast<HBITMAP>(LoadImage(world::HInstance,
-			filename.c_str(),
+			Fullpath.c_str(),
 			IMAGE_BITMAP,
 			0, 0,
 			LR_DEFAULTSIZE | LR_LOADFROMFILE)))
@@ -49,8 +49,8 @@ public:
 
 		GetObject(_HBitmap, sizeof(HBITMAP__), &_BmpInfo);
 
-		_HMemDc = HDC
-		(CreateCompatibleDC(_HScreenDC));
+		_HMemDc =
+			CreateCompatibleDC(_HScreenDC); 
 
 		SelectObject(_HMemDc, _HBitmap);
 

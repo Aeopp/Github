@@ -3,9 +3,6 @@
 
 class ANpc : public Actor
 {
-	float_t _DirX_Speed;
-	float_t _DirY_Speed;
-	const float_t speed;
 public:
 	using Actor::Actor; 
 	bool Frame()override; 

@@ -60,7 +60,8 @@ bool Core::Init_Implementation()noexcept
 
 
 
-Core::Core() : _Input_Helper{ util::GetInstance<Input>() },
+Core::Core() :
+_Input_Helper{ util::GetInstance<Input>() },
 _Sound_Mgr{ util::GetInstance<SoundMgr>() },
 _BitmapManager{ util::GetInstance<BitmapManager>() }
 {

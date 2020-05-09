@@ -70,7 +70,7 @@ bool SoundMgr::Init() noexcept
 bool SoundMgr::Frame()
 {
 	if (F_System == nullptr) return false;
-		throw std::exception(Debug::Log("FMOD System Not Ready").c_str());	
+	/*	throw std::exception(Debug::Log("FMOD System Not Ready").c_str());	*/
 	
 	for (auto&[_key,Sound] : Map) 
 		Sound->Frame(); 
