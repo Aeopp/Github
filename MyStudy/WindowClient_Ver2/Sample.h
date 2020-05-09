@@ -27,7 +27,7 @@ struct TProjectile
 };
 class Sample : public TCore
 {
-	int			m_iLifeCounter;
+	int			LifeCounter;
 	THeroObj	m_Hero;
 	//TNpcObj		m_Npc;
 	list<TNpcObj*>		m_NpcList;
@@ -36,7 +36,7 @@ class Sample : public TCore
 	list<TProjectile>	m_ProjectileList;
 
 	float	m_fNpcTime;
-	float	m_fHeroLifeTime;
+	float	HeroLifeTime;
 public:
 	bool	Init();
 	bool	Frame();

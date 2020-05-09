@@ -40,11 +40,14 @@ bool Sample::RectInRect(RECT src, RECT desk)
 }
 void Sample::SetLifeCounter()
 {
-	if (m_fHeroLifeTime > 3.0f)
+	if (HeroLifeTime > 3.0f)
 	{
-		I_SoundMgr.GetPtr(3)->PlayEffect();
-		m_iLifeCounter--;
-		m_fHeroLifeTime = 0.0f;
+		if (auto SharedSound = I_SoundMgr.GetSound(L"Gun2.mp3").lock();
+			SharedSound) {
+			SharedSound->PlayEffect();
+		}
+		LifeCounter--;
+		HeroLifeTime = 0.0f;
 	}
 }
 TNpcObj* Sample::AddNpc()
@@ -67,9 +70,9 @@ TNpcObj* Sample::AddNpc()
 }
 bool	Sample::Init()
 {	
-	I_SoundMgr.Load(L"../../../Data/Sound/OnlyLove.mp3");
-	I_SoundMgr.Load(L"../../../Data/Sound/gunShot.mp3");
-	I_SoundMgr.Load(L"../../../Data/Sound/gun1.wav");
+	I_SoundMgr.Load(L"../../../Data/Sound/romance.mid");
+	I_SoundMgr.Load(L"../../../Data/Sound/Gun1.mp3");
+	I_SoundMgr.Load(L"../../../Data/Sound/Gun2.mp3");
 	m_BackGround.Load(m_hScreenDC, L"../../../Data/Bitmap/kgcabk.bmp");
 	if (m_Hero.Load(m_hScreenDC, L"../../../Data/Bitmap/bitmap1.bmp"))
 	{
@@ -100,7 +103,10 @@ bool	Sample::Init()
 		m_NpcList.push_back(AddNpc());
 	}
 	
-	//I_SoundMgr.GetPtr(1)->Play();
+	if (auto SharedSound = I_SoundMgr.GetSound(L"romance.mid").lock(); SharedSound) {
+		SharedSound->Play();
+	}
+
 	return true;
 }
 bool	Sample::Frame()
@@ -115,7 +121,9 @@ bool	Sample::Frame()
 		item.SetPos(m_Hero.m_fPosX, m_Hero.m_fPosY);
 		m_ProjectileList.insert(m_ProjectileList.end(),
 			item);
-		I_SoundMgr.GetPtr(2)->PlayEffect();
+		if (auto SharedSound = I_SoundMgr.GetSound(L"Gun1.mp3").lock(); SharedSound) {
+			SharedSound->PlayEffect();
+		}
 	}
 	list<TProjectile>::iterator iter;
 	for (iter = m_ProjectileList.begin();
@@ -171,11 +179,11 @@ bool	Sample::Frame()
 			npc->SetPos(0, 0);
 		}
 	}
-	if (m_iLifeCounter <= 0)
+	if (LifeCounter <= 0)
 	{
 		bExit = true;
 	}
-	m_fHeroLifeTime += World::FramePerSecond;
+	HeroLifeTime += World::FramePerSecond;
 	return true;
 }
 bool	Sample::Render()
@@ -197,7 +205,7 @@ bool	Sample::Render()
 
 	HFONT hOldFont = (HFONT)SelectObject(m_hOffScreenDC, m_hGameFont);
 	tstring strBuffer = L"LIFE :";
-	strBuffer += std::to_wstring(m_iLifeCounter);
+	strBuffer += std::to_wstring(LifeCounter);
 	SetTextColor(m_hOffScreenDC, RGB(255, 0, 0));
 	SetBkColor(m_hOffScreenDC, RGB(0, 0, 255));
 	SetBkMode(m_hOffScreenDC, TRANSPARENT);
@@ -226,8 +234,8 @@ bool	Sample::Release()
 Sample::Sample()
 {
 	m_fNpcTime = 0.0f;
-	m_fHeroLifeTime = 0.0f;
-	m_iLifeCounter = 3;
+	HeroLifeTime = 0.0f;
+	LifeCounter = 3;
 }
 Sample::~Sample()
 {

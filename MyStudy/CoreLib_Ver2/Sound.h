@@ -3,14 +3,14 @@
 #include <fmod.h>
 #include <fmod.hpp>
 #include <fmod_errors.h>
-class TSound : public TBaseObject
+class Sound : public TBaseObject
 {
 private:	
 	FMOD::System*	m_pSystem;
 	FMOD::Sound*	m_pSound;
 	FMOD::Channel*	m_pChannel;
 public:
-	tstring			m_csName;
+	tstring			FileName;
 	float			m_fVolume;
 	unsigned int	m_msLength;
 	TCHAR			m_csBuffer[256];
@@ -31,7 +31,7 @@ public:
 	void	Play();
 	void	PlayEffect();
 public:
-	TSound();
-	virtual ~TSound();
+	Sound(tstring FileName);
+	virtual ~Sound();
 };
 

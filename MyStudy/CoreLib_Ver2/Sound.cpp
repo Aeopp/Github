@@ -1,9 +1,9 @@
 #include "Sound.h"
-bool	TSound::Init()
+bool	Sound::Init()
 {
 	return true;
 }
-bool	TSound::Frame()
+bool	Sound::Frame()
 {
 	if (m_pChannel == nullptr) return true;
 	unsigned int ms;
@@ -20,16 +20,16 @@ bool	TSound::Frame()
 		);
 	return true;
 }
-bool	TSound::Render()
+bool	Sound::Render()
 {
 	std::wcout << m_csBuffer << std::endl;
 	return true;
 }
-bool	TSound::Release()
+bool	Sound::Release()
 {
 	return true;
 }
-bool	TSound::Load(tstring szLoadName,FMOD::System* pSystem)
+bool	Sound::Load(tstring szLoadName,FMOD::System* pSystem)
 {
 	assert(pSystem);
 	// ../../../data/sound/xx.mp3
@@ -38,8 +38,8 @@ bool	TSound::Load(tstring szLoadName,FMOD::System* pSystem)
 	TCHAR szName[MAX_PATH] = { 0, };
 	TCHAR szExt[MAX_PATH] = { 0, };
 	_tsplitpath_s(szLoadName.c_str(), szDirve, szDir, szName, szExt);
-	m_csName = szName;
-	m_csName += szExt;
+	FileName = szName;
+	FileName += szExt;
 	m_pSystem = pSystem;
 
 	// loading
@@ -51,13 +51,13 @@ bool	TSound::Load(tstring szLoadName,FMOD::System* pSystem)
 	m_pChannel->setVolume(0.5f);
 	return true;
 }
-void	TSound::PlayEffect()
+void	Sound::PlayEffect()
 {
 	FMOD_RESULT hr;
 	hr = m_pSystem->playSound(m_pSound, nullptr, false, &m_pChannel);
 	if (hr != FMOD_OK) return;
 }
-void	TSound::Play()
+void	Sound::Play()
 {
 	FMOD_RESULT hr;
 	bool playing = false;
@@ -71,7 +71,7 @@ void	TSound::Play()
 		if (hr != FMOD_OK) return;
 	}
 }
-void	TSound::Paused()
+void	Sound::Paused()
 {
 	bool playing = false;
 	if (m_pChannel != nullptr)
@@ -85,33 +85,35 @@ void	TSound::Paused()
 		m_pChannel->setPaused(!paused);
 	}
 }
-void	TSound::Stop() 
+void	Sound::Stop() 
 {
 	m_pChannel->stop();
 }
-void	TSound::VolumeUp() 
+void	Sound::VolumeUp() 
 {
 	float fVolume = 1.0f;
 	m_pChannel->getVolume(&fVolume);
 	m_fVolume = min(1.0f, fVolume + 0.1f * World::FramePerSecond);
 	m_pChannel->setVolume(m_fVolume);
 }
-void	TSound::VolumeDown() 
+void	Sound::VolumeDown() 
 {
 	float fVolume = 1.0f;
 	m_pChannel->getVolume(&fVolume);
 	m_fVolume = max(0.0f, fVolume - 0.1f * World::FramePerSecond);
 	m_pChannel->setVolume(m_fVolume);
 }
-void	TSound::SetMode(DWORD dwMode) 
+void	Sound::SetMode(DWORD dwMode) 
 {
 	m_pSound->setMode(dwMode);
 }
-TSound::TSound() 
+Sound::Sound(tstring FileName) :
+	FileName{ std::move(FileName)},
+	m_pSystem {nullptr},
+	m_pSound{ nullptr },
+	m_fVolume {0.5f}
 {
-	m_pSystem = nullptr;
-	m_pSound = nullptr;
-	m_fVolume = 0.5f;
+	
 }
-TSound::~TSound() 
+Sound::~Sound() 
 {}

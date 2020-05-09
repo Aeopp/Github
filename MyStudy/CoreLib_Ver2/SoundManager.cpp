@@ -26,49 +26,35 @@ bool	SoundManager::Render()
 }
 
 
-int		SoundManager::Load(tstring Fullpath)
+std::weak_ptr<Sound>	SoundManager::Load(tstring Fullpath)
 {
 	// ../../../data/sound/xx.mp3
-	tstring szFileName = Utility::PathDelete(Fullpath);
-	
+	tstring FileName = Utility::PathDelete(Fullpath);
+
 	for (auto& [Key, CurrentSound] : Sounds) {
-		if (CurrentSound->m_csName == szFileName) {
-			return Key;
+		if (CurrentSound->FileName == FileName) {
+			return CurrentSound;
 		}
 	}
-	TSound* pData = nullptr;
-	SAFE_NEW(pData, TSound);
-	pData->Init();
-	pData->m_csName = szFileName;
-	if (pData->Load(Fullpath, FModSystem))
-	{
-		Sounds.insert(make_pair(++m_iCurIndex, pData));
-		return m_iCurIndex;
+	auto NewSound = std::make_shared<Sound>(FileName);
+	if (NewSound->Load(Fullpath, FModSystem)) {
+		Sounds.try_emplace(FileName,NewSound);
+		return NewSound;
 	}
-	SAFE_DEL(pData);
-	return -1;
 }
 
-TSound* SoundManager::GetPtr(int iIndex)
+std::weak_ptr<Sound> SoundManager::GetSound(const tstring& Key)
 {
-	TItor iter = Sounds.find(iIndex);
-	if (iter != Sounds.end())
-	{
-		return iter->second;
+	if (auto FindIterator = Sounds.find(Key);
+		FindIterator != std::end(Sounds)){
+		return FindIterator->second;
 	}
-	return nullptr;
+	else {
+		return {};
+	}
 }
 bool SoundManager::Release()
 {
-	TSound* pData = nullptr;
-	for (TItor iter = Sounds.begin();
-		 iter != Sounds.end();
-			iter++)
-	{
-		pData = iter->second;
-		pData->Release();
-		SAFE_DEL(pData);
-	}
 	Sounds.clear();
 	FModSystem->close();
 	FModSystem->release();
