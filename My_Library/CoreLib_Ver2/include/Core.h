@@ -6,7 +6,7 @@
 class TCore : public Window
 {
 public:
-	TTimer		m_Timer;
+	Timer		m_Timer;
 
 	HFONT		m_hDefaultFont;
 	HFONT		m_hGameFont;

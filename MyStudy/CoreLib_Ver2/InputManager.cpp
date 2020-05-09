@@ -10,7 +10,7 @@ bool TInput::Init()
 bool TInput::Frame() 
 {
 	GetCursorPos(&m_MousePos);// ½ºÅ©¸°ÁÂÇ¥
-	ScreenToClient(world::WindowHandle, &m_MousePos);
+	ScreenToClient(World::WindowHandle, &m_MousePos);
 	g_MousePos = m_MousePos;
 
 	g_InputMap.bWKey = KeyCheck('W');

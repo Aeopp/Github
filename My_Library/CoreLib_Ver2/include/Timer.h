@@ -1,13 +1,13 @@
 #pragma once
 #include "Object.h"
 #include <chrono>
-class TTimer : public TBaseObject
+class Timer : public TBaseObject
 {
 public:
 	tstring		Name;
 	tstring		TimeOutputString;
 	float_t		FramePerSecond;
-	float_t		Timer;
+	float_t		Time;
 	float_t		FrameTime;
 	uint32_t FrameCount;
 	int32_t			FPS;
@@ -21,10 +21,12 @@ public:
 	virtual bool	Render()	override;	
 	virtual bool	Release()	override;	
 public:
-	TTimer();
-	virtual ~TTimer()noexcept;
-
-
+	Timer();
+	virtual ~Timer()noexcept;
+	Timer(Timer&&)                  noexcept = default;
+	Timer(const Timer&)             noexcept = default;
+	Timer& operator=(Timer&&)        noexcept = default;
+	Timer& operator=(const Timer&)  noexcept = default;
 };
 
 

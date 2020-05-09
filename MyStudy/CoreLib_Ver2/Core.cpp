@@ -80,7 +80,7 @@ bool TCore::TCoreRender()
 		SetBkColor(m_hOffScreenDC, RGB(0, 0, 255));
 		SetBkMode(m_hOffScreenDC, TRANSPARENT);
 		DrawText(m_hOffScreenDC, strBuffer.c_str(),
-			-1, &world::ClientRect,
+			-1, &World::ClientRect,
 			DT_LEFT | DT_VCENTER);
 
 	PostRender();

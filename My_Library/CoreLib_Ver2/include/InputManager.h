@@ -1,9 +1,9 @@
 #pragma once
 #include "Utility.h"
 enum { KEY_FREE, KEY_PUSH, KEY_HOLD, KEY_UP};
-class TInput : public TSingleton<TInput>
+class TInput : public SingleTon<TInput>
 {
-	friend class TSingleton<TInput>;
+	friend class SingleTon<TInput>;
 	DWORD       m_dwKeyState[256];
 	POINT		m_MousePos;
 public:
@@ -18,4 +18,4 @@ public:
 	~TInput();
 };
 
-#define I_Input TInput::GetInstance()
+#define I_Input TInput::Instance()

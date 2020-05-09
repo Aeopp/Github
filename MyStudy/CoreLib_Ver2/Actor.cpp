@@ -37,8 +37,8 @@ bool		TObject::Load(HDC hScreenDC, tstring szFileName)
 	m_rtSrc.bottom = m_pBitmap->m_BmpInfo.bmHeight;
 	m_rtDesk.left = 0;
 	m_rtDesk.top = 0;
-	m_rtDesk.right = world::ClientRect.right - world::ClientRect.left;
-	m_rtDesk.bottom = world::ClientRect.bottom - world::ClientRect.top;
+	m_rtDesk.right = World::ClientRect.right - World::ClientRect.left;
+	m_rtDesk.bottom = World::ClientRect.bottom - World::ClientRect.top;
 
 	m_fPosX = 0;
 	m_fPosY = 0;

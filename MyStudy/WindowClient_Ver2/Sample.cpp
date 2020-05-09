@@ -78,8 +78,8 @@ bool	Sample::Init()
 		rtSrc.top = 1;
 		//rtSrc.right = 61;
 		//rtSrc.bottom = 1;
-		rtDesk.left = world::ClientRect.right / 2;
-		rtDesk.top = world::ClientRect.bottom / 2;
+		rtDesk.left = World::ClientRect.right / 2;
+		rtDesk.top = World::ClientRect.bottom / 2;
 		rtDesk.right = 42;
 		rtDesk.bottom = 60;
 		m_Hero.SetRect(rtSrc, rtDesk);
@@ -121,8 +121,8 @@ bool	Sample::Frame()
 	for (iter = m_ProjectileList.begin();
 		iter != m_ProjectileList.end(); )
 	{
-		(*iter).fLifeTime -= world::FramePerSecond;
-		(*iter).pos.y -= world::FramePerSecond * 500.0f;
+		(*iter).fLifeTime -= World::FramePerSecond;
+		(*iter).pos.y -= World::FramePerSecond * 500.0f;
 		(*iter).SetPos((*iter).pos.x, (*iter).pos.y);
 
 		if ((*iter).fLifeTime < 0.0f)
@@ -134,7 +134,7 @@ bool	Sample::Frame()
 			iter++;
 		}
 	}
-	m_fNpcTime += world::FramePerSecond;
+	m_fNpcTime += World::FramePerSecond;
 	if (m_fNpcTime > 1.0f)
 	{
 		m_NpcList.push_back(AddNpc());
@@ -175,7 +175,7 @@ bool	Sample::Frame()
 	{
 		bExit = true;
 	}
-	m_fHeroLifeTime += world::FramePerSecond;
+	m_fHeroLifeTime += World::FramePerSecond;
 	return true;
 }
 bool	Sample::Render()
@@ -201,7 +201,7 @@ bool	Sample::Render()
 	SetTextColor(m_hOffScreenDC, RGB(255, 0, 0));
 	SetBkColor(m_hOffScreenDC, RGB(0, 0, 255));
 	SetBkMode(m_hOffScreenDC, TRANSPARENT);
-	RECT rt = world::ClientRect;
+	RECT rt = World::ClientRect;
 	rt.left = 400;
 	DrawText(m_hOffScreenDC, strBuffer.c_str(),
 		-1, &rt,

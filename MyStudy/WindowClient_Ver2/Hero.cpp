@@ -4,19 +4,19 @@ bool THeroObj::Frame()
 {
 	if (I_Input.KeyCheck('W'))
 	{
-		m_fPosY-= world::FramePerSecond * m_fSpeed;
+		m_fPosY-= World::FramePerSecond * m_fSpeed;
 	}
 	if (I_Input.KeyCheck('S'))
 	{
-		m_fPosY += world::FramePerSecond * m_fSpeed;
+		m_fPosY += World::FramePerSecond * m_fSpeed;
 	}
 	if (I_Input.KeyCheck('A'))
 	{
-		m_fPosX -= world::FramePerSecond * m_fSpeed;
+		m_fPosX -= World::FramePerSecond * m_fSpeed;
 	}
 	if (I_Input.KeyCheck('D'))
 	{
-		m_fPosX += world::FramePerSecond * m_fSpeed;
+		m_fPosX += World::FramePerSecond * m_fSpeed;
 	}
 	SetPos(m_fPosX, m_fPosY);
 	return true;

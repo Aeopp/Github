@@ -6,7 +6,7 @@ bool TNpcObj::Frame()
 		m_fPosY =0;
 		fDirectionY *= -1.0f;
 	}
-	if( m_fPosY > world::ClientRect.bottom )
+	if( m_fPosY > World::ClientRect.bottom )
 	{ 
 		m_fPosY = 600;
 		fDirectionY *= -1.0f;
@@ -16,13 +16,13 @@ bool TNpcObj::Frame()
 		m_fPosX = 0;
 		fDirectionX *= -1.0f;
 	}
-	if (m_fPosX > world::ClientRect.right)
+	if (m_fPosX > World::ClientRect.right)
 	{
 		m_fPosX = 800;
 		fDirectionX *= -1.0f;
 	}
-	m_fPosX += fDirectionX * world::FramePerSecond * 100.0f;
-	m_fPosY += fDirectionY * world::FramePerSecond * 100.0f;
+	m_fPosX += fDirectionX * World::FramePerSecond * 100.0f;
+	m_fPosY += fDirectionY * World::FramePerSecond * 100.0f;
 
 	SetPos(m_fPosX, m_fPosY);
 	return true;

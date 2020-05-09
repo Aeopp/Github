@@ -16,10 +16,11 @@ public:
 	virtual bool GameRun();
 public :
 	Window();
+	Window(const Window&)=default;
+	Window& operator=(const Window&)=default;
 	virtual ~Window()noexcept;
-	Window(Window&&)                  noexcept      =default ;
-	Window(const Window&)             noexcept      =default ;
-	Window& operator=(Window&&)        noexcept     =default ;
-	Window& operator=(const Window&)  noexcept      =default ;
+	Window(Window&&)noexcept=default;
+	Window& operator=(Window&&)noexcept=default;
+	
 };
 

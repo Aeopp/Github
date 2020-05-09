@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <windows.h>
 #include <iostream>
 #include <tchar.h>
@@ -10,6 +11,7 @@
 #include <functional>
 #include <set>
 #include <assert.h>
+#include <mutex>
 using namespace std;
 using  tstring = basic_string<TCHAR> ;
 
@@ -20,8 +22,23 @@ typedef std::vector<tstring> T_STR_VECTOR;
 //추가종속성 winmm.lib; fmod_vc.lib; TCoreLib.lib;
 #pragma comment (lib, "winmm.lib")
 #pragma comment (lib, "fmod_vc.lib")
+namespace Utility {
+	template<typename StringType>
+	constexpr StringType inline PathDelete(const StringType& FullPath)
+	{
+		StringType Filename = FullPath;
 
-class world {
+		auto erase_first = Filename.find_first_of('.');
+		auto erase_last = Filename.find_last_of('/');
+
+		if (erase_last != StringType::npos)
+		{
+			Filename.erase(erase_first, erase_last + 1);
+		}
+		return Filename;
+	}
+};
+class World {
 public:
 	static inline HINSTANCE InstanceHandle = nullptr;
 	static inline HWND WindowHandle = nullptr;
@@ -59,15 +76,30 @@ static std::string wtm(std::wstring str)
 	return std::string(str.begin(), str.end());
 }
 // Singleton
-template <class T>
-class TSingleton
+template <class ManagerType>
+class SingleTon
 {
-public://TSoundMgr': private 멤버 -> friend
-	static T& GetInstance()
+public:
+	// TODO :: Sub 클래스 Super 클래스 프렌드 지정해줘야함
+	template<typename...Types>
+	static ManagerType& Instance(Types&&... params)
 	{
-		static T theSingleton;
-		return theSingleton;
-	}	
+		static std::unique_ptr<ManagerType> InstancePtr;
+		static std::once_flag OnceFlag;
+		std::call_once(OnceFlag,[](auto&&... params){
+			InstancePtr.reset(new ManagerType(std::forward<Types>(params)...)); },
+			std::forward<Types>(params)...);
+		return *(InstancePtr.get());
+	};
+public :
+	SingleTon(SingleTon&&)noexcept=delete;
+	SingleTon& operator=(SingleTon&&)noexcept = delete;
+	SingleTon(const SingleTon&)=delete;
+	SingleTon& operator=(const SingleTon&)=delete;
+protected:
+	SingleTon() = default;
+private:
+	~SingleTon()noexcept = default;
 };
 
 #ifndef SAFE_NEW

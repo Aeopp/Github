@@ -15,7 +15,7 @@ bool	TBitmap::Init()
 bool	TBitmap::Load(HDC hScreenDC, tstring szLoadFileName)
 {
 	m_hScreenDC = hScreenDC;
-	m_hBitmap = (HBITMAP)LoadImage(world::InstanceHandle,
+	m_hBitmap = (HBITMAP)LoadImage(World::InstanceHandle,
 		szLoadFileName.c_str(),
 		IMAGE_BITMAP,
 		0, 0,
@@ -28,7 +28,7 @@ bool	TBitmap::Load(HDC hScreenDC, tstring szLoadFileName)
 bool	TBitmap::Release()
 {
 	DeleteObject(m_hBitmap);
-	ReleaseDC(world::WindowHandle, m_hMemDC);
+	ReleaseDC(World::WindowHandle, m_hMemDC);
 	return true;
 }
 TBitmap::TBitmap()

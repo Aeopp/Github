@@ -29,7 +29,7 @@ bool Window::GameRun() { return true; }
 bool Window::SetWindow(HINSTANCE hInstance)
 {
 	InstanceHandle = hInstance;
-	world::InstanceHandle = hInstance;
+	World::InstanceHandle = hInstance;
 	// TODO:: 생성할 윈도우 클래스 등록
 	auto WindowClassName  = L"WINDOW";
 	auto WindowName = L"WINDOW_GAME";
@@ -63,8 +63,8 @@ bool Window::SetWindow(HINSTANCE hInstance)
 	GetClientRect(WindowHandle, &ClientRect);
 	GetWindowRect(WindowHandle, &WindowRect);
 
-	world::ClientRect = ClientRect;
-	world::WindowHandle = WindowHandle;
+	World::ClientRect = ClientRect;
+	World::WindowHandle = WindowHandle;
 
 	ShowWindow(WindowHandle, SW_SHOW);
 	return true;

@@ -1,8 +1,8 @@
 #pragma once
 #include "Bitmap.h"
-class TBitmapMgr : public TSingleton<TBitmapMgr>
+class TBitmapMgr : public SingleTon<TBitmapMgr>
 {
-	friend class TSingleton<TBitmapMgr>;
+	friend class SingleTon<TBitmapMgr>;
 private:
 	int						m_iCurIndex;
 	std::map<int, TBitmap*>  m_Map;
@@ -27,4 +27,4 @@ public:
 	~TBitmapMgr();
 };
 
-#define I_BitmapMgr TBitmapMgr::GetInstance()
+#define I_BitmapMgr TBitmapMgr::Instance()

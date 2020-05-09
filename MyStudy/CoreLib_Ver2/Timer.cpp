@@ -1,19 +1,19 @@
 #include "Timer.h"
 #include <sstream>
 
-bool	TTimer::Init()
+bool	Timer::Init()
 {
 	return true;
 }
-bool	TTimer::Frame()
+bool	Timer::Frame()
 {
 	Clock::time_point Current= Clock::now();
 	MilliSeconds ElapseClock = std::chrono::duration_cast<MilliSeconds>(Current - PrevTimePoint);
 	
 	FramePerSecond = ElapseClock.count() / 1000.0f;
-	Timer += FramePerSecond;
-	world::FramePerSecond = FramePerSecond;
-	world::Timer = Timer;
+	Time += FramePerSecond;
+	World::FramePerSecond = FramePerSecond;
+	World::Timer = Time;
 
 	FrameTime += FramePerSecond;
 	if (FrameTime > 1.0f)
@@ -27,28 +27,28 @@ bool	TTimer::Frame()
 	PrevTimePoint = Current;
 
 	wstringstream  WStringStream;
-	WStringStream << Timer << ':' << FPS;
+	WStringStream << Time << ':' << FPS;
 	TimeOutputString = std::move(WStringStream.str());
 	return true;
 }
-bool	TTimer::Render()
+bool	Timer::Render()
 {
 	return true;
 }
-bool	TTimer::Release()
+bool	Timer::Release()
 {
 	return true;
 }
 
-TTimer::TTimer() :
+Timer::Timer() :
 	FramePerSecond{ 0.0f },
-Timer{ 0.0f },
+	Time{ 0.0f },
 FrameTime{ 0.0f },
 FrameCount{ 0ul},
 FPS{ 0l }
 {
 	PrevTimePoint = Clock::now();
 }
-TTimer::~TTimer() {
+Timer::~Timer() {
 	
 }

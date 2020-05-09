@@ -93,14 +93,14 @@ void	TSound::VolumeUp()
 {
 	float fVolume = 1.0f;
 	m_pChannel->getVolume(&fVolume);
-	m_fVolume = min(1.0f, fVolume + 0.1f * world::FramePerSecond);
+	m_fVolume = min(1.0f, fVolume + 0.1f * World::FramePerSecond);
 	m_pChannel->setVolume(m_fVolume);
 }
 void	TSound::VolumeDown() 
 {
 	float fVolume = 1.0f;
 	m_pChannel->getVolume(&fVolume);
-	m_fVolume = max(0.0f, fVolume - 0.1f * world::FramePerSecond);
+	m_fVolume = max(0.0f, fVolume - 0.1f * World::FramePerSecond);
 	m_pChannel->setVolume(m_fVolume);
 }
 void	TSound::SetMode(DWORD dwMode) 

@@ -1,99 +1,87 @@
 #include "SoundManager.h"
 
-bool	TSoundMgr::Init()
+bool	SoundManager::Init()
 {
 	FMOD_RESULT hr;
-	hr = FMOD::System_Create(&m_pSystem);
+	hr = FMOD::System_Create(&FModSystem);
 	if (hr != FMOD_OK) return false;
-	hr = m_pSystem->init(32, FMOD_INIT_NORMAL, 0);
+	hr = FModSystem->init(32, FMOD_INIT_NORMAL, 0);
 	if (hr != FMOD_OK) return false;
 	return true;
 }
-bool	TSoundMgr::Frame()             
+bool	SoundManager::Frame()             
 {
-	for (int iSound=0;iSound< m_Map.size(); iSound++)
-	{
-		m_Map[iSound + 1]->Frame();
-	}
-	m_pSystem->update();
+	for (auto& [Key,CurrentSound]: Sounds) {
+		CurrentSound->Frame();
+	};
+	FModSystem->update();
 	return true;
 }
-bool	TSoundMgr::Render()
+bool	SoundManager::Render()
 {
-	for (int iSound = 0; iSound < m_Map.size(); iSound++)
-	{
-		m_Map[iSound + 1]->Render();
-	}
+	for (auto& [Key, CurrentSound] : Sounds) {
+		CurrentSound->Render();
+	};
 	return true;
 }
 
 
-int		TSoundMgr::Load(tstring szLoadName)
+int		SoundManager::Load(tstring Fullpath)
 {
 	// ../../../data/sound/xx.mp3
-	TCHAR szDirve[MAX_PATH] = { 0, };
-	TCHAR szDir[MAX_PATH] = { 0, };
-	TCHAR szName[MAX_PATH] = { 0, };
-	TCHAR szExt[MAX_PATH] = { 0, };
-	_tsplitpath_s(szLoadName.c_str(), szDirve, szDir, szName, szExt);
-	tstring szFileName = szName;
-	szFileName += szExt;
-	for (TItor itor = m_Map.begin();
-		itor != m_Map.end(); itor++)
-	{
-		TSound* pData = (*itor).second;
-		if (pData->m_csName == szFileName)
-		{
-			return (*itor).first;
+	tstring szFileName = Utility::PathDelete(Fullpath);
+	
+	for (auto& [Key, CurrentSound] : Sounds) {
+		if (CurrentSound->m_csName == szFileName) {
+			return Key;
 		}
 	}
-
 	TSound* pData = nullptr;
 	SAFE_NEW(pData, TSound);
 	pData->Init();
 	pData->m_csName = szFileName;
-	if (pData->Load(szLoadName, m_pSystem))
+	if (pData->Load(Fullpath, FModSystem))
 	{
-		m_Map.insert(make_pair(++m_iCurIndex, pData));
+		Sounds.insert(make_pair(++m_iCurIndex, pData));
 		return m_iCurIndex;
 	}
 	SAFE_DEL(pData);
 	return -1;
 }
 
-TSound* TSoundMgr::GetPtr(int iIndex)
+TSound* SoundManager::GetPtr(int iIndex)
 {
-	TItor iter = m_Map.find(iIndex);
-	if (iter != m_Map.end())
+	TItor iter = Sounds.find(iIndex);
+	if (iter != Sounds.end())
 	{
 		return iter->second;
 	}
 	return nullptr;
 }
-bool TSoundMgr::Release()
+bool SoundManager::Release()
 {
 	TSound* pData = nullptr;
-	for (TItor iter = m_Map.begin();
-		 iter != m_Map.end();
+	for (TItor iter = Sounds.begin();
+		 iter != Sounds.end();
 			iter++)
 	{
 		pData = iter->second;
 		pData->Release();
 		SAFE_DEL(pData);
 	}
-	m_Map.clear();
-	m_pSystem->close();
-	m_pSystem->release();
+	Sounds.clear();
+	FModSystem->close();
+	FModSystem->release();
 	return true;
 }
-TSoundMgr::TSoundMgr()
+SoundManager::SoundManager()
+	: DefaultPath{ L"../../../Data/Sound/" }
 {
 	m_iCurIndex = 0;
-	m_pSystem = nullptr;
-	m_csDefaultPath = L"../../../Data/Sound/";
+	FModSystem = nullptr;
 	Init();
 }
-TSoundMgr::~TSoundMgr()
+SoundManager::~SoundManager()
 {
 	Release();
 }

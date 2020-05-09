@@ -1,25 +1,15 @@
 #pragma once
 #include "Sound.h"
-class TSoundMgr : public TSingleton<TSoundMgr>
+class SoundManager : public SingleTon<SoundManager>
 {
-	friend class TSingleton<TSoundMgr>;
+	friend class SingleTon<SoundManager>;
 private:
-	int						m_iCurIndex;
-	std::map<int, TSound*>  m_Map;
-	FMOD::System*			m_pSystem;
-	tstring					m_csDefaultPath;
+	int32_t					m_iCurIndex;
+	std::map<int, TSound*>  Sounds;
+	FMOD::System*			FModSystem;
+	const tstring			DefaultPath;
 public:
 	typedef std::map<int, TSound*>::iterator TItor;
-	//// Singleton
-	//static TSoundMgr& GetInstance()
-	//{
-	//	static TSoundMgr mgr;
-	//	return mgr;
-	//}
-	void    SetDefaultPath(tstring szPath)
-	{
-		m_csDefaultPath = szPath;
-	}
 public:
 	bool	Init();
 	bool	Frame();
@@ -27,11 +17,9 @@ public:
 	bool	Release();
 	int		Load(tstring szName);
 	TSound* GetPtr(int iIndex);
-	
 private:
-	TSoundMgr();
+	SoundManager();
 public:
-	~TSoundMgr();
+	~SoundManager();
 };
-
-#define I_SoundMgr TSoundMgr::GetInstance()
+#define I_SoundMgr SoundManager::Instance()
