@@ -150,31 +150,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TBaseObject.cpp" />
-    <ClCompile Include="TBitmap.cpp" />
-    <ClCompile Include="TBitmapMgr.cpp" />
-    <ClCompile Include="TCore.cpp" />
-    <ClCompile Include="TInput.cpp" />
-    <ClCompile Include="TLog.cpp" />
-    <ClCompile Include="TObject.cpp" />
-    <ClCompile Include="TSound.cpp" />
-    <ClCompile Include="TSoundMgr.cpp" />
-    <ClCompile Include="TTimer.cpp" />
-    <ClCompile Include="TWindow.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="BitmapManager.cpp" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TBaseObject.h" />
-    <ClInclude Include="TBitmap.h" />
-    <ClInclude Include="TBitmapMgr.h" />
-    <ClInclude Include="TCore.h" />
-    <ClInclude Include="TInput.h" />
-    <ClInclude Include="TLog.h" />
-    <ClInclude Include="TObject.h" />
-    <ClInclude Include="TSound.h" />
-    <ClInclude Include="TSoundMgr.h" />
-    <ClInclude Include="TStd.h" />
-    <ClInclude Include="TTimer.h" />
-    <ClInclude Include="TWindow.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="BitmapManager.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

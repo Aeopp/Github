@@ -146,13 +146,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="THeroObj.cpp" />
-    <ClCompile Include="TNpcObj.cpp" />
+    <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="Npc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="THeroObj.h" />
-    <ClInclude Include="TNpcObj.h" />
+    <ClInclude Include="Hero.h" />
+    <ClInclude Include="Npc.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreLib_Ver2\CoreLib_Ver2.vcxproj">

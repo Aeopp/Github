@@ -1,7 +1,7 @@
 #pragma once
-#include "TCore.h"
-#include "THeroObj.h"
-#include "TNpcObj.h"
+#include "Core.h"
+#include "Hero.h"
+#include "Npc.h"
 
 struct TProjectile
 {
