@@ -5,20 +5,20 @@
 
 struct TProjectile
 {
-	TPoint pos;
+	FVector2D pos{ 0,0 };
 	RECT   rtCollision;
 	float fLifeTime;
 	RECT   rtDesk;
-	void  SetPos(TPoint p)
+	void  SetPos(FVector2D p)
 	{
-		SetPos(p.x, p.y);
+		SetPos(p[0], p[1]);
 	}
 	void  SetPos(float x, float y)
 	{
-		pos.x = x;
-		pos.y = y;
-		rtCollision.left = pos.x;
-		rtCollision.top = pos.y;
+		pos[0] = x;
+		pos[1] = y;
+		rtCollision.left = pos[0];
+		rtCollision.top = pos[1];
 		rtCollision.right =
 			rtCollision.left + rtDesk.right;
 		rtCollision.bottom =
@@ -28,7 +28,7 @@ struct TProjectile
 class Sample : public Engine
 {
 	int			LifeCounter;
-	THeroObj	m_Hero;
+	Hero	m_Hero;
 	//TNpcObj		m_Npc;
 	list<TNpcObj*>		m_NpcList;
 	Actor		m_BackGround;

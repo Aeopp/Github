@@ -1,13 +1,13 @@
 #pragma once
 #include "Actor.h"
-class THeroObj : public Actor
+class Hero : public Actor
 {
 public:
 	float	m_fSpeed;
 public:
 	bool	Frame();
 public:
-	THeroObj();
-	virtual ~THeroObj();
+	Hero();
+	virtual ~Hero();
 };
 

@@ -6,7 +6,7 @@ void User::Write(std::ofstream& FileWrite, const User& Rhs)const
 
 	std::string Buf;
 
-	Buf += " 이름 : " + Rhs.Name +
+	Buf += " 이름 : " + Rhs.Filename +
 
 		" 나이 : " + std::to_string(Rhs.Age) +
 		" 수학 : " + std::to_string(Rhs.Math) +
@@ -37,7 +37,7 @@ void User::SetData(const int32_t PAge,
 	const int32_t PEng, const int32_t PKor)
 {
 	Age = PAge;
-	Name = std::move(PName);
+	Filename = std::move(PName);
 	Math = PMath;
 	Eng = PEng;
 	Kor = PKor;
@@ -58,7 +58,7 @@ void User::FileSetUpData(const std::string & Str,const std::string& Sepa)
 			switch (AssignType)
 			{
 			case EMumberType::EName:
-				SS >> Name;
+				SS >> Filename;
 				AssignType = EMumberType::EAge;
 				break;
 			case EMumberType::EAge:
@@ -88,7 +88,7 @@ std::ofstream& operator<<(std::ofstream& FileWrite, const User& Rhs)
 {
 	std::string Buf;
 
-	Buf += " 이름 : " + Rhs.Name +
+	Buf += " 이름 : " + Rhs.Filename +
 
 		" 나이 : " + std::to_string(Rhs.Age) +
 		" 수학 : " + std::to_string(Rhs.Math) +
@@ -105,7 +105,7 @@ std::ofstream& operator<<(std::ofstream& FileWrite, const User& Rhs)
 
 std::istream& operator>>(std::istream& Conin, User& Rhs)
 {
-	Utility::InputHelper(Conin, "이름 : ", Rhs.Name);
+	Utility::InputHelper(Conin, "이름 : ", Rhs.Filename);
 	Utility::InputHelper(Conin, "나이 : ", Rhs.Age);
 	Utility::InputHelper(Conin, "수학 : ", Rhs.Math);
 	Utility::InputHelper(Conin, "영어 : ", Rhs.Eng);

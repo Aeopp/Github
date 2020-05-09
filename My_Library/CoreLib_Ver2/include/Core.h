@@ -11,7 +11,7 @@ public:
 	HFONT		m_hDefaultFont;
 	HFONT		m_hGameFont;
 	HBRUSH		m_hbrBack;
-	HDC			m_hScreenDC;
+	HDC			ScreenHDC;
 	HDC			m_hOffScreenDC;
 	HBITMAP		m_hOffScreenBitmap;
 public:

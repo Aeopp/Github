@@ -4,7 +4,7 @@
 class Timer : public Object
 {
 public:
-	tstring		Name;
+	tstring		Filename;
 	tstring		TimeOutputString;
 	float_t		FramePerSecond;
 	float_t		Time;

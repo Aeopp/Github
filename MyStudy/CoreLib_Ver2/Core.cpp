@@ -12,7 +12,7 @@ bool Engine::PreRender()
 bool Engine::Render() { return true; }
 bool Engine::PostRender() 
 { 
-	BitBlt(m_hScreenDC, 0, 0, ClientRect.right, ClientRect.bottom,
+	BitBlt(ScreenHDC, 0, 0, ClientRect.right, ClientRect.bottom,
 		m_hOffScreenDC, 0, 0, SRCCOPY);
 	return true; 
 }
@@ -20,10 +20,10 @@ bool Engine::Release() { return true; }
 
 bool Engine::TCoreInit()
 {	
-	m_hScreenDC = GetDC(WindowHandle);
-	m_hOffScreenDC = CreateCompatibleDC(m_hScreenDC);
+	ScreenHDC = GetDC(WindowHandle);
+	m_hOffScreenDC = CreateCompatibleDC(ScreenHDC);
 	m_hOffScreenBitmap = CreateCompatibleBitmap(
-		m_hScreenDC, ClientRect.right, ClientRect.bottom);
+		ScreenHDC, ClientRect.right, ClientRect.bottom);
 	
 	COLORREF bkColor = RGB(255, 0, 0);
 	m_hbrBack = CreateSolidBrush(bkColor);	
@@ -92,7 +92,7 @@ bool Engine::TCoreRelease()
 	DeleteObject(m_hbrBack);
 	DeleteObject(m_hOffScreenBitmap);
 	ReleaseDC(WindowHandle, m_hOffScreenDC);
-	ReleaseDC(WindowHandle, m_hScreenDC);
+	ReleaseDC(WindowHandle, ScreenHDC);
 
 
 	GetSoundManager.Clear();

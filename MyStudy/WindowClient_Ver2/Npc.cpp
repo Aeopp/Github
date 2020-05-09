@@ -1,30 +1,30 @@
 #include "Npc.h"
 bool TNpcObj::Frame()
 {
-	if (m_fPosY < 0.0f)
+	if (Y < 0.0f)
 	{
-		m_fPosY =0;
+		Y =0;
 		fDirectionY *= -1.0f;
 	}
-	if( m_fPosY > World::ClientRect.bottom )
+	if( Y > World::ClientRect.bottom )
 	{ 
-		m_fPosY = 600;
+		Y = 600;
 		fDirectionY *= -1.0f;
 	}
-	if (m_fPosX < 0.0f)
+	if (X < 0.0f)
 	{
-		m_fPosX = 0;
+		X = 0;
 		fDirectionX *= -1.0f;
 	}
-	if (m_fPosX > World::ClientRect.right)
+	if (X > World::ClientRect.right)
 	{
-		m_fPosX = 800;
+		X = 800;
 		fDirectionX *= -1.0f;
 	}
-	m_fPosX += fDirectionX * World::FramePerSecond * 100.0f;
-	m_fPosY += fDirectionY * World::FramePerSecond * 100.0f;
+	X += fDirectionX * World::FramePerSecond * 100.0f;
+	Y += fDirectionY * World::FramePerSecond * 100.0f;
 
-	SetPos(m_fPosX, m_fPosY);
+	SetPos(X, Y);
 	return true;
 }
 TNpcObj::TNpcObj()

@@ -123,10 +123,10 @@ void StMgr<T,Arg>::Modified()
 template<class T, class Arg>
 void StMgr<T,Arg>::Erase()
 {
-	std::string Name;
-	Utility::InputHelper(std::cin, " 삭제할 학생 이름 : ", Name);
+	std::string Filename;
+	Utility::InputHelper(std::cin, " 삭제할 학생 이름 : ", Filename);
 
-	List.Erase(Name,FPtr);
+	List.Erase(Filename,FPtr);
 };
 template<class T , class Arg>
 uint32_t StMgr<T, Arg>::Menu()

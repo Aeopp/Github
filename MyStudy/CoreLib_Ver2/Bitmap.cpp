@@ -7,29 +7,24 @@ bool	Bitmap::Render()
 {
 	return true;
 }
-bool	Bitmap::Init()
-{
-	return true;
-}
+
 // DDB(DC):디바이스종속비트맵, DIB(독립비트맵)
-bool	Bitmap::Release()
+
+Bitmap::Bitmap(HDC hScreenDC, tstring Fullpath)
 {
-	DeleteObject(m_hBitmap);
-	ReleaseDC(World::WindowHandle, m_hMemDC);
-	return true;
-}
-Bitmap::Bitmap(HDC hScreenDC, tstring szLoadFileName)
-{
-	m_hScreenDC = std::unique_ptr<HDC__, DisplayHandleDeleter>(hScreenDC,
-		DisplayHandleDeleter{});
-	m_hBitmap = (HBITMAP)LoadImage(World::InstanceHandle,
-		szLoadFileName.c_str(),
+	ScreenHDC = std::unique_ptr<HDC__, decltype(HDCDeleter)>(hScreenDC, HDCDeleter);
+	Filename = Utility::PathDelete(Fullpath);
+	BitmapHandle = std::unique_ptr<HBITMAP__, decltype(BitmapHandleDeleter)>((HBITMAP)LoadImage(World::InstanceHandle,
+		std::move(Fullpath.c_str()),
 		IMAGE_BITMAP,
 		0, 0,
-		LR_DEFAULTSIZE | LR_LOADFROMFILE);
-	GetObject(m_hBitmap, sizeof(BITMAP), &m_BmpInfo);
-	m_hMemDC = CreateCompatibleDC(m_hScreenDC.get());
-	SelectObject(m_hMemDC, m_hBitmap);
+		LR_DEFAULTSIZE | LR_LOADFROMFILE),
+		BitmapHandleDeleter);
+	GetObject(BitmapHandle.get(), sizeof(BITMAP), &BmpInfomation);
+	MemoryHDC = std::unique_ptr<HDC__, decltype(HDCDeleter)>(
+		CreateCompatibleDC(ScreenHDC.get()), HDCDeleter);
+
+	SelectObject(MemoryHDC.get(), BitmapHandle.get());
 }
 
 Bitmap::~Bitmap()

@@ -28,7 +28,7 @@ private:
 		ENone=255,
 	};
 
-	std::string Name;
+	std::string Filename;
 	int32_t Age = -1;
 	int32_t Math = -1;
 	int32_t Eng = -1;
@@ -73,7 +73,7 @@ public:
 };
 inline void User::SetName(const std::string PName)
 {
-	this->Name = PName;
+	this->Filename = PName;
 };
 
 inline  std::ostream& operator<<(std::ostream& ConOut, const User& Rhs)
@@ -87,7 +87,7 @@ inline  std::ostream& operator<<(std::ostream& ConOut, const User& Rhs)
 inline void User::Print() const
 {
 	std::cout
-		<< "\t" << "이름 : " << Name << "\t나이 : " << Age
+		<< "\t" << "이름 : " << Filename << "\t나이 : " << Age
 		<< "\t수학 : " << Math << "\t영어 : " << Eng
 		<< "\t국어 : " << Kor << "\t총점 : " << Sum
 		<< "\t평균 : " << Average << std::endl;
@@ -112,11 +112,11 @@ inline bool User::operator>= (const User& Rhs)const
 };
 inline bool User::operator==(const User& Rhs)const
 {
-	return(this->Name == Rhs.Name);
+	return(this->Filename == Rhs.Filename);
 };
 inline bool User::operator!=(const User& Rhs)const
 {
-	return  (! (this->Name == Rhs.Name));
+	return  (! (this->Filename == Rhs.Filename));
 };
 inline void User::Calc()
 {
@@ -126,5 +126,5 @@ inline void User::Calc()
 
 inline std::string User::getName() const
 {
-	return Name;
+	return Filename;
 }

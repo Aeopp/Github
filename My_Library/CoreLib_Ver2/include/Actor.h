@@ -1,29 +1,25 @@
 #pragma once
 #include "Bitmap.h"
-struct TPoint
-{
-	float x;
-	float y;
-};
+#include <valarray>
+using FVector2D = std::valarray<float_t>;
 class Actor
 {
 public:
+	FVector2D Vector{ 0,0 };
 	int			m_iIndex;
-	std::weak_ptr<Bitmap>	m_pBitmap;
-	RECT		m_rtSrc;
-	RECT		m_rtDesk;
-	RECT		m_rtCollision;
-	float		m_fPosX;
-	float		m_fPosY;
+	std::weak_ptr<Bitmap>	Bitmap;
+	RECT		RectSource;
+	RECT		RectDestnation;
+	RECT		Collision;
+	float		X;
+	float		Y;
 public:
 	void		SetPos(float x, float y);
-	void		SetPos(TPoint pos);
+	void		SetPos(FVector2D pos);
 	void		SetRect(RECT rtSrc, RECT rtDesk);
-	bool		Load(HDC hScreenDC, tstring szFileName);
-	virtual bool		Init();
+	bool		Load(HDC hScreenDC, tstring Fullpath);
 	virtual bool		Frame();
 	virtual bool		Render(HDC hOffScreenDC);
-	virtual bool		Release();
 public:
 	Actor();
 	virtual ~Actor();

@@ -53,7 +53,7 @@ void Sample::SetLifeCounter()
 TNpcObj* Sample::AddNpc()
 {
 	TNpcObj*  npc = new TNpcObj;
-	if (npc->Load(m_hScreenDC, L"../../../Data/Bitmap/1945.bmp"))
+	if (npc->Load(ScreenHDC, L"../../../Data/Bitmap/1945.bmp"))
 	{
 		RECT rtSrc, rtDesk;
 		rtSrc.left = 307;
@@ -73,8 +73,8 @@ bool	Sample::Init()
 	GetSoundManager.Load(L"../../../Data/Sound/romance.mid");
 	GetSoundManager.Load(L"../../../Data/Sound/Gun1.wav");
 	GetSoundManager.Load(L"../../../Data/Sound/Gun2.wav");
-	m_BackGround.Load(m_hScreenDC, L"../../../Data/Bitmap/lobby.bmp");
-	if (m_Hero.Load(m_hScreenDC, L"../../../Data/Bitmap/1945.bmp"))
+	m_BackGround.Load(ScreenHDC, L"../../../Data/Bitmap/lobby.bmp");
+	if (m_Hero.Load(ScreenHDC, L"../../../Data/Bitmap/1945.bmp"))
 	{
 		RECT rtSrc, rtDesk;
 		rtSrc.left = 206;
@@ -87,13 +87,13 @@ bool	Sample::Init()
 		rtDesk.bottom = 47;
 		m_Hero.SetRect(rtSrc, rtDesk);
 	}
-	if (m_Projectile.Load(m_hScreenDC, L"../../../Data/Bitmap/bitmap1.bmp"))
+	if (m_Projectile.Load(ScreenHDC, L"../../../Data/Bitmap/bitmap1.bmp"))
 	{
 		RECT rtSrc, rtDesk;
 		rtSrc.left = 276;
 		rtSrc.top = 1;
-		rtDesk.left = m_Hero.m_fPosX;
-		rtDesk.top  = m_Hero.m_fPosY;
+		rtDesk.left = m_Hero.X;
+		rtDesk.top  = m_Hero.Y;
 		rtDesk.right = 8;
 		rtDesk.bottom = 24;
 		m_Projectile.SetRect(rtSrc, rtDesk);
@@ -117,8 +117,8 @@ bool	Sample::Frame()
 	{
 		TProjectile item;
 		item.fLifeTime  = 2.0f;
-		item.rtDesk		= m_Projectile.m_rtDesk;
-		item.SetPos(m_Hero.m_fPosX, m_Hero.m_fPosY);
+		item.rtDesk		= m_Projectile.RectDestnation;
+		item.SetPos(m_Hero.X, m_Hero.Y);
 		m_ProjectileList.insert(m_ProjectileList.end(),
 			item);
 		if (auto SharedSound = GetSoundManager.GetSound(L"Gun1.wav").lock(); SharedSound) {
@@ -130,8 +130,8 @@ bool	Sample::Frame()
 		iter != m_ProjectileList.end(); )
 	{
 		(*iter).fLifeTime -= World::FramePerSecond;
-		(*iter).pos.y -= World::FramePerSecond * 500.0f;
-		(*iter).SetPos((*iter).pos.x, (*iter).pos.y);
+		(*iter).pos[1] -= World::FramePerSecond * 500.0f;
+		(*iter).SetPos((*iter).pos[0], (*iter).pos[1]);
 
 		if ((*iter).fLifeTime < 0.0f)
 		{
@@ -159,22 +159,22 @@ bool	Sample::Frame()
 			iter != m_ProjectileList.end();
 			iter++)
 		{
-			if (RectInRect( npc->m_rtCollision, 
+			if (RectInRect( npc->Collision, 
 							(*iter).rtCollision))
 			{
 				npc->m_bDead = true;
 				break;
 			}
 		}
-		if (RectInRect(npc->m_rtCollision,
-			m_Hero.m_rtCollision))
+		if (RectInRect(npc->Collision,
+			m_Hero.Collision))
 		{
 			//m_bExit = true;
 			
 			SetLifeCounter();
 			break;
 		}
-		if (RectInPt(npc->m_rtCollision,World::MousePosition))
+		if (RectInPt(npc->Collision,World::MousePosition))
 		{
 			npc->SetPos(0, 0);
 		}
@@ -194,7 +194,7 @@ bool	Sample::Render()
 	for (iter = m_ProjectileList.begin();
 		iter != m_ProjectileList.end(); iter++)
 	{
-		m_Projectile.SetPos((*iter).pos.x, (*iter).pos.y);
+		m_Projectile.SetPos((*iter).pos[0], (*iter).pos[1]);
 		m_Projectile.Render(m_hOffScreenDC);		
 	}
 	for (TNpcObj* npc : m_NpcList)
@@ -219,12 +219,11 @@ bool	Sample::Render()
 }
 bool	Sample::Release()
 {
-	m_BackGround.Release();
-	m_Hero.Release();
-	m_Projectile.Release();
+
+
+
 	for (TNpcObj* npc : m_NpcList)
 	{
-		npc->Release();
 		delete npc;
 	}
 	m_NpcList.clear();
