@@ -50,14 +50,6 @@ namespace Debug {
 	};
 #define Log(Target) LogImplementation(__FUNCTION__,__LINE__,Target)
 };
-class World {
-public:
-	static inline HINSTANCE InstanceHandle = nullptr;
-	static inline HWND WindowHandle = nullptr;
-	static inline RECT ClientRect; 
-	static inline float_t FramePerSecond = 0.f;
-	static inline float_t Timer = 0.f; 
-};
 struct InputActionMap
 {
 	EKeyState Attack;
@@ -74,9 +66,19 @@ struct InputActionMap
 	EKeyState MiddleClick;
 };
 
+class World {
+public:
+	static inline HINSTANCE InstanceHandle = nullptr;
+	static inline HWND WindowHandle = nullptr;
+	static inline RECT ClientRect; 
+	static inline float_t FramePerSecond = 0.f;
+	static inline float_t Timer = 0.f; 
+	static inline POINT MousePosition;
+	static inline InputActionMap InputMapState;
+};
+
+
 extern float		g_fTimer;
-extern POINT		g_MousePos;
-extern InputActionMap  g_InputMap;
 
 
 static std::wstring mtw(std::string str)
@@ -87,12 +89,24 @@ static std::string wtm(std::wstring str)
 {
 	return std::string(str.begin(), str.end());
 }
+
+
+
 // Singleton
+// Don't Copy Don't Move
+#define DELETE_MOVE_COPY(Manager)   \
+public:\
+Manager(Manager&&)noexcept = delete;\
+Manager& operator=(Manager&&)noexcept = delete;\
+Manager(const Manager&) = delete;\
+Manager& operator=(const Manager&) = delete;\
+
 template <class ManagerType>
 class SingleTon
 {
 public:
 	// TODO :: Sub 클래스 Super 클래스 프렌드 지정해줘야함
+	// TODO :: 생성자 상속 사용하면 안됨
 	template<typename...Types>
 	static ManagerType& Instance(Types&&... params)
 	{
@@ -103,15 +117,11 @@ public:
 			std::forward<Types>(params)...);
 		return *(InstancePtr.get());
 	};
-public :
-	SingleTon(SingleTon&&)noexcept=delete;
-	SingleTon& operator=(SingleTon&&)noexcept = delete;
-	SingleTon(const SingleTon&)=delete;
-	SingleTon& operator=(const SingleTon&)=delete;
 protected:
 	SingleTon() = default;
 private:
 	~SingleTon()noexcept = default;
+	DELETE_MOVE_COPY(SingleTon)
 };
 
 #ifndef SAFE_NEW

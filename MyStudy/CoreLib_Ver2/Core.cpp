@@ -1,7 +1,7 @@
 #include "Core.h"
-bool TCore::Init() { return true; }
-bool TCore::Frame() { return true; }
-bool TCore::PreRender() 
+bool Engine::Init() { return true; }
+bool Engine::Frame() { return true; }
+bool Engine::PreRender() 
 { 	
 	PatBlt( m_hOffScreenDC, 
 			0, 0, ClientRect.right, 
@@ -9,16 +9,16 @@ bool TCore::PreRender()
 			PATCOPY);
 	return true; 
 }
-bool TCore::Render() { return true; }
-bool TCore::PostRender() 
+bool Engine::Render() { return true; }
+bool Engine::PostRender() 
 { 
 	BitBlt(m_hScreenDC, 0, 0, ClientRect.right, ClientRect.bottom,
 		m_hOffScreenDC, 0, 0, SRCCOPY);
 	return true; 
 }
-bool TCore::Release() { return true; }
+bool Engine::Release() { return true; }
 
-bool TCore::TCoreInit()
+bool Engine::TCoreInit()
 {	
 	m_hScreenDC = GetDC(WindowHandle);
 	m_hOffScreenDC = CreateCompatibleDC(m_hScreenDC);
@@ -47,13 +47,13 @@ bool TCore::TCoreInit()
 	Init();
 	return true;
 }
-bool TCore::TCoreFrame()
+bool Engine::TCoreFrame()
 {
-	m_Timer.Frame();
+	CurrentTimer.Frame();
 	GetSoundManager.Frame();
 	GetInputManager.Frame();
 
-	if (g_InputMap.Exit == EKeyState::Push)
+	if (World::InputMapState.Exit == EKeyState::Push)
 	{
 		Exit = true;
 		return false;
@@ -62,17 +62,17 @@ bool TCore::TCoreFrame()
 	Frame();
 	return true;
 }
-bool TCore::TCoreRender()
+bool Engine::TCoreRender()
 {
 	PreRender();
 		Render();
 
-		m_Timer.Render();
+		CurrentTimer.Render();
 		GetSoundManager.Render();
 		GetInputManager.Render();
 
 		tstring strBuffer = L"GameTime";
-		strBuffer += m_Timer.TimeOutputString;
+		strBuffer += CurrentTimer.TimeOutputString;
 		SetTextColor(m_hOffScreenDC, RGB(255, 0, 0));
 		SetBkColor(m_hOffScreenDC, RGB(0, 0, 255));
 		SetBkMode(m_hOffScreenDC, TRANSPARENT);
@@ -83,7 +83,7 @@ bool TCore::TCoreRender()
 	PostRender();
 	return true;
 }
-bool TCore::TCoreRelease()
+bool Engine::TCoreRelease()
 {
 	Release();
 
@@ -98,7 +98,7 @@ bool TCore::TCoreRelease()
 	GetSoundManager.Clear();
 	return true;
 }
-bool TCore::TRun()
+bool Engine::TRun()
 {
 	TCoreInit();
 	while (!Exit)
@@ -113,11 +113,11 @@ bool TCore::TRun()
 	TCoreRelease();
 	return true;
 }
-TCore::TCore()
+Engine::Engine()
 {
 	Exit = false;
 }
-TCore::~TCore()
+Engine::~Engine()
 {
 
 }

@@ -5,11 +5,11 @@ struct TPoint
 	float x;
 	float y;
 };
-class TObject
+class Actor
 {
 public:
 	int			m_iIndex;
-	TBitmap*	m_pBitmap;
+	std::weak_ptr<Bitmap>	m_pBitmap;
 	RECT		m_rtSrc;
 	RECT		m_rtDesk;
 	RECT		m_rtCollision;
@@ -25,7 +25,7 @@ public:
 	virtual bool		Render(HDC hOffScreenDC);
 	virtual bool		Release();
 public:
-	TObject();
-	virtual ~TObject();
+	Actor();
+	virtual ~Actor();
 };
 

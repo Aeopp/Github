@@ -1,6 +1,6 @@
 #pragma once
 #include "Utility.h"
-class TBitmap
+class Bitmap
 {
 public:
 	HBITMAP		m_hBitmap;
@@ -9,13 +9,12 @@ public:
 	BITMAP		m_BmpInfo;
 	tstring		m_csName;
 public:
-	bool	Load(HDC hScreenDC, tstring szName);
 	bool	Release();
 	bool	Frame();
 	bool	Render();
 	bool	Init();
 public:
-	TBitmap();
-	~TBitmap();
+	Bitmap(HDC hScreenDC, tstring szLoadFileName);
+	~Bitmap();
 };
 

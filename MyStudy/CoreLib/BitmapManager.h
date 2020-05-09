@@ -14,7 +14,7 @@ public:
 		bool Frame();
 		bool Render();
 	
-       std::weak_ptr<Bitmap> GetPtr(const ReadType& _Key);
+       std::weak_ptr<Bitmap> GetBitmap(const ReadType& _Key);
 	   std::weak_ptr<Bitmap> Load(HDC _HScreenDC, ReadType FullPath);
 public : 
 	friend class std::unique_ptr<BitmapManager>;
@@ -73,7 +73,7 @@ inline bool BitmapManager::Render()
 	return true;
 };
 
-inline std::weak_ptr<Bitmap> BitmapManager::GetPtr(const ReadType& _Key)
+inline std::weak_ptr<Bitmap> BitmapManager::GetBitmap(const ReadType& _Key)
 {
 	if (auto find_iter = Map.find(_Key);
 		find_iter != std::end(Map))

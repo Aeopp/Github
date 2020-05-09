@@ -18,9 +18,6 @@ private:
 	SoundManager();
 public:
 	~SoundManager()noexcept;
-	SoundManager(SoundManager&&)noexcept = delete;
-	SoundManager& operator=(SoundManager&&)noexcept = delete;
-	SoundManager(const SoundManager&) = delete;
-	SoundManager& operator=(const SoundManager&) = delete;
+	DELETE_MOVE_COPY(SoundManager)
 };
 #define GetSoundManager SoundManager::Instance()

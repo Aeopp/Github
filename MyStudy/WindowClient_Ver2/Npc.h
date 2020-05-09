@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor.h"
-class TNpcObj : public TObject
+class TNpcObj : public Actor
 {
 public:
 	bool		m_bDead;

@@ -1,30 +1,22 @@
 #pragma once
 #include "Bitmap.h"
-class TBitmapMgr : public SingleTon<TBitmapMgr>
+class BitmapManager : public SingleTon<BitmapManager>
 {
-	friend class SingleTon<TBitmapMgr>;
+	friend class SingleTon<BitmapManager>;
 private:
-	int						m_iCurIndex;
-	std::map<int, TBitmap*>  m_Map;
-	tstring					m_csDefaultPath;
+	std::map<tstring,std::shared_ptr<Bitmap>>  Bitmaps;
 public:
-	typedef std::map<int, TBitmap*>::iterator TItor;
-	void    SetDefaultPath(tstring szPath)
-	{
-		m_csDefaultPath = szPath;
-	}
+	const tstring					DefaultPath;
 public:
-	bool	Init();
 	bool	Frame();
 	bool	Render();
-	bool	Release();
-	int		Load(HDC hScreenDC, tstring szName);
-	TBitmap* GetPtr(int iIndex);
-
+	std::weak_ptr<Bitmap>		Load(HDC ScreenDCHandle,tstring FullPath);
+	std::weak_ptr<Bitmap> GetBitmap(tstring Key);
 private:
-	TBitmapMgr();
+	BitmapManager();
 public:
-	~TBitmapMgr();
+	~BitmapManager()noexcept;
+	DELETE_MOVE_COPY(BitmapManager)
 };
 
-#define I_BitmapMgr TBitmapMgr::Instance()
+#define GetBitmapManager BitmapManager::Instance()

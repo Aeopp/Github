@@ -113,7 +113,7 @@ bool	Sample::Frame()
 {
 	m_Hero.Frame();
 	m_Projectile.Frame();
-	if (g_InputMap.Attack == EKeyState::Push)
+	if (World::InputMapState.Attack == EKeyState::Push)
 	{
 		TProjectile item;
 		item.fLifeTime  = 2.0f;
@@ -174,7 +174,7 @@ bool	Sample::Frame()
 			SetLifeCounter();
 			break;
 		}
-		if (RectInPt(npc->m_rtCollision, g_MousePos))
+		if (RectInPt(npc->m_rtCollision,World::MousePosition))
 		{
 			npc->SetPos(0, 0);
 		}

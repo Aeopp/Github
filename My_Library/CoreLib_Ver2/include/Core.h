@@ -3,10 +3,10 @@
 #include "SoundManager.h"
 #include "Timer.h"
 #include "InputManager.h"
-class TCore : public Window
+class Engine : public Window
 {
 public:
-	Timer		m_Timer;
+	Timer		CurrentTimer;
 
 	HFONT		m_hDefaultFont;
 	HFONT		m_hGameFont;
@@ -29,7 +29,7 @@ private:
 public:
 	bool TRun();
 public:
-	TCore();
-	virtual ~TCore();
+	Engine();
+	virtual ~Engine();
 };
 

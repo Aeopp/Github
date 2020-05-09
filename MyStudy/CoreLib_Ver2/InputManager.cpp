@@ -1,32 +1,30 @@
 #include "InputManager.h"
-POINT  g_MousePos;
-InputActionMap  g_InputMap;
 
 
-bool TInput::Frame() 
+bool InputManager::Frame() 
 {
 	GetCursorPos(&MousePosition);// ½ºÅ©¸°ÁÂÇ¥
 	ScreenToClient(World::WindowHandle, &MousePosition);
-	g_MousePos = MousePosition;
+	World::MousePosition = MousePosition;
 	
-	g_InputMap.WKey = KeyCheck('W');
-	g_InputMap.SKey = KeyCheck('S');
-	g_InputMap.AKey = KeyCheck('A');
-	g_InputMap.DKey = KeyCheck('D');
+	World::InputMapState.WKey = KeyCheck('W');
+	World::InputMapState.SKey = KeyCheck('S');
+	World::InputMapState.AKey = KeyCheck('A');
+	World::InputMapState.DKey = KeyCheck('D');
 	
 
-	g_InputMap.LeftClick = KeyCheck(VK_LBUTTON);
-	g_InputMap.RightClick = KeyCheck(VK_RBUTTON);
-	g_InputMap.MiddleClick = KeyCheck(VK_MBUTTON);
-	g_InputMap.Attack = g_InputMap.LeftClick;
-	g_InputMap.Exit = KeyCheck(VK_ESCAPE);
+	World::InputMapState.LeftClick = KeyCheck(VK_LBUTTON);
+	World::InputMapState.RightClick = KeyCheck(VK_RBUTTON);
+	World::InputMapState.MiddleClick = KeyCheck(VK_MBUTTON);
+	World::InputMapState.Attack = World::InputMapState.LeftClick;
+	World::InputMapState.Exit = KeyCheck(VK_ESCAPE);
 	return true;
 }
-bool TInput::Render() 
+bool InputManager::Render() 
 {
 	return true;
 }
-EKeyState TInput::KeyCheck(uint32_t Key)
+EKeyState InputManager::KeyCheck(uint32_t Key)
 {
 	SHORT KeyState = GetAsyncKeyState(Key);
 	// 0x8000 -> 10000000 00000000
@@ -56,10 +54,10 @@ EKeyState TInput::KeyCheck(uint32_t Key)
 	}
 	return KeyStates[Key];
 }
-TInput::TInput()
+InputManager::InputManager()
 {
 }
-TInput::~TInput()
+InputManager::~InputManager()noexcept
 {
 
 }

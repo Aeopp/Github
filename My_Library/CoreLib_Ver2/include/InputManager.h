@@ -3,12 +3,12 @@
 #include <array>
 #include <limits>
 
-class TInput : public SingleTon<TInput>
+class InputManager : public SingleTon<InputManager>
 {
 public :
 	static constexpr inline uint32_t KeyMappedMaxSize = 256;
 private:
-	friend class SingleTon<TInput>;
+	friend class SingleTon<InputManager>;
 	std::array<EKeyState,KeyMappedMaxSize> KeyStates;
 	POINT		MousePosition;
 public:
@@ -16,9 +16,10 @@ public:
 	bool		Render();
 	EKeyState	KeyCheck(uint32_t Key);
 private:
-	TInput();
+	InputManager();
 public:
-	~TInput();
+	~InputManager()noexcept;
+	DELETE_MOVE_COPY(InputManager)
 };
 
-#define GetInputManager TInput::Instance()
+#define GetInputManager InputManager::Instance()

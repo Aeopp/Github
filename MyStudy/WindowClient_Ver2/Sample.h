@@ -25,14 +25,14 @@ struct TProjectile
 			rtCollision.top + rtDesk.bottom;
 	}
 };
-class Sample : public TCore
+class Sample : public Engine
 {
 	int			LifeCounter;
 	THeroObj	m_Hero;
 	//TNpcObj		m_Npc;
 	list<TNpcObj*>		m_NpcList;
-	TObject		m_BackGround;
-	TObject		m_Projectile;
+	Actor		m_BackGround;
+	Actor		m_Projectile;
 	list<TProjectile>	m_ProjectileList;
 
 	float	m_fNpcTime;
