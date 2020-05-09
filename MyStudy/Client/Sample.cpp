@@ -13,7 +13,7 @@ bool _Tester::Init_Implementation()
 	const std::wstring _key2 = L"../../Data/Sound/MyLove.mp3";
 	const std::wstring _key3 = L"../../Data/Sound/GunShot.mp3";
 
-	using _Key = Input::EKey;
+	using _Key = Input::EKeyState;
 
 	auto& _Sound_Ref = Super::_Sound_Mgr;
 	auto& _Input_Ref = Super::_Input_Helper;

@@ -4,22 +4,23 @@ class SoundManager : public SingleTon<SoundManager>
 {
 	friend class SingleTon<SoundManager>;
 private:
-	int32_t					m_iCurIndex;
 	std::map<tstring,std::shared_ptr<Sound>>  Sounds;
-	FMOD::System*			FModSystem;
+	std::shared_ptr<FMOD::System>			FModSystem;
+public:
 	const tstring			DefaultPath;
 public:
-	typedef std::map<int, Sound*>::iterator TItor;
-public:
-	bool	Init();
+	bool	Clear()noexcept;
 	bool	Frame();
 	bool	Render();
-	bool	Release();
-	std::weak_ptr<Sound> Load(tstring szName);
+	std::weak_ptr<Sound> Load(tstring Fullpath);
 	std::weak_ptr<Sound> GetSound(const tstring& Key);
 private:
 	SoundManager();
 public:
-	~SoundManager();
+	~SoundManager()noexcept;
+	SoundManager(SoundManager&&)noexcept = delete;
+	SoundManager& operator=(SoundManager&&)noexcept = delete;
+	SoundManager(const SoundManager&) = delete;
+	SoundManager& operator=(const SoundManager&) = delete;
 };
-#define I_SoundMgr SoundManager::Instance()
+#define GetSoundManager SoundManager::Instance()

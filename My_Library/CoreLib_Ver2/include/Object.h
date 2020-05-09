@@ -1,14 +1,18 @@
 #pragma once
 #include "Utility.h"
-class TBaseObject
+class Object
 {
 public:
-	virtual bool		Init() = 0;
+	using Super = Object; 
+public:
 	virtual bool		Frame() = 0;
 	virtual bool		Render() = 0;
-	virtual bool		Release() = 0;
 public:
-	TBaseObject() {}
-	virtual ~TBaseObject() {}
+	Object() {}
+	virtual ~Object() {}
+	Object(const Object&) = default;
+	Object&operator=(const Object&)=default;
+	Object(Object&&)noexcept =default ;
+	Object& operator=(Object&&)noexcept = default;
 };
 

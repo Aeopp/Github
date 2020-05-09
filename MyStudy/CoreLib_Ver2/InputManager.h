@@ -1,21 +1,24 @@
 #pragma once
 #include "Utility.h"
-enum { KEY_FREE, KEY_PUSH, KEY_HOLD, KEY_UP};
+#include <array>
+#include <limits>
+
 class TInput : public SingleTon<TInput>
 {
+public :
+	static constexpr inline uint32_t KeyMappedMaxSize = 256;
+private:
 	friend class SingleTon<TInput>;
-	DWORD       m_dwKeyState[256];
-	POINT		m_MousePos;
+	std::array<EKeyState,KeyMappedMaxSize> KeyStates;
+	POINT		MousePosition;
 public:
-	bool		Init();
 	bool		Frame();
 	bool		Render();
-	bool		Release();
-	DWORD		KeyCheck(DWORD dwKey);
+	EKeyState	KeyCheck(uint32_t Key);
 private:
 	TInput();
 public:
 	~TInput();
 };
 
-#define I_Input TInput::Instance()
+#define GetInputManager TInput::Instance()

@@ -42,7 +42,7 @@ void Sample::SetLifeCounter()
 {
 	if (HeroLifeTime > 3.0f)
 	{
-		if (auto SharedSound = I_SoundMgr.GetSound(L"Gun2.mp3").lock();
+		if (auto SharedSound = GetSoundManager.GetSound(L"Gun2.wav").lock();
 			SharedSound) {
 			SharedSound->PlayEffect();
 		}
@@ -53,38 +53,38 @@ void Sample::SetLifeCounter()
 TNpcObj* Sample::AddNpc()
 {
 	TNpcObj*  npc = new TNpcObj;
-	if (npc->Load(m_hScreenDC, L"../../../Data/Bitmap/bitmap1.bmp"))
+	if (npc->Load(m_hScreenDC, L"../../../Data/Bitmap/1945.bmp"))
 	{
 		RECT rtSrc, rtDesk;
-		rtSrc.left = 46;
-		rtSrc.top = 63;
+		rtSrc.left = 307;
+		rtSrc.top = 248;
 		//rtSrc.right = 61;
 		//rtSrc.bottom = 1;
 		rtDesk.left = rand() % 800;
 		rtDesk.top = 0;
-		rtDesk.right = 68;
-		rtDesk.bottom = 78;
+		rtDesk.right = 59;
+		rtDesk.bottom = 48;
 		npc->SetRect(rtSrc, rtDesk);
 	}
 	return npc;
 }
 bool	Sample::Init()
 {	
-	I_SoundMgr.Load(L"../../../Data/Sound/romance.mid");
-	I_SoundMgr.Load(L"../../../Data/Sound/Gun1.mp3");
-	I_SoundMgr.Load(L"../../../Data/Sound/Gun2.mp3");
-	m_BackGround.Load(m_hScreenDC, L"../../../Data/Bitmap/kgcabk.bmp");
-	if (m_Hero.Load(m_hScreenDC, L"../../../Data/Bitmap/bitmap1.bmp"))
+	GetSoundManager.Load(L"../../../Data/Sound/romance.mid");
+	GetSoundManager.Load(L"../../../Data/Sound/Gun1.wav");
+	GetSoundManager.Load(L"../../../Data/Sound/Gun2.wav");
+	m_BackGround.Load(m_hScreenDC, L"../../../Data/Bitmap/lobby.bmp");
+	if (m_Hero.Load(m_hScreenDC, L"../../../Data/Bitmap/1945.bmp"))
 	{
 		RECT rtSrc, rtDesk;
-		rtSrc.left = 133;
-		rtSrc.top = 1;
+		rtSrc.left = 206;
+		rtSrc.top = 413;
 		//rtSrc.right = 61;
 		//rtSrc.bottom = 1;
 		rtDesk.left = World::ClientRect.right / 2;
 		rtDesk.top = World::ClientRect.bottom / 2;
-		rtDesk.right = 42;
-		rtDesk.bottom = 60;
+		rtDesk.right = 60;
+		rtDesk.bottom = 47;
 		m_Hero.SetRect(rtSrc, rtDesk);
 	}
 	if (m_Projectile.Load(m_hScreenDC, L"../../../Data/Bitmap/bitmap1.bmp"))
@@ -103,7 +103,7 @@ bool	Sample::Init()
 		m_NpcList.push_back(AddNpc());
 	}
 	
-	if (auto SharedSound = I_SoundMgr.GetSound(L"romance.mid").lock(); SharedSound) {
+	if (auto SharedSound = GetSoundManager.GetSound(L"romance.mid").lock(); SharedSound) {
 		SharedSound->Play();
 	}
 
@@ -113,7 +113,7 @@ bool	Sample::Frame()
 {
 	m_Hero.Frame();
 	m_Projectile.Frame();
-	if (g_InputMap.bAttack == KEY_PUSH)
+	if (g_InputMap.Attack == EKeyState::Push)
 	{
 		TProjectile item;
 		item.fLifeTime  = 2.0f;
@@ -121,7 +121,7 @@ bool	Sample::Frame()
 		item.SetPos(m_Hero.m_fPosX, m_Hero.m_fPosY);
 		m_ProjectileList.insert(m_ProjectileList.end(),
 			item);
-		if (auto SharedSound = I_SoundMgr.GetSound(L"Gun1.mp3").lock(); SharedSound) {
+		if (auto SharedSound = GetSoundManager.GetSound(L"Gun1.wav").lock(); SharedSound) {
 			SharedSound->PlayEffect();
 		}
 	}
@@ -181,7 +181,7 @@ bool	Sample::Frame()
 	}
 	if (LifeCounter <= 0)
 	{
-		bExit = true;
+		Exit = true;
 	}
 	HeroLifeTime += World::FramePerSecond;
 	return true;

@@ -23,7 +23,7 @@ template<typename binary_func,
 
 bool AHero::Init() noexcept
 {
-	using _Key = Input::EKey;
+	using _Key = Input::EKeyState;
 
 	// TODO :: Press or Hold 로 바꾸어야함
 	// 사용자의 키 입력에 따라 메쉬의 포지션 좌표값을 조정해줍니다.

@@ -20,9 +20,6 @@ bool TCore::Release() { return true; }
 
 bool TCore::TCoreInit()
 {	
-	I_SoundMgr.Init();
-	I_Input.Init();
-
 	m_hScreenDC = GetDC(WindowHandle);
 	m_hOffScreenDC = CreateCompatibleDC(m_hScreenDC);
 	m_hOffScreenBitmap = CreateCompatibleBitmap(
@@ -53,12 +50,12 @@ bool TCore::TCoreInit()
 bool TCore::TCoreFrame()
 {
 	m_Timer.Frame();
-	I_SoundMgr.Frame();
-	I_Input.Frame();
+	GetSoundManager.Frame();
+	GetInputManager.Frame();
 
-	if (g_InputMap.bExit == KEY_PUSH)
+	if (g_InputMap.Exit == EKeyState::Push)
 	{
-		bExit = true;
+		Exit = true;
 		return false;
 	}
 
@@ -71,8 +68,8 @@ bool TCore::TCoreRender()
 		Render();
 
 		m_Timer.Render();
-		I_SoundMgr.Render();
-		I_Input.Render();	
+		GetSoundManager.Render();
+		GetInputManager.Render();
 
 		tstring strBuffer = L"GameTime";
 		strBuffer += m_Timer.TimeOutputString;
@@ -98,13 +95,13 @@ bool TCore::TCoreRelease()
 	ReleaseDC(WindowHandle, m_hScreenDC);
 
 
-	I_SoundMgr.Release();
+	GetSoundManager.Clear();
 	return true;
 }
 bool TCore::TRun()
 {
 	TCoreInit();
-	while (!bExit)
+	while (!Exit)
 	{
 		if (WindowRun())
 		{
@@ -118,7 +115,7 @@ bool TCore::TRun()
 }
 TCore::TCore()
 {
-	bExit = false;
+	Exit = false;
 }
 TCore::~TCore()
 {

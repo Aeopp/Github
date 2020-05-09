@@ -1,10 +1,7 @@
 #include "Timer.h"
 #include <sstream>
 
-bool	Timer::Init()
-{
-	return true;
-}
+
 bool	Timer::Frame()
 {
 	Clock::time_point Current= Clock::now();
@@ -35,11 +32,6 @@ bool	Timer::Render()
 {
 	return true;
 }
-bool	Timer::Release()
-{
-	return true;
-}
-
 Timer::Timer() :
 	FramePerSecond{ 0.0f },
 	Time{ 0.0f },

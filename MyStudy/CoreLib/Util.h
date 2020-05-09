@@ -139,7 +139,6 @@ namespace Debug {
 		return Log + __Func + " Line :  " + std::to_string(__LINE) + " \n " + Message;
 	};
 #define Log(Target) Log_Impl(__FUNCTION__,__LINE__,Target)
-
 };
 
 

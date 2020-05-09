@@ -25,7 +25,7 @@ bool _Tester::Init()noexcept
 	const std::wstring _key3 = L"../../Data/Sound/GunShot.mp3";
 
 
-	using _Key = Input::EKey;
+	using _Key = Input::EKeyState;
 
 	auto& _Sound_Ref = Super::_Sound_Mgr;
 	auto& _Input_Ref = Super::_Input_Helper;

@@ -3,35 +3,44 @@
 #include <fmod.h>
 #include <fmod.hpp>
 #include <fmod_errors.h>
-class Sound : public TBaseObject
+
+class Sound : public Object
 {
 private:	
-	FMOD::System*	m_pSystem;
-	FMOD::Sound*	m_pSound;
-	FMOD::Channel*	m_pChannel;
+	struct  DeleterDummy {
+		template<typename HandleType>
+		void operator()(HandleType) {
+			static_assert(std::is_pointer_v<HandleType>, L"포인터가 아니잖아!!!");
+		};
+	};
+
+	std::weak_ptr<FMOD::System>		FmodSystem;
+	std::unique_ptr<FMOD::Sound,struct DeleterDummy>	FmodSound;
+	std::unique_ptr<FMOD::Channel,struct DeleterDummy>	FmodChannel;
 public:
 	tstring			FileName;
-	float			m_fVolume;
-	unsigned int	m_msLength;
-	TCHAR			m_csBuffer[256];
-public:
-	virtual bool	Init()	;		// 초기화
-	virtual bool	Frame()	;	// 계산
-	virtual bool	Render()	;	// 드로우
-	virtual bool	Release()	;	// 소멸
+	tstring			TimePassed;
+	float_t			Volume;
+	uint32_t Length;
+public:	
+	bool	Frame()override;
+	bool	Render()override;
 public:
 	void	Paused();
 	void	Stop();
 	void	VolumeUp();
 	void	VolumeDown();
-	void	SetMode(DWORD dwMode=FMOD_LOOP_NORMAL);
+	void	SetMode(uint32_t Mode);
 public:
-	bool	Load(	tstring szName,
-					FMOD::System* pSystem);
 	void	Play();
 	void	PlayEffect();
 public:
-	Sound(tstring FileName);
+	Sound(tstring FullPath,std::shared_ptr<FMOD::System> pSystem);
 	virtual ~Sound();
+	Sound(Sound&&)noexcept = default;
+	Sound& operator=(Sound&&)noexcept = default;
+	Sound(const Sound&) = default;
+	Sound& operator=(const Sound&) = default;
+
 };
 

@@ -22,6 +22,9 @@ typedef std::vector<tstring> T_STR_VECTOR;
 //추가종속성 winmm.lib; fmod_vc.lib; TCoreLib.lib;
 #pragma comment (lib, "winmm.lib")
 #pragma comment (lib, "fmod_vc.lib")
+
+enum class EKeyState : uint8_t { Free = 0, Push, Hold, Up };
+
 namespace Utility {
 	template<typename StringType>
 	constexpr StringType inline PathDelete(const StringType& FullPath)
@@ -38,6 +41,15 @@ namespace Utility {
 		return Filename;
 	}
 };
+namespace Debug {
+	// string 만 사용 가능
+	static auto LogImplementation(const char* __Func, long  __LINE,std::string Message)
+	{
+		std::string Log = " Function ";
+		return (Log + __Func + " Line :  " + std::to_string(__LINE) + " \n " + Message).c_str();
+	};
+#define Log(Target) LogImplementation(__FUNCTION__,__LINE__,Target)
+};
 class World {
 public:
 	static inline HINSTANCE InstanceHandle = nullptr;
@@ -46,25 +58,25 @@ public:
 	static inline float_t FramePerSecond = 0.f;
 	static inline float_t Timer = 0.f; 
 };
-struct TInputActionMap
+struct InputActionMap
 {
-	DWORD bAttack;
-	DWORD bJump;
-	DWORD bExit;
+	EKeyState Attack;
+	EKeyState Jump;
+	EKeyState Exit;
 
-	DWORD bWKey;
-	DWORD bSKey;
-	DWORD bAKey;
-	DWORD bDKey;
+	EKeyState WKey;
+	EKeyState SKey;
+	EKeyState AKey;
+	EKeyState DKey;
 
-	DWORD bLeftClick;
-	DWORD bRightClick;
-	DWORD bMiddleClick;
+	EKeyState LeftClick;
+	EKeyState RightClick;
+	EKeyState MiddleClick;
 };
 
 extern float		g_fTimer;
 extern POINT		g_MousePos;
-extern TInputActionMap  g_InputMap;
+extern InputActionMap  g_InputMap;
 
 
 static std::wstring mtw(std::string str)

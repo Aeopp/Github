@@ -77,7 +77,7 @@ bool Window::WindowRun()
 		DispatchMessage(&_Message);
 		if (_Message.message == WM_QUIT)
 		{
-			bExit = true;
+			Exit = true;
 		}
 		return false;
 	}

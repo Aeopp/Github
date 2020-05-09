@@ -9,7 +9,7 @@ class Input : public manager_Interface<Input>
 {
 public:
 	using manager_Interface::manager_Interface;
-	enum  EKey {
+	enum  EKeyState {
 		Free,
 		Press,
 		Hold,

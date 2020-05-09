@@ -1,14 +1,6 @@
 #include "SoundManager.h"
 
-bool	SoundManager::Init()
-{
-	FMOD_RESULT hr;
-	hr = FMOD::System_Create(&FModSystem);
-	if (hr != FMOD_OK) return false;
-	hr = FModSystem->init(32, FMOD_INIT_NORMAL, 0);
-	if (hr != FMOD_OK) return false;
-	return true;
-}
+
 bool	SoundManager::Frame()             
 {
 	for (auto& [Key,CurrentSound]: Sounds) {
@@ -30,16 +22,14 @@ std::weak_ptr<Sound>	SoundManager::Load(tstring Fullpath)
 {
 	// ../../../data/sound/xx.mp3
 	tstring FileName = Utility::PathDelete(Fullpath);
-
-	for (auto& [Key, CurrentSound] : Sounds) {
-		if (CurrentSound->FileName == FileName) {
-			return CurrentSound;
-		}
+	
+	if (auto FindIterator = Sounds.lower_bound(FileName); 
+		FindIterator!=std::end(Sounds)&&FindIterator->first == FileName) {
+		return FindIterator->second;
 	}
-	auto NewSound = std::make_shared<Sound>(FileName);
-	if (NewSound->Load(Fullpath, FModSystem)) {
-		Sounds.try_emplace(FileName,NewSound);
-		return NewSound;
+	else if (auto NewSound = std::make_shared<Sound>(Sound( Fullpath,FModSystem ));
+		NewSound){
+		return Sounds.try_emplace(FindIterator, std::move(FileName), std::move(NewSound))->second;
 	}
 }
 
@@ -53,21 +43,25 @@ std::weak_ptr<Sound> SoundManager::GetSound(const tstring& Key)
 		return {};
 	}
 }
-bool SoundManager::Release()
+bool SoundManager::Clear()noexcept
 {
 	Sounds.clear();
-	FModSystem->close();
-	FModSystem->release();
 	return true;
 }
 SoundManager::SoundManager()
 	: DefaultPath{ L"../../../Data/Sound/" }
 {
-	m_iCurIndex = 0;
-	FModSystem = nullptr;
-	Init();
+	FMOD_RESULT ModResult;
+	FMOD::System* IninFmodSystem;
+	ModResult = FMOD::System_Create(&IninFmodSystem);
+	if (ModResult != FMOD_OK) throw std::exception(Debug::Log("ModResult != FMOD_OK"));
+	ModResult = IninFmodSystem->init(32, FMOD_INIT_NORMAL, 0);
+	if (ModResult != FMOD_OK) throw std::exception(Debug::Log("ModResult != FMOD_OK"));
+
+	FModSystem = std::shared_ptr<FMOD::System>(IninFmodSystem,[](FMOD::System* FmodSystem) 
+	{FmodSystem->close(); FmodSystem->release();});
 }
-SoundManager::~SoundManager()
+SoundManager::~SoundManager()noexcept
 {
-	Release();
+	
 }

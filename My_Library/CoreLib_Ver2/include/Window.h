@@ -5,7 +5,7 @@ class Window
 public:
 	HINSTANCE	InstanceHandle;
 	HWND		WindowHandle;
-	bool		bExit;
+	bool		Exit;
 	RECT		ClientRect;
 	RECT		WindowRect;
 private:
