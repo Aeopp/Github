@@ -62,6 +62,7 @@ bool		Actor::Render(HDC hOffScreenDC)
 			m_rtSrc.top, SRCCOPY);
 		return true;
 	}
+	else return false;
 };
 bool		Actor::Frame()
 {

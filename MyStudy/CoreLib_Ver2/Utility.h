@@ -90,7 +90,12 @@ static std::string wtm(std::wstring str)
 	return std::string(str.begin(), str.end());
 }
 
-
+#define DEFAULT_MOVE_COPY(Target)       \
+public:\
+Target(Target&&)noexcept = default;\
+Target& operator=(Target&&)noexcept = default;\
+Target(const Target&) = default;\
+Target& operator=(const Target&) = default;\
 
 // Singleton
 // Don't Copy Don't Move

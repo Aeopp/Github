@@ -20,14 +20,15 @@ bool	Bitmap::Release()
 }
 Bitmap::Bitmap(HDC hScreenDC, tstring szLoadFileName)
 {
-	m_hScreenDC = hScreenDC;
+	m_hScreenDC = std::unique_ptr<HDC__, DisplayHandleDeleter>(hScreenDC,
+		DisplayHandleDeleter{});
 	m_hBitmap = (HBITMAP)LoadImage(World::InstanceHandle,
 		szLoadFileName.c_str(),
 		IMAGE_BITMAP,
 		0, 0,
 		LR_DEFAULTSIZE | LR_LOADFROMFILE);
 	GetObject(m_hBitmap, sizeof(BITMAP), &m_BmpInfo);
-	m_hMemDC = CreateCompatibleDC(m_hScreenDC);
+	m_hMemDC = CreateCompatibleDC(m_hScreenDC.get());
 	SelectObject(m_hMemDC, m_hBitmap);
 }
 
