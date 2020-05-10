@@ -1,24 +1,27 @@
 #include "InputManager.h"
 
-
 bool InputManager::Frame() 
 {
-	GetCursorPos(&MousePosition);// ½ºÅ©¸°ÁÂÇ¥
-	ScreenToClient(World::WindowHandle, &MousePosition);
-	World::MousePosition = MousePosition;
-	
-	World::InputMapState.WKey = KeyCheck('W');
-	World::InputMapState.SKey = KeyCheck('S');
-	World::InputMapState.AKey = KeyCheck('A');
-	World::InputMapState.DKey = KeyCheck('D');
-	
+	if (auto SharedWindowHandle = World::WindowHandle.lock();
+		SharedWindowHandle)
+	{
+		GetCursorPos(&MousePosition);// ½ºÅ©¸°ÁÂÇ¥
+		ScreenToClient(SharedWindowHandle.get(), &MousePosition);
+		World::MousePosition = MousePosition;
 
-	World::InputMapState.LeftClick = KeyCheck(VK_LBUTTON);
-	World::InputMapState.RightClick = KeyCheck(VK_RBUTTON);
-	World::InputMapState.MiddleClick = KeyCheck(VK_MBUTTON);
-	World::InputMapState.Attack = World::InputMapState.LeftClick;
-	World::InputMapState.Exit = KeyCheck(VK_ESCAPE);
-	return true;
+		World::InputMapState.WKey = KeyCheck('W');
+		World::InputMapState.SKey = KeyCheck('S');
+		World::InputMapState.AKey = KeyCheck('A');
+		World::InputMapState.DKey = KeyCheck('D');
+
+
+		World::InputMapState.LeftClick = KeyCheck(VK_LBUTTON);
+		World::InputMapState.RightClick = KeyCheck(VK_RBUTTON);
+		World::InputMapState.MiddleClick = KeyCheck(VK_MBUTTON);
+		World::InputMapState.Attack = World::InputMapState.LeftClick;
+		World::InputMapState.Exit = KeyCheck(VK_ESCAPE);
+		return true;
+	}
 }
 bool InputManager::Render() 
 {

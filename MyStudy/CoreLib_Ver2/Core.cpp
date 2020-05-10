@@ -1,4 +1,7 @@
 #include "Core.h"
+#include <thread>
+
+using namespace std::literals::chrono_literals;
 bool Engine::Frame() { return true; }
 bool Engine::PreRender() 
 { 	
@@ -19,7 +22,7 @@ bool Engine::Release() { return true; }
 bool Engine::Init() { return true; }
 bool Engine::TCoreInit()
 {	
-	ScreenHDC = std::shared_ptr<HDC__>(GetDC(WindowHandle), HDCReleaseDC);
+	ScreenHDC = std::shared_ptr<HDC__>(GetDC(WindowHandle.get()), HDCReleaseDC);
 	OffScreenDC = std::shared_ptr<HDC__>(CreateCompatibleDC(ScreenHDC.get()),HDCDeleteDC);
 	OffScreenBitmap = std::unique_ptr<HBITMAP__, decltype(ObjectDeleter)>(
 	CreateCompatibleBitmap(ScreenHDC.get(), ClientRect.right, ClientRect.bottom),ObjectDeleter);
@@ -97,7 +100,7 @@ bool Engine::TRun()
 		{
 			TCoreFrame();
 			TCoreRender();
-			Sleep(1);
+			std::this_thread::sleep_for(1ms);
 		}
 	}
 	TCoreRelease();

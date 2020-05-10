@@ -28,8 +28,8 @@ Window::~Window()
 bool Window::GameRun() { return true; }
 bool Window::SetWindow(HINSTANCE hInstance)
 {
-	InstanceHandle = hInstance;
-	World::InstanceHandle = hInstance;
+	InstanceHandle = std::shared_ptr<HINSTANCE__>(hInstance,[](auto){});
+	World::InstanceHandle = InstanceHandle;
 	// TODO:: 생성할 윈도우 클래스 등록
 	auto WindowClassName  = L"WINDOW";
 	auto WindowName = L"WINDOW_GAME";
@@ -48,7 +48,7 @@ bool Window::SetWindow(HINSTANCE hInstance)
 	RECT ScreenSize = { 0,0,800,600 };
 	AdjustWindowRect(&ScreenSize, WS_OVERLAPPEDWINDOW, FALSE);
 	// 2. 등록한 클래스로 실제 윈도우를 생성
-	WindowHandle = CreateWindowEx(0,
+	WindowHandle = std::shared_ptr<HWND__>(CreateWindowEx(0,
 		WindowClassName,
 		WindowName,
 		WS_OVERLAPPEDWINDOW,//WS_POPUPWINDOW,//WS_OVERLAPPEDWINDOW,
@@ -56,17 +56,17 @@ bool Window::SetWindow(HINSTANCE hInstance)
 		0,
 		ScreenSize.right-ScreenSize.left,
 		ScreenSize.bottom- ScreenSize.top,
-		0, 0, InstanceHandle, 0);
+		0, 0, InstanceHandle.get(), 0), [](auto) {});
 
 	if (WindowHandle == NULL) return 1;
 	
-	GetClientRect(WindowHandle, &ClientRect);
-	GetWindowRect(WindowHandle, &WindowRect);
+	GetClientRect(WindowHandle.get(), &ClientRect);
+	GetWindowRect(WindowHandle.get(), &WindowRect);
 
 	World::ClientRect = ClientRect;
 	World::WindowHandle = WindowHandle;
 
-	ShowWindow(WindowHandle, SW_SHOW);
+	ShowWindow(WindowHandle.get(), SW_SHOW);
 	return true;
 }
 bool Window::WindowRun()

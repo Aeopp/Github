@@ -3,10 +3,12 @@
 #include "SoundManager.h"
 #include "Timer.h"
 #include "InputManager.h"
+#include "Actor.h"
 class Engine : public Window
 {
 public:
 	Timer		CurrentTimer;
+	std::vector<std::shared_ptr<Actor>> Actors;
 	std::shared_ptr<HDC__>ScreenHDC;
 	std::shared_ptr<HDC__>OffScreenDC;
 	std::unique_ptr<HFONT__,decltype(ObjectDeleter)> DefaultFont;

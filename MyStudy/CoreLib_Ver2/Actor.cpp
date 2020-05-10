@@ -14,9 +14,9 @@ void		Actor::SetPos(float x, float y)
 	Collision.left	= x;
 	Collision.top	= y;
 	Collision.right =
-		Collision.left + RectDestnation.right;
+	Collision.left + RectDestnation.right;
 	Collision.bottom =
-		Collision.top + RectDestnation.bottom;
+	Collision.top + RectDestnation.bottom;
 }
 void		Actor::SetRect(RECT rtSrc, RECT rtDesk)
 {

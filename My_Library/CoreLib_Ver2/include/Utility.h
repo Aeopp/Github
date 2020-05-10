@@ -12,6 +12,7 @@
 #include <set>
 #include <assert.h>
 #include <mutex>
+
 using namespace std;
 using  tstring = basic_string<TCHAR> ;
 
@@ -69,17 +70,22 @@ struct InputActionMap
 
 class World {
 public:
-	static inline HINSTANCE InstanceHandle = nullptr;
-	static inline HWND WindowHandle = nullptr;
+	static inline std::weak_ptr<HINSTANCE__> InstanceHandle;
+	static inline std::weak_ptr<HWND__> WindowHandle;;
 	static inline RECT ClientRect; 
 	static inline float_t FramePerSecond = 0.f;
 	static inline float_t Timer = 0.f; 
 	static inline POINT MousePosition;
 	static inline InputActionMap InputMapState;
 };
+
 // GetDC로 얻은 핸들을 반환하는 형식
 static inline auto HDCReleaseDC = [](HDC DisplayHandle) {
-	ReleaseDC(World::WindowHandle, DisplayHandle);
+	if (auto SharedWindowHandle = World::WindowHandle.lock();
+		SharedWindowHandle)
+	{
+		ReleaseDC(SharedWindowHandle.get(), DisplayHandle);
+	}
 };
 // CreateCompatibleDC로 얻은 핸들을 반환하는 형식
 static inline auto HDCDeleteDC = [](HDC DisplayHandle) {
@@ -92,8 +98,6 @@ static  inline auto ObjectDeleter = []<typename HandleTypeCheck, typename =
 	std::is_invocable<decltype(DeleteObject), HandleTypeCheck>>(HandleTypeCheck Handle) {
 	DeleteObject(Handle);
 };
-
-extern float		g_fTimer;
 
 
 static std::wstring mtw(std::string str)
@@ -143,20 +147,6 @@ private:
 	~SingleTon()noexcept = default;
 	DELETE_MOVE_COPY(SingleTon)
 };
-
-#ifndef SAFE_NEW
-#define SAFE_NEW(A,B)  {if(!A) A= new B;}
-#endif // !SAFE_NEW
-
-#ifndef SAFE_DEL
-#define SAFE_DEL(A)    {if(A) delete A; (A) = 0;}
-#endif // !SAFE_DEL
-
-
-#ifndef SAFE_ZERO
-#define SAFE_ZERO(A)    {(A) = 0;}
-#endif // !SAFE_DEL
-
 
 #define TCORE_START void main() {
 #define TCORE_RUN 	Sample sample;sample.TRun();

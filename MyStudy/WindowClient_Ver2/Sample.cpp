@@ -118,7 +118,7 @@ bool	Sample::Frame()
 		TProjectile item;
 		item.fLifeTime  = 2.0f;
 		item.rtDesk		= m_Projectile.RectDestnation;
-		item.SetPos(m_Hero.X, m_Hero.Y);
+		item.SetPos(m_Hero.Vector[0], m_Hero.Vector[1]);
 		m_ProjectileList.insert(m_ProjectileList.end(),
 			item);
 		if (auto SharedSound = GetSoundManager.GetSound(L"Gun1.wav").lock(); SharedSound) {

@@ -1,10 +1,11 @@
 #pragma once
+#include <memory>
 #include <windows.h>
 class Window
 {
 public:
-	HINSTANCE	InstanceHandle;
-	HWND		WindowHandle;
+	std::shared_ptr<HINSTANCE__> InstanceHandle;
+	std::shared_ptr<HWND__> WindowHandle;
 	bool		Exit;
 	RECT		ClientRect;
 	RECT		WindowRect;
