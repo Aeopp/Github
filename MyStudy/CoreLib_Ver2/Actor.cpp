@@ -20,12 +20,13 @@ void		Actor::SetPos(float x, float y)
 }
 void		Actor::SetRect(RECT rtSrc, RECT rtDesk)
 {
-	RectSource		= rtSrc;
-	RectDestnation	= rtDesk;
+	RectSource = rtSrc;
+	RectDestnation = rtDesk;
 	SetPos(RectDestnation.left, RectDestnation.top);
-}
-bool		Actor::Load(HDC hScreenDC, tstring szFileName)
+};
+bool		Actor::Load(std::shared_ptr<HDC__> hScreenDC, tstring szFileName)
 {
+	if (hScreenDC == nullptr)return false; 
 	if (auto  SharedBitmap = GetBitmapManager.Load(hScreenDC, szFileName).lock();
 		SharedBitmap) {
 		Bitmap=SharedBitmap;
@@ -44,12 +45,12 @@ bool		Actor::Load(HDC hScreenDC, tstring szFileName)
 	}
 	else return false;
 }
-bool		Actor::Render(HDC hOffScreenDC)
+bool		Actor::Render(std::shared_ptr<HDC__> hOffScreenDC)
 {
 	if (auto SharedBitmap = Bitmap.lock();
 		SharedBitmap)
 	{
-		BitBlt(hOffScreenDC,
+		BitBlt(hOffScreenDC.get(),
 			RectDestnation.left,
 			RectDestnation.top,
 			RectDestnation.right,

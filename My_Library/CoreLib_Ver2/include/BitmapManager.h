@@ -10,7 +10,7 @@ public:
 public:
 	bool	Frame();
 	bool	Render();
-	std::weak_ptr<Bitmap>		Load(HDC ScreenDCHandle,tstring FullPath);
+	std::weak_ptr<Bitmap> Load(std::shared_ptr<HDC__> ScreenDCHandle,tstring FullPath);
 	std::weak_ptr<Bitmap> GetBitmap(tstring Key);
 private:
 	BitmapManager();

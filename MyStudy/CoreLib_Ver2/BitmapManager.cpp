@@ -9,15 +9,15 @@ bool	BitmapManager::Frame()
 }
 bool	BitmapManager::Render()
 {
-	for (auto&[Key,Bitmap] : Bitmaps) {
+	for (auto& [Key, Bitmap] : Bitmaps) {
 		Bitmap->Render();
 	}
 	return true;
-}
+};
 
-
-std::weak_ptr<Bitmap>	BitmapManager::Load(HDC ScreenDCHandle, tstring FullPath)
+std::weak_ptr<Bitmap>	BitmapManager::Load(std::shared_ptr<HDC__> ScreenDCHandle, tstring FullPath)
 {
+	if (ScreenDCHandle == nullptr) return {};
 	// ../../../data/sound/xx.mp3
 	tstring FileName = Utility::PathDelete(FullPath);
 	if (auto FindIterator = Bitmaps.lower_bound(FileName);

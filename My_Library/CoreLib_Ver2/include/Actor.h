@@ -17,9 +17,9 @@ public:
 	void		SetPos(float x, float y);
 	void		SetPos(FVector2D pos);
 	void		SetRect(RECT rtSrc, RECT rtDesk);
-	bool		Load(HDC hScreenDC, tstring Fullpath);
+	bool		Load(std::shared_ptr<HDC__> hScreenDC, tstring Fullpath);
 	virtual bool		Frame();
-	virtual bool		Render(HDC hOffScreenDC);
+	virtual bool		Render(std::shared_ptr<HDC__> hOffScreenDC);
 public:
 	Actor();
 	virtual ~Actor();

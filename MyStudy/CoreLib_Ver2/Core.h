@@ -7,13 +7,12 @@ class Engine : public Window
 {
 public:
 	Timer		CurrentTimer;
-
-	HFONT		m_hDefaultFont;
-	HFONT		m_hGameFont;
-	HBRUSH		m_hbrBack;
-	HDC			ScreenHDC;
-	HDC			m_hOffScreenDC;
-	HBITMAP		m_hOffScreenBitmap;
+	std::shared_ptr<HDC__>ScreenHDC;
+	std::shared_ptr<HDC__>OffScreenDC;
+	std::unique_ptr<HFONT__,decltype(ObjectDeleter)> DefaultFont;
+	std::unique_ptr<HFONT__, decltype(ObjectDeleter)> GameFont;
+	std::unique_ptr<HBRUSH__, decltype(ObjectDeleter)>	BackGroundBrush;
+	std::unique_ptr<HBITMAP__, decltype(ObjectDeleter)>	OffScreenBitmap;
 public:
 	virtual bool	Init();
 	virtual bool	Frame();

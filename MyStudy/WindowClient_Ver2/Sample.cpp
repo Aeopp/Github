@@ -188,33 +188,33 @@ bool	Sample::Frame()
 }
 bool	Sample::Render()
 {
-	m_BackGround.Render(m_hOffScreenDC);
-	m_Hero.Render(m_hOffScreenDC);
+	m_BackGround.Render(OffScreenDC);
+	m_Hero.Render(OffScreenDC);
 	list<TProjectile>::iterator iter;
 	for (iter = m_ProjectileList.begin();
 		iter != m_ProjectileList.end(); iter++)
 	{
 		m_Projectile.SetPos((*iter).pos[0], (*iter).pos[1]);
-		m_Projectile.Render(m_hOffScreenDC);		
+		m_Projectile.Render(OffScreenDC);
 	}
 	for (TNpcObj* npc : m_NpcList)
 	{
 		if (npc->m_bDead == true) continue;
-		npc->Render(m_hOffScreenDC);
+		npc->Render(OffScreenDC);
 	}
 
-	HFONT hOldFont = (HFONT)SelectObject(m_hOffScreenDC, m_hGameFont);
+	HFONT hOldFont = (HFONT)SelectObject(OffScreenDC.get(), GameFont.get());
 	tstring strBuffer = L"LIFE :";
 	strBuffer += std::to_wstring(LifeCounter);
-	SetTextColor(m_hOffScreenDC, RGB(255, 0, 0));
-	SetBkColor(m_hOffScreenDC, RGB(0, 0, 255));
-	SetBkMode(m_hOffScreenDC, TRANSPARENT);
+	SetTextColor(OffScreenDC.get(), RGB(255, 0, 0));
+	SetBkColor(OffScreenDC.get(), RGB(0, 0, 255));
+	SetBkMode(OffScreenDC.get(), TRANSPARENT);
 	RECT rt = World::ClientRect;
 	rt.left = 400;
-	DrawText(m_hOffScreenDC, strBuffer.c_str(),
+	DrawText(OffScreenDC.get(), strBuffer.c_str(),
 		-1, &rt,
 		DT_LEFT | DT_VCENTER);
-	SelectObject(m_hOffScreenDC, hOldFont);
+	SelectObject(OffScreenDC.get(), hOldFont);
 	return true;
 }
 bool	Sample::Release()

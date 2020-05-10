@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <valarray>
+#include <type_traits>
 using  namespace  std;
 
 using vector=std::valarray<int32_t> ;
@@ -19,10 +20,7 @@ namespace std {
 		return lhs[0] + lhs[1];
 	};
 };
+void foo(int,float) {};
 int main() {
-	std::valarray<int> q{ 1,2,3,4 };
-	std::valarray<int> s{ 1,2 };
-	auto qwe = s + q;
-
-	int a = 1;
+	std::cout << std::is_invocable_v<decltype(foo), int,std::string>;
 };

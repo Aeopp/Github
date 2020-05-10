@@ -25,6 +25,7 @@ typedef std::vector<tstring> T_STR_VECTOR;
 
 enum class EKeyState : uint8_t { Free = 0, Push, Hold, Up };
 
+
 namespace Utility {
 	template<typename StringType>
 	constexpr StringType inline PathDelete(const StringType& FullPath)
@@ -76,7 +77,21 @@ public:
 	static inline POINT MousePosition;
 	static inline InputActionMap InputMapState;
 };
-
+// GetDC로 얻은 핸들을 반환하는 형식
+static inline auto HDCReleaseDC = [](HDC DisplayHandle) {
+	ReleaseDC(World::WindowHandle, DisplayHandle);
+};
+// CreateCompatibleDC로 얻은 핸들을 반환하는 형식
+static inline auto HDCDeleteDC = [](HDC DisplayHandle) {
+	DeleteDC(DisplayHandle);
+};
+static inline auto BitmapHandleDeleter = [](HBITMAP BitmapHandle) {
+	DeleteObject(BitmapHandle);
+};
+static  inline auto ObjectDeleter = []<typename HandleTypeCheck, typename =
+	std::is_invocable<decltype(DeleteObject), HandleTypeCheck>>(HandleTypeCheck Handle) {
+	DeleteObject(Handle);
+};
 
 extern float		g_fTimer;
 

@@ -1,9 +1,8 @@
 #include "Core.h"
-bool Engine::Init() { return true; }
 bool Engine::Frame() { return true; }
 bool Engine::PreRender() 
 { 	
-	PatBlt( m_hOffScreenDC, 
+	PatBlt( OffScreenDC.get(),
 			0, 0, ClientRect.right, 
 			ClientRect.bottom, 
 			PATCOPY);
@@ -12,38 +11,37 @@ bool Engine::PreRender()
 bool Engine::Render() { return true; }
 bool Engine::PostRender() 
 { 
-	BitBlt(ScreenHDC, 0, 0, ClientRect.right, ClientRect.bottom,
-		m_hOffScreenDC, 0, 0, SRCCOPY);
+	BitBlt(ScreenHDC.get(), 0, 0, ClientRect.right, ClientRect.bottom,
+		OffScreenDC.get(), 0, 0, SRCCOPY);
 	return true; 
 }
 bool Engine::Release() { return true; }
-
+bool Engine::Init() { return true; }
 bool Engine::TCoreInit()
 {	
-	ScreenHDC = GetDC(WindowHandle);
-	m_hOffScreenDC = CreateCompatibleDC(ScreenHDC);
-	m_hOffScreenBitmap = CreateCompatibleBitmap(
-		ScreenHDC, ClientRect.right, ClientRect.bottom);
+	ScreenHDC = std::shared_ptr<HDC__>(GetDC(WindowHandle), HDCReleaseDC);
+	OffScreenDC = std::shared_ptr<HDC__>(CreateCompatibleDC(ScreenHDC.get()),HDCDeleteDC);
+	OffScreenBitmap = std::unique_ptr<HBITMAP__, decltype(ObjectDeleter)>(
+	CreateCompatibleBitmap(ScreenHDC.get(), ClientRect.right, ClientRect.bottom),ObjectDeleter);
 	
 	COLORREF bkColor = RGB(255, 0, 0);
-	m_hbrBack = CreateSolidBrush(bkColor);	
+	BackGroundBrush = std::unique_ptr<HBRUSH__, decltype(ObjectDeleter)>
+	(CreateSolidBrush(bkColor),ObjectDeleter);
 
-	m_hDefaultFont = CreateFont(
-		20, 0, 0, FW_BOLD, 0,0,0,0,
-		HANGEUL_CHARSET, 0,0,0,
+	DefaultFont = std::unique_ptr<HFONT__, decltype(ObjectDeleter)>(CreateFont(
+		20, 0, 0, FW_BOLD, 0, 0, 0, 0,
+		HANGEUL_CHARSET, 0, 0, 0,
 		0,//VARIABLE_PITCH | FF_ROMAN, 
-		L"±Ã¼­");
-	m_hGameFont = CreateFont(
+		L"±Ã¼­"), ObjectDeleter);
+	GameFont = std::unique_ptr<HFONT__, decltype(ObjectDeleter)>(CreateFont(
 		30, 0, 0, FW_BOLD, 0, 0, 0, 0,
 		DEFAULT_CHARSET, 0, 0, 0,
 		0,//VARIABLE_PITCH | FF_ROMAN, 
-		L"°íµñ");
+		L"°íµñ"),ObjectDeleter);
 	
-	SelectObject(m_hOffScreenDC, m_hbrBack);
-	SelectObject(m_hOffScreenDC, m_hDefaultFont);
-	SelectObject(m_hOffScreenDC, m_hOffScreenBitmap);
-
-
+	SelectObject(OffScreenDC.get(), BackGroundBrush.get());
+	SelectObject(OffScreenDC.get(), DefaultFont.get());
+	SelectObject(OffScreenDC.get(), OffScreenBitmap.get());
 	Init();
 	return true;
 }
@@ -73,10 +71,10 @@ bool Engine::TCoreRender()
 
 		tstring strBuffer = L"GameTime";
 		strBuffer += CurrentTimer.TimeOutputString;
-		SetTextColor(m_hOffScreenDC, RGB(255, 0, 0));
-		SetBkColor(m_hOffScreenDC, RGB(0, 0, 255));
-		SetBkMode(m_hOffScreenDC, TRANSPARENT);
-		DrawText(m_hOffScreenDC, strBuffer.c_str(),
+		SetTextColor(OffScreenDC.get(), RGB(255, 0, 0));
+		SetBkColor(OffScreenDC.get(), RGB(0, 0, 255));
+		SetBkMode(OffScreenDC.get(), TRANSPARENT);
+		DrawText(OffScreenDC.get(), strBuffer.c_str(),
 			-1, &World::ClientRect,
 			DT_LEFT | DT_VCENTER);
 
@@ -86,14 +84,6 @@ bool Engine::TCoreRender()
 bool Engine::TCoreRelease()
 {
 	Release();
-
-	DeleteObject(m_hDefaultFont);
-	DeleteObject(m_hGameFont);
-	DeleteObject(m_hbrBack);
-	DeleteObject(m_hOffScreenBitmap);
-	ReleaseDC(WindowHandle, m_hOffScreenDC);
-	ReleaseDC(WindowHandle, ScreenHDC);
-
 
 	GetSoundManager.Clear();
 	return true;
