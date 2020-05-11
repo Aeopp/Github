@@ -9,6 +9,7 @@ public:
 	float fDirectionY = 1.0f;
 public:
 	bool	Frame();
+	bool Render(std::shared_ptr<HDC__>)override;
 public:
 	TNpcObj();
 	virtual ~TNpcObj();

@@ -9,6 +9,7 @@ struct TProjectile
 	RECT   rtCollision;
 	float fLifeTime;
 	RECT   rtDesk;
+	Sphere _Sphere; 
 	void  SetPos(FVector2D p)
 	{
 		SetPos(p[0], p[1]);
@@ -20,9 +21,14 @@ struct TProjectile
 		rtCollision.left = pos[0];
 		rtCollision.top = pos[1];
 		rtCollision.right =
-			rtCollision.left + rtDesk.right;
+		rtCollision.left + rtDesk.right;
 		rtCollision.bottom =
 			rtCollision.top + rtDesk.bottom;
+		_Sphere.Center.x = (rtCollision.right + rtCollision.left) / 2;
+		_Sphere.Center.y = (rtCollision.bottom + rtCollision.top) / 2;
+		float_t Lhs = rtCollision.right - _Sphere.Center.x;
+		float_t Rhs = rtCollision.bottom - _Sphere.Center.y; 
+		_Sphere.Radius = std::sqrt(Lhs* Lhs+Rhs*Rhs);
 	}
 };
 class Sample : public Engine
@@ -44,8 +50,7 @@ public:
 	bool	Release();
 public:
 	TNpcObj* AddNpc();
-	bool RectInPt(RECT rt, POINT pt);
-	bool RectInRect(RECT src, RECT desk);
+
 	void SetLifeCounter();
 public:
 	Sample();

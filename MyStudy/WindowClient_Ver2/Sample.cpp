@@ -1,43 +1,5 @@
 #include "Sample.h"
-
-bool Sample::RectInPt(RECT rt, POINT pt)
-{
-	if (rt.left <= pt.x && rt.right >= pt.x)
-	{
-		if (rt.top <= pt.y && rt.bottom >= pt.y)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-bool Sample::RectInRect(RECT src, RECT desk)
-{
-	POINT cSrcCenter, cDeskCenter;
-	// 100  150  200 -> 300 /2 = 150
-	// 150
-	// 200  ==> (150,150)
-	cSrcCenter.x = (src.left + src.right) / 2;
-	cSrcCenter.y = (src.top + src.bottom) / 2;
-	cDeskCenter.x = (desk.left + desk.right) / 2;
-	cDeskCenter.y = (desk.top + desk.bottom) / 2;
-
-	POINT Distance;
-	Distance.x = abs(cSrcCenter.x - cDeskCenter.x);
-	Distance.y = abs(cSrcCenter.y - cDeskCenter.y);
-	POINT RadiusSrc;
-	POINT RadiusDesk;
-	RadiusSrc.x = src.right - cSrcCenter.x;
-	RadiusSrc.y = src.bottom - cSrcCenter.y;
-	RadiusDesk.x = desk.right - cDeskCenter.x;
-	RadiusDesk.y = desk.bottom - cDeskCenter.y;
-	if (Distance.x <= (RadiusSrc.x+RadiusDesk.x) &&
-		Distance.y <= (RadiusSrc.y + RadiusDesk.y))
-	{
-		return true;
-	}
-	return false;
-}
+#include "Collision.h"
 void Sample::SetLifeCounter()
 {
 	if (HeroLifeTime > 3.0f)
@@ -159,22 +121,22 @@ bool	Sample::Frame()
 			iter != m_ProjectileList.end();
 			iter++)
 		{
-			if (RectInRect( npc->Collision, 
-							(*iter).rtCollision))
+			if (Collision::SphereInSphere( npc->_Sphere,
+							(*iter)._Sphere))
 			{
 				npc->m_bDead = true;
 				break;
 			}
 		}
-		if (RectInRect(npc->Collision,
-			m_Hero.Collision))
+		if (Collision::SphereInSphere(npc->_Sphere,
+			m_Hero._Sphere))
 		{
 			//m_bExit = true;
 			
 			SetLifeCounter();
 			break;
 		}
-		if (RectInPt(npc->Collision,World::MousePosition))
+		if (Collision::SphereInPoint(npc->_Sphere,World::MousePosition))
 		{
 			npc->SetPos(0, 0);
 		}

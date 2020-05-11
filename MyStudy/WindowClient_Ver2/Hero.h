@@ -3,7 +3,7 @@
 class Hero : public Actor
 {
 public:
-	float	m_fSpeed;
+	float	Speed;
 public:
 	bool	Frame();
 public:

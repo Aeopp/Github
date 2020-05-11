@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="BitmapManager.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="BitmapManager.h" />
