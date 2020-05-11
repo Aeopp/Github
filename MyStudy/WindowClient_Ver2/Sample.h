@@ -36,7 +36,7 @@ class Sample : public Engine
 	int			LifeCounter;
 	Hero	m_Hero;
 	//TNpcObj		m_Npc;
-	list<TNpcObj*>		m_NpcList;
+	list<Npc*>		m_NpcList;
 	Actor		m_BackGround;
 	Actor		m_Projectile;
 	list<TProjectile>	m_ProjectileList;
@@ -49,7 +49,7 @@ public:
 	bool	Render();
 	bool	Release();
 public:
-	TNpcObj* AddNpc();
+	Npc* AddNpc();
 
 	void SetLifeCounter();
 public:

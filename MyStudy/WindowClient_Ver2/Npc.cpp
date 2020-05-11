@@ -1,6 +1,6 @@
 #include "Npc.h"
 #pragma comment(lib,"Msimg32.lib")
-bool TNpcObj::Frame()
+bool Npc::Frame()
 {
 	if (Y < 0.0f)
 	{
@@ -28,7 +28,7 @@ bool TNpcObj::Frame()
 	SetPos(X, Y);
 	return true;
 }
-bool TNpcObj::Render(std::shared_ptr<HDC__> OffScreenDC)
+bool Npc::Render(std::shared_ptr<HDC__> OffScreenDC)
 {	
 	if (auto SharedBitmap = BitmapPtr.lock();
 		SharedBitmap)
@@ -49,11 +49,11 @@ bool TNpcObj::Render(std::shared_ptr<HDC__> OffScreenDC)
 	}else 
 	return false; 
 }
-TNpcObj::TNpcObj()
+Npc::Npc()
 {
 	m_bDead = false;
 }
-TNpcObj::~TNpcObj()
+Npc::~Npc()
 {
 
 }

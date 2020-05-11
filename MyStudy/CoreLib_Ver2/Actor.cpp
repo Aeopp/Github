@@ -47,25 +47,45 @@ bool		Actor::Load(std::shared_ptr<HDC__> hScreenDC, tstring szFileName)
 
 		X = 0;
 		Y = 0;
-
-		
 		return true;
 	}
 	else return false;
 }
-bool		Actor::Render(std::shared_ptr<HDC__> hOffScreenDC)
+void Actor::SetMaskBitmap(std::shared_ptr<HDC__> hScreenDC, tstring Filename)
+{
+	if (hScreenDC) {
+		BitmapMask = GetBitmapManager.Load(hScreenDC, Filename);
+	}
+}
+bool		Actor::Render(std::shared_ptr<HDC__> OffScreenDC)
 {
 	if (auto SharedBitmap = BitmapPtr.lock();
-		SharedBitmap)
+		SharedBitmap&&OffScreenDC)
 	{
-		BitBlt(hOffScreenDC.get(),
-			RectDestnation.left,
-			RectDestnation.top,
-			RectDestnation.right,
-			RectDestnation.bottom,
-			SharedBitmap->MemoryHDC.get(),
-			RectSource.left,
-			RectSource.top, SRCCOPY);
+		if (SharedBitmap->BmpInfomation.bmBitsPixel == 32) {
+			BLENDFUNCTION BlendFn;
+			BlendFn.BlendOp = AC_SRC_OVER;
+			BlendFn.BlendFlags = 0;
+			BlendFn.SourceConstantAlpha = 255;
+			BlendFn.AlphaFormat = AC_SRC_ALPHA;
+			AlphaBlend(OffScreenDC.get(),
+				RectDestnation.left, RectDestnation.top, RectDestnation.right, RectDestnation.bottom,
+				SharedBitmap->MemoryHDC.get(),
+				RectSource.left, RectSource.top, RectDestnation.right, RectDestnation.bottom,
+				BlendFn);
+		}	
+		else {
+			BLENDFUNCTION BlendFn;
+			BlendFn.BlendOp = AC_SRC_OVER;
+			BlendFn.BlendFlags = 0;
+			BlendFn.SourceConstantAlpha = 0xff;
+			BlendFn.AlphaFormat = AC_SRC_OVER;
+			AlphaBlend(OffScreenDC.get(),
+				RectDestnation.left, RectDestnation.top, RectDestnation.right, RectDestnation.bottom,
+				SharedBitmap->MemoryHDC.get(),
+				RectSource.left, RectSource.top, RectDestnation.right, RectDestnation.bottom,
+				BlendFn);
+		}
 		return true;
 	}
 	else return false;

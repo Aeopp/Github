@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor.h"
-class TNpcObj : public Actor
+class Npc : public Actor
 {
 public:
 	FVector2D DirectionVector; 
@@ -11,7 +11,7 @@ public:
 	bool	Frame();
 	bool Render(std::shared_ptr<HDC__>)override;
 public:
-	TNpcObj();
-	virtual ~TNpcObj();
+	Npc();
+	virtual ~Npc();
 };
 

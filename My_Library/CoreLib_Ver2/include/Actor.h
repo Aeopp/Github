@@ -9,6 +9,7 @@ public:
 	FVector2D Vector{ 0,0 };
 	int			m_iIndex;
 	std::weak_ptr<Bitmap>	BitmapPtr;
+	std::weak_ptr<Bitmap>	BitmapMask;
 	RECT		RectSource;
 	RECT		RectDestnation;
 	RECT		Collision;
@@ -20,6 +21,7 @@ public:
 	void		SetPos(FVector2D pos);
 	void		SetRect(RECT rtSrc, RECT rtDesk);
 	bool		Load(std::shared_ptr<HDC__> hScreenDC, tstring Fullpath);
+	void SetMaskBitmap(std::shared_ptr<HDC__> hScreenDC, tstring Filename); 
 	virtual bool		Frame();
 	virtual bool		Render(std::shared_ptr<HDC__> hOffScreenDC);
 	bool DrawColorKey(std::shared_ptr<HDC__> ScreenDC, COLORREF color = RGB(000,067,171));

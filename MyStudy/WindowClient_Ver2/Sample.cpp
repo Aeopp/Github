@@ -12,11 +12,12 @@ void Sample::SetLifeCounter()
 		HeroLifeTime = 0.0f;
 	}
 }
-TNpcObj* Sample::AddNpc()
+Npc* Sample::AddNpc()
 {
-	TNpcObj*  npc = new TNpcObj;
+	Npc*  npc = new Npc;
 	if (npc->Load(ScreenHDC, L"../../../Data/Bitmap/1945.bmp"))
 	{
+		npc->SetMaskBitmap(ScreenHDC, L"../../../Data/Bitmap/1945mask.bmp");
 		RECT rtSrc, rtDesk;
 		rtSrc.left = 307;
 		rtSrc.top = 248;
@@ -38,6 +39,8 @@ bool	Sample::Init()
 	m_BackGround.Load(ScreenHDC, L"../../../Data/Bitmap/lobby.bmp");
 	if (m_Hero.Load(ScreenHDC, L"../../../Data/Bitmap/1945.bmp"))
 	{
+		m_Hero.SetMaskBitmap(ScreenHDC,L"../../../Data/Bitmap/1945mask.bmp");
+
 		RECT rtSrc, rtDesk;
 		rtSrc.left = 206;
 		rtSrc.top = 413;
@@ -51,6 +54,7 @@ bool	Sample::Init()
 	}
 	if (m_Projectile.Load(ScreenHDC, L"../../../Data/Bitmap/bitmap1.bmp"))
 	{
+		m_Projectile.SetMaskBitmap(ScreenHDC,L"../../../Data/Bitmap/bitmap1mask.bmp");
 		RECT rtSrc, rtDesk;
 		rtSrc.left = 276;
 		rtSrc.top = 1;
@@ -111,7 +115,7 @@ bool	Sample::Frame()
 		m_fNpcTime -= 1.0f;
 	}
 
-	for (TNpcObj* npc : m_NpcList)
+	for (Npc* npc : m_NpcList)
 	{
 		if (npc->m_bDead == true) continue;
 		npc->Frame();
@@ -159,7 +163,7 @@ bool	Sample::Render()
 		m_Projectile.SetPos((*iter).pos[0], (*iter).pos[1]);
 		m_Projectile.Render(OffScreenDC);
 	}
-	for (TNpcObj* npc : m_NpcList)
+	for (Npc* npc : m_NpcList)
 	{
 		if (npc->m_bDead == true) continue;
 		npc->Render(OffScreenDC);
@@ -184,7 +188,7 @@ bool	Sample::Release()
 
 
 
-	for (TNpcObj* npc : m_NpcList)
+	for (Npc* npc : m_NpcList)
 	{
 		delete npc;
 	}
