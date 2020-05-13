@@ -6,7 +6,11 @@
 #include <map>
 #include <vector>
 #include <string>
-
+#include <fstream>
+#include <sstream>__msvc_all_public_headers.hpp
+#include <istream>__msvc_all_public_headers.hpp
+#include <complex>_dbdao.h
+#include <numeric>__msvc_all_public_headers.hpp
 template<typename _Ty>
 class Trie
 {
@@ -48,7 +52,7 @@ public:
 	}
 	template<typename Iter>
 	std::optional<std::reference_wrapper<const Trie>>
-		subTrie(Iter First, Iter End)const
+		subTrie(Iter First,Iter End)const
 	{
 		if (First == End) { return std::ref(*this); }
 		auto found(Tries.find(*First));
@@ -64,28 +68,14 @@ public:
 private:
 	std::map<_Ty, Trie> Tries;
 };
+static void prompt() {
+	std::cout << "Next input please:\n";
+};
 
 
+using namespace std;
 int main()
 {
-	Trie<std::string > Tester;
-	Tester.insert({ "hi","how","are","you" });
-	Tester.insert({"hi","i","am","great","thanks"});
 	
-	Tester.insert({ "what","are","you","doing"});
-	Tester.insert({ "i","am","watching","a","movie" });
-
-	std::cout << "기록된것 전부출력:\n";
-	Tester.print();
-
-	std::cout << "\n \"hi\":\n";
-	if (auto Stance = Tester.subTrie(std::initializer_list<std::string>{"hi"});
-		Stance)
-	
-		Stance->get().print();
-
-
-
 }
-
-
+	
