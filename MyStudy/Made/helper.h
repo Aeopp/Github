@@ -5,6 +5,15 @@
 #include <algorithm>
 #include <Windows.h>
 
+#define DECLARE_DEFAULT(Target)       \
+public:\
+Target()=default;\
+virtual ~Target()noexcept = default;\
+Target(Target&&)noexcept = default;\
+Target& operator=(Target&&)noexcept = default;\
+Target(const Target&) = default;\
+Target& operator=(const Target&) = default;\
+
 #define SINGLETON_DECLARE(Target)        \
 private:\
 	Target(){};\

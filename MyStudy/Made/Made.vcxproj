@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="game.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="TypeAliaes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Made.cpp" />
     <ClCompile Include="Time.cpp" />

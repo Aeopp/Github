@@ -1,8 +1,9 @@
 #pragma once
-
 #include "Made.h"
 #include "Singleton.h"
 #include "setup.h"
+#include <vector>
+#include "Actor.h"
 class game : public  SingleTon<game>
 {
 	friend class SingleTon<game>;
@@ -21,6 +22,8 @@ public :
 	float_t player_speed = setup::stat::PlayerSpeed;
 
 	RECT player_Rect{ DefaultLeft,DefaultTop,DefaultRight,DefaultBottom };
+	 
+	static std::vector<Actor> Bullets;
 
 	SINGLETON_DECLARE(game)
 	DELETE_MOVE_COPY(game)
