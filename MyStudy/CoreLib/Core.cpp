@@ -32,7 +32,7 @@ bool Core::Render_Implementation()
 
 bool Core::Init_Implementation()noexcept
 {
-	Delay = 50ms;
+	Delay = 50MiliSec;
 	MyWindow::IsExit = false;
 	// Window 생성시점에 이미 초기화 되있는 핸들 
 	_HScreenDC = GetDC(_HWnd);

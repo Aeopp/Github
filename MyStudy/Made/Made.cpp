@@ -6,6 +6,7 @@
 #include <sstream>
 #include "game.h"
 #include "Time.h"
+#include "setup.h"
 // 전역 변수:
 
 // 현재 인스턴스입니다.
@@ -44,7 +45,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // 기본 게임 루프입니다:
     while (game::Instance().bLoop==true)
     {
-       
         // PeekMessage 는 데드타임에도 작동합니다.
         // 메시지큐에 메시지가 남아있습니다.
         if (PeekMessage(&msg,nullptr,0,0,PM_REMOVE))  {

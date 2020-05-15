@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Convenience_function.h" />
+    <ClInclude Include="helper.h" />
     <ClInclude Include="Example.h" />
+    <ClInclude Include="SingleTon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp" />

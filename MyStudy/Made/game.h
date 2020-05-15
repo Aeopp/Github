@@ -16,7 +16,6 @@ public :
 	static constexpr LONG DefaultRight = DefaultLeft + Width;
 	static constexpr LONG DefaultTop = 0;
 	static constexpr LONG DefaultBottom = DefaultTop + Height;
-	
 	static constexpr float_t player_speed = 300.f;
 
 	RECT player_Rect{ DefaultLeft,DefaultTop,DefaultRight,DefaultBottom };

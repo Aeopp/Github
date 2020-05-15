@@ -6,7 +6,7 @@ void game::Run()
 	auto hdc = window::get_hdc().lock();
 	Input_check();
 
-	helper::clamp_pos(player_Rect,window::hWnd);
+	helper::clamp_pos(window::hWnd, player_Rect,{Width,Height});
 	auto& [left, top, right, bottom] = player_Rect;
 	Rectangle(hdc.get(),left, top, right, bottom);
 }

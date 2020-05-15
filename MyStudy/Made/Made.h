@@ -1,5 +1,4 @@
 #pragma once
-
 #include "resource.h"
 #include <algorithm>
 #include <string>
@@ -7,7 +6,6 @@
 #include "TypeAliaes.h"
 #include <Windows.h>
 #include <sstream>
-	
 
 inline namespace
 {
@@ -28,10 +26,12 @@ public:
 	static inline HINSTANCE hInstance = nullptr;
 	static inline HWND hWnd = nullptr;
 	static inline std::shared_ptr<HDC__> hdc = nullptr;
+
 	static inline auto _ReleaseDC = [](HDC hdc) {
 		ReleaseDC(window::hWnd, hdc);
 	};
 public:
+	// 클라이언트는 소유권이 없음
 	static inline auto get_hdc() noexcept {
 		return std::weak_ptr<HDC__>(hdc);
 	};
@@ -47,23 +47,7 @@ public:
 	};
 };
 
-static constexpr inline auto  MAX_LOADSTRING = 100ul;
-class setup {
-private:
-	static inline double constexpr ResoluctionMin = 0.1;
-	static inline double constexpr ResoluctionMax = 1.0;
-	static inline const std::wstring Title = L"MapleStory";
-	static inline const std::wstring WndClassName = L"MapleStory";
-public:
-	static inline double ResoluctionWidth = 1920.0;
-	static inline double ResoluctionHeight = 1080.0;
-	// FHD로 설정된 기본 해상도에서 스케일을 조정해주세요.
-	static constexpr void SetResoluctionScale(double Scale = 1.0) {
-		Scale = std::clamp(Scale, ResoluctionMin, ResoluctionMax);
-		ResoluctionHeight *= Scale;
-		ResoluctionWidth *= Scale;
-	};
-};
+
 
 
 

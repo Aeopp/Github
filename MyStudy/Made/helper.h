@@ -33,18 +33,18 @@ namespace helper
 		return std::pair{ Target.right - Target.left,Target.bottom - Target.top };
 	};
 	// 현재 클라 좌표기준 화면밖으로 못벗어나게 좌표 제한 left , top ,right ,bottom 
-	static inline  void clamp_pos(RECT& Target,HWND hWnd) noexcept {
+	static inline  void clamp_pos(HWND hWnd,RECT& Target,std::pair<LONG,LONG> width_height) noexcept {
 		RECT window_Rect;
 		auto& [left, top, right, bottom] = Target;
 		GetClientRect(hWnd, &window_Rect);
 
 		auto& [window_left, window_top, window_right, window_bottom] = window_Rect;
-	
+		auto& [width,height] = width_height;
 									// TODO :: 디버깅후 매직넘버 수정
-		left = std::clamp(left,     window_left, window_right - 50);
-		right = std::clamp(right,  window_left + 50, window_right);
-		top = std::clamp(top,       window_top,window_bottom-50);
-		bottom = std::clamp(bottom,  window_top + 50, window_bottom);
+		left = std::clamp(left,     window_left, window_right - width);
+		right = std::clamp(right,  window_left + width, window_right);
+		top = std::clamp(top,       window_top,window_bottom-height);
+		bottom = std::clamp(bottom,  window_top + height, window_bottom);
 	};
 	template<typename StringType>
 	constexpr StringType inline PathDelete(const StringType& FullPath)

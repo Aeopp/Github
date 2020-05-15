@@ -1,5 +1,5 @@
 #pragma once
-#include "Convenience_function.h"
+#include "helper.h"
 
 
 namespace Example
@@ -12,7 +12,7 @@ namespace Example
 		// twice(thrice(plus(2,3) ) ) 로 평가될것
 		return  [&]()
 		{
-			auto combined(util::concat(twice, thrice, std::plus<int>{}));
+			auto combined(helper::concat(twice, thrice, std::plus<int>{}));
 			std::cout << combined(2, 3);
 		};
 	};
@@ -30,8 +30,8 @@ namespace Example
 
 		auto nl{ [](auto) {std::cout << '\n'; } };
 
-		auto call_fgh{ util::multicall(f,g,h,nl) };
-		util::for_each(call_fgh, 1, 2, 3, 4, 5);
+		auto call_fgh{ helper::multicall(f,g,h,nl) };
+		helper::for_each(call_fgh, 1, 2, 3, 4, 5);
 	};
 
 	constexpr auto Map_Reduce_Example ()
@@ -47,8 +47,8 @@ namespace Example
 
 		std::accumulate(it, end_it,
 			std::ostream_iterator<int>{std::cout, ","},
-			util::filter(even)
-			(util::Map(twice)(util::copy_and_advance() )  )  );
+			helper::filter(even)
+			(helper::Map(twice)(helper::copy_and_advance() )  )  );
 	}
 
 	auto multiinterface_Example()
@@ -57,7 +57,7 @@ namespace Example
 		auto Fn2 = [](float a) {std::cout << __FUNCTION__ << std::endl; };
 		auto Fn3 = [](int* a) {std::cout << __FUNCTION__ << std::endl; };
 
-		util::multiinterface Tester{ std::move(Fn1), std::move(Fn2),std::move(Fn3) };
+		helper::multiinterface Tester{ std::move(Fn1), std::move(Fn2),std::move(Fn3) };
 
 		Tester(77l);
 		Tester(99.999f);

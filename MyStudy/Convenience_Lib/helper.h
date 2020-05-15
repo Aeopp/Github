@@ -10,9 +10,17 @@
 #include <iterator>
 #include <numeric>
 // 사용방법 Sample.cpp 올려놨음
+namespace Debug {
+	// string 만 사용 가능
+	static auto LogImplementation(const char* __Func, long  __LINE, std::string Message)
+	{
+		std::string Log = " Function ";
+		return (Log + __Func + " Line :  " + std::to_string(__LINE) + " \n " + Message).c_str();
+	};
+#define Log(Target) LogImplementation(__FUNCTION__,__LINE__,Target)
+};
 
-
-namespace func
+namespace helper
 {
 	// 클라이언트가 F,G,H 함수를 제공하면
 // F(G(H(Params...))) 로 평가.
@@ -25,6 +33,22 @@ namespace func
 //		return f(g(h(params...)));
 //	};
 //}*/
+	
+	template<typename StringType>
+	constexpr StringType inline PathDelete(const StringType& FullPath)
+	{
+		StringType Filename = FullPath;
+
+		auto erase_first = Filename.find_first_of('.');
+		auto erase_last = Filename.find_last_of('/');
+
+		if (erase_last != StringType::npos)
+		{
+			Filename.erase(erase_first, erase_last + 1);
+		}
+		return Filename;
+	}
+
 	template<typename _Ty, typename ...Tys>
 	constexpr auto concat(_Ty&& T, Tys&&... Ts)
 	{
@@ -228,17 +252,7 @@ namespace Call
 	};
 }
 
-namespace Debug
-{
-	template<typename MsgTy>
-	constexpr auto Log_Impl(const char* __Func,long  __LINE,MsgTy&& Message)
-	{
-		std::string&& Log = " Function ";
-		return Log + __Func + " Line :  " + std::to_string(__LINE) +" \n " + Message;
-	};
-	
-	#define Log(Target) Log_Impl(__FUNCTION__,__LINE__,Target)
-}
+
 
 
 namespace std
@@ -255,11 +269,11 @@ namespace std
 	//}
 
 	template<typename ForwardIt, typename OutIt, typename Pred, typename Fn>
-	OutIt transform_if(ForwardIt first, ForwardIt end, OutIt out_first, Pred pred, Fn func)
+	OutIt transform_if(ForwardIt first, ForwardIt end, OutIt out_first, Pred pred, Fn helper)
 	{
 		for (; first != end; ++first) {
 			if (pred(*first)) {
-				*out_first = func(*first);
+				*out_first = helper(*first);
 				++out_first;
 			};
 			return out_first;

@@ -141,8 +141,8 @@ auto barfac()
 // 여러개의 함수를 하나로 합쳐주는 헬퍼함수
 // ex   Funcs : A B C   params  1,2,3;
 //  A( B( C(1,2,3) ) );
-template<typename func,typename ... funcs>
-auto func_concat(func _func, funcs... _funcs)
+template<typename helper,typename ... funcs>
+auto func_concat(helper _func, funcs... _funcs)
 {
 	if constexpr(sizeof...(_funcs)>0)
 	{

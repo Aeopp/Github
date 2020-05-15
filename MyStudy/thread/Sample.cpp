@@ -14,7 +14,7 @@
 using namespace std; 
 atomic<int32_t> counter(0);
 
-void func(atomic<int32_t>& counter)
+void helper(atomic<int32_t>& counter)
 {
 	int result = 0; 
 	for (int32_t i = 0; i < 100; ++i)
@@ -96,7 +96,7 @@ public:
 	{
 		for (int i = 0; i < mNumIterations; ++i)
 		{
-			unique_lock<timed_mutex> lock(mTimedMutex, 200ms);
+			unique_lock<timed_mutex> lock(mTimedMutex, 200MiliSec);
 			if (lock)
 			{
 				cout << "д╚©Нем " << mId << "has value "; 

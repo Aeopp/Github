@@ -9,7 +9,7 @@ bool isDigit(char symbol) {
 }
 int main() {
 	for (int i = 100; true; --i) {
-		std::this_thread::sleep_for(10ms);
+		std::this_thread::sleep_for(10MiliSec);
 		std::cout << std::clamp(i, 0, 100);
 	}
 }

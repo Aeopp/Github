@@ -4,7 +4,7 @@
 	 while (true)
 	 {
 		 current_time = std::chrono::system_clock::now();
-		 Delta = std::chrono::duration_cast<ms>(current_time - prev_time);
+		 Delta = std::chrono::duration_cast<MiliSec>(current_time - prev_time);
 		 if (Delta >= FramePerSecond) {
 			 prev_time = current_time;
 			 auto hdc = window::get_hdc().lock();
