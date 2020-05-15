@@ -1,14 +1,15 @@
-﻿// Made.cpp : 애플리케이션에 대한 진입점을 정의합니다.
-//
-
-#include "framework.h"
+﻿#include "framework.h"
 #include "Made.h"
 #include "utility"
-
-
-
+#include <vector>activation.h
+#include <string>activecf.h
+#include <sstream>
+#include "game.h"
 // 전역 변수:
-                           // 현재 인스턴스입니다.
+game Game;
+
+
+                   // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -35,21 +36,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 애플리케이션 초기화를 수행합니다:
     if (!InitInstance (hInstance, nCmdShow))
-    {
         return FALSE;
-    }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_MADE));
-
     MSG msg;
-
-    // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    window::hdc = std::shared_ptr<HDC__>(GetDC(window::hWnd),window::_ReleaseDC);
+    
+    // 기본 게임 루프입니다:
+    while (Game.bLoop==true)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-        {
+        // PeekMessage 는 데드타임에도 작동합니다.
+        // 메시지큐에 메시지가 남아있습니다.
+        if (PeekMessage(&msg,nullptr,0,0,PM_REMOVE))  {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
+        }
+        // 메시지큐에 메시지가 없습니다. (게임 진행)
+        else {
+            Game.Run();
         }
     }
 
@@ -94,22 +98,34 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        이 함수를 통해 인스턴스 핸들을 전역 변수에 저장하고
 //        주 프로그램 창을 만든 다음 표시합니다.
 //
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
+BOOL InitInstance(HINSTANCE hInstance ,int nCmdShow)
 {
-   Window::InstanceHandle = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-	
-   Window::SetResoluctionScale(0.97);
-	
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, Window::ResoluctionWidth, Window::ResoluctionHeight, nullptr, nullptr, hInstance, nullptr);
+   window::hInstance = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+   setup::SetResoluctionScale(0.6);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+   window:: hWnd = CreateWindowW(
+       szWindowClass, 
+       szTitle, 
+       WS_OVERLAPPEDWINDOW,
+      CW_USEDEFAULT, 0, 
+       setup::ResoluctionWidth, 
+       setup::ResoluctionHeight, 
+       nullptr, nullptr, 
+       hInstance, nullptr);
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+   if (!window::hWnd)
+       return FALSE;
+
+   RECT Rect{ 0,0,setup::ResoluctionWidth,setup::ResoluctionHeight };
+   // 실제 윈도우 타이틀바나 메뉴를 포함한 윈도우의 크기를 구해줍니다.
+   AdjustWindowRect(&Rect, WS_OVERLAPPED, FALSE);
+   // 윈도우 클라 영역의 크기를 원하는 크기로 맞춰줍니다.
+   SetWindowPos(window::hWnd, HWND_TOPMOST, 100, 100,
+       Rect.right - Rect.left, Rect.bottom -Rect.top, SWP_NOMOVE|SWP_NOZORDER);
+   
+   
+   ShowWindow(window::hWnd, nCmdShow);
+   UpdateWindow(window::hWnd);
 
    return TRUE;
 }
@@ -134,8 +150,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
             // 메뉴 선택을 구문 분석합니다:
             switch (wmId)
             {
+            case WM_CHAR:
+                break;
             case IDM_ABOUT:
-                DialogBox(Window::InstanceHandle, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+                DialogBox(window::hInstance, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
@@ -145,42 +163,59 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
             }
         }
         break;
+    case WM_CHAR:
+      
+        break; 
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+            PAINTSTRUCT pain_struct;
+            HDC hdc = BeginPaint(hWnd, &pain_struct);
+            // TODO :: 여기에 Draw
+            std::wstringstream Wss;
 
-            Rectangle(hdc, 10, 10, 200, 200);
-    		
-            MoveToEx(hdc, 300, 300,NULL);
-            LineTo(hdc, 600, 600);
-            LineTo(hdc, 900, 300);
-    		
-            Ellipse(hdc, 200, 200, 400, 400);
-    		
-            TextOut(hdc, 50, 50, TEXT("Hello World !!"), 14);
-            TextOut(hdc, 50, 100, TEXT("한글도 되네 !!"), 9);
+            auto Mouse_start = window::format_text(L"Start : x " ,window::MouseArea.Start.first
+                , L" y : " , window::MouseArea.Start.second);
 
+            auto Mouse_end = window::format_text(L"End : x ", window::MouseArea.End.first
+                , L" y : ", window::MouseArea.End.second);
 
-    		
-            EndPaint(hWnd, &ps);
+            if (window::MouseArea.bStart) {
+                   Rectangle(hdc, 
+                  window::MouseArea.Start.first, window::MouseArea.Start.second, window::MouseArea.End.first, window::MouseArea.End.second);
+            }
+
+            TextOut(hdc, 600, 30, Mouse_start.c_str(), Mouse_start.size());
+            TextOut(hdc, 600, 50, Mouse_end.c_str(), Mouse_end.size());
+            EndPaint(hWnd, &pain_struct);
+        }
+        break;
+    case WM_MOUSEMOVE:
+        if (window::MouseArea.bStart == true) {
+            window::MouseArea.End = window::GetMousePos(lParam);
+            InvalidateRect(hWnd, NULL, TRUE);
+        }
+        break;
+    case WM_LBUTTONUP:
+        if (window::MouseArea.bStart == true) {
+            window::MouseArea.bStart = false; 
+            window::MouseArea.End = window::GetMousePos(lParam);
+            InvalidateRect(hWnd, NULL, TRUE);
         }
         break;
     case WM_LBUTTONDOWN:
-    	 if(Window::MouseArea.bStart==false )
-    	 {
-             Window::MouseArea.bStart = true;
-             Window::MouseArea.Start.first = lParam  & 0x0000ffff;
-             Window::MouseArea.Start.second = lParam & 0xffff0000;
-    	 	
+    	 if(window::MouseArea.bStart==false) {
+             window::MouseArea.bStart = true;
+             window::MouseArea.End = 
+             window::MouseArea.Start = window::GetMousePos(lParam);
+             InvalidateRect(hWnd, NULL, TRUE);
     	 }
             break; 
     case WM_DESTROY:
         PostQuitMessage(0);
+        Game.bLoop = false; 
         break;
     case WM_KEYDOWN:
-        DestroyWindow(hWnd);
+    //   DestroyWindow(hWnd);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

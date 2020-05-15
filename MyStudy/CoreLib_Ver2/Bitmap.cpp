@@ -22,7 +22,7 @@ bool Bitmap::Load(std::shared_ptr<HDC__> SharedScreenDC, tstring Fullpath)
 {
 	if (SharedScreenDC == nullptr)
 		return false; 
-	if (auto SharedWindowInstance = World::InstanceHandle.lock();
+	if (auto SharedWindowInstance = World::hInstance.lock();
 		SharedWindowInstance)
 	{
 		ScreenHDC = SharedScreenDC;

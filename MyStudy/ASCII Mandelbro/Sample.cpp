@@ -60,6 +60,6 @@ int main() {
 	accumulate(begin(v), end(v), ostream_iterator<char>{cout}, binfunc);*/
 	
 
-	std::vector<int> q;
-	q.push_back(); 
+	/*std::vector<int> q;
+	q.push_back(); */
 };

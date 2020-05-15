@@ -17,19 +17,19 @@ LRESULT CALLBACK WndProc(
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
-Window::Window()
+window::window()
 {
 	ZeroMemory(&_Message, sizeof(MSG));
 }
-Window::~Window()
+window::~window()
 {
 
 }
-bool Window::GameRun() { return true; }
-bool Window::SetWindow(HINSTANCE hInstance)
+bool window::GameRun() { return true; }
+bool window::SetWindow(HINSTANCE hInstance)
 {
-	InstanceHandle = std::shared_ptr<HINSTANCE__>(hInstance,[](auto){});
-	World::InstanceHandle = InstanceHandle;
+	hInstance = std::shared_ptr<HINSTANCE__>(hInstance,[](auto){});
+	World::hInstance = hInstance;
 	// TODO:: 생성할 윈도우 클래스 등록
 	auto WindowClassName  = L"WINDOW";
 	auto WindowName = L"WINDOW_GAME";
@@ -56,7 +56,7 @@ bool Window::SetWindow(HINSTANCE hInstance)
 		0,
 		ScreenSize.right-ScreenSize.left,
 		ScreenSize.bottom- ScreenSize.top,
-		0, 0, InstanceHandle.get(), 0), [](auto) {});
+		0, 0, hInstance.get(), 0), [](auto) {});
 
 	if (WindowHandle == NULL) return 1;
 	
@@ -69,7 +69,7 @@ bool Window::SetWindow(HINSTANCE hInstance)
 	ShowWindow(WindowHandle.get(), SW_SHOW);
 	return true;
 }
-bool Window::WindowRun()
+bool window::WindowRun()
 {	
 	if (PeekMessage(&_Message, nullptr, 0, 0, PM_REMOVE))
 	{

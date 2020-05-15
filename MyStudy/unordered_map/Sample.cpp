@@ -47,9 +47,17 @@ int main() {
 
 	std::equal_to<coord> abc;
 	*/
-	
-	using tstring = std::basic_string<TCHAR>; 
-	tstring abc;
+	//
+	//using tstring = std::basic_string<TCHAR>; 
+	//tstring abc;
 
+	
+	int main()
+	{
+		auto wer = foo<int, decltype(var), std::unique_ptr>();
+
+
+
+	}
 	/*auto* qwe = new stdbasic_string<wchar_t>(); */
 };

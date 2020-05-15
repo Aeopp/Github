@@ -4,7 +4,7 @@
 #include "Timer.h"
 #include "InputManager.h"
 #include "Actor.h"
-class Engine : public Window
+class Engine : public window
 {
 public:
 	Timer		CurrentTimer;

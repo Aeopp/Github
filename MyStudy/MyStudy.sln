@@ -180,6 +180,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ASCII Mandelbro", "ASCII Ma
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Made", "Made\Made.vcxproj", "{DAB98E99-59FF-4CC1-AC54-A19E9DB33034}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "template_template param", "template_template param\template_template param.vcxproj", "{CAD205C4-2F16-4658-9320-92BFFEBC689A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -764,6 +766,14 @@ Global
 		{DAB98E99-59FF-4CC1-AC54-A19E9DB33034}.Release|x64.Build.0 = Release|x64
 		{DAB98E99-59FF-4CC1-AC54-A19E9DB33034}.Release|x86.ActiveCfg = Release|Win32
 		{DAB98E99-59FF-4CC1-AC54-A19E9DB33034}.Release|x86.Build.0 = Release|Win32
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Debug|x64.ActiveCfg = Debug|x64
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Debug|x64.Build.0 = Debug|x64
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Debug|x86.ActiveCfg = Debug|Win32
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Debug|x86.Build.0 = Debug|Win32
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Release|x64.ActiveCfg = Release|x64
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Release|x64.Build.0 = Release|x64
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Release|x86.ActiveCfg = Release|Win32
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -845,6 +855,7 @@ Global
 		{68DE93E0-2247-457D-8FEE-9228E4BEBE04} = {C273004C-8800-49D7-9E33-BC86C5139DC0}
 		{94176A40-55BF-4EFB-9E58-8B2617CA306F} = {B68A5791-0D8C-4E28-BB47-DE7960A587EB}
 		{DAB98E99-59FF-4CC1-AC54-A19E9DB33034} = {C273004C-8800-49D7-9E33-BC86C5139DC0}
+		{CAD205C4-2F16-4658-9320-92BFFEBC689A} = {1104DD7A-A3C7-413A-818B-E06CB35D3F49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3DCB6F1B-BC78-403E-BF2D-BF944F097D51}

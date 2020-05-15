@@ -70,7 +70,7 @@ struct InputActionMap
 
 class World {
 public:
-	static inline std::weak_ptr<HINSTANCE__> InstanceHandle;
+	static inline std::weak_ptr<HINSTANCE__> hInstance;
 	static inline std::weak_ptr<HWND__> WindowHandle;;
 	static inline RECT ClientRect; 
 	static inline float_t FramePerSecond = 0.f;

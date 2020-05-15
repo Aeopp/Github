@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
 #include <windows.h>
-class Window
+class window
 {
 public:
-	std::shared_ptr<HINSTANCE__> InstanceHandle;
+	std::shared_ptr<HINSTANCE__> hInstance;
 	std::shared_ptr<HWND__> WindowHandle;
 	bool		Exit;
 	RECT		ClientRect;
@@ -16,12 +16,12 @@ public:
 	bool WindowRun();
 	virtual bool GameRun();
 public :
-	Window();
-	Window(const Window&)=default;
-	Window& operator=(const Window&)=default;
-	virtual ~Window()noexcept;
-	Window(Window&&)noexcept=default;
-	Window& operator=(Window&&)noexcept=default;
+	window();
+	window(const window&)=default;
+	window& operator=(const window&)=default;
+	virtual ~window()noexcept;
+	window(window&&)noexcept=default;
+	window& operator=(window&&)noexcept=default;
 	
 };
 
