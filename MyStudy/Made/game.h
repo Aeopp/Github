@@ -2,6 +2,7 @@
 
 #include "Made.h"
 #include "Singleton.h"
+#include "setup.h"
 class game : public  SingleTon<game>
 {
 	friend class SingleTon<game>;
@@ -10,13 +11,14 @@ public :
 	void Run();
 	bool bLoop = true;
 	void Input_check()noexcept;
-	static constexpr LONG Width = 50;
-	static constexpr LONG Height = 50;
-	static constexpr LONG DefaultLeft = 0;
-	static constexpr LONG DefaultRight = DefaultLeft + Width;
-	static constexpr LONG DefaultTop = 0;
-	static constexpr LONG DefaultBottom = DefaultTop + Height;
-	static constexpr float_t player_speed = 300.f;
+	const LONG Width = 50;
+	const LONG Height = 50;
+	const LONG DefaultLeft = 0;
+	const LONG DefaultRight = DefaultLeft + Width;
+	const LONG DefaultTop = 0;
+	const LONG DefaultBottom = DefaultTop + Height;
+	
+	float_t player_speed = setup::stat::PlayerSpeed;
 
 	RECT player_Rect{ DefaultLeft,DefaultTop,DefaultRight,DefaultBottom };
 

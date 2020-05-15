@@ -13,11 +13,11 @@ private:
 	friend class std::unique_ptr<Time>::deleter_type;
 	friend class SingleTon<Time>;
 public:
-	using MiliSec = setup::MiliSec;
+	using MiliSec = setup::time::MiliSec;
 
-	const MiliSec TimeUnit = setup::TimeUnit<MiliSec>;
-	const float_t Milisec = setup::Milisec;
-	const MiliSec FramePerSecond = setup::FramePerSecond;
+	const MiliSec TimeUnit = setup::time::TimeUnit<MiliSec>;
+	const float_t Milisec = setup::time::Milisec;
+	const MiliSec FramePerSecond = setup::time::FramePerSecond;
 	MiliSec Delta;
 	std::chrono::time_point<std::chrono::system_clock> prev_time{ std::chrono::system_clock::now() };
 	std::chrono::time_point<std::chrono::system_clock> current_time { std::chrono::system_clock::now()};

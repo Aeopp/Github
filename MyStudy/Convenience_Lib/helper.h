@@ -33,7 +33,13 @@ namespace helper
 //		return f(g(h(params...)));
 //	};
 //}*/
-	
+	template<typename ...text>
+	static inline auto format_text(text&&... texts) {
+		std::wstringstream wss;
+		(wss << ... << texts);
+		return wss.str();
+	};
+
 	template<typename StringType>
 	constexpr StringType inline PathDelete(const StringType& FullPath)
 	{

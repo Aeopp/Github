@@ -54,8 +54,7 @@ namespace helper
 		auto erase_first = Filename.find_first_of('.');
 		auto erase_last = Filename.find_last_of('/');
 
-		if (erase_last != StringType::npos)
-		{
+		if (erase_last != StringType::npos){
 			Filename.erase(erase_first, erase_last + 1);
 		}
 		return Filename;

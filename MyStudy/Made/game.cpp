@@ -5,7 +5,6 @@ void game::Run()
 {
 	auto hdc = window::get_hdc().lock();
 	Input_check();
-
 	helper::clamp_pos(window::hWnd, player_Rect,{Width,Height});
 	auto& [left, top, right, bottom] = player_Rect;
 	Rectangle(hdc.get(),left, top, right, bottom);
@@ -33,6 +32,10 @@ void game::Input_check() noexcept
 	if (GetAsyncKeyState('S') & 0x8000) {
 		top += (Vec);
 		bottom += (Vec);
+	}
+
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
+		
 	}
 }
 
