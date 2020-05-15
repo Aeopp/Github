@@ -39,8 +39,8 @@ bool Bitmap::Load(std::shared_ptr<HDC__> SharedScreenDC, tstring Fullpath)
 		//	ObjectDeleter);
 
 		GetObject(BitmapHandle.get(), sizeof(BITMAP), &BmpInfomation);
-		MemoryHDC = std::unique_ptr<HDC__, decltype(HDCDeleteDC)>(
-		CreateCompatibleDC(SharedScreenDC.get()), HDCDeleteDC);
+		MemoryHDC = std::unique_ptr<HDC__, decltype(HDCReleaseDC)>(
+		CreateCompatibleDC(SharedScreenDC.get()), HDCReleaseDC);
 		SelectObject(MemoryHDC.get(), BitmapHandle.get());
 	}
 	else return false;

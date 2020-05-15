@@ -8,7 +8,7 @@ public:
 	tstring		Filename;
 	BITMAP		BmpInfomation;
 	std::weak_ptr<HDC__> ScreenHDC;
-	std::unique_ptr<HDC__, decltype(HDCDeleteDC)> MemoryHDC;
+	std::unique_ptr<HDC__, decltype(HDCReleaseDC)> MemoryHDC;
 	std::unique_ptr<HBITMAP__,decltype(ObjectDeleter)>	BitmapHandle;
 	BITMAPFILEHEADER BitFileHeader; 
 	void* Raster = nullptr; 

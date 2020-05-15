@@ -1,0 +1,2 @@
+D:\Github\output\MyStudy.exe
+D:\Github\output\MyStudy.pdb

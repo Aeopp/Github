@@ -75,7 +75,8 @@ bool		Actor::Render(std::shared_ptr<HDC__> OffScreenDC)
 				BlendFn);
 		}	
 		else {
-			BLENDFUNCTION BlendFn;
+			DrawColorKey(OffScreenDC);
+			/*BLENDFUNCTION BlendFn;
 			BlendFn.BlendOp = AC_SRC_OVER;
 			BlendFn.BlendFlags = 0;
 			BlendFn.SourceConstantAlpha = 0xff;
@@ -84,7 +85,7 @@ bool		Actor::Render(std::shared_ptr<HDC__> OffScreenDC)
 				RectDestnation.left, RectDestnation.top, RectDestnation.right, RectDestnation.bottom,
 				SharedBitmap->MemoryHDC.get(),
 				RectSource.left, RectSource.top, RectDestnation.right, RectDestnation.bottom,
-				BlendFn);
+				BlendFn);*/
 		}
 		return true;
 	}
@@ -94,6 +95,7 @@ bool Actor::DrawColorKey(std::shared_ptr<HDC__> ScreenDC, COLORREF color)
 {
 	if (auto SharedBitmap = BitmapPtr.lock();
 		SharedBitmap){
+		
 		TransparentBlt(ScreenDC.get(),
 			RectDestnation.left,
 			RectDestnation.top,
