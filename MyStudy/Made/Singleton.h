@@ -3,12 +3,15 @@
 #include <type_traits>
 #include <mutex>__msvc_all_public_headers.hpp
 #include "helper.h"
+	// TODO :: Sub 클래스 Super 클래스 프렌드 지정해줘야함
+	// TODO :: 생성자 상속 사용하면 안됨
+	// TODO :: private 기본 생성자 소멸자 선언하고 반드시 cpp에 구현
+	// TODO :: SINGLETON_DECLARE(SubClass) DELETE_MOVE_COPY(Subclass) "helper.h"
+	// TODO :: friend class std::unique_ptr<SubClass>::deleter_type;
 template <class ManagerType>
 class SingleTon
 {
 public:
-	// TODO :: Sub 클래스 Super 클래스 프렌드 지정해줘야함
-	// TODO :: 생성자 상속 사용하면 안됨
 	template<typename...Types>
 	static ManagerType& Instance(Types&&... params)
 	{

@@ -1,6 +1,14 @@
 #pragma once
 #include <thread>_dbdao.h
 #include <utility>
+#include <iostream>
+#include <algorithm>
+#include <Windows.h>
+
+#define SINGLETON_DECLARE(Target)        \
+private:\
+	Target(){};\
+	virtual ~Target()noexcept{};       \
 
 #define DEFAULT_MOVE_COPY(Target)       \
 public:\
@@ -20,6 +28,24 @@ Manager& operator=(const Manager&) = delete;\
 
 namespace helper
 {
+	// 스크린 좌표 기준
+	static inline  auto get_width_height(const RECT& Target) noexcept {
+		return std::pair{ Target.right - Target.left,Target.bottom - Target.top };
+	};
+	// 현재 클라 좌표기준 화면밖으로 못벗어나게 좌표 제한 left , top ,right ,bottom 
+	static inline  void clamp_pos(RECT& Target,HWND hWnd) noexcept {
+		RECT window_Rect;
+		auto& [left, top, right, bottom] = Target;
+		GetClientRect(hWnd, &window_Rect);
+
+		auto& [window_left, window_top, window_right, window_bottom] = window_Rect;
+	
+									// TODO :: 디버깅후 매직넘버 수정
+		left = std::clamp(left,     window_left, window_right - 50);
+		right = std::clamp(right,  window_left + 50, window_right);
+		top = std::clamp(top,       window_top,window_bottom-50);
+		bottom = std::clamp(bottom,  window_top + 50, window_bottom);
+	};
 	template<typename StringType>
 	constexpr StringType inline PathDelete(const StringType& FullPath)
 	{

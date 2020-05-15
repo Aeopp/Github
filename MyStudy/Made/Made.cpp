@@ -5,11 +5,10 @@
 #include <string>activecf.h
 #include <sstream>
 #include "game.h"
+#include "Time.h"
 // 전역 변수:
-game Game;
 
-
-                   // 현재 인스턴스입니다.
+// 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -43,8 +42,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     window::hdc = std::shared_ptr<HDC__>(GetDC(window::hWnd),window::_ReleaseDC);
     
     // 기본 게임 루프입니다:
-    while (Game.bLoop==true)
+    while (game::Instance().bLoop==true)
     {
+       
         // PeekMessage 는 데드타임에도 작동합니다.
         // 메시지큐에 메시지가 남아있습니다.
         if (PeekMessage(&msg,nullptr,0,0,PM_REMOVE))  {
@@ -53,7 +53,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         // 메시지큐에 메시지가 없습니다. (게임 진행)
         else {
-            Game.Run();
+            Time::Instance().Update();
+            game::Instance().Run();
         }
     }
 
@@ -101,7 +102,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance ,int nCmdShow)
 {
    window::hInstance = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-   setup::SetResoluctionScale(0.6);
+   setup::ResoluctionHeight = 1600;
+   setup::ResoluctionHeight = 900;
 
    window:: hWnd = CreateWindowW(
        szWindowClass, 
@@ -120,9 +122,8 @@ BOOL InitInstance(HINSTANCE hInstance ,int nCmdShow)
    // 실제 윈도우 타이틀바나 메뉴를 포함한 윈도우의 크기를 구해줍니다.
    AdjustWindowRect(&Rect, WS_OVERLAPPED, FALSE);
    // 윈도우 클라 영역의 크기를 원하는 크기로 맞춰줍니다.
-   SetWindowPos(window::hWnd, HWND_TOPMOST, 100, 100,
+   SetWindowPos(window::hWnd, HWND_TOPMOST, 0, 0,
        Rect.right - Rect.left, Rect.bottom -Rect.top, SWP_NOMOVE|SWP_NOZORDER);
-   
    
    ShowWindow(window::hWnd, nCmdShow);
    UpdateWindow(window::hWnd);
@@ -172,9 +173,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
             HDC hdc = BeginPaint(hWnd, &pain_struct);
             // TODO :: 여기에 Draw
             std::wstringstream Wss;
-
-            auto Mouse_start = window::format_text(L"Start : x " ,window::MouseArea.Start.first
-                , L" y : " , window::MouseArea.Start.second);
+            auto Mouse_start = window::format_text(L"Start : x ", window::MouseArea.Start.first
+                , L" y : ", window::MouseArea.Start.second);
 
             auto Mouse_end = window::format_text(L"End : x ", window::MouseArea.End.first
                 , L" y : ", window::MouseArea.End.second);
@@ -183,9 +183,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
                    Rectangle(hdc, 
                   window::MouseArea.Start.first, window::MouseArea.Start.second, window::MouseArea.End.first, window::MouseArea.End.second);
             }
+            RECT Rect;
+            GetClientRect(window::hWnd, &Rect);
 
-            TextOut(hdc, 600, 30, Mouse_start.c_str(), Mouse_start.size());
-            TextOut(hdc, 600, 50, Mouse_end.c_str(), Mouse_end.size());
+            TextOut(hdc, Rect.right/2,Rect.bottom/10, Mouse_start.c_str(), Mouse_start.size());
+            TextOut(hdc, Rect.right/ 2, Rect.bottom/ 8, Mouse_end.c_str(), Mouse_end.size());
             EndPaint(hWnd, &pain_struct);
         }
         break;
@@ -212,7 +214,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
             break; 
     case WM_DESTROY:
         PostQuitMessage(0);
-        Game.bLoop = false; 
+        game::Instance().bLoop = false; 
         break;
     case WM_KEYDOWN:
     //   DestroyWindow(hWnd);

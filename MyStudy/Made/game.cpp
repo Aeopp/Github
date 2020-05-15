@@ -1,30 +1,40 @@
 #include "game.h"
-
+#include <algorithm>
+#include "Time.h"
 void game::Run()
 {
+	auto hdc = window::get_hdc().lock();
 	Input_check();
 
-	auto hdc = window::get_hdc().lock();
-
-	Rectangle(hdc.get(),player_Rect.left, player_Rect.top, 
-	player_Rect.right, player_Rect.right);
+	helper::clamp_pos(player_Rect,window::hWnd);
+	auto& [left, top, right, bottom] = player_Rect;
+	Rectangle(hdc.get(),left, top, right, bottom);
 }
 
 void game::Input_check() noexcept
 {
+	auto DeltaTime = Time::Instance().DeltaTime();
+
+	auto& [left, top, right, bottom] = player_Rect;
+	auto Vec = player_speed* DeltaTime; 
+
 	if (GetAsyncKeyState('A') & 0x8000) {
-		player_Rect.right += 1;
-		player_Rect.left += 1;
+		right -= (Vec);
+		left -= (Vec);
 	}
 	if (GetAsyncKeyState('D') & 0x8000) {
-		player_Rect.right -= 1;
-		player_Rect.left -= 1;
+			right += (Vec);
+		left += (Vec);
 	}
 	if (GetAsyncKeyState('W') & 0x8000) {
-		DestroyWindow(window::hWnd);
+		top -= (Vec);
+		bottom -= (Vec);
 	}
-		if (GetAsyncKeyState('S') & 0x8000) {
-
-		}
-	
+	if (GetAsyncKeyState('S') & 0x8000) {
+		top += (Vec);
+		bottom += (Vec);
+	}
 }
+
+
+

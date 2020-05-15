@@ -6,7 +6,7 @@
 #include <memory>
 #include "TypeAliaes.h"
 #include <Windows.h>
-
+#include <sstream>
 	
 
 inline namespace
