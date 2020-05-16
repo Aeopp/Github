@@ -37,7 +37,7 @@ void game::Input_check() noexcept
 	};
 
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
-		Bullets.push_back(Actor{});
+		//Bullets.push_back(Actor{});
 	}
 }
 

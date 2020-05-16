@@ -23,7 +23,7 @@ public :
 
 	RECT player_Rect{ DefaultLeft,DefaultTop,DefaultRight,DefaultBottom };
 	 
-	static std::vector<Actor> Bullets;
+	//static std::vector<Actor> Bullets;
 
 	SINGLETON_DECLARE(game)
 	DELETE_MOVE_COPY(game)

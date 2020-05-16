@@ -193,14 +193,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
         break;
     case WM_MOUSEMOVE:
         if (window::MouseArea.bStart == true) {
-            window::MouseArea.End = window::GetMousePos(lParam);
+            window::MouseArea.End = window::TranslateMousePos(lParam);
             InvalidateRect(hWnd, NULL, TRUE);
         }
         break;
     case WM_LBUTTONUP:
         if (window::MouseArea.bStart == true) {
             window::MouseArea.bStart = false; 
-            window::MouseArea.End = window::GetMousePos(lParam);
+            window::MouseArea.End = window::TranslateMousePos(lParam);
             InvalidateRect(hWnd, NULL, TRUE);
         }
         break;
@@ -208,7 +208,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
     	 if(window::MouseArea.bStart==false) {
              window::MouseArea.bStart = true;
              window::MouseArea.End = 
-             window::MouseArea.Start = window::GetMousePos(lParam);
+             window::MouseArea.Start = window::TranslateMousePos(lParam);
              InvalidateRect(hWnd, NULL, TRUE);
     	 }
             break; 
