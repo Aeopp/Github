@@ -4,19 +4,15 @@
 class Actor
 {
 public:
-	Actor(std::pair<float, float> set_pos);
+	Actor(std::pair<float,float> set_pos);
 public:
-	std::pair<float, float> pos;
-	const LONG Width = 50;
-	const LONG Height = 50;
-	const LONG DefaultLeft = 0;
-	const LONG DefaultRight = DefaultLeft + Width;
-	const LONG DefaultTop = 0;
-	const LONG DefaultBottom = DefaultTop + Height;
+	std::pair<float,float> Pos;
+	LONG Width = 50;
+	LONG Height = 50;
 
-	float speed = 100.f;
-	RECT Rect{DefaultLeft,DefaultTop,DefaultRight,DefaultBottom };
-	
+	float Speed = 100.f;
+	RECT Rect{ 0,0,0,0 };
+
 	DECLARE_DEFAULT(Actor)
 };
 

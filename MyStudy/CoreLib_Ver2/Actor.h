@@ -18,7 +18,7 @@ public:
 	float		Y;
 public:
 	void		SetPos(const float x,const float y);
-	void		SetPos(FVector2D pos);
+	void		SetPos(FVector2D Pos);
 	void		SetRect(RECT rtSrc, RECT rtDesk);
 	bool		Load(std::shared_ptr<HDC__> hScreenDC, tstring Fullpath);
 	void SetMaskBitmap(std::shared_ptr<HDC__> hScreenDC, tstring Filename); 

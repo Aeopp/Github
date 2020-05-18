@@ -12,8 +12,8 @@ namespace setup {
 	static inline const std::wstring Title = L"MapleStory";
 	static inline const std::wstring WndClassName = L"MapleStory";
 
-	static inline double ResoluctionWidth = 1920.0;
-	static inline double ResoluctionHeight = 1080.0;
+	static inline double ResoluctionWidth = 1600.0;
+	static inline double ResoluctionHeight = 900.0;
 
 	// FHD로 설정된 기본 해상도에서 스케일을 조정해주세요.
 	static constexpr void SetResoluctionScale(double Scale = 1.0) {

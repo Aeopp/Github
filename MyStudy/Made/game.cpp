@@ -8,8 +8,6 @@ void game::Run()
 	helper::clamp_pos(window::hWnd, player_Rect,{Width,Height});
 	auto& [left, top, right, bottom] = player_Rect;
 	Rectangle(hdc.get(),left, top, right, bottom);
-
-
 }
 
 void game::Input_check() noexcept

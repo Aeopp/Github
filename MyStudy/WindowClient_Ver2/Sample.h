@@ -5,7 +5,7 @@
 
 struct TProjectile
 {
-	FVector2D pos{ 0,0 };
+	FVector2D Pos{ 0,0 };
 	RECT   rtCollision;
 	float fLifeTime;
 	RECT   rtDesk;
@@ -16,10 +16,10 @@ struct TProjectile
 	}
 	void  SetPos(float x, float y)
 	{
-		pos[0] = x;
-		pos[1] = y;
-		rtCollision.left = pos[0];
-		rtCollision.top = pos[1];
+		Pos[0] = x;
+		Pos[1] = y;
+		rtCollision.left = Pos[0];
+		rtCollision.top = Pos[1];
 		rtCollision.right =
 		rtCollision.left + rtDesk.right;
 		rtCollision.bottom =

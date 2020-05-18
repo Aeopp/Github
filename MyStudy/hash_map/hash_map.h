@@ -585,9 +585,9 @@ public:
 			return 1;
 		}
 	};
-	 iterator erase(iterator pos)noexcept
+	 iterator erase(iterator Pos)noexcept
 	 {
-		 auto del_pos = pos;
+		 auto del_pos = Pos;
 		 auto delete_idx = del_pos._cur_idx;
 
 		  --_cur_tablesize;
@@ -596,7 +596,7 @@ public:
 		 
 		//  std::remove_reference_t<iterator> ret_iter = ++pos;
 		 _table[delete_idx].erase(del_pos._list_iter);
-		 return ++pos; 
+		 return ++Pos; 
 	 };
 	 iterator erase(iterator first ,iterator end)noexcept
 	 {
@@ -644,7 +644,7 @@ public:
 	 }; 
 	 template<typename _valty,
 		 typename = std::enable_if_t<std::is_constructible_v<value_type, _valty>>>
-		 iterator insert(iterator pos,_valty&& value)
+		 iterator insert(iterator Pos,_valty&& value)
 	 {
 		 return insert(std::forward<_valty>(value)).first;
 	 };

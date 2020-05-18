@@ -1,9 +1,9 @@
 #include "Actor.h"
 #include "BitmapManager.h"
 
-void		Actor::SetPos(FVector2D pos)
+void		Actor::SetPos(FVector2D Pos)
 {
-	Vector = std::move(pos);
+	Vector = std::move(Pos);
 }
 void		Actor::SetPos(float x, float y)
 {

@@ -11,27 +11,27 @@ int avoidObstacles(std::vector<int> inputArray)
 	int maxele = ar.back(); 
 	int res= std::numeric_limits<int>::max();
 
-	int pos = 0;
+	int Pos = 0;
 	int jump = 1;
 	int count = 0;
 
 	while (jump < maxele)
 	{
-		if (ar.end() == std::find(ar.begin(), ar.end(), pos))
+		if (ar.end() == std::find(ar.begin(), ar.end(), Pos))
 		{
-			pos += jump;
+			Pos += jump;
 			count++;
-			if (pos > maxele)
+			if (Pos > maxele)
 			{
 				res = std::min(res, count);
 				count = 0; 
-				pos = 0; 
+				Pos = 0; 
 				jump++;
 			};
 		}
 		else
 		{
-			pos = 0;
+			Pos = 0;
 			jump++;
 			count = 0;
 		}

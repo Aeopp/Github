@@ -96,8 +96,8 @@ bool	Sample::Frame()
 		iter != m_ProjectileList.end(); )
 	{
 		(*iter).fLifeTime -= World::FramePerSecond;
-		(*iter).pos[1] -= World::FramePerSecond * 500.0f;
-		(*iter).SetPos((*iter).pos[0], (*iter).pos[1]);
+		(*iter).Pos[1] -= World::FramePerSecond * 500.0f;
+		(*iter).SetPos((*iter).Pos[0], (*iter).Pos[1]);
 
 		if ((*iter).fLifeTime < 0.0f)
 		{
@@ -160,7 +160,7 @@ bool	Sample::Render()
 	for (iter = m_ProjectileList.begin();
 		iter != m_ProjectileList.end(); iter++)
 	{
-		m_Projectile.SetPos((*iter).pos[0], (*iter).pos[1]);
+		m_Projectile.SetPos((*iter).Pos[0], (*iter).Pos[1]);
 		m_Projectile.Render(OffScreenDC);
 	}
 	for (Npc* npc : m_NpcList)

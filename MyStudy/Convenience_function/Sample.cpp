@@ -16,8 +16,8 @@ using  namespace  std;
 using vector=std::valarray<int32_t> ;
 void gotoxy(int x, int y)
 {
-    COORD pos = { x,y };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+    COORD Pos = { x,y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
 void main()
 {

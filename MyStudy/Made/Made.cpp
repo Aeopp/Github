@@ -102,8 +102,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance ,int nCmdShow)
 {
    window::hInstance = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-   setup::ResoluctionHeight = 1600;
-   setup::ResoluctionHeight = 900;
 
    window:: hWnd = CreateWindowW(
        szWindowClass, 
