@@ -4,8 +4,6 @@
 #include <iostream>
 #include <algorithm>
 #include <Windows.h>
-#include <cmath>__msvc_all_public_headers.hpp
-#include <numeric>
 
 #define DECLARE_DEFAULT(Target)       \
 public:\
@@ -37,18 +35,6 @@ Manager& operator=(Manager&&)noexcept = delete;\
 Manager(const Manager&) = delete;\
 Manager& operator=(const Manager&) = delete;\
 
-namespace math
-{
-	static inline float PI = 3.141592f; 
-	static inline float Radian = 180.f / PI;
-	static inline float DegreeToRadian(float Degree) noexcept {
-		return Degree / math::Radian ; 
-	}
-	static inline float RadianToDegree(float Radian) noexcept {
-		return Radian* math::Radian;
-	};
-}
-
 namespace helper
 {
 	// 스크린 좌표 기준
@@ -56,7 +42,7 @@ namespace helper
 		return std::pair{ Target.right - Target.left,Target.bottom - Target.top };
 	};
 	// 현재 클라 좌표기준 화면밖으로 못벗어나게 좌표 제한 left , top ,right ,bottom 
-	static inline  void clamp_pos(HWND hWnd,RECT& Target,const std::pair<LONG,LONG> width_height,std::pair<LONG,LONG>&Center) noexcept {
+	static inline  void clamp_pos(HWND hWnd,RECT& Target,std::pair<LONG,LONG> width_height) noexcept {
 		RECT window_Rect;
 		auto& [left, top, right, bottom] = Target;
 		GetClientRect(hWnd, &window_Rect);
@@ -68,9 +54,6 @@ namespace helper
 		right = std::clamp(right,  window_left + width, window_right);
 		top = std::clamp(top,       window_top,window_bottom-height);
 		bottom = std::clamp(bottom,  window_top + height, window_bottom);
-
-		Center.first = right - width / 2; 
-		Center.second = bottom - height / 2;
 	};
 	template<typename StringType>
 	constexpr StringType inline PathDelete(const StringType& FullPath)
