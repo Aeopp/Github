@@ -10,7 +10,6 @@
 #include <thread>
 #include <complex>
 #include <utility>
-#include <numbers>
 using  namespace  std;
 
 using vector=std::valarray<int32_t> ;
@@ -53,13 +52,16 @@ void main()
             system("cls");
             angle = 1;
         }
-        int x= sin(angle / radian) * radius + 50;
-        int y = cos(angle / radian) * radius + 50;
+        int x= cos(angle / radian) * radius + 50;
+        int y = sin(angle / radian) * radius + 50;
+        auto cas = std::atan(static_cast<double>(static_cast<double>(y)/x));
+        std::cout << cas << std::endl;
         gotoxy(x, y);
         cout << 'S';
         angle += 0.1;
         this_thread::sleep_for(1ms);
 	}
+     
 
 
 
