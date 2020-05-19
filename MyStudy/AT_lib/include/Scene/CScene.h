@@ -13,6 +13,8 @@ protected:
 public:
 	static bool LayerSort(class CLayer* pL1, class CLayer* pL2);
 	class CLayer* CreateLayer(const string& strTag, int iZOrder = 0);
+	class CLayer* FindLayer(const string& strTag);
+
 	
 	virtual bool Init();
 	virtual void Input(float fDeltaTime);

@@ -59,6 +59,15 @@ void CLayer::Render(HDC hDC, float fDeltaTime)
 	list<CObj*>::iterator iterEnd = m_ObjList.end();
 
 	for (iter = m_ObjList.begin(); iter != iterEnd; ++iter) {
-		(*iter)->Render(hDC,fDeltaTime);
+		(*iter)->Render(hDC, fDeltaTime);
 	}
+};
+
+void CLayer::AddObject(CObj* pObj)
+{
+	pObj->SetScene(m_pScene);
+	pObj->SetLayer(this); 
+	pObj->AddRef(); 
+
+	m_ObjList.push_back(pObj);
 }

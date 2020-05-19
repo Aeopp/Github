@@ -25,6 +25,12 @@
     <Filter Include="03.Object">
       <UniqueIdentifier>{c1c2471b-abfb-4731-9025-868c38fbf6bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Object\01.MoveObj">
+      <UniqueIdentifier>{c539bad7-b492-48f5-935e-319a8fe7f1d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Object\02.StaticObj">
+      <UniqueIdentifier>{8f7616ee-53c9-412c-acbe-0505ff468087}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -63,11 +69,20 @@
     <ClInclude Include="include\Core\Timer.h">
       <Filter>01.Core</Filter>
     </ClInclude>
-    <ClInclude Include="include\Object\Obj.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\CRef.h">
+    <ClInclude Include="include\Core\Ref.h">
       <Filter>01.Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\Obj.h">
+      <Filter>03.Object</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\MoveObj.h">
+      <Filter>03.Object\01.MoveObj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\Player.h">
+      <Filter>03.Object\01.MoveObj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\StaticObj.h">
+      <Filter>03.Object\02.StaticObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -97,11 +112,20 @@
     <ClCompile Include="include\Core\Timer.cpp">
       <Filter>01.Core</Filter>
     </ClCompile>
-    <ClCompile Include="include\Object\Obj.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="include\Core\CRef.cpp">
+    <ClCompile Include="include\Core\Ref.cpp">
       <Filter>01.Core</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\Obj.cpp">
+      <Filter>03.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\MoveObj.cpp">
+      <Filter>03.Object\01.MoveObj</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\Player.cpp">
+      <Filter>03.Object\01.MoveObj</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\StaticObj.cpp">
+      <Filter>03.Object\02.StaticObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

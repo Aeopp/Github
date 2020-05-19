@@ -5,6 +5,8 @@
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CTimer); 
+    DESTROY_SINGLE(CSceneManager);
+
 	//SAFE_DELETE(m_pInst);
 }
 
@@ -157,7 +159,8 @@ BOOL CCore::Create()
 
 CCore::CCore()
 {
-
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetBreakAlloc(229);
 };
 
 CCore::~CCore() noexcept

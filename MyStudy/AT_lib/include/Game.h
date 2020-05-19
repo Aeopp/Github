@@ -5,6 +5,8 @@
 #include <list>
 #include <vector>
 #include <unordered_map>
+#include <crtdbg.h>K
+
 #include "Macro.h"
 #include "../resource.h"
 #include "Types.h"

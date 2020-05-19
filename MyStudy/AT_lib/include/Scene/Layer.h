@@ -19,7 +19,7 @@ public:
 	int  LateUpdate(float fDeltaTime);
 	void Collision(float fDeltaTime);
 	void Render(HDC hDC, float fDeltaTime);
-
+	void AddObject(class CObj* pObj); 
 	void SetTag(const string& strTag) {
 		m_strTag = strTag;
 	}

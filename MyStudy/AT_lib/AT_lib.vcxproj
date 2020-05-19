@@ -154,12 +154,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\CCore.h" />
-    <ClInclude Include="include\Core\CRef.h" />
+    <ClInclude Include="include\Core\Ref.h" />
     <ClInclude Include="include\Core\Timer.h" />
     <ClInclude Include="include\Flag.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Macro.h" />
+    <ClInclude Include="include\Object\MoveObj.h" />
     <ClInclude Include="include\Object\Obj.h" />
+    <ClInclude Include="include\Object\Player.h" />
+    <ClInclude Include="include\Object\StaticObj.h" />
     <ClInclude Include="include\resource.h" />
     <ClInclude Include="include\Scene\CIngameScene.h" />
     <ClInclude Include="include\Scene\CScene.h" />
@@ -173,10 +176,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\CCore.cpp" />
-    <ClCompile Include="include\Core\CRef.cpp" />
+    <ClCompile Include="include\Core\Ref.cpp" />
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
+    <ClCompile Include="include\Object\MoveObj.cpp" />
     <ClCompile Include="include\Object\Obj.cpp" />
+    <ClCompile Include="include\Object\Player.cpp" />
+    <ClCompile Include="include\Object\StaticObj.cpp" />
     <ClCompile Include="include\Scene\CIngameScene.cpp" />
     <ClCompile Include="include\Scene\CScene.cpp" />
     <ClCompile Include="include\Scene\CSceneManager.cpp" />

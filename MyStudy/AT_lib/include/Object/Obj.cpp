@@ -1,14 +1,22 @@
 #include "Obj.h"
 
-CObj::CObj() :m_iRef{ 1 } {};
+CObj::CObj() {};
 
-bool CObj::Init()
+CObj::~CObj()
 {
-	return true;
+	SAFE_DELETE(m_pScene);
+	SAFE_DELETE(m_pLayer); 
 }
+CObj::CObj(const CObj & Obj)
+{
+	*this = Obj;
+}
+
+
 
 void CObj::Input(float fDeltaTime)
 {
+
 }
 
 int CObj::Update(float fDeltaTime)

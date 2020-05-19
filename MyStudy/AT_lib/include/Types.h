@@ -33,62 +33,78 @@ struct POSITION {
 		y = pt.y;
 		return *this;
 	};
-	POSITION operator+ (const POSITION& pos) {
+	POSITION operator+ (const POSITION& pos)const {
 		POSITION tPos;
 		tPos.x = x + pos.x;
 		tPos.y = y + pos.y;
 		return tPos;
 	};
-	POSITION operator+ (const POINT& pt) {
+	POSITION operator+ (const POINT& pt)const {
 		POSITION tPos;
 		tPos.x = x + pt.x;
 		tPos.y = y + pt.y;
 		return tPos;
 	};
-	POSITION operator+(float f)
+	POSITION operator+(float f)const
 	{
 		POSITION tPos;
 		tPos.x = x + f;
 		tPos.y = y  + f;
 		return tPos; 
 	}
+	POSITION operator*(float f)const
+	{
+		POSITION tPos;
+		tPos.x = x *f;
+		tPos.y = y * f;
+		return tPos;
+	}
+	POSITION& operator+=(const POSITION& pt) {
+		x += pt.x;
+		y += pt.y;
+		return *this;
+	};
 
 
-
-	POSITION operator- (const POSITION& pos) {
+	POSITION operator- (const POSITION& pos)const {
 		POSITION tPos;
 		tPos.x = x - pos.x;
 		tPos.y = y - pos.y;
 		return tPos;
 	};
-	POSITION operator- (const POINT& pt) {
+	POSITION operator- (const POINT& pt) const {
 		POSITION tPos;
 		tPos.x = x - pt.x;
 		tPos.y = y - pt.y;
 		return tPos;
 	};
-	POSITION operator-(float f)
+	POSITION operator-(float f)const
 	{
 		POSITION tPos;
 		tPos.x = x - f;
 		tPos.y = y - f;
 		return tPos;
 	}
+	POSITION& operator-=(const POSITION& pt) {
+		x -= pt.x;
+		y -= pt.y;
+		return *this;
+	};
 
 
-	POSITION operator/ (const POSITION& pos) {
+	POSITION operator/ (const POSITION& pos)const {
 		POSITION tPos;
 		tPos.x = x / pos.x;
 		tPos.y = y / pos.y;
 		return tPos;
 	};
-	POSITION operator/ (const POINT& pt) {
+	POSITION operator/ (const POINT& pt)const {
 		POSITION tPos;
 		tPos.x = x / pt.x;
 		tPos.y = y / pt.y;
 		return tPos;
 	};
-	POSITION operator/(float f)
+	POSITION operator/(float f)const
 	{
 		POSITION tPos;
 		tPos.x = x / f;
