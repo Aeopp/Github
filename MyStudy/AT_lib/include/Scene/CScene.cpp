@@ -3,7 +3,7 @@
 CScene::CScene()
 {
 	CLayer* pLayer = CreateLayer("Default",  INT_MAX);
-	pLayer = CreateLayer("Default");
+	//pLayer->CreateLayer("Default");
 }
 
 CScene::~CScene() noexcept

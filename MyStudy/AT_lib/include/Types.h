@@ -1,6 +1,6 @@
 #pragma once
 
-struct Resolution {
+struct RESOLUTION {
 	unsigned int iW;
 	unsigned int iH;
 };

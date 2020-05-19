@@ -9,15 +9,15 @@ CMoveObj::CMoveObj(const CMoveObj& Obj):
 	m_fAngle = Obj.m_fAngle; 
 }
 
-void CMoveObj::MoveXFromSpeed(float fDeltaTime, MOVE_DIR eDir)
+void CMoveObj::MoveXFromSpeed(float fDeltaTime, MOVE_DIR m_eDir)
 {
 	m_tPos.x += fDeltaTime * m_fSpeed
-		* eDir;
+		* m_eDir;
 }
 
-void CMoveObj::MoveYFromSpeed(float fDeltaTime, MOVE_DIR eDir)
+void CMoveObj::MoveYFromSpeed(float fDeltaTime, MOVE_DIR m_eDir)
 {
-	m_tPos.y += fDeltaTime * m_fSpeed* eDir;
+	m_tPos.y += fDeltaTime * m_fSpeed* m_eDir;
 }
 
 void CMoveObj::Move(float x, float y, float fDeltaTime)

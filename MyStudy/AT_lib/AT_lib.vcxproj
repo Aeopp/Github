@@ -160,6 +160,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Macro.h" />
     <ClInclude Include="include\Object\MoveObj.h" />
+    <ClInclude Include="include\Object\Mushroom.h" />
     <ClInclude Include="include\Object\Obj.h" />
     <ClInclude Include="include\Object\Player.h" />
     <ClInclude Include="include\Object\StaticObj.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
     <ClCompile Include="include\Object\MoveObj.cpp" />
+    <ClCompile Include="include\Object\Mushroom.cpp" />
     <ClCompile Include="include\Object\Obj.cpp" />
     <ClCompile Include="include\Object\Player.cpp" />
     <ClCompile Include="include\Object\StaticObj.cpp" />

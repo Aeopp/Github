@@ -25,8 +25,8 @@ public :
 		return m_fSpeed;
 	}
 	void MoveXFromSpeed(float fDeltaTime,
-		MOVE_DIR eDir); 
-	void MoveYFromSpeed(float fDeltaTime, MOVE_DIR eDir);
+		MOVE_DIR m_eDir); 
+	void MoveYFromSpeed(float fDeltaTime, MOVE_DIR m_eDir);
 	void Move(float x, float y, float fDeltaTime); 
 	void Move(float x, float y);
 	void Move(const POSITION& tMove );

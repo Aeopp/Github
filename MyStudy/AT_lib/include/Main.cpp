@@ -14,8 +14,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// TODO :: Àç±Í ¼öÁ¤¿ä¸Á
 	 DESTROY_SINGLE(CCore); 
-	 // SAFE_DELETE(CCore); 
-	//CCore::DestroyInst();
+	//  SAFE_DELETE(CCore); 
+	//  CCore::DestroyInst();
 
 	return iRev; 
 }

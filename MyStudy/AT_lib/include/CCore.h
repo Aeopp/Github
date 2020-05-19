@@ -9,8 +9,11 @@ private:
 	HINSTANCE m_hInst;
 	HWND m_hWnd; 
 	HDC m_hDC;
-	Resolution m_tRs;
+	RESOLUTION m_tRS;
 public:
+	RESOLUTION GetResolution()const {
+		return m_tRS;
+	}
 	static CCore* GetInst() {
 		if (!m_pInst)
 			m_pInst = new CCore{};

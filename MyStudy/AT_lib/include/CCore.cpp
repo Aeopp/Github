@@ -15,8 +15,8 @@ bool CCore::Init(HINSTANCE hInst)
 	m_hInst = hInst;
 	MyRegisterClass(); 
 
-	m_tRs.iW = 1280;
-	m_tRs.iH = 720;
+	m_tRS.iW = 1280;
+	m_tRS.iH = 720;
 	Create();
 
 	m_hDC = GetDC(m_hWnd);
@@ -143,7 +143,7 @@ BOOL CCore::Create()
 			return FALSE;
 		}
 
-		RECT rc = { 0,0,m_tRs.iW,m_tRs.iH};
+		RECT rc = { 0,0,m_tRS.iW,m_tRS.iH};
 		AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
 		SetWindowPos(m_hWnd, HWND_TOPMOST, 100, 100,
