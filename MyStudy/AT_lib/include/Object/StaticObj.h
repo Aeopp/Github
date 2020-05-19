@@ -13,6 +13,7 @@ public:
 	virtual int  Update(float fDeltaTime);
 	virtual int  LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
-	virtual void Render(HDC hDC, float fDeltaTime);
+	virtual void Render(HDC hDC, float fDeltaTime); 
+	virtual CStaticObj* Clone() = 0;
 };
 

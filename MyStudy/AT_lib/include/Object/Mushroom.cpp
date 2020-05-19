@@ -56,3 +56,8 @@ void CMushroom::Render(HDC hDC, float fDeltaTime)
 		,m_tPos.x + m_tSize.x
 		, m_tPos.y + m_tSize.y);
 }
+
+CMushroom* CMushroom::Clone()
+{
+	return new CMushroom{*this };
+}

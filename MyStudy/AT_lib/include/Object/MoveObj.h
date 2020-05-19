@@ -8,6 +8,7 @@ private:
 	float m_fAngle; 
 	float m_fSpeed; 
 protected: 
+	
 	CMoveObj();
 	virtual ~CMoveObj() noexcept {}; 
 	CMoveObj(const CMoveObj& Obj); 
@@ -25,7 +26,7 @@ public :
 		return m_fSpeed;
 	}
 	void MoveXFromSpeed(float fDeltaTime,
-		MOVE_DIR m_eDir); 
+		MOVE_DIR eDir); 
 	void MoveYFromSpeed(float fDeltaTime, MOVE_DIR m_eDir);
 	void Move(float x, float y, float fDeltaTime); 
 	void Move(float x, float y);
@@ -44,5 +45,6 @@ public :
 	virtual int  LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
+	virtual CMoveObj* Clone() = 0;
 };
 

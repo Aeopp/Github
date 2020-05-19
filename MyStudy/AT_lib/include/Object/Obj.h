@@ -6,14 +6,20 @@ class CObj : public CRef
 {
 protected:
 	CObj();
-	virtual ~CObj();
 	CObj(const CObj& Obj);
 private:
 	static inline list<CObj*> m_ObjList;
 	static inline unordered_map<wstring, CObj*> m_mapPrototype;
 public:
-	void AddObj(CObj* pObj);
-
+	virtual ~CObj();
+	static void AddObj(CObj* pObj);
+	static CObj* FindObject(const wstring& strTag);
+	// Iter 갱신 로직 체크 바람 ++Iter 지워야 할수도 있음
+	static void EraseObj(CObj* pObj);
+	static void EraseObj(const wstring& strTag);
+	static void EraseObj();
+	static void ErasePrototype();
+	static void ErasePrototype(const wstring& strTag);
 protected:
 	int m_iRef;
 	wstring m_strTag;
@@ -73,11 +79,13 @@ public:
 	virtual int  LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
+	virtual CObj* Clone() = 0; 
 public:
 	template<typename T>
 	static T* CreateObj(const wstring& strTag, class CLayer*
 		pLayer = NULL) {
 		T* pObj = new T;
+		pObj->SetTag(strTag);
 		if (!pObj->Init()) {
 			SAFE_RELEASE(pObj);
 			return NULL;
@@ -89,4 +97,22 @@ public:
 		//pObj->AddRef(); 
 		return pObj;
 	};
+	
+	static CObj* CreateCloneObj(const wstring& strTagPrototypeKey,
+		const wstring& strTag,class CLayer* pLayer =nullptr);
+	template<typename T>
+	static T* CreateProtoType(const wstring& strTag) {
+		T* pObj = new T;
+		pObj->SetTag(strTag); 
+		if (!pObj->Init()) {
+			SAFE_RELEASE(pObj);
+			return NULL;
+		}
+		pObj->AddRef();
+		m_mapPrototype.insert(std::make_pair(strTag,pObj));
+		//pObj->AddRef(); 
+		return pObj;
+	};
+private : 
+	static CObj* FindPtototype(const wstring& strKey);
 };
