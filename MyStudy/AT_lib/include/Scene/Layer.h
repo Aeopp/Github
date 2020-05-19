@@ -14,6 +14,26 @@ private:
 public :
 	~CLayer();
 public:
+	bool m_bEnable;
+	bool m_bLife;
+
+	void SetEnable(bool bEnable) {
+		m_bEnable = bEnable;
+	}
+	void SetLife(bool bLife) {
+		m_bLife = bLife;
+	}
+	bool GetEnable() const {
+		return m_bEnable;
+	}
+	bool GetLife() const {
+		return  m_bLife;
+	}
+	void Die()
+	{
+		m_bLife = false;
+
+	}
 	void Input(float fDeltaTime);
 	int  Update(float fDeltaTime);
 	int  LateUpdate(float fDeltaTime);

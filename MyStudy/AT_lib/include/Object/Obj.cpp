@@ -12,6 +12,12 @@ CObj::CObj(const CObj & Obj)
 	*this = Obj;
 }
 
+void CObj::AddObj(CObj* pObj)
+{
+	pObj->AddRef(); 
+	m_ObjList.push_back(pObj);
+}
+
 
 
 void CObj::Input(float fDeltaTime)

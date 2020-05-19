@@ -37,6 +37,9 @@
     <Filter Include="03.Object\01.MoveObj\02.Monster">
       <UniqueIdentifier>{37fbdc8b-f2ff-4f37-a3e2-1985d3b1f4e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Object\01.MoveObj\03.Bullet">
+      <UniqueIdentifier>{adf176c4-30b0-46e0-91e7-8146f93aa3e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -93,6 +96,9 @@
     <ClInclude Include="include\Object\Mushroom.h">
       <Filter>03.Object\01.MoveObj\02.Monster</Filter>
     </ClInclude>
+    <ClInclude Include="include\Object\Bullet.h">
+      <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AT_lib.rc">
@@ -138,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="include\Object\Mushroom.cpp">
       <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\Bullet.cpp">
+      <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

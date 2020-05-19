@@ -1,2 +1,4 @@
 D:\GitHub\output\List.exe
 D:\GitHub\output\List.pdb
+C:\GitHub\Github\output\List.exe
+C:\GitHub\Github\output\List.pdb

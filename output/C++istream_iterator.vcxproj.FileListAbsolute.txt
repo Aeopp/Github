@@ -1,0 +1,2 @@
+C:\GitHub\Github\output\C++istream_iterator.exe
+C:\GitHub\Github\output\C++istream_iterator.pdb

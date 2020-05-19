@@ -8,9 +8,15 @@ protected:
 	CObj();
 	virtual ~CObj();
 	CObj(const CObj& Obj);
+private:
+	static inline list<CObj*> m_ObjList;
+	static inline unordered_map<wstring, CObj*> m_mapPrototype;
+public:
+	void AddObj(CObj* pObj);
+
 protected:
 	int m_iRef;
-	string m_strTag;
+	wstring m_strTag;
 	POSITION m_tPos;
 	_SIZE m_tSize;
 	POSITION m_tPivot;
@@ -29,7 +35,7 @@ public:
 	class CLayer* GetLayer(class CLayer* pLayer)const {
 		return m_pLayer;
 	}
-	string GetTag()const {
+	wstring GetTag()const {
 		return m_strTag;
 	}
 	POSITION GetPos()const {
@@ -39,7 +45,7 @@ public:
 		return m_tSize;
 	};
 public:
-	void SetTag(string strTag) {
+	void SetTag(wstring strTag) {
 		m_strTag = std::move(strTag);
 	}
 	void SetPos(POSITION tPos) {
@@ -69,7 +75,7 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 public:
 	template<typename T>
-	static T* CreateObj(const string& strTag, class CLayer*
+	static T* CreateObj(const wstring& strTag, class CLayer*
 		pLayer = NULL) {
 		T* pObj = new T;
 		if (!pObj->Init()) {
@@ -79,6 +85,7 @@ public:
 		if (pLayer) {
 			pLayer->AddObject(pObj);
 		};
+		AddObj(pObj); 
 		//pObj->AddRef(); 
 		return pObj;
 	};

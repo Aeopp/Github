@@ -1,0 +1,2 @@
+C:\GitHub\Github\output\Joseph.exe
+C:\GitHub\Github\output\Joseph.pdb

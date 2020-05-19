@@ -159,6 +159,7 @@
     <ClInclude Include="include\Flag.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Macro.h" />
+    <ClInclude Include="include\Object\Bullet.h" />
     <ClInclude Include="include\Object\MoveObj.h" />
     <ClInclude Include="include\Object\Mushroom.h" />
     <ClInclude Include="include\Object\Obj.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="include\Core\Ref.cpp" />
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
+    <ClCompile Include="include\Object\Bullet.cpp" />
     <ClCompile Include="include\Object\MoveObj.cpp" />
     <ClCompile Include="include\Object\Mushroom.cpp" />
     <ClCompile Include="include\Object\Obj.cpp" />

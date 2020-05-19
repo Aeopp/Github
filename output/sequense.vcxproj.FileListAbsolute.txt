@@ -1,2 +1,4 @@
 D:\GitHub\output\sequense.exe
 D:\GitHub\output\sequense.pdb
+C:\GitHub\Github\output\sequense.exe
+C:\GitHub\Github\output\sequense.pdb

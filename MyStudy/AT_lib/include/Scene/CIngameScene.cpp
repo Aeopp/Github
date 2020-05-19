@@ -14,9 +14,9 @@ bool CIngameScene::Init()
 
 	CLayer* pLayer = FindLayer("Default");
 
-	auto* pPlayer = CObj::CreateObj<CPlayer>("Player", pLayer);
+	auto* pPlayer = CObj::CreateObj<CPlayer>(L"Player", pLayer);
 	auto* pMushroom = CObj::CreateObj<CMushroom>
-		("Mushroom", pLayer); 
+		(L"Mushroom", pLayer); 
 
    SAFE_RELEASE(pPlayer); 
    SAFE_RELEASE(pMushroom);
