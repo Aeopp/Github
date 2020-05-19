@@ -66,6 +66,9 @@
     <ClInclude Include="include\Object\Obj.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\CRef.h">
+      <Filter>01.Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AT_lib.rc">
@@ -96,6 +99,9 @@
     </ClCompile>
     <ClCompile Include="include\Object\Obj.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Core\CRef.cpp">
+      <Filter>01.Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

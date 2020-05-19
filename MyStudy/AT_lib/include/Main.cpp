@@ -12,7 +12,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	int iRev = CCore::GetInst()->Run();
 
-	CCore::DestroyInst();
+	// TODO :: Àç±Í ¼öÁ¤¿ä¸Á
+	 DESTROY_SINGLE(CCore); 
+	 // SAFE_DELETE(CCore); 
+	//CCore::DestroyInst();
 
 	return iRev; 
 }

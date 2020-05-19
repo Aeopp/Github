@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\CCore.h" />
+    <ClInclude Include="include\Core\CRef.h" />
     <ClInclude Include="include\Core\Timer.h" />
     <ClInclude Include="include\Flag.h" />
     <ClInclude Include="include\Game.h" />
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\CCore.cpp" />
+    <ClCompile Include="include\Core\CRef.cpp" />
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
     <ClCompile Include="include\Object\Obj.cpp" />

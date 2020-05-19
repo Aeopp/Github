@@ -1,8 +1,11 @@
 #include "CCore.h"
 #include "Scene/CSceneManager.h"
 #include "Core/Timer.h"
+
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
+	DESTROY_SINGLE(CTimer); 
+	//SAFE_DELETE(m_pInst);
 }
 
 bool CCore::Init(HINSTANCE hInst)
@@ -154,12 +157,12 @@ BOOL CCore::Create()
 
 CCore::CCore()
 {
-	
-}
+
+};
 
 CCore::~CCore() noexcept
 {
-	DESTROY_SINGLE(CCore);
-	DESTROY_SINGLE(CTimer);
+	/*DESTROY_SINGLE(CCore);
+	DESTROY_SINGLE(CTimer);*/
 }
 

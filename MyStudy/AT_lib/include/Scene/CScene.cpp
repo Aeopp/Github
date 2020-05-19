@@ -90,7 +90,7 @@ void CScene::Render(HDC hDC, float fDeltaTime)
 
 bool CScene::LayerSort(CLayer* pL1, CLayer* pL2)
 {
-	CLayer* pLayer = new CLayer;
+	//CLayer* pLayer = new CLayer;
 
 	return pL1->GetZOrder() < pL2->GetZOrder(); 
 }
