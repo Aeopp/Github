@@ -1,0 +1,20 @@
+Starting error log on 2015-07-15
+IncorrectStructure:Invalid fieldlimit 134217728, map 100000000.img of version GMS, v83
+MissingFeature:Unknown Prop: fieldScript, map 100000000.img of version GMS, v83
+MissingFeature:Unknown Prop: standAlone, map 100000000.img of version GMS, v83
+MissingFeature:Unknown Prop: partyStandAlone, map 100000000.img of version GMS, v83
+MissingFeature:Unknown Prop: standAlone, map 100000101.img of version GMS, v83
+MissingFeature:Unknown Prop: partyStandAlone, map 100000101.img of version GMS, v83
+MissingFeature:Unknown Prop: fieldScript, map 100000101.img of version GMS, v83
+
+Starting error log on 2015-07-16
+MissingFeature:Unknown Prop: standAlone, map 001020000.img of version GMS, v83
+MissingFeature:Unknown Prop: partyStandAlone, map 001020000.img of version GMS, v83
+MissingFeature:Unknown Prop: fieldScript, map 001020000.img of version GMS, v83
+
+Starting error log on 2015-07-18
+IncorrectStructure:Invalid fieldlimit 134225988, map 001000000.img of version GMS, v83
+MissingFeature:Unknown Prop: fieldScript, map 001000000.img of version GMS, v83
+MissingFeature:Unknown Prop: standAlone, map 001000000.img of version GMS, v83
+MissingFeature:Unknown Prop: partyStandAlone, map 001000000.img of version GMS, v83
+
