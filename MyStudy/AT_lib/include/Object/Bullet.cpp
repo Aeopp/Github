@@ -14,13 +14,22 @@ CBullet::CBullet(const CBullet& Obj)
 
 bool CBullet::Init()
 {
-	return false;
+	SetSpeed(5000.f);
+	 
+	return true;
 }
 
 int CBullet::Update(float fDeltaTime)
 {
 	 CMoveObj::Update(fDeltaTime);
 
+	 MoveAngle(fDeltaTime);
+	 m_fDist += GetSpeed() * fDeltaTime;
+
+	 if (m_fDist >= m_fLimitDist)
+		 Die(); 
+
+	 return 0; 
 }
 
 int CBullet::LateUpdate(float fDeltaTime)
@@ -37,6 +46,9 @@ void CBullet::Collision(float fDeltaTime)
 void CBullet::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC,fDeltaTime); 
+
+	Ellipse(hDC, m_tPos.x, m_tPos.y, m_tPos.x +
+		m_tSize.x, m_tPos.y + m_tSize.y); 
 }
 
 CBullet* CBullet::Clone()

@@ -9,7 +9,7 @@ protected:
 	CObj(const CObj& Obj);
 private:
 	static inline list<CObj*> m_ObjList;
-	static inline unordered_map<wstring, CObj*> m_mapPrototype;
+	
 public:
 	virtual ~CObj();
 	static void AddObj(CObj* pObj);
@@ -18,8 +18,7 @@ public:
 	static void EraseObj(CObj* pObj);
 	static void EraseObj(const wstring& strTag);
 	static void EraseObj();
-	static void ErasePrototype();
-	static void ErasePrototype(const wstring& strTag);
+	
 protected:
 	int m_iRef;
 	wstring m_strTag;
@@ -66,7 +65,7 @@ public:
 	}
 
 	void SetSize(_SIZE tSize) {
-		m_tPos = std::move(tSize);
+		m_tSize = std::move(tSize);
 	}
 	void SetSize(float x, float y) {
 		m_tSize.x = x;
@@ -100,19 +99,5 @@ public:
 	
 	static CObj* CreateCloneObj(const wstring& strTagPrototypeKey,
 		const wstring& strTag,class CLayer* pLayer =nullptr);
-	template<typename T>
-	static T* CreateProtoType(const wstring& strTag) {
-		T* pObj = new T;
-		pObj->SetTag(strTag); 
-		if (!pObj->Init()) {
-			SAFE_RELEASE(pObj);
-			return NULL;
-		}
-		pObj->AddRef();
-		m_mapPrototype.insert(std::make_pair(strTag,pObj));
-		//pObj->AddRef(); 
-		return pObj;
-	};
-private : 
-	static CObj* FindPtototype(const wstring& strKey);
+	
 };

@@ -4,7 +4,7 @@
 class CMoveObj :
 	public CObj
 {
-private:
+protected:
 	float m_fAngle; 
 	float m_fSpeed; 
 protected: 
@@ -19,10 +19,10 @@ public :
 	void SetSpeed(float fSpeed) {
 		m_fSpeed = fSpeed;
 	}
-	float GetAngle(float fSpeed)const {
+	float GetAngle( )const {
 		return m_fAngle; 
 	}
-	float  GetSpeed(float fSpeed)const {
+	float  GetSpeed( )const {
 		return m_fSpeed;
 	}
 	void MoveXFromSpeed(float fDeltaTime,
@@ -36,8 +36,8 @@ public :
 	void MoveX(float x,float fDeltaTime);
 	void MoveY(float y);
 	void MoveY(float y, float fDeltaTime);
-	void MoveAngle(float fSpeed, float fDeltaTime); 
-	void MoveAngle(float fSpeed);
+	void MoveAngle( float fDeltaTime); 
+	void MoveAngle();
 public : 
 	virtual bool Init() = 0; 
 	virtual void Input(float fDeltaTime);

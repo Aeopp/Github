@@ -4,6 +4,9 @@
 class CMushroom :
 	public CMoveObj
 {
+private :
+	friend class CObj;
+	friend class CScene;
 public:
 	CMushroom() {}; 
 	virtual ~CMushroom() noexcept {};

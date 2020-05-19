@@ -3,7 +3,7 @@
 
 CLayer::CLayer():
 	m_iZOrder(0),
-	m_strTag(""),
+	m_strTag(L""),
 	m_pScene(NULL) ,
 	m_bLife{ true } ,
 	m_bEnable{ true }  

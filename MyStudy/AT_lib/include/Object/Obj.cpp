@@ -1,11 +1,13 @@
 #include "Obj.h"
-
+#include "../Scene/CScene.h"
+#include "../Scene/CSceneManager.h"
 CObj::CObj() {};
 
+// Memory Leak Dected!! 
 CObj::~CObj()
 {
-	SAFE_DELETE(m_pScene);
-	SAFE_DELETE(m_pLayer); 
+ 	/*SAFE_DELETE(m_pScene);
+	SAFE_DELETE(m_pLayer); */
 }
 CObj::CObj(const CObj & Obj)
 {
@@ -69,19 +71,7 @@ void CObj::EraseObj()
 	Safe_Release_VecList(m_ObjList);
 }
 
-void CObj::ErasePrototype()
-{
-	Safe_Delete_Map(m_mapPrototype);
-}
-void CObj::ErasePrototype(const wstring& strTag)
-{
-	auto iter = m_mapPrototype.find(strTag);
-	if (!iter->second) {
-		return; 
-	}
-	SAFE_RELEASE(iter->second);
-	m_mapPrototype.erase(iter); 
-}
+
 void CObj::Input(float fDeltaTime)
 {
 
@@ -107,7 +97,7 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 
 CObj* CObj::CreateCloneObj(const wstring& strTagPrototypeKey, const wstring& strTag, class CLayer* pLayer)
 {
-	CObj* pProto = FindPtototype(strTagPrototypeKey);
+	CObj* pProto = CScene::FindPtototype(strTagPrototypeKey);
 
 	if (!pProto)
 		return nullptr;
@@ -119,13 +109,4 @@ CObj* CObj::CreateCloneObj(const wstring& strTagPrototypeKey, const wstring& str
 	}
 	AddObj(pObj);
 	return pObj;
-}
-
-CObj* CObj::FindPtototype(const wstring& strKey)
-{
-	auto iter = m_mapPrototype.find(strKey); 
-	if (iter == m_mapPrototype.end())
-		return nullptr;
-
-	return iter->second;
 }

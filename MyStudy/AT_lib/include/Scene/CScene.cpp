@@ -1,17 +1,19 @@
 #include "CScene.h"
 #include "Layer.h"
+#include "../Object/Obj.h"
 CScene::CScene()
 {
-	CLayer* pLayer = CreateLayer("Default",  INT_MAX);
+	CLayer* pLayer = CreateLayer(L"Default",  INT_MAX);
 	//pLayer->CreateLayer("Default");
 }
 
 CScene::~CScene() noexcept
 {
+	ErasePrototype(); 
 	Safe_Delete_VecList(m_LayerList);
 }
 
-CLayer* CScene::CreateLayer(const string& strTag, int iZOrder)
+CLayer* CScene::CreateLayer(const wstring& strTag, int iZOrder)
 {
 	CLayer* pLayer = new CLayer;
 
@@ -27,7 +29,7 @@ CLayer* CScene::CreateLayer(const string& strTag, int iZOrder)
 	return  pLayer; 
 }
 
-CLayer* CScene::FindLayer(const string& strTag)
+CLayer* CScene::FindLayer(const wstring& strTag)
 {
 	list<CLayer*>::iterator iter;
 	list<CLayer*>::iterator iterEnd = m_LayerList.end();
@@ -153,5 +155,26 @@ bool CScene::LayerSort(CLayer* pL1, CLayer* pL2)
 
 	return pL1->GetZOrder() < pL2->GetZOrder(); 
 }
+void CScene::ErasePrototype()
+{
+	Safe_Delete_Map(m_mapPrototype);
+}
+void CScene::ErasePrototype(const wstring& strTag)
+{
+	auto iter = m_mapPrototype.find(strTag);
+	if (!iter->second) {
+		return;
+	}
+	SAFE_RELEASE(iter->second);
+	m_mapPrototype.erase(iter);
+}
 
 
+CObj* CScene::FindPtototype(const wstring& strKey)
+{
+	auto iter = m_mapPrototype.find(strKey);
+	if (iter == m_mapPrototype.end())
+		return nullptr;
+
+	return iter->second;
+}

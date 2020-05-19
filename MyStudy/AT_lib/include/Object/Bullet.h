@@ -3,6 +3,9 @@
 class CBullet :
 	public CMoveObj
 {
+private :
+	friend class CObj;
+	friend class CScene;
 	public:
 		CBullet();
 		virtual ~CBullet() noexcept {};

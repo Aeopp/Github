@@ -8,7 +8,7 @@ private:
 	CLayer();
 private:
 	class CScene* m_pScene; 
-	string m_strTag; 
+	wstring m_strTag; 
 	int m_iZOrder; 
 	list<class CObj*> m_ObjList;
 public :
@@ -40,7 +40,7 @@ public:
 	void Collision(float fDeltaTime);
 	void Render(HDC hDC, float fDeltaTime);
 	void AddObject(class CObj* pObj); 
-	void SetTag(const string& strTag) {
+	void SetTag(const wstring& strTag) {
 		m_strTag = strTag;
 	}
 	void SetZOrder(int iZOrder) {
@@ -49,7 +49,7 @@ public:
 	int GetZOrder()const {
 		return m_iZOrder; 
 	}
-	string GetTag()const {
+	wstring GetTag()const {
 		return m_strTag;
 	}
 	void SetScene(class CScene* pScene) {
