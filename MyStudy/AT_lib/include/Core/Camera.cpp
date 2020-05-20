@@ -53,7 +53,7 @@ void CCamera::Update(/*Test*/HDC hDC,float fDeltaTime)
 		float fTopArea = m_tClientRS.iH * m_tPivot.y;
 		float fBottomArea = m_tClientRS.iH - fTopArea;
 		// TODO :: Debug Field Delete plz 
-		Ellipse(hDC, fLeftArea, fTopArea, fRightArea, fBottomArea);
+		Rectangle(hDC, fLeftArea, fTopArea, fRightArea, fBottomArea);
 		 /// 
 		if (tPos.x <= fLeftArea) {
 			m_tPos.x = 0.f; 

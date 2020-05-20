@@ -1,8 +1,18 @@
 #include "Texture.h"
 #include "../Core/PathManager.h"
-CTexture::CTexture():
-	m_hMemDC(nullptr)
+void CTexture::SetColorKey(unsigned char r, unsigned char g, unsigned char b)
 {
+	m_ColorKey = RGB(r, g, b);
+}
+void CTexture::SetColorKey(COLORREF colorKey)
+{
+	m_ColorKey = std::move_if_noexcept(colorKey); 
+	m_bColorKeyEnable = true; 
+}
+CTexture::CTexture() :
+	m_hMemDC(nullptr),
+	m_bColorKeyEnable{ false },
+	m_ColorKey{ RGB(255,0,255 )}{
 }
 
 CTexture::~CTexture()
