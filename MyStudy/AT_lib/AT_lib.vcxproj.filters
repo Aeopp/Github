@@ -40,6 +40,12 @@
     <Filter Include="03.Object\01.MoveObj\03.Bullet">
       <UniqueIdentifier>{adf176c4-30b0-46e0-91e7-8146f93aa3e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Core\02.Path">
+      <UniqueIdentifier>{d05dab48-2a97-4808-9c5a-5ff7032f798e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Resources">
+      <UniqueIdentifier>{52b5f7db-4780-49d4-9456-013ab9d460eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -99,6 +105,15 @@
     <ClInclude Include="include\Object\Bullet.h">
       <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="include\Resources\ResourcesManager.h">
+      <Filter>04.Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\PathManager.h">
+      <Filter>04.Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Resources\Texture.h">
+      <Filter>04.Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AT_lib.rc">
@@ -147,6 +162,15 @@
     </ClCompile>
     <ClCompile Include="include\Object\Bullet.cpp">
       <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Resources\ResourcesManager.cpp">
+      <Filter>04.Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Core\PathManager.cpp">
+      <Filter>04.Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Resources\Texture.cpp">
+      <Filter>04.Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

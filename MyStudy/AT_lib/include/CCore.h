@@ -1,5 +1,6 @@
 #pragma once
 #include "Game.h"
+#include "../include/Core/PathManager.h"
 
 class CCore
 {

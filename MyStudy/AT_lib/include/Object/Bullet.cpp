@@ -6,7 +6,8 @@ CBullet::CBullet():
 {
 }
 
-CBullet::CBullet(const CBullet& Obj)
+CBullet::CBullet(const CBullet& Obj):
+	CMoveObj(Obj)
 {
 	m_fLimitDist = Obj.m_fLimitDist;
 	m_fDist = Obj.m_fDist;
@@ -14,7 +15,7 @@ CBullet::CBullet(const CBullet& Obj)
 
 bool CBullet::Init()
 {
-	SetSpeed(5000.f);
+	SetSpeed(20000000000.f);
 	 
 	return true;
 }
@@ -22,7 +23,7 @@ bool CBullet::Init()
 int CBullet::Update(float fDeltaTime)
 {
 	 CMoveObj::Update(fDeltaTime);
-
+	 
 	 MoveAngle(fDeltaTime);
 	 m_fDist += GetSpeed() * fDeltaTime;
 
@@ -47,7 +48,8 @@ void CBullet::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC,fDeltaTime); 
 
-	Ellipse(hDC, m_tPos.x, m_tPos.y, m_tPos.x +
+	Ellipse(hDC, m_tPos.x, m_tPos.
+		y, m_tPos.x +
 		m_tSize.x, m_tPos.y + m_tSize.y); 
 }
 

@@ -8,11 +8,13 @@ private :
 	friend class CObj;
 	friend class CScene;
 public:
-	CMushroom() {}; 
+	CMushroom(); 
 	virtual ~CMushroom() noexcept {};
 	CMushroom(const CMushroom& Obj);
 
 	MOVE_DIR m_eDir; 
+	float m_fFireTime;
+	float m_fFireLimitTime;
 
 	virtual bool Init();
 	virtual int  Update(float fDeltaTime);
@@ -20,5 +22,8 @@ public:
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CMushroom* Clone()override;
+	
+private:
+	void Fire(); 
 };
 

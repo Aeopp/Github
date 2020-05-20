@@ -8,7 +8,6 @@ protected:
 	float m_fAngle; 
 	float m_fSpeed; 
 protected: 
-	
 	CMoveObj();
 	virtual ~CMoveObj() noexcept {}; 
 	CMoveObj(const CMoveObj& Obj); 

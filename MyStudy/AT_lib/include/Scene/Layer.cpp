@@ -26,18 +26,19 @@ void CLayer::Input(float fDeltaTime)
 	list<CObj*>::iterator iter;
 	list<CObj*>::iterator iterEnd = m_ObjList.end();
 
-	for (iter = m_ObjList.begin(); iter != iterEnd; ++iter){
+	for (iter = m_ObjList.begin(); iter != iterEnd;){
 		if (!(*iter)->GetEnable()) {
 			++iter;
 			continue; 
 		}
 		(*iter)->Input(fDeltaTime);
-		if (!(*iter)->GetLife()){
+		if (!(*iter)->GetLife()) {
 			CObj::EraseObj(*iter);
 			SAFE_RELEASE((*iter));
 			iter = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 		}
+		else ++iter;
 	}
 }
 
@@ -46,7 +47,7 @@ int CLayer::Update(float fDeltaTime)
 	list<CObj*>::iterator iter;
 	list<CObj*>::iterator iterEnd = m_ObjList.end();
 
-	for (iter = m_ObjList.begin(); iter != iterEnd; ++iter) {
+	for (iter = m_ObjList.begin(); iter != iterEnd;) {
 		if (!(*iter)->GetEnable()) {
 			++iter;
 			continue;
@@ -58,6 +59,8 @@ int CLayer::Update(float fDeltaTime)
 			iter = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 		}
+		else
+			++iter; 
 	}
 	return 0; 
 }
@@ -67,7 +70,7 @@ int CLayer::LateUpdate(float fDeltaTime)
 	list<CObj*>::iterator iter;
 	list<CObj*>::iterator iterEnd = m_ObjList.end();
 
-	for (iter = m_ObjList.begin(); iter != iterEnd; ++iter) {
+	for (iter = m_ObjList.begin(); iter != iterEnd;) {
 		if (!(*iter)->GetEnable()) {
 			++iter;
 			continue;
@@ -79,6 +82,7 @@ int CLayer::LateUpdate(float fDeltaTime)
 			iter = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 		}
+		else ++iter;
 	}
 	return 0;
 }
@@ -88,7 +92,7 @@ void CLayer::Collision(float fDeltaTime)
 	list<CObj*>::iterator iter;
 	list<CObj*>::iterator iterEnd = m_ObjList.end();
 
-	for (iter = m_ObjList.begin(); iter != iterEnd; ++iter) {
+	for (iter = m_ObjList.begin(); iter != iterEnd;) {
 		if (!(*iter)->GetEnable()) {
 			++iter;
 			continue;
@@ -100,6 +104,7 @@ void CLayer::Collision(float fDeltaTime)
 			iter = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 		}
+		else ++iter;
 	}
 }
 void CLayer::Render(HDC hDC, float fDeltaTime)
@@ -107,7 +112,7 @@ void CLayer::Render(HDC hDC, float fDeltaTime)
 	list<CObj*>::iterator iter;
 	list<CObj*>::iterator iterEnd = m_ObjList.end();
 
-	for (iter = m_ObjList.begin(); iter != iterEnd; ++iter) {
+	for (iter = m_ObjList.begin(); iter != iterEnd;) {
 		if (!(*iter)->GetEnable()) {
 			++iter;
 			continue;
@@ -119,6 +124,7 @@ void CLayer::Render(HDC hDC, float fDeltaTime)
 			iter = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 		}
+		else ++iter;
 	}
 };
 

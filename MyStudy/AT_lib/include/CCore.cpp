@@ -1,13 +1,15 @@
 #include "CCore.h"
 #include "Scene/CSceneManager.h"
 #include "Core/Timer.h"
-
+#include "Resources/ResourcesManager.h"
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CTimer); 
     DESTROY_SINGLE(CSceneManager);
+	DESTROY_SINGLE(CPathManager);
+	DESTROY_SINGLE(CResourcesManager);
 
-	//SAFE_DELETE(m_pInst);
+	ReleaseDC(m_hWnd, m_hDC);
 }
 
 bool CCore::Init(HINSTANCE hInst)
@@ -24,9 +26,18 @@ bool CCore::Init(HINSTANCE hInst)
 	if (!GET_SINGLE(CTimer)->Init()){
 		return false;
 	}
+	if (!GET_SINGLE(CPathManager)->Init()){
+		return false;
+	}
+	if (!GET_SINGLE(CResourcesManager)->Init(hInst,m_hDC)) {
+		return false;
+	}
 	if (!GET_SINGLE(CSceneManager)->Init()) {
 		return false; 
 	}
+
+
+
 	return true ;
 }
 
@@ -167,5 +178,6 @@ CCore::~CCore() noexcept
 {
 	/*DESTROY_SINGLE(CCore);
 	DESTROY_SINGLE(CTimer);*/
+	//DESTROY_SINGLE(CTimer);
 }
 

@@ -11,6 +11,13 @@
 #include "../resource.h"
 #include "Types.h"
 #include "Flag.h"
+
+#pragma comment(lib,"msimg32")
+
+#define PI   3.141592 
+// Path Key 
+#define ROOT_PATH    L"RootPath"
+#define TEXTURE_PATH   L"TexturePath"
 using namespace std;
 
 template<typename T>

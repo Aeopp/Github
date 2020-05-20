@@ -25,9 +25,10 @@ bool CIngameScene::Init()
 
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet");
 	pBullet->SetSize(50.f, 50.f);
+	pBullet->SetSpeed(500.f);
 
 	SAFE_RELEASE(pBullet);
-
+	
 	
 
 	return true;

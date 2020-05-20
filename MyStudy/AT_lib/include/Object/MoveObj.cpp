@@ -60,14 +60,14 @@ void CMoveObj::MoveY(float y, float fDeltaTime)
 }
 void CMoveObj::MoveAngle( float fDeltaTime)
 {
-	m_tPos.x+=std::cosf(m_tPos.x) * m_fSpeed * fDeltaTime;
-	m_tPos.y+=std::sinf(m_tPos.y)*  m_fSpeed * fDeltaTime;
+	m_tPos.x+=std::cosf(m_fAngle) * m_fSpeed * fDeltaTime;
+	m_tPos.y+=std::sinf(m_fAngle) *  m_fSpeed * fDeltaTime;
 };
 
 void CMoveObj::MoveAngle()
 {
-	m_tPos.x += std::cosf(m_tPos.x) * m_fSpeed;
-	m_tPos.y += std::sinf(m_tPos.y) * m_fSpeed;
+	m_tPos.x += std::cosf(m_fAngle) * m_fSpeed;
+	m_tPos.y += std::sinf(m_fAngle) * m_fSpeed;
 };
 
 void CMoveObj::Input(float fDeltaTime)
