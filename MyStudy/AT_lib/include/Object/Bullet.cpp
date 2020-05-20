@@ -15,8 +15,10 @@ CBullet::CBullet(const CBullet& Obj):
 
 bool CBullet::Init()
 {
-	SetSpeed(20000.f);
-	 
+	SetSpeed(500.f);
+	SetPivot(0.5f, 0.5f);
+	SetTexture(L"Bullet", L"Skill_1.bmp");
+
 	return true;
 }
 

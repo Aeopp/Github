@@ -16,7 +16,10 @@ bool CMushroom::Init()
 {
 	SetPos(800.f, 100.f);
 	SetSize(100.f, 100.f);
-	SetSpeed(400.f);
+	SetSpeed(300.f);
+	SetPivot(0.5f, 0.5f);
+
+	SetTexture(L"Orange", L"Orange_1.bmp");
 
 	m_eDir = MD_FRONT; 
 
@@ -63,6 +66,7 @@ void CMushroom::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC, fDeltaTime);
 
+	// TODO :: 디버그용 테스팅후 삭제
 	Rectangle(hDC, m_tPos.x, m_tPos.y
 		,m_tPos.x + m_tSize.x
 		, m_tPos.y + m_tSize.y);

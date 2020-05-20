@@ -3,6 +3,12 @@
 struct RESOLUTION {
 	unsigned int iW;
 	unsigned int iH;
+
+	RESOLUTION() :
+		iW(0),iH(0)
+	{};
+	RESOLUTION(int x, int y) :
+		iW(x), iH(y) {};
 };
 
 struct POSITION {
@@ -72,6 +78,12 @@ struct POSITION {
 		return *this;
 	};
 
+	POSITION& operator-=(const POSITION& pt) {
+		x -= pt.x;
+		y -= pt.y;
+		return *this;
+	};
+
 
 	POSITION operator- (const POSITION& pos)const {
 		POSITION tPos;
@@ -92,11 +104,7 @@ struct POSITION {
 		tPos.y = y - f;
 		return tPos;
 	}
-	POSITION& operator-=(const POSITION& pt) {
-		x -= pt.x;
-		y -= pt.y;
-		return *this;
-	};
+	
 
 
 	POSITION operator/ (const POSITION& pos)const {

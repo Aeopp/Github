@@ -3,11 +3,10 @@
 #include "../Object/Mushroom.h"
 #include "../Object/Bullet.h"
 #include "../Object/Stage.h"
+#include "../Core/Camera.h"
 #include "Layer.h"
 CIngameScene::~CIngameScene() noexcept
-{
-	
-}
+{}
 
 bool CIngameScene::Init()
 {
@@ -17,6 +16,9 @@ bool CIngameScene::Init()
 	CLayer* pLayer = FindLayer(L"Default");
 
 	auto* pPlayer = CObj::CreateObj<CPlayer>(L"Player", pLayer); 
+	GET_SINGLE(CCamera)->SetTarget(pPlayer);
+	GET_SINGLE(CCamera)->SetPivot(0.8f, 0.3f);
+
 	SAFE_RELEASE(pPlayer);
 
 	auto* pMushroom = CObj::CreateObj<CMushroom>

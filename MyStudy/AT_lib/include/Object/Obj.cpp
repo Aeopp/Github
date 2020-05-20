@@ -3,6 +3,7 @@
 #include "../Scene/CSceneManager.h"
 #include "../Resources/ResourcesManager.h"
 #include "../Resources/Texture.h"
+#include "../Core/Camera.h"
 CObj::CObj() :
 	m_pTexture{ nullptr }
 {};
@@ -114,6 +115,7 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 {
 	if (m_pTexture) {
 		POSITION tPos = m_tPos - m_tSize * m_tPivot; 
+		tPos -= GET_SINGLE(CCamera)->GetPos();
 
 		BitBlt(hDC, tPos.x, tPos.y,
 			m_tSize.x, m_tSize.y, m_pTexture->GetDC(), 0, 0,

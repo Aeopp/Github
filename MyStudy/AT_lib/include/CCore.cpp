@@ -3,12 +3,15 @@
 #include "Core/Timer.h"
 #include "Resources/ResourcesManager.h"
 #include "Resources/Texture.h"
+#include "Core\Camera.h"
+
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CTimer); 
     DESTROY_SINGLE(CSceneManager);
 	DESTROY_SINGLE(CPathManager);
 	DESTROY_SINGLE(CResourcesManager);
+	DESTROY_SINGLE(CCamera);
 
 	ReleaseDC(m_hWnd, m_hDC);
 }
@@ -32,6 +35,10 @@ bool CCore::Init(HINSTANCE hInst)
 	}
 	if (!GET_SINGLE(CResourcesManager)->Init(hInst,m_hDC)) {
 		return false;
+	}
+	if (!GET_SINGLE(CCamera)->Init(POSITION{ 0.f, 0.f },
+		m_tRS, RESOLUTION(2700,673))){
+		return false; 
 	}
 	if (!GET_SINGLE(CSceneManager)->Init()) {
 		return false; 
@@ -99,12 +106,13 @@ void CCore::Logic()
 void CCore::Input(float fDeltaTime)
 {
 	GET_SINGLE(CSceneManager)->Input(fDeltaTime);
+	GET_SINGLE(CCamera)->Input(fDeltaTime); 
 }
 
 int CCore::Update(float fDeltaTime)
 {
 	GET_SINGLE(CSceneManager)->Update(fDeltaTime);
-
+	GET_SINGLE(CCamera)->Update(m_hDC,fDeltaTime);
 	return 0;
 }
 
