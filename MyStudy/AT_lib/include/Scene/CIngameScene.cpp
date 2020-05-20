@@ -26,7 +26,7 @@ bool CIngameScene::Init()
 	SAFE_RELEASE(pMushroom);
 
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet");
-	pBullet->SetSize(369.f, 116.f);
+	pBullet->SetSize(77.f, 77.f);
 	pBullet->SetSpeed(660.f);
 	SAFE_RELEASE(pBullet);
 	

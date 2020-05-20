@@ -1,6 +1,5 @@
 #include "Mushroom.h"
 #include "../CCore.h"
-#include "../Resources/Texture.h"
 CMushroom::CMushroom() :
 CMoveObj(),
 m_fFireTime(0.f),
@@ -21,7 +20,6 @@ bool CMushroom::Init()
 	SetPivot(0.5f, 0.5f);
 
 	SetTexture(L"Orange", L"Orange_1.bmp");
-	m_pTexture->SetColorKey(RGB(255, 0, 255));
 
 	m_eDir = MD_FRONT; 
 
@@ -86,12 +84,10 @@ void CMushroom::Fire()
 
 	dynamic_cast<CMoveObj*>(pBullet)->SetAngle(PI);
 
-	float x = GetLeft() - (pBullet->GetSize().x * (1.f - pBullet->GetPivot().x));
-	float y = GetCenter().y; 
-
-	pBullet->SetPos(x, y);
-
-	//pBullet->SetSize(POSITION{ 50,50 });
+	pBullet->SetPos(m_tPos.x -pBullet->GetSize().x,
+		(m_tPos.y + m_tPos.y + m_tSize.y) /
+		2.f - pBullet->GetSize().y / 2.f);
+	pBullet->SetSize(POSITION{ 50,50 });
 	SAFE_RELEASE(pBullet);
 
 }

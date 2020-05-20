@@ -1,8 +1,8 @@
 #include "Bullet.h"
-#include "../Resources/Texture.h"
+
 CBullet::CBullet():
 	m_fDist(0.f),
-	m_fLimitDist{ 1000.f }
+	m_fLimitDist{ 500.f }
 {
 }
 
@@ -18,7 +18,6 @@ bool CBullet::Init()
 	SetSpeed(500.f);
 	SetPivot(0.5f, 0.5f);
 	SetTexture(L"Bullet", L"Skill_1.bmp");
-	m_pTexture->SetColorKey(RGB(255, 0, 255));
 
 	return true;
 }
@@ -51,8 +50,6 @@ void CBullet::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC,fDeltaTime); 
 
-
-	// TODO Debug Delete Plz.. 
 	Ellipse(hDC, m_tPos.x, m_tPos.
 		y, m_tPos.x +
 		m_tSize.x, m_tPos.y + m_tSize.y); 

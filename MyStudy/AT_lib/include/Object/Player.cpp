@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "../Resources/Texture.h"
+
 CPlayer::CPlayer()
 {
 
@@ -18,8 +18,6 @@ bool CPlayer::Init(){
 	SetPivot(0.5f, 0.5f); 
 
 	SetTexture(L"Player", L"Avatar_1.bmp");
-	m_pTexture->SetColorKey(RGB(255, 0, 255));
-
 	return true;
 }
 
@@ -74,16 +72,16 @@ void CPlayer::Fire()
 {
 	CObj* pBullet = CObj::CreateCloneObj(L"Bullet",
 		L"PlayerBullet",m_pLayer);
-	//pBullet->SetSize(POSITION{ 50,50 });
+	pBullet->SetSize(POSITION{ 50,50 });
 
 	POSITION tPos;
-	tPos.x = GetRight() + pBullet->GetSize().x * pBullet->GetPivot().x;
-	tPos.y = GetCenter().y;
-
+	tPos.x = m_tPos.x + (1.f - m_tPivot.x) * m_tSize.x;
 	tPos.y = m_tPos.y + (0.5f - m_tPivot.y) * m_tSize.y;
 
-	pBullet->SetPos(tPos);
+	pBullet->SetPos(m_tPos.x,
+		tPos.y   - pBullet->GetSize().y /2.f);
 
+	
 	SAFE_RELEASE(pBullet); 
 }
 ;
