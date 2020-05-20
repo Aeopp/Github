@@ -1,6 +1,7 @@
 #include "CScene.h"
 #include "Layer.h"
 #include "../Object/Obj.h"
+#include <algorithm>
 CScene::CScene()
 {
 	CLayer* pLayer = CreateLayer(L"UI",  INT_MAX);
@@ -86,6 +87,26 @@ int CScene::Update(float fDeltaTime)
 		}
 		else ++iter;
 	}
+	// 죽은 오브젝트와 살아있는 오브젝트를 분리
+	// 분리한 이후 자료구조에서 오브젝트를 삭제하고 메모리를 해제한다.
+	using ObjPtrType = decltype(CObj::m_ObjList)::value_type;
+	// True //////iter->False 
+	auto DieObject = std::stable_partition(std::begin(CObj::m_ObjList), std::end(CObj::m_ObjList),
+		[](ObjPtrType findDeath) {
+			return  (findDeath->GetLife()==true); });
+	std::for_each(DieObject, std::end(CObj::m_ObjList), [](ObjPtrType Obj) {
+		SAFE_DELETE(Obj); });
+	CObj::m_ObjList.erase(DieObject, std::end(CObj::m_ObjList));
+
+	/*for (auto iter = CObj::m_ObjList.begin(); iter != std::end(CObj::m_ObjList);
+		) {
+		if ((*iter)->GetLife() == false) {
+			SAFE_DELETE(*iter);
+			iter = CObj::m_ObjList.erase(iter);
+		}
+		else
+			++iter; 
+	}*/
 	return 0; 
 }
 
