@@ -1,11 +1,11 @@
 #pragma once
 #include "Obj.h"
-class CStaticObj :
+class CStaticObj abstract:
 	public CObj
 {
 protected:
 	CStaticObj();
-	virtual ~CStaticObj()noexcept =0 ;
+	virtual ~CStaticObj()noexcept;
 	CStaticObj(const CStaticObj& obj);
 public: 
 	virtual bool Init() = 0; 

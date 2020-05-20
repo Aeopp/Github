@@ -59,6 +59,13 @@ struct POSITION {
 		tPos.y = y * f;
 		return tPos;
 	}
+	POSITION operator*(const POSITION& pt)const
+	{
+		POSITION tPos;
+		tPos.x = x * pt.x;
+		tPos.y = y * pt.y;
+		return tPos;
+	}
 	POSITION& operator+=(const POSITION& pt) {
 		x += pt.x;
 		y += pt.y;

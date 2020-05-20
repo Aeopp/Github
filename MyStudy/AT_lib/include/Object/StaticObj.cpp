@@ -1,6 +1,11 @@
 #include "StaticObj.h"
 
-CStaticObj::CStaticObj()
+CStaticObj::CStaticObj():
+	CObj()
+{
+}
+
+CStaticObj::~CStaticObj() noexcept
 {
 }
 
@@ -12,27 +17,33 @@ CStaticObj::CStaticObj(const CStaticObj& obj)
 
 bool CStaticObj::Init()
 {
-	return false;
+	return true; 
+
 }
 
 void CStaticObj::Input(float fDeltaTime)
 {
+	 CObj::Input(fDeltaTime);
 }
 
 int CStaticObj::Update(float fDeltaTime)
 {
-	return 0;
+	return 	 CObj::Update(fDeltaTime);
+
 }
 
 int CStaticObj::LateUpdate(float fDeltaTime)
 {
-	return 0;
+	return 	 	 CObj::LateUpdate(fDeltaTime);
+
 }
 
 void CStaticObj::Collision(float fDeltaTime)
 {
+	CObj::Collision(fDeltaTime);
 }
 
 void CStaticObj::Render(HDC hDC, float fDeltaTime)
 {
+	CObj::Render(hDC, fDeltaTime);
 }

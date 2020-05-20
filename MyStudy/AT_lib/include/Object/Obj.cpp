@@ -1,17 +1,24 @@
 #include "Obj.h"
 #include "../Scene/CScene.h"
 #include "../Scene/CSceneManager.h"
-CObj::CObj() {};
+#include "../Resources/ResourcesManager.h"
+#include "../Resources/Texture.h"
+CObj::CObj() :
+	m_pTexture{ nullptr }
+{};
 
 // Memory Leak Dected!! 
 CObj::~CObj()
 {
+	SAFE_RELEASE(m_pTexture);
  	/*SAFE_DELETE(m_pScene);
 	SAFE_DELETE(m_pLayer); */
 }
 CObj::CObj(const CObj & Obj)
 {
 	*this = Obj;
+	if (m_pTexture)
+		m_pTexture->AddRef();
 }
 
 void CObj::AddObj(CObj* pObj)
@@ -72,6 +79,18 @@ void CObj::EraseObj()
 }
 
 
+void CObj::SetTexture(CTexture* pTexture){
+	SAFE_RELEASE(m_pTexture);
+	m_pTexture = pTexture;
+	if (pTexture)
+		pTexture->AddRef();
+}
+
+void CObj::SetTexture(const wstring& strKey, const wchar_t* pFileName, const wstring& strPathKey){
+		SAFE_RELEASE(m_pTexture);
+		m_pTexture = GET_SINGLE(CResourcesManager)->LoadTexture(strKey,pFileName,strPathKey);
+}
+
 void CObj::Input(float fDeltaTime)
 {
 
@@ -93,6 +112,13 @@ void CObj::Collision(float fDeltaTime)
 
 void CObj::Render(HDC hDC, float fDeltaTime)
 {
+	if (m_pTexture) {
+		POSITION tPos = m_tPos - m_tSize * m_tPivot; 
+
+		BitBlt(hDC, tPos.x, tPos.y,
+			m_tSize.x, m_tSize.y, m_pTexture->GetDC(), 0, 0,
+			SRCCOPY); 
+	}
 }
 
 CObj* CObj::CreateCloneObj(const wstring& strTagPrototypeKey, const wstring& strTag, class CLayer* pLayer)

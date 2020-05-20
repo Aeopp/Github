@@ -27,6 +27,7 @@ protected:
 	POSITION m_tPivot;
 	class CScene* m_pScene;
 	class CLayer* m_pLayer;
+	class CTexture* m_pTexture;
 public:
 	void SetScene(class CScene* pScene) {
 		m_pScene = pScene;
@@ -50,6 +51,16 @@ public:
 		return m_tSize;
 	};
 public:
+	POSITION GetPivot() const {
+		return m_tPivot;
+	}
+	void SetPivot(const _SIZE& tPivot){
+		m_tPivot = tPivot;
+	}
+	void SetPivot(float x,float y){
+		m_tPivot.x = x;
+		m_tPivot.y = y; 
+	}
 	void SetTag(wstring strTag) {
 		m_strTag = std::move(strTag);
 	}
@@ -71,6 +82,11 @@ public:
 		m_tSize.x = x;
 		m_tSize.y = y;
 	}
+
+	void SetTexture(class CTexture* pTexture);
+	void SetTexture(const wstring& strKey,
+		const wchar_t* pFileName = nullptr,
+		const wstring& strPathKey = TEXTURE_PATH); 
 public:
 	virtual bool Init() = 0;
 	virtual void Input(float fDeltaTime);

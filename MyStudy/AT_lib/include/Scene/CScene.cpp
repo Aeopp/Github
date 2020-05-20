@@ -3,8 +3,9 @@
 #include "../Object/Obj.h"
 CScene::CScene()
 {
-	CLayer* pLayer = CreateLayer(L"Default",  INT_MAX);
-	//pLayer->CreateLayer("Default");
+	CLayer* pLayer = CreateLayer(L"UI",  INT_MAX);
+	pLayer = CreateLayer(L"Default",1);
+	pLayer = CreateLayer(L"Stage");
 }
 
 CScene::~CScene() noexcept
@@ -157,7 +158,7 @@ bool CScene::LayerSort(CLayer* pL1, CLayer* pL2)
 }
 void CScene::ErasePrototype()
 {
-	Safe_Delete_Map(m_mapPrototype);
+	Safe_Release_Map(m_mapPrototype);
 }
 void CScene::ErasePrototype(const wstring& strTag)
 {

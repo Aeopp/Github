@@ -15,7 +15,7 @@ CBullet::CBullet(const CBullet& Obj):
 
 bool CBullet::Init()
 {
-	SetSpeed(20000000000.f);
+	SetSpeed(20000.f);
 	 
 	return true;
 }

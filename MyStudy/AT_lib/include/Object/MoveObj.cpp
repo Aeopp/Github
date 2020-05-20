@@ -1,6 +1,7 @@
 #include "MoveObj.h"
 #include <cmath>
 CMoveObj::CMoveObj():
+	CObj() ,
 	m_fAngle{ 0.f} ,m_fSpeed { 100.f}{}
 
 CMoveObj::CMoveObj(const CMoveObj& Obj):

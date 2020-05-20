@@ -7,9 +7,9 @@ class CCore
 private:
 	static inline CCore* m_pInst;
 	static inline bool m_bLoop = true;
-	HINSTANCE m_hInst;
-	HWND m_hWnd; 
-	HDC m_hDC;
+	static inline HINSTANCE m_hInst;
+	static inline HWND m_hWnd;
+	static inline HDC m_hDC;
 	RESOLUTION m_tRS;
 public:
 	RESOLUTION GetResolution()const {
@@ -20,7 +20,7 @@ public:
 			m_pInst = new CCore{};
 		return  m_pInst;
 	};
-	static void DestroyInst();
+	 static void DestroyInst();
 	bool Init(HINSTANCE hInst);
 	int Run();
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message,

@@ -41,7 +41,7 @@ static void Safe_Release_VecList(T& p) {
 };
 
 template<typename T>
-static void Safe_Delete_Map
+static void Safe_Release_Map
 (T& p) {
 	typename T::iterator iter;
 	typename T::iterator iterEnd = p.end();

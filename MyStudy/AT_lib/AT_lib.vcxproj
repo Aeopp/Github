@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\CCore.h" />
+    <ClInclude Include="include\Core\Camera.h" />
     <ClInclude Include="include\Core\PathManager.h" />
     <ClInclude Include="include\Core\Ref.h" />
     <ClInclude Include="include\Core\Timer.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="include\Object\Mushroom.h" />
     <ClInclude Include="include\Object\Obj.h" />
     <ClInclude Include="include\Object\Player.h" />
+    <ClInclude Include="include\Object\Stage.h" />
     <ClInclude Include="include\Object\StaticObj.h" />
     <ClInclude Include="include\resource.h" />
     <ClInclude Include="include\Resources\ResourcesManager.h" />
@@ -181,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\CCore.cpp" />
+    <ClCompile Include="include\Core\Camera.cpp" />
     <ClCompile Include="include\Core\PathManager.cpp" />
     <ClCompile Include="include\Core\Ref.cpp" />
     <ClCompile Include="include\Core\Timer.cpp" />
@@ -190,6 +193,7 @@
     <ClCompile Include="include\Object\Mushroom.cpp" />
     <ClCompile Include="include\Object\Obj.cpp" />
     <ClCompile Include="include\Object\Player.cpp" />
+    <ClCompile Include="include\Object\Stage.cpp" />
     <ClCompile Include="include\Object\StaticObj.cpp" />
     <ClCompile Include="include\Resources\ResourcesManager.cpp" />
     <ClCompile Include="include\Resources\Texture.cpp" />
@@ -201,6 +205,9 @@
   <ItemGroup>
     <Image Include="bitmap1.bmp" />
     <Image Include="icon1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
