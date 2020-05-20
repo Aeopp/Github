@@ -32,10 +32,15 @@ bool CCamera::Init(const POSITION& tPos, const RESOLUTION& tRS,
 	return true;
 }
 
+void CCamera::Input(float fDeltaTime)
+{
+	if (!m_pTarget) {
+	}
+}
 
 void CCamera::Update(/*Test*/HDC hDC,float fDeltaTime)
 {
-	if (m_pTarget!=nullptr) {
+	if (m_pTarget) {
 		POSITION tPos = m_pTarget->GetPos();
 		POSITION tPivot = m_pTarget->GetPivot();
 		_SIZE tSize = m_pTarget->GetSize();
@@ -53,30 +58,29 @@ void CCamera::Update(/*Test*/HDC hDC,float fDeltaTime)
 		float fTopArea = m_tClientRS.iH * m_tPivot.y;
 		float fBottomArea = m_tClientRS.iH - fTopArea;
 		// TODO :: Debug Field Delete plz 
-		Rectangle(hDC, fLeftArea, fTopArea, fRightArea, fBottomArea);
+		Ellipse(hDC, fLeftArea, fTopArea, fRightArea, fBottomArea);
 		 /// 
+
 		if (tPos.x <= fLeftArea) {
-			m_tPos.x = 0.f; 
+			m_tPos.x= 0.f;
 		}
-		else if (tPos.x >= m_tWorldRS.iW-fRightArea) {
+		else if (tPos.x >= m_tWorldRS.iW- fRightArea) {
 			m_tPos.x = m_tWorldRS.iW - m_tClientRS.iW;
 		}
 		else {
-			m_tPos.x = tPos.x -m_tClientRS.iW * m_tPivot.x;
+			m_tPos.x = tPos.x - m_tClientRS.iW * m_tPivot.x;
 		}
 
 		if (tPos.y <= fTopArea) {
-			m_tPos.y = 0.f;
+			m_tPos.y = 0.f; 
 		}
-		else if (tPos.y >= m_tWorldRS.iH- fBottomArea) {
+		else if (tPos.y >= m_tWorldRS.iH - fBottomArea) {
 			m_tPos.y = m_tWorldRS.iH - m_tClientRS.iH;
 		}
 		else {
-			m_tPos.y = tPos.y -m_tClientRS.iH * m_tPivot.y;
+			m_tPos.y = tPos.y - m_tClientRS.iH * m_tPivot.y;
 		}
 	}
 }
 
-void CCamera::Input(float fDeltaTime)
-{
-}
+
