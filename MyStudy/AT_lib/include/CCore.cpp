@@ -4,7 +4,7 @@
 #include "Resources/ResourcesManager.h"
 #include "Resources/Texture.h"
 #include "Core\Camera.h"
-#include "Core/Input.h"
+#include "Core\Input.h"
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CTimer); 
@@ -106,6 +106,7 @@ void CCore::Logic()
 
 void CCore::Input(float fDeltaTime)
 {
+	GET_SINGLE(CInput)->Update(fDeltaTime);
 	GET_SINGLE(CSceneManager)->Input(fDeltaTime);
 	GET_SINGLE(CCamera)->Input(fDeltaTime); 
 }

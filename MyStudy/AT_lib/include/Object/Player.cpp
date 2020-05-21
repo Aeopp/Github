@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "../Resources/Texture.h"
+#include "../Core/Input.h"
 CPlayer::CPlayer()
 {
 
@@ -27,20 +28,23 @@ void CPlayer::Input(float fDeltaTime)
 {
 	CMoveObj::Input(fDeltaTime); 
 
-	if (GetAsyncKeyState('W') & 0x8000) {
+	if (KEYPRESS("MoveFront")) {
 		MoveYFromSpeed(fDeltaTime, MD_BACK);
 	}
-	if (GetAsyncKeyState('S') & 0x8000) {
+	if (KEYPRESS("MoveBack")) {
 		MoveYFromSpeed(fDeltaTime, MD_FRONT);
 	}
-	if (GetAsyncKeyState('A') & 0x8000) {
+	if (KEYPRESS("MoveLeft")) {
 		MoveXFromSpeed(fDeltaTime, MD_BACK);
 	}
-	if (GetAsyncKeyState('D') & 0x8000) {
+	if (KEYPRESS("MoveRight")) {
 		MoveXFromSpeed(fDeltaTime, MD_FRONT);
 	}
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
+	if (KEYDOWN("Fire")) {
 		Fire(); 
+	}
+	if (KEYDOWN("Skill1")) {
+		MessageBox(NULL, L"Skill1", L"Skill1", MB_OK);
 	}
 }
 

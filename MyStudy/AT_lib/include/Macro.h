@@ -28,6 +28,18 @@ Type();\
 
 #define GETRESOLUTION        CCore::GetInst()->GetResolution()
 
+#define KEYDOWN(key) CInput::GetInst()->KeyDown(key)
+#define KEYPRESS(key) CInput::GetInst()->KeyPress(key)
+#define KEYDOWN(key) CInput::GetInst()->KeyUp(key)
+//#define KEYKEY(key)   KEYDOWN(key) || KEYPRESS(key)  s             
+
+//namespace {
+//    template<typename T>
+//    static constexpr inline auto _KEYDOWN(T key) {
+//        CInput::GetInst()->KeyDown(key);
+//    }
+//}
+
 
 
 
