@@ -1,5 +1,6 @@
 #include "Bullet.h"
 #include "../Resources/Texture.h"
+#include "../Collision/ColinderRect.h"
 CBullet::CBullet():
 	m_fDist(0.f),
 	m_fLimitDist{ 1000.f }
@@ -19,6 +20,10 @@ bool CBullet::Init()
 	SetPivot(0.5f, 0.5f);
 	SetTexture(L"Bullet", L"Skill_1.bmp");
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
+
+	CColinderRect* pRC = AddCollider<CColinderRect>(L"Bullet");
+	// 369 116
+	pRC->SetRect(-184.5f, 184.5f ,- 58.f, 58.f);
 
 	return true;
 }

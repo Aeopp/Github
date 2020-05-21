@@ -1,6 +1,8 @@
 #include "Mushroom.h"
 #include "../CCore.h"
 #include "../Resources/Texture.h"
+#include "../Collision/ColinderRect.h"
+
 CMushroom::CMushroom() :
 CMoveObj(),
 m_fFireTime(0.f),
@@ -19,12 +21,15 @@ bool CMushroom::Init()
 	SetSize(100.f, 100.f);
 	SetSpeed(300.f);
 	SetPivot(0.5f, 0.5f);
-
 	SetTexture(L"Orange", L"Orange_1.bmp");
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
 
 	m_eDir = MD_FRONT; 
 
+	CColinderRect* pRC = AddCollider<CColinderRect>(L"Orange");
+	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
+
+	SAFE_RELEASE(pRC);
 	return true;
 }
 

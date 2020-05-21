@@ -4,6 +4,7 @@
 #include "../Resources/ResourcesManager.h"
 #include "../Resources/Texture.h"
 #include "../Core/Camera.h"
+#include "../Collision/Colinder.h"
 CObj::CObj() :
 	m_pTexture{ nullptr }
 {};
@@ -11,6 +12,7 @@ CObj::CObj() :
 // Memory Leak Dected!! 
 CObj::~CObj()
 {
+	Safe_Release_VecList(m_CollinderList);
 	SAFE_RELEASE(m_pTexture);
  	/*SAFE_DELETE(m_pScene);
 	SAFE_DELETE(m_pLayer); */
@@ -18,8 +20,15 @@ CObj::~CObj()
 CObj::CObj(const CObj & Obj)
 {
 	*this = Obj;
-	if (m_pTexture)
+	if (m_pTexture) {
 		m_pTexture->AddRef();
+	}
+
+	m_CollinderList.clear();
+	for (auto Object : Obj.m_CollinderList){
+		auto* pCollider = Object->Clone();
+		m_CollinderList.emplace_back(pCollider);
+	}
 }
 
 void CObj::AddObj(CObj* pObj)
@@ -79,7 +88,6 @@ void CObj::EraseObj()
 	Safe_Release_VecList(m_ObjList);
 }
 
-
 void CObj::SetTexture(CTexture* pTexture){
 	SAFE_RELEASE(m_pTexture);
 	m_pTexture = pTexture;
@@ -94,21 +102,72 @@ void CObj::SetTexture(const wstring& strKey, const wchar_t* pFileName, const wst
 
 void CObj::Input(float fDeltaTime)
 {
-
+	for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
+		) {
+		if (!(*iter)->GetEnable()) {
+			++iter;
+			continue;
+		}
+		(*iter)->Input(fDeltaTime);
+		if (!(*iter)->GetLife()) {
+			SAFE_RELEASE((*iter));
+			iter = m_CollinderList.erase(iter);
+		}
+		else ++iter;
+	}
 }
 
 int CObj::Update(float fDeltaTime)
 {
+	for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
+		){
+		if (!(*iter)->GetEnable()) {
+			++iter;
+			continue;
+		}
+		(*iter)->Update(fDeltaTime);
+		if (!(*iter)->GetLife()) {
+			SAFE_RELEASE((*iter));
+			iter = m_CollinderList.erase(iter);
+		}
+		else ++iter;
+	}
 	return 0;
 }
 
 int CObj::LateUpdate(float fDeltaTime)
 {
+	for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
+		) {
+		if (!(*iter)->GetEnable()) {
+			++iter;
+			continue;
+		}
+		(*iter)->LateUpdate(fDeltaTime);
+		if (!(*iter)->GetLife()) {
+			SAFE_RELEASE((*iter));
+			iter = m_CollinderList.erase(iter);
+		}
+		else ++iter;
+	}
 	return 0;
 }
 
 void CObj::Collision(float fDeltaTime)
 {
+	for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
+		) {
+		if (!(*iter)->GetEnable()) {
+			++iter;
+			continue;
+		}
+		(*iter)->Collision( fDeltaTime);
+		if (!(*iter)->GetLife()) {
+			SAFE_RELEASE((*iter));
+			iter = m_CollinderList.erase(iter);
+		}
+		else ++iter;
+	}
 }
 
 void CObj::Render(HDC hDC, float fDeltaTime)
@@ -116,7 +175,7 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 	if (m_pTexture) {
 		POSITION tPos = m_tPos - m_tSize * m_tPivot; 
 		tPos -= GET_SINGLE(CCamera)->GetPos();
-		//Ellipse(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
+		Ellipse(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
 		
 
 		if (m_pTexture->GetColorKeyEnable()==true) {
@@ -129,6 +188,20 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 				m_tSize.x, m_tSize.y, m_pTexture->GetDC(), 0, 0,
 				SRCCOPY);
 		}
+	}
+
+	for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
+		) {
+		if (!(*iter)->GetEnable()) {
+			++iter;
+			continue;
+		}
+		(*iter)->Render(hDC,fDeltaTime);
+		if (!(*iter)->GetLife()) {
+			SAFE_RELEASE((*iter));
+			iter = m_CollinderList.erase(iter);
+		}
+		else ++iter;
 	}
 }
 

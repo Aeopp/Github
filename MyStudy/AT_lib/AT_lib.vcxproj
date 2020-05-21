@@ -154,6 +154,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\CCore.h" />
+    <ClInclude Include="include\Collision\Colinder.h" />
+    <ClInclude Include="include\Collision\ColinderRect.h" />
+    <ClInclude Include="include\Collision\CollisionManager.h" />
     <ClInclude Include="include\Core\Camera.h" />
     <ClInclude Include="include\Core\Input.h" />
     <ClInclude Include="include\Core\PathManager.h" />
@@ -184,6 +187,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\CCore.cpp" />
+    <ClCompile Include="include\Collision\Colinder.cpp" />
+    <ClCompile Include="include\Collision\ColinderRect.cpp" />
+    <ClCompile Include="include\Collision\CollisionManager.cpp" />
     <ClCompile Include="include\Core\Camera.cpp" />
     <ClCompile Include="include\Core\Input.cpp" />
     <ClCompile Include="include\Core\PathManager.cpp" />

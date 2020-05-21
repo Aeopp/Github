@@ -1,10 +1,10 @@
 #include "Camera.h"
 #include "../Object/Obj.h"
 DEFINTION_SINGLE(CCamera)
-CCamera::CCamera():
-	m_pTarget(nullptr)  
+CCamera::CCamera() :
+	m_pTarget(nullptr)
 {
-}
+};;
 
 CCamera::~CCamera()
 {
@@ -14,12 +14,12 @@ CCamera::~CCamera()
 void CCamera::SetTarget(CObj* pObj)
 {
 	SAFE_RELEASE(m_pTarget);
-	m_pTarget = pObj; 
+	m_pTarget = pObj;
 
 	if (m_pTarget) {
-		m_pTarget->AddRef(); 
+		m_pTarget->AddRef();
 	}
-}
+};
 
 bool CCamera::Init(const POSITION& tPos, const RESOLUTION& tRS,
 	const RESOLUTION& tWorldRS)
@@ -30,13 +30,13 @@ bool CCamera::Init(const POSITION& tPos, const RESOLUTION& tRS,
 	m_tPivot = POSITION(0.5f, 0.5f);
 
 	return true;
-}
+};
 
 void CCamera::Input(float fDeltaTime)
 {
 	if (!m_pTarget) {
 	}
-}
+};
 
 void CCamera::Update(/*Test*/HDC hDC,float fDeltaTime)
 {

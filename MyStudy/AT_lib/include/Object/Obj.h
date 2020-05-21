@@ -25,6 +25,7 @@ protected:
 	POSITION m_tPos;
 	_SIZE m_tSize;
 	POSITION m_tPivot;
+	list<class CColinder*> m_CollinderList;
 	class CScene* m_pScene;
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
@@ -131,5 +132,21 @@ public:
 	
 	static CObj* CreateCloneObj(const wstring& strTagPrototypeKey,
 		const wstring& strTag,class CLayer* pLayer =nullptr);
-	
+
+	// 충돌 메소드 필드
+	template<typename T>
+	T* AddCollider(const wstring& strTag) {
+		T* pCollider = new T; 
+		pCollider->SetObj(this);
+		if (!pCollider->Init()){
+			SAFE_RELEASE(pCollider);
+			return nullptr;     
+		}
+		pCollider->AddRef();
+		m_CollinderList.push_back(pCollider);
+		return pCollider;
+	}
+	bool CheckCollider(){
+		return !m_CollinderList.empty(); 
+	}
 };

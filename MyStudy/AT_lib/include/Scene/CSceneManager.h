@@ -16,7 +16,6 @@ public:
 
 	class CScene* GetScene() const;
 
-
 	template<typename T>
 	T* CreateScene(SCENE_CREATE sc)
 	{

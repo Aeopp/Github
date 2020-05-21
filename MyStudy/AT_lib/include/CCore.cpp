@@ -5,14 +5,17 @@
 #include "Resources/Texture.h"
 #include "Core\Camera.h"
 #include "Core\Input.h"
+#include "Collision\CollisionManager.h"
+
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
-	DESTROY_SINGLE(CTimer); 
+	DESTROY_SINGLE(CSceneManager);
+	DESTROY_SINGLE(CCollisionManager);
 	DESTROY_SINGLE(CInput);
-    DESTROY_SINGLE(CSceneManager);
-	DESTROY_SINGLE(CPathManager);
-	DESTROY_SINGLE(CResourcesManager);
 	DESTROY_SINGLE(CCamera);
+	DESTROY_SINGLE(CResourcesManager); 
+	DESTROY_SINGLE(CPathManager);
+	DESTROY_SINGLE(CTimer);
 
 	ReleaseDC(m_hWnd, m_hDC);
 }
@@ -127,7 +130,10 @@ int CCore::LateUpdate(float fDeltaTime)
 
 void CCore::Collision(float fDeltaTime)
 {
+	// TODO :: 여기서 충돌 검사하기전에 테이블 세팅 보장 해줘야함 !!!!!!!!!!!!
 	GET_SINGLE(CSceneManager)->Collision(fDeltaTime);
+
+	GET_SINGLE(CCollisionManager)->Collision(fDeltaTime);
 }
 
 void CCore::Render(float fDeltaTime)

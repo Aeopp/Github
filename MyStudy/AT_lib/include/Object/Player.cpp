@@ -27,7 +27,10 @@ bool CPlayer::Init(){
 void CPlayer::Input(float fDeltaTime)
 {
 	CMoveObj::Input(fDeltaTime); 
-
+	//4878 2471;
+	//if (m_tPos.x >= 4878 && m_tPos.y <= 2471) {
+	//	std::terminate();
+	//}
 	if (KEYPRESS("MoveFront")) {
 		MoveYFromSpeed(fDeltaTime, MD_BACK);
 	}

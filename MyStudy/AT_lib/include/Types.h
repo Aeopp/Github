@@ -130,3 +130,17 @@ struct POSITION {
 
 using _SIZE = POSITION;
 
+struct RECTANGLE {
+	float left;
+	float top;
+	float right;
+	float bottom;
+	
+	RECTANGLE() = default;   
+	RECTANGLE(RECTANGLE&&)noexcept =default ;
+	RECTANGLE(const RECTANGLE&) = default;
+	~RECTANGLE()noexcept = default;
+	RECTANGLE&operator=(RECTANGLE&&)noexcept = default;
+	RECTANGLE& operator=(const RECTANGLE&) = default;
+};
+

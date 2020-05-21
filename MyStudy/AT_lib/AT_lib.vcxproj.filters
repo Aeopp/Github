@@ -58,6 +58,9 @@
     <Filter Include="01.Core\01.Timer">
       <UniqueIdentifier>{ca0b0eea-595f-4416-a0e8-f035184bb7f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Colinder">
+      <UniqueIdentifier>{a3dc4790-269f-46ca-8824-099e80413241}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -88,9 +91,6 @@
       <Filter>02.Scene</Filter>
     </ClInclude>
     <ClInclude Include="include\CCore.h">
-      <Filter>01.Core</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Types.h">
       <Filter>01.Core</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Ref.h">
@@ -134,6 +134,18 @@
     </ClInclude>
     <ClInclude Include="include\Core\Input.h">
       <Filter>01.Core\04.Input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Collision\Colinder.h">
+      <Filter>05.Colinder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Collision\ColinderRect.h">
+      <Filter>05.Colinder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Collision\CollisionManager.h">
+      <Filter>05.Colinder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Types.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +213,15 @@
     </ClCompile>
     <ClCompile Include="include\Core\Input.cpp">
       <Filter>01.Core\04.Input</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Collision\Colinder.cpp">
+      <Filter>05.Colinder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Collision\ColinderRect.cpp">
+      <Filter>05.Colinder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Collision\CollisionManager.cpp">
+      <Filter>05.Colinder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

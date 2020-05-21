@@ -178,7 +178,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, const UINT message, WPARAM wParam, LPARAM lP
                 , L" y : ", window::MouseArea.End.second);
 
             if (window::MouseArea.bStart) {
-                   Rectangle(hdc, 
+                   RECTANGLE(hdc, 
                   window::MouseArea.Start.first, window::MouseArea.Start.second, window::MouseArea.End.first, window::MouseArea.End.second);
             }
             RECT Rect;
