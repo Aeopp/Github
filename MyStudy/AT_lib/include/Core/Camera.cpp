@@ -50,15 +50,15 @@ void CCamera::Update(/*Test*/HDC hDC,float fDeltaTime)
 		float fR = fL + tSize.x;
 		float fB = fT + tSize.y;
 		// TODO :: Debug Field Delete plz 
-		Ellipse(hDC, fL, fT, fR, fB);
-		Rectangle(hDC, tPos.x, tPos.y, tPos.x+3, tPos.y+3);
+		//Ellipse(hDC, fL, fT, fR, fB);
+		//Rectangle(hDC, tPos.x, tPos.y, tPos.x+3, tPos.y+3);
 		////  
 		float fLeftArea = m_tClientRS.iW * m_tPivot.x;
 		float fRightArea = m_tClientRS.iW - fLeftArea;
 		float fTopArea = m_tClientRS.iH * m_tPivot.y;
 		float fBottomArea = m_tClientRS.iH - fTopArea;
 		// TODO :: Debug Field Delete plz 
-		Ellipse(hDC, fLeftArea, fTopArea, fRightArea, fBottomArea);
+		//Ellipse(hDC, fLeftArea, fTopArea, fRightArea, fBottomArea);
 		 /// 
 
 		if (tPos.x <= fLeftArea) {

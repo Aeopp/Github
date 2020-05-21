@@ -12,12 +12,12 @@ CPlayer::CPlayer(const CPlayer& Player) :
 	CMoveObj(Player){}
 
 bool CPlayer::Init(){
-	SetPos(50.0f, 50.0f); 
-	SetSize(100.f,100.f);
+	SetPos(0.f, 3000.f); 
+	SetSize(74.f,75.f);
 	SetSpeed(400.f);
 	SetPivot(0.5f, 0.5f); 
 
-	SetTexture(L"Player", L"Avatar_1.bmp");
+	SetTexture(L"Player", L"Avatar.bmp");
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
 
 	return true;
@@ -64,7 +64,7 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC, fDeltaTime);
 
-	/*Rectangle(hDC, m_tPos.x, m_tPos.y, m_tPos.x + m_tSize.x, m_tPos.y + m_tSize.y);*/
+	//Rectangle(hDC, m_tPos.x, m_tPos.y, m_tPos.x + m_tSize.x, m_tPos.y + m_tSize.y);
 }
 CPlayer* CPlayer::Clone()
 {
@@ -74,13 +74,12 @@ void CPlayer::Fire()
 {
 	CObj* pBullet = CObj::CreateCloneObj(L"Bullet",
 		L"PlayerBullet",m_pLayer);
-	//pBullet->SetSize(POSITION{ 50,50 });
 
 	POSITION tPos;
 	tPos.x = GetRight() + pBullet->GetSize().x * pBullet->GetPivot().x;
 	tPos.y = GetCenter().y;
 
-	tPos.y = m_tPos.y + (0.5f - m_tPivot.y) * m_tSize.y;
+	//tPos.y = m_tPos.y + (0.5f - m_tPivot.y) * m_tSize.y;
 
 	pBullet->SetPos(tPos);
 

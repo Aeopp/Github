@@ -52,6 +52,12 @@
     <Filter Include="01.Core\03.Camera">
       <UniqueIdentifier>{d264a5e3-e658-431d-b80d-8c2e2bab54cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Core\04.Input">
+      <UniqueIdentifier>{728dde6b-2eed-48db-a9a6-2e547ba2f1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Core\01.Timer">
+      <UniqueIdentifier>{ca0b0eea-595f-4416-a0e8-f035184bb7f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -85,9 +91,6 @@
       <Filter>01.Core</Filter>
     </ClInclude>
     <ClInclude Include="include\Types.h">
-      <Filter>01.Core</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core\Timer.h">
       <Filter>01.Core</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\Ref.h">
@@ -126,6 +129,12 @@
     <ClInclude Include="include\Core\Camera.h">
       <Filter>01.Core\03.Camera</Filter>
     </ClInclude>
+    <ClInclude Include="include\Core\Timer.h">
+      <Filter>01.Core\01.Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Core\Input.h">
+      <Filter>01.Core\04.Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AT_lib.rc">
@@ -149,9 +158,6 @@
       <Filter>02.Scene</Filter>
     </ClCompile>
     <ClCompile Include="include\CCore.cpp">
-      <Filter>01.Core</Filter>
-    </ClCompile>
-    <ClCompile Include="include\Core\Timer.cpp">
       <Filter>01.Core</Filter>
     </ClCompile>
     <ClCompile Include="include\Core\Ref.cpp">
@@ -189,6 +195,12 @@
     </ClCompile>
     <ClCompile Include="include\Core\Camera.cpp">
       <Filter>01.Core\03.Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Core\Timer.cpp">
+      <Filter>01.Core\01.Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Core\Input.cpp">
+      <Filter>01.Core\04.Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

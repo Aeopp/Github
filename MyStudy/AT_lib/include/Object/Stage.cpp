@@ -20,10 +20,10 @@ CStage::CStage(const CStage& Obj):
 bool CStage::Init()
 {
 	SetPos(0.f, 0.f);
-	SetSize(2700.f,673.f);
+	SetSize(5830.f,3279.f);
 	SetPivot(0.f, 0.f);
 
-	SetTexture(L"Stage1", L"Happy.bmp");
+	SetTexture(L"Stage1", L"Hennessy.bmp");
 
 	return true;
 }

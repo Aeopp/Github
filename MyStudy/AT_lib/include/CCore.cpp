@@ -4,10 +4,11 @@
 #include "Resources/ResourcesManager.h"
 #include "Resources/Texture.h"
 #include "Core\Camera.h"
-
+#include "Core/Input.h"
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CTimer); 
+	DESTROY_SINGLE(CInput);
     DESTROY_SINGLE(CSceneManager);
 	DESTROY_SINGLE(CPathManager);
 	DESTROY_SINGLE(CResourcesManager);
@@ -36,16 +37,16 @@ bool CCore::Init(HINSTANCE hInst)
 	if (!GET_SINGLE(CResourcesManager)->Init(hInst,m_hDC)) {
 		return false;
 	}
+	if (!GET_SINGLE(CInput)->Init(m_hWnd)) {
+		return false;
+	}
 	if (!GET_SINGLE(CCamera)->Init(POSITION{ 0.f, 0.f },
-		m_tRS, RESOLUTION(2700,673))){
+		m_tRS, RESOLUTION(5830.f, 3279.f))){
 		return false; 
 	}
 	if (!GET_SINGLE(CSceneManager)->Init()) {
 		return false; 
 	}
-
-
-
 	return true ;
 }
 

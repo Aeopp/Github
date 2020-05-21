@@ -116,6 +116,8 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 	if (m_pTexture) {
 		POSITION tPos = m_tPos - m_tSize * m_tPivot; 
 		tPos -= GET_SINGLE(CCamera)->GetPos();
+		//Ellipse(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
+		
 
 		if (m_pTexture->GetColorKeyEnable()==true) {
 			TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,

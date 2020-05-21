@@ -69,9 +69,7 @@ void CMushroom::Render(HDC hDC, float fDeltaTime)
 	CMoveObj::Render(hDC, fDeltaTime);
 
 	// TODO :: 디버그용 테스팅후 삭제
-	Rectangle(hDC, m_tPos.x, m_tPos.y
-		,m_tPos.x + m_tSize.x
-		, m_tPos.y + m_tSize.y);
+	
 }
 
 CMushroom* CMushroom::Clone()
@@ -91,7 +89,6 @@ void CMushroom::Fire()
 
 	pBullet->SetPos(x, y);
 
-	//pBullet->SetSize(POSITION{ 50,50 });
 	SAFE_RELEASE(pBullet);
 
 }
