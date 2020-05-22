@@ -1,8 +1,7 @@
 #include "ColinderRect.h"
 #include "../Object/Obj.h"
 CColinderRect::CColinderRect()
-	:CColinder()
-{
+	:CColinder(){
 	m_eCollType = CT_RECT;
 }
 
@@ -39,26 +38,30 @@ return  CColinder::Update(fDeltaTime);
 
 int CColinderRect::LateUpdate(float fDeltaTime)
 {
-		CColinder::LateUpdate(fDeltaTime);
-		POSITION tPos = m_pObj->GetPos();
-		m_tWorldInfo.left = tPos.x + m_tInfo.left;
-		m_tWorldInfo.top = tPos.y+ m_tInfo.top;
-		m_tWorldInfo.right = tPos.x + m_tInfo.right;
-		m_tWorldInfo.bottom = tPos.y+ m_tInfo.bottom;
-		return  0;
-}
-
-void CColinderRect::Collision(float fDeltaTime)
+	CColinder::LateUpdate(fDeltaTime);
+	POSITION tPos = m_pObj->GetPos();
+	m_tWorldInfo.left = tPos.x + m_tInfo.left;
+	m_tWorldInfo.top = tPos.y + m_tInfo.top;
+	m_tWorldInfo.right = tPos.x + m_tInfo.right;
+	m_tWorldInfo.bottom = tPos.y + m_tInfo.bottom;
+	return  0;
+};
+bool CColinderRect::Collision(CColinder* pDest)
 {
-	return  CColinder::Collision(fDeltaTime);
+	switch (pDest->GetColliderType()) {
+	case CT_RECT:
+		return CollisionRectToRect(m_tWorldInfo, ((CColinderRect*)pDest)->GetWorldInfo());
+		break;
+	}
+	return false; 
 }
 
 void CColinderRect::Render(HDC hDC, float fDeltaTime)
 {
 	CColinder::Render(hDC, fDeltaTime);
-}
+};
 
 CColinderRect* CColinderRect::Clone()
 {
 	return new CColinderRect(*this);
-}
+};

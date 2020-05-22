@@ -28,6 +28,7 @@ bool CMushroom::Init()
 
 	CColinderRect* pRC = AddCollider<CColinderRect>(L"Orange");
 	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
+	pRC->AddCollisionFunction();
 
 	SAFE_RELEASE(pRC);
 	return true;
@@ -80,6 +81,11 @@ void CMushroom::Render(HDC hDC, float fDeltaTime)
 CMushroom* CMushroom::Clone()
 {
 	return new CMushroom{*this };
+}
+
+void CMushroom::CollisionBullet(CCollider* pSrc, CCollider* pDest, float fDeltaTime)
+{
+
 }
 
 void CMushroom::Fire()

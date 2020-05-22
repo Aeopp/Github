@@ -22,7 +22,9 @@ public:
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CMushroom* Clone()override;
-	
+public :
+	void CollisionBullet(class CCollider* pSrc,
+		class CCollider* pDest, float fDeltaTime); 
 private:
 	void Fire(); 
 };

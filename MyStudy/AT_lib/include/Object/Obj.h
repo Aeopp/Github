@@ -30,6 +30,9 @@ protected:
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
 public:
+	const list<class CColinder*>* GetColliderList()const {
+		return &m_CollinderList;
+	}
 	void SetScene(class CScene* pScene) {
 		m_pScene = pScene;
 	}

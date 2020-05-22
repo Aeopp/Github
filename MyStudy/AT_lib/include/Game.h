@@ -6,6 +6,7 @@
 #include <vector>
 #include <unordered_map>
 #include <type_traits>
+#include <functional>
 #include <crtdbg.h>K
 
 #include "Macro.h"

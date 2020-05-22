@@ -19,13 +19,13 @@ public:
 	RECTANGLE GetWorldInfo()const {
 		return m_tWorldInfo; 
 	};	
-	void SetRect(float left, float top, float right, float b);
+	void SetRect(float left, float top, float right, float bottom);
 
 	virtual bool Init();
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);
 	virtual int  LateUpdate(float fDeltaTime);
-	virtual void Collision(float fDeltaTime);
+	virtual bool Collision(CColinder* pDest);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CColinderRect* Clone();
 };

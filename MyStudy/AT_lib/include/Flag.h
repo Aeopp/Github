@@ -20,3 +20,11 @@ enum COLLIDER_TYPE {
 	CT_END
 };
 
+enum COLLISION_STATE {
+	CS_ENTER,
+	CS_STAY,
+	CS_LEAVE,
+	CS_END,
+};
+
+
