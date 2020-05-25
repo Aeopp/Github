@@ -2,7 +2,6 @@
 #include "../CCore.h"
 #include "../Resources/Texture.h"
 #include "../Collision/ColinderRect.h"
-
 CMushroom::CMushroom() :
 CMoveObj(),
 m_fFireTime(0.f),
@@ -26,11 +25,19 @@ bool CMushroom::Init()
 
 	m_eDir = MD_FRONT; 
 
-	CColinderRect* pRC = AddCollider<CColinderRect>(L"Orange");
-	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
-	pRC->AddCollisionFunction();
+	CColliderRect* pRC = AddCollider <CColliderRect>(L"Orange");
 
+	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
+	pRC->AddCollisionFunction(CS_ENTER, this, &CMushroom::CollisionBullet);
 	SAFE_RELEASE(pRC);
+
+	//CColliderRect* pRC = AddCollider<CColliderRect>(L"Orange");
+	//pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
+
+	//pRC->AddCollisionFunction(CS_ENTER, this, &CMushroom::CollisionBullet);
+
+
+	//SAFE_RELEASE(pRC);
 	return true;
 }
 
@@ -75,7 +82,6 @@ void CMushroom::Render(HDC hDC, float fDeltaTime)
 	CMoveObj::Render(hDC, fDeltaTime);
 
 	// TODO :: 디버그용 테스팅후 삭제
-	
 }
 
 CMushroom* CMushroom::Clone()
@@ -85,13 +91,13 @@ CMushroom* CMushroom::Clone()
 
 void CMushroom::CollisionBullet(CCollider* pSrc, CCollider* pDest, float fDeltaTime)
 {
-
+	MessageBox(NULL, L"충돌", L"충돌", MB_OK);
 }
 
 void CMushroom::Fire()
 {
 	CObj* pBullet = CObj::CreateCloneObj(L"Bullet",
-		L"MinionBullet", m_pLayer);
+		L"Bullet", m_pLayer);
 
 	dynamic_cast<CMoveObj*>(pBullet)->SetAngle(PI);
 
@@ -101,5 +107,4 @@ void CMushroom::Fire()
 	pBullet->SetPos(x, y);
 
 	SAFE_RELEASE(pBullet);
-
 }

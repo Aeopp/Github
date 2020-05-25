@@ -97,6 +97,7 @@ void CLayer::Collision(float fDeltaTime)
 			++iter;
 			continue;
 		}
+		(*iter)->Collision(fDeltaTime);
 		if (!(*iter)->GetLife()) {
 			CObj::EraseObj(*iter);
 			SAFE_RELEASE((*iter));
@@ -126,7 +127,10 @@ void CLayer::Render(HDC hDC, float fDeltaTime)
 			iter = m_ObjList.erase(iter);
 			iterEnd = m_ObjList.end();
 		}
-		else ++iter;
+		else {
+			GET_SINGLE(CCollisionManager)->AddObject(*iter);
+			++iter;
+		}
 	}
 };
 

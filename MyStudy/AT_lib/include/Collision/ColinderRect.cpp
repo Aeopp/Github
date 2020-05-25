@@ -1,67 +1,148 @@
 #include "ColinderRect.h"
 #include "../Object/Obj.h"
-CColinderRect::CColinderRect()
-	:CColinder(){
+//#include "ColinderRect.h"
+//#include "../Object/Obj.h"
+//CColliderRect::CColliderRect()
+//	:CCollider(){
+//	m_eCollType = CT_RECT;
+//}
+//
+//CColliderRect::CColliderRect(const CColliderRect& coll):
+//	CCollider(coll){
+//	m_tInfo = coll.m_tInfo;
+//}
+//
+//CColliderRect::~CColliderRect()noexcept
+//{
+//}
+//
+//void CColliderRect::SetRect(float left, float top, float right, float bottom)
+//{
+//	m_tInfo.left = left;
+//	m_tInfo.top = top;
+//	m_tInfo.right = right;
+//	m_tInfo.bottom = bottom;
+//}
+//
+//bool CColliderRect::Init()
+//{
+//	return true;
+//}
+//
+//void CColliderRect::Input(float fDeltaTime)
+//{
+//	CCollider::Input(fDeltaTime);
+//}
+//
+//int CColliderRect::Update(float fDeltaTime){
+//  CCollider::Update(fDeltaTime);
+//  return 0;
+//}
+//
+//int CColliderRect::LateUpdate(float fDeltaTime)
+//{
+//	CCollider::LateUpdate(fDeltaTime);
+//	POSITION tPos = m_pObj->GetPos();
+//	m_tWorldInfo.left = tPos.x + m_tInfo.left;
+//	m_tWorldInfo.top = tPos.y + m_tInfo.top;
+//	m_tWorldInfo.right = tPos.x + m_tInfo.right;
+//	m_tWorldInfo.bottom = tPos.y + m_tInfo.bottom;
+//	return  0;
+//};
+//bool CColliderRect::Collision(CCollider* pDest)
+//{
+//	CCollider::Collision(pDest);
+//
+//	switch (pDest->GetColliderType()) {
+//	case CT_RECT:
+//		return CollisionRectToRect(m_tWorldInfo, ((CColliderRect*)pDest)->GetWorldInfo());
+//		break;
+//	}
+//	return false; 
+//}
+//
+//void CColliderRect::Render(HDC hDC, float fDeltaTime)
+//{
+//	CCollider::Render(hDC, fDeltaTime);
+//};
+//
+//CColliderRect* CColliderRect::Clone()
+//{
+//	return new CColliderRect(*this);
+//};
+
+CColliderRect::CColliderRect():
+	CCollider()
+{
 	m_eCollType = CT_RECT;
 }
 
-CColinderRect::CColinderRect(const CColinderRect& coll):
-	CColinder(coll){
+CColliderRect::CColliderRect(const CColliderRect& coll):
+CCollider(coll)
+{
 	m_tInfo = coll.m_tInfo;
 }
 
-CColinderRect::~CColinderRect()noexcept
+void CColliderRect::SetRect(float l, float t, float r, float b)
+{
+	m_tInfo.left = l;
+	m_tInfo.top = t;
+	m_tInfo.right = r;
+	m_tInfo.bottom = b;
+}
+
+CColliderRect::~CColliderRect()
 {
 }
 
-void CColinderRect::SetRect(float left, float top, float right, float bottom)
-{
-	m_tInfo.left = left;
-	m_tInfo.top = top;
-	m_tInfo.right = right;
-	m_tInfo.bottom = bottom;
-}
-
-bool CColinderRect::Init()
+bool CColliderRect::Init()
 {
 	return true;
 }
 
-void CColinderRect::Input(float fDeltaTime)
+void CColliderRect::Input(float fDeltaTime)
 {
-	CColinder::Input(fDeltaTime);
+	CCollider::Input(fDeltaTime);
 }
 
-int CColinderRect::Update(float fDeltaTime){
-return  CColinder::Update(fDeltaTime);
+int CColliderRect::Update(float fDeltaTime)
+{
+	CCollider::Update(fDeltaTime);
+
+	return 0;
 }
 
-int CColinderRect::LateUpdate(float fDeltaTime)
+int CColliderRect::LateUpdate(float fDeltaTime)
 {
-	CColinder::LateUpdate(fDeltaTime);
+	CCollider::LateUpdate(fDeltaTime);
+
 	POSITION tPos = m_pObj->GetPos();
+
 	m_tWorldInfo.left = tPos.x + m_tInfo.left;
 	m_tWorldInfo.top = tPos.y + m_tInfo.top;
 	m_tWorldInfo.right = tPos.x + m_tInfo.right;
 	m_tWorldInfo.bottom = tPos.y + m_tInfo.bottom;
-	return  0;
+
+	return 0;
 };
-bool CColinderRect::Collision(CColinder* pDest)
-{
+
+bool CColliderRect::Collision(CCollider* pDest){
 	switch (pDest->GetColliderType()) {
 	case CT_RECT:
-		return CollisionRectToRect(m_tWorldInfo, ((CColinderRect*)pDest)->GetWorldInfo());
+		return CollisionRectToRect(m_tWorldInfo,
+			((CColliderRect*)pDest)->GetWorldInfo());
 		break;
 	}
+
 	return false; 
 }
 
-void CColinderRect::Render(HDC hDC, float fDeltaTime)
+void CColliderRect::Render(HDC hDC, float fDeltaTime)
 {
-	CColinder::Render(hDC, fDeltaTime);
-};
+	CCollider::Render(hDC, fDeltaTime);
+}
 
-CColinderRect* CColinderRect::Clone()
+CColliderRect* CColliderRect::Clone()
 {
-	return new CColinderRect(*this);
-};
+	return new CColliderRect(*this);
+}

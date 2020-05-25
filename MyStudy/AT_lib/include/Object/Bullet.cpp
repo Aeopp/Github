@@ -3,8 +3,8 @@
 #include "../Collision/ColinderRect.h"
 CBullet::CBullet():
 	m_fDist(0.f),
-	m_fLimitDist{ 1000.f }
-{
+	m_fLimitDist{ 1000.f }{
+
 }
 
 CBullet::CBullet(const CBullet& Obj):
@@ -20,10 +20,12 @@ bool CBullet::Init()
 	SetPivot(0.5f, 0.5f);
 	SetTexture(L"Bullet", L"Skill_1.bmp");
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
-
-	CColinderRect* pRC = AddCollider<CColinderRect>(L"Bullet");
+	
+	CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
+	pRC->SetRect(-184.5f, -58.f, 184.5f, 58.f);
+	SAFE_RELEASE(pRC);
+	//CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
 	// 369 116
-	pRC->SetRect(-184.5f, 184.5f ,- 58.f, 58.f);
 
 	return true;
 }
@@ -49,15 +51,16 @@ int CBullet::LateUpdate(float fDeltaTime)
 void CBullet::Collision(float fDeltaTime)
 {
 	return CMoveObj::Collision( fDeltaTime);
-
 }
 
 void CBullet::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC,fDeltaTime); 
+}
 
-
-	
+void CBullet::Hit(CObj* const Target, float fDeltaTime)
+{
+	CObj::Hit(Target, fDeltaTime);
 }
 
 CBullet* CBullet::Clone()

@@ -33,6 +33,20 @@ private :
 	void Collision(float fDeltaTime);
 	void Render(float fDeltaTime);
 	 
+	bool CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest)
+	{
+		if (src.left > dest.right)
+			return false;
+		else if (src.right < dest.left)
+			return false;
+		else if (src.top > dest.bottom)
+			return false;
+		else if (src.bottom < dest.top)
+			return false;
+
+		return true;
+	};
+
 	ATOM MyRegisterClass(); 
 	BOOL Create();
 private:

@@ -2,6 +2,7 @@
 #include "../Core/Ref.h"
 #include "../Types.h"
 #include "../Scene/Layer.h"
+#include "../Core/Camera.h"
 class CObj : public CRef
 {
 protected:
@@ -9,7 +10,6 @@ protected:
 	CObj(const CObj& Obj);
 public:
 	static inline list<CObj*> m_ObjList;
-	
 public:
 	virtual ~CObj();
 	static void AddObj(CObj* pObj);
@@ -18,20 +18,80 @@ public:
 	static void EraseObj(CObj* pObj);
 	static void EraseObj(const wstring& strTag);
 	static void EraseObj();
-	
 protected:
 	int m_iRef;
 	wstring m_strTag;
 	POSITION m_tPos;
 	_SIZE m_tSize;
 	POSITION m_tPivot;
-	list<class CColinder*> m_CollinderList;
+	list<class CCollider*> m_ColliderList;
 	class CScene* m_pScene;
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
+	list<std::pair<class CObj*,ECOLLISION_STATE>> HitList;
 public:
-	const list<class CColinder*>* GetColliderList()const {
-		return &m_CollinderList;
+	/*inline void SetHitList(class CObj* ObjKey,ECOLLISION_STATE NewEState)& {
+		auto is_find = std::find_if(HitList.begin(), HitList.end(),
+			[&ObjKey](auto Pair) {if (Pair.first == ObjKey) return true; else return false; });
+
+		if (is_find != std::end(HitList)) {
+			is_find->second = NewEState; 
+		}
+	}*/
+	inline list<std::pair<class CObj*, ECOLLISION_STATE>>& GetHitList()& noexcept{
+		return HitList;
+	}
+	inline void AddHitList(class CObj* Obj,
+		ECOLLISION_STATE ESTATE)& {
+		HitList.push_back(pair{ Obj,ESTATE });
+	}
+	inline void EraseHitList(class CObj* Obj)& {
+
+	/*	HitList.remove_if([Obj](auto Pair) {
+			if (Pair.first == Obj)return true;
+			});*/
+
+		/*auto is_find = std::find_if(std::begin(HitList), std::end(HitList), [Obj](auto Pair) {
+			if (Pair.first == Obj)return true;
+			}           );
+
+		if (is_find != std::end(HitList)) {
+			SAFE_RELEASE(is_find->first);
+			HitList.erase(is_find);
+		}*/
+	
+	}
+	inline std::pair<class CObj*, ECOLLISION_STATE> FindHitList(class CObj* Obj) {
+		auto is_find = std::find_if(std::begin(HitList), std::end(HitList),
+			[Obj](auto Pair) {
+				if (Pair.first == Obj)return true;
+			});
+
+		if (is_find != std::end(HitList)) {
+			return *is_find;
+		}
+		else {
+			return {nullptr,ECOLLISION_STATE::Nothing};
+		}
+	}
+	/* list<class CCollider*>* GetColliderList() {
+		return &m_ColliderList;
+	}*/
+	POSITION GetCollisionPos()const {
+		auto Pos = GetPos();
+		auto Size = GetSize();
+		auto Pivot = GetPivot();
+
+		POSITION tPos = Pos - Size * Pivot;
+		tPos -= GET_SINGLE(CCamera)->GetPos();
+		return tPos; 
+	}
+	RECTANGLE GetCollisionRect()const {
+		auto Pos = GetCollisionPos();
+		return RECTANGLE{ Pos.x, Pos.y, Pos.x + m_tSize.x, Pos.y + m_tSize.y };
+	}
+	const list<class CCollider*>* GetColliderList()const {
+		return &m_ColliderList;
 	}
 	void SetScene(class CScene* pScene) {
 		m_pScene = pScene;
@@ -113,6 +173,7 @@ public:
 	virtual int  Update(float fDeltaTime);
 	virtual int  LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
+	virtual void Hit(CObj* const Target, float fDeltaTime); 
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CObj* Clone() = 0; 
 public:
@@ -138,18 +199,20 @@ public:
 
 	// 충돌 메소드 필드
 	template<typename T>
-	T* AddCollider(const wstring& strTag) {
-		T* pCollider = new T; 
+	T* AddCollider(const wstring& strTag){
+		T* pCollider = new T;
 		pCollider->SetObj(this);
-		if (!pCollider->Init()){
+		
+		if (!pCollider->Init()) {
 			SAFE_RELEASE(pCollider);
-			return nullptr;     
+			return NULL;
 		}
 		pCollider->AddRef();
-		m_CollinderList.push_back(pCollider);
+		m_ColliderList.push_back(pCollider);
 		return pCollider;
 	}
+
 	bool CheckCollider(){
-		return !m_CollinderList.empty(); 
+		return !m_ColliderList.empty(); 
 	}
 };

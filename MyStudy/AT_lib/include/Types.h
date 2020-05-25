@@ -131,16 +131,26 @@ struct POSITION {
 using _SIZE = POSITION;
 
 struct RECTANGLE {
+
 	float left;
 	float top;
 	float right;
 	float bottom;
-	
-	RECTANGLE() = default;   
-	RECTANGLE(RECTANGLE&&)noexcept =default ;
-	RECTANGLE(const RECTANGLE&) = default;
-	~RECTANGLE()noexcept = default;
-	RECTANGLE&operator=(RECTANGLE&&)noexcept = default;
-	RECTANGLE& operator=(const RECTANGLE&) = default;
+	RECTANGLE() :
+		left{ 0.f }, top{ 0.f },
+		right{ 0.f }, bottom{ 0.f }{};
+	RECTANGLE(float left, float top, float right, float bottom) :
+	left{ left }, top{ top }, right{ right }, bottom{ bottom }
+	{}; 
 };
+
+enum class ECOLLISION_STATE :uint8_t {
+	First,
+	Keep,
+	Release,
+	Nothing,
+};
+
+
+
 

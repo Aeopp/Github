@@ -44,7 +44,6 @@ int CSceneManager::LateUpdate(float fDeltaTime)
 void CSceneManager::Collision(float fDeltaTime)
 {
 	m_pScene->Collision(fDeltaTime);
-
 }
 
 void CSceneManager::Render(HDC hDC, float fDeltaTime)

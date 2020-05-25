@@ -24,7 +24,7 @@ public:
 	virtual CMushroom* Clone()override;
 public :
 	void CollisionBullet(class CCollider* pSrc,
-		class CCollider* pDest, float fDeltaTime); 
+		class CCollider* pDest, float fDeltaTime);
 private:
 	void Fire(); 
 };

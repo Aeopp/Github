@@ -6,11 +6,12 @@
 #include "Core\Camera.h"
 #include "Core\Input.h"
 #include "Collision\CollisionManager.h"
-
+#include "Object/Mushroom.h"
+#include "Object/Stage.h"
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CSceneManager);
-	DESTROY_SINGLE(CCollisionManager);
+//	DESTROY_SINGLE(CCollisionManager);
 	DESTROY_SINGLE(CInput);
 	DESTROY_SINGLE(CCamera);
 	DESTROY_SINGLE(CResourcesManager); 
@@ -133,7 +134,83 @@ void CCore::Collision(float fDeltaTime)
 	// TODO :: 여기서 충돌 검사하기전에 테이블 세팅 보장 해줘야함 !!!!!!!!!!!!
 	GET_SINGLE(CSceneManager)->Collision(fDeltaTime);
 
-	GET_SINGLE(CCollisionManager)->Collision(fDeltaTime);
+	if (CObj::m_ObjList.size() < 2) {
+		return; 
+	}
+
+	for (auto Outer = std::begin(CObj::m_ObjList);
+		Outer != std::end(CObj::m_ObjList);++Outer) {
+		auto Inner = Outer;
+		std::advance(Inner, 1);
+
+		for (Inner; Inner != std::end(CObj::m_ObjList); ++Inner) {
+			auto LhsRect = (*Inner)->GetCollisionRect();
+			auto RhsRect = (*Outer)->GetCollisionRect();
+			if (true == CollisionRectToRect(LhsRect, RhsRect)) {
+				auto LhsTag = (*Inner)->GetTag();
+				auto RhsTag = (*Outer)->GetTag();
+
+				if (LhsTag == L"Stage" || RhsTag == L"Stage")continue;
+
+				(*Inner)->Hit(*Outer, fDeltaTime);
+				(*Outer)->Hit(*Inner, fDeltaTime);
+				//MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
+			}
+			else {
+				/*auto InnerPair = (*Inner)->FindHitList(*Outer);
+
+				if (InnerPair.second == ECOLLISION_STATE::First ||
+					InnerPair.second == ECOLLISION_STATE::Keep) {
+					
+					auto hit_list = InnerPair.first->GetHitList();
+					auto is_find = std::find(std::begin(hit_list), 
+						std::end(hit_list),
+						[Outer](pair<CObj*,ECOLLISION_STATE> pair) {if (  pair.first == *Outer)
+						return true;  });
+					if (is_find != std::end(hit_list)) {
+						is_find->second = ECOLLISION_STATE::Release;
+					}*/
+					
+				}
+				/*else {*/
+					/*auto hit_list = InnerPair.first->GetHitList();
+					auto is_find = std::find(std::begin(hit_list), std::end(hit_list),
+						[Outer](pair<CObj*,ECOLLISION_STATE> pair) {if (pair.first == *Outer)
+						return true;  });
+					if (is_find != std::end(hit_list)) {
+						is_find->second = ECOLLISION_STATE::Nothing;
+					}*/
+				/*}*/
+
+			/*	auto OuterPair = (*Outer)->FindHitList(*Inner);
+
+				if (OuterPair.second == ECOLLISION_STATE::First ||
+					OuterPair.second == ECOLLISION_STATE::Keep) {
+
+					OuterPair.first->SetHitList(*Inner, ECOLLISION_STATE::Release);
+				}
+				else{
+					OuterPair.first->SetHitList(*Inner, ECOLLISION_STATE::Nothing);
+				}*/
+			/*}*/
+		}
+	}
+
+	//for (CObj* element : CObj::m_ObjList) {
+
+	//	//if (CMushroom* Mush = dynamic_cast<CMushroom*>(element);
+	//	//	Mush != nullptr)
+	//	//{
+	//	//	Mush->GetCollisionPos();
+
+	//	//	/*Rectangle(pBackBuffer->GetDC(), tPos.x, tPos.y,
+	//	//		tPos.x + Size.x, tPos.y + Size.y);*/
+	//	//}
+	//}
+
+
+	// 버그버그버그
+	//GET_SINGLE(CCollisionManager)->Collision(fDeltaTime);
 }
 
 void CCore::Render(float fDeltaTime)
@@ -141,8 +218,10 @@ void CCore::Render(float fDeltaTime)
 	CTexture* pBackBuffer = GET_SINGLE(CResourcesManager)->GetBackBuffer();
 
 	Rectangle(pBackBuffer->GetDC(), 0, 0, 1280, 720);
-
+	
 	GET_SINGLE(CSceneManager)->Render(pBackBuffer->GetDC(),fDeltaTime);
+
+	
 
 	BitBlt(m_hDC, 0, 0, m_tRS.iW, m_tRS.iH, pBackBuffer->GetDC(),
 		0, 0, SRCCOPY);

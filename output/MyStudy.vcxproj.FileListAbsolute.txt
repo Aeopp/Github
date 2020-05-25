@@ -1,2 +1,4 @@
 D:\Github\output\MyStudy.exe
 D:\Github\output\MyStudy.pdb
+C:\GitHub\Github\output\MyStudy.exe
+C:\GitHub\Github\output\MyStudy.pdb
