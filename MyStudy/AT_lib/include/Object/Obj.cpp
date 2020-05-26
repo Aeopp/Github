@@ -235,7 +235,7 @@ void CObj::Collision(float fDeltaTime)
 		auto Target = iter->first;
 		auto State = FindHitList(iter->first);
 
-		if (State.second != ECOLLISION_STATE::Nothing &&
+		if (State.second != ECOLLISION_STATE::Keep &&
 			State.second != ECOLLISION_STATE::First) {
 
 			auto Test = Target->GetTag() + m_strTag.c_str();
