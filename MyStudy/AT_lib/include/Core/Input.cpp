@@ -6,13 +6,19 @@ bool CInput::Init(HWND hWnd)
 	m_hWnd = hWnd;
 
 	AddKey(VK_SPACE, "Jump");
-	AddKey('W', "MoveFront");
-	AddKey('S', "MoveBack");
+	/*AddKey('W', "MoveFront");
+	AddKey('S', "MoveBack");*/
 	AddKey("MoveLeft", VK_LEFT);
 	AddKey("MoveRight", VK_RIGHT);
 	AddKey("Fire",'Q');
 	AddKey(VK_CONTROL, "Skill1", '1');
+
 	AddKey(VK_CONTROL, "Attack");
+	AddKey('A', "Attack2");
+	AddKey('S', "Attack3");
+	AddKey('D', "Attack4");
+
+	AddKey(VK_ESCAPE, "Dead");
 
 	return true; 
 }

@@ -30,7 +30,7 @@ bool CIngameScene::Init()
 
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet");
 	pBullet->SetSize(369.f, 116.f);
-	pBullet->SetSpeed(1.f);
+	pBullet->SetSpeed(1000.f);
 	SAFE_RELEASE(pBullet);
 
 	CLayer* pStageLayer = FindLayer(L"Stage");
@@ -39,7 +39,7 @@ bool CIngameScene::Init()
 
 	CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
 	Ground->SetPos(0,1400);
-	Ground->SetSize(POSITION{ 2695,20 });
+	Ground->SetSize(POSITION{ 2700,100 });
 
 	//CPixel* pPixel = CObj::CreateObj<CPixel>(L"StageColl", pStageLayer);
 	//pPixel->SetPixelInfo("Happy.bmp");

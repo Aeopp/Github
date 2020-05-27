@@ -40,6 +40,5 @@ bool CTexture::LoadTexture(HINSTANCE hInst, HDC hDC,
 
 	GetObject(m_hBitmap, sizeof(m_tInfo), &m_tInfo);
 
-
 	return true; 
 }

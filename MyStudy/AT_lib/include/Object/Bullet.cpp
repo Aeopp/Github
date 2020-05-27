@@ -15,9 +15,10 @@ CBullet::CBullet(const CBullet& Obj):
 
 bool CBullet::Init()
 {
-	SetSpeed(100.f);
+	SetSpeed(1000.f);
 	SetPivot(0.5f, 0.5f);
-	SetTexture(L"Bullet", L"Skill_1.bmp");
+
+	SetTexture(L"BulletLeft", L"Skill_1.bmp");
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
 	
 	/*CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
@@ -33,7 +34,18 @@ int CBullet::Update(float fDeltaTime)
 {
 	 CMoveObj::Update(fDeltaTime);
 	 
-	 MoveAngle(fDeltaTime);
+	 //MoveAngle(fDeltaTime);
+	 if (m_iDir == -1) {
+		 m_tPos.x += std::cosf(PI) * m_fSpeed * fDeltaTime;
+		 m_tPos.y += std::sinf(PI) * m_fSpeed * fDeltaTime;
+	 }
+	 if (m_iDir == 1 ) {
+		 m_tPos.x += std::cosf(0) * m_fSpeed * fDeltaTime;
+		 m_tPos.y += std::sinf(0) * m_fSpeed * fDeltaTime;
+	 }
+
+	 m_bMove = true;
+
 	 m_fDist += GetSpeed() * fDeltaTime;
 
 	 if (m_fDist >= m_fLimitDist)
@@ -81,4 +93,7 @@ CBullet* CBullet::Clone()
 {
 	return new CBullet{ *this }; 
 }
+
+
+
 

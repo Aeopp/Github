@@ -24,5 +24,13 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual void Hit(CObj* const pDest, float fDeltaTime);
 	virtual CBullet* Clone()override;
+
+	void SetDir(int Dir) & override {
+		CMoveObj::SetDir(Dir);
+		if (Dir == 1) {
+			SetTexture(L"BulletRight", L"Skill_2.bmp");
+			SetColorKey(255, 0, 255);
+		}
+	}
 };
 

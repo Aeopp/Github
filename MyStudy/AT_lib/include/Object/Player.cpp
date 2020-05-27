@@ -49,11 +49,27 @@ bool CPlayer::Init() {
 		SetAnimationClipColorkey(L"PlayerIdleLeft", 255, 0, 255);
 	}
 
+	// Jump 
+	{
+		AddAnimationClip(L"PlayerJumpLeft", AT_ATLAS, AO_LOOP,
+			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpLeft", L"Animation\\Player\\Left\\DEAD.bmp");
+		SetAnimationClipColorkey(L"PlayerJumpLeft", 255, 0, 255);
+
+		AddAnimationClip(L"PlayerJumpRight", AT_ATLAS, AO_LOOP,
+			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpRight", L"Animation\\Player\\Right\\DEAD.bmp");
+		SetAnimationClipColorkey(L"PlayerJumpRight", 255, 0, 255);
+	}
+
 	//Dead
 	{
-		AddAnimationClip(L"PlayerDead", AT_ATLAS, AO_LOOP,
-			0.3f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerDead", L"Animation\\Player\\Left\\DEAD.bmp");
-		SetAnimationClipColorkey(L"PlayerDead", 255, 0, 255);
+		AddAnimationClip(L"PlayerDeadLeft", AT_ATLAS, AO_LOOP,
+			0.3f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerDeadLeft", L"Animation\\Player\\Left\\DEAD.bmp");
+		SetAnimationClipColorkey(L"PlayerDeadLeft", 255, 0, 255);
+
+		AddAnimationClip(L"PlayerDeadRight", AT_ATLAS, AO_LOOP,
+			0.3f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerDeadRight", L"Animation\\Player\\Right\\DEAD.bmp");
+		SetAnimationClipColorkey(L"PlayerDeadRight", 255, 0, 255);
+
 	}
 
 	// Walk
@@ -80,45 +96,45 @@ bool CPlayer::Init() {
 
 	// Swing1
 	{
-		AddAnimationClip(L"PlayerAttackLeft", AT_ATLAS, AO_TIME_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackLeft", L"Animation\\Player\\Left\\SWING1.bmp");
+		AddAnimationClip(L"PlayerAttackLeft", AT_ATLAS, AO_ONCE_RETURN,
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackLeft", L"Animation\\Player\\Left\\SWING1.bmp");
 		SetAnimationClipColorkey(L"PlayerAttackLeft", 255, 0, 255);
 
-		AddAnimationClip(L"PlayerAttackRight", AT_ATLAS, AO_TIME_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackRight", L"Animation\\Player\\Right\\SWING1.bmp");
+		AddAnimationClip(L"PlayerAttackRight", AT_ATLAS, AO_ONCE_RETURN,
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackRight", L"Animation\\Player\\Right\\SWING1.bmp");
 		SetAnimationClipColorkey(L"PlayerAttackRight", 255, 0, 255);
 	}
 
 	// Swing2
 	{
 		AddAnimationClip(L"PlayerAttack2Left", AT_ATLAS, AO_ONCE_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Left", L"Animation\\Player\\Left\\SWING2.bmp");
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Left", L"Animation\\Player\\Left\\SWING2.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack2Left", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerAttack2Right", AT_ATLAS, AO_ONCE_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Right", L"Animation\\Player\\Right\\SWING2.bmp");
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Right", L"Animation\\Player\\Right\\SWING2.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack2Right", 255, 0, 255);
 	}
 
 	// Stab
 	{
 		AddAnimationClip(L"PlayerAttack3Left", AT_ATLAS, AO_ONCE_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack3Left", L"Animation\\Player\\Left\\STAB.bmp");
+			0.6f, 1, 2, 0, 0, 1, 2, 0.f, L"PlayerAttack3Left", L"Animation\\Player\\Left\\STAB.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack3Left", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerAttack3Right", AT_ATLAS, AO_ONCE_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack3Right", L"Animation\\Player\\Right\\STAB.bmp");
+			0.6f, 1, 2, 0, 0, 1, 2, 0.f, L"PlayerAttack3Right", L"Animation\\Player\\Right\\STAB.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack3Right", 255, 0, 255);
 	}
 
 	// Bow
 	{
 		AddAnimationClip(L"PlayerAttack4Left", AT_ATLAS, AO_ONCE_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Left", L"Animation\\Player\\Left\\BOW.bmp");
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Left", L"Animation\\Player\\Left\\BOW.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack4Left", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerAttack4Right", AT_ATLAS, AO_ONCE_RETURN,
-			0.7f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Right", L"Animation\\Player\\Right\\BOW.bmp");
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Right", L"Animation\\Player\\Right\\BOW.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack4Right", 255, 0, 255);
 	}
 
@@ -147,7 +163,11 @@ bool CPlayer::Init() {
 void CPlayer::Input(float fDeltaTime)
 {
 	CMoveObj::Input(fDeltaTime); 
-	
+
+	if (KEYUP("Dead")) {
+		Dead();
+		//	MoveYFromSpeed(fDeltaTime, MD_BACK);
+	}
 
 	if (KEYPRESS("MoveFront")) {
 	 //	MoveYFromSpeed(fDeltaTime, MD_BACK);
@@ -156,21 +176,23 @@ void CPlayer::Input(float fDeltaTime)
 	//	MoveYFromSpeed(fDeltaTime, MD_FRONT);
 	}
 	if (KEYPRESS("MoveLeft")) {
-		if(!m_bAttack)
-		m_pAnimation->ChangeClip(L"PlayerWalkLeft");
+		if (!m_bAttack&& bJump==false ) {
+			m_pAnimation->ChangeClip(L"PlayerWalkLeft");
+			m_pAnimation->SetDefaultClip(L"PlayerIdleLeft");
+		}
 		MoveXFromSpeed(fDeltaTime, MD_BACK);
 		m_iDir = -1;
-		m_pAnimation->SetDefaultClip(L"PlayerIdleLeft");
 	}
 	if (KEYUP("MoveLeft")) {
 		m_bMove = false; 
 	}
 	if (KEYPRESS("MoveRight")) {
-		if (!m_bAttack)
-		m_pAnimation->ChangeClip(L"PlayerWalkRight");
+		if (!m_bAttack && bJump==false ) {
+			m_pAnimation->ChangeClip(L"PlayerWalkRight");
+			m_pAnimation->SetDefaultClip(L"PlayerIdleRight");
+		}
 		MoveXFromSpeed(fDeltaTime, MD_FRONT);	
 		m_iDir = 1;
-		m_pAnimation->SetDefaultClip(L"PlayerIdleRight");
 	}
 	if (KEYUP("MoveRight")) {
 		m_bMove = false;
@@ -183,8 +205,41 @@ void CPlayer::Input(float fDeltaTime)
 		m_pAnimation->ChangeClip(L"PlayerAttackLeft");
 
 		if (m_iDir == 1)
-			m_pAnimation->ChangeClip(L"PlayerAttackRight");
+		m_pAnimation->ChangeClip(L"PlayerAttackRight");
 	}
+
+	if (KEYDOWN("Attack2")) {
+		Attack();
+
+		if (m_iDir == -1)
+			m_pAnimation->ChangeClip(L"PlayerAttack2Left");
+
+		if (m_iDir == 1)
+			m_pAnimation->ChangeClip(L"PlayerAttack2Right");
+	}
+
+	if (KEYDOWN("Attack3")) {
+		Attack();
+
+		if (m_iDir == -1)
+			m_pAnimation->ChangeClip(L"PlayerAttack3Left");
+
+		if (m_iDir == 1)
+			m_pAnimation->ChangeClip(L"PlayerAttack3Right");
+	}
+
+	if (KEYUP("Attack4")) {
+		Attack();
+
+		if (m_iDir == -1)
+			m_pAnimation->ChangeClip(L"PlayerAttack4Left");
+
+		if (m_iDir == 1)
+			m_pAnimation->ChangeClip(L"PlayerAttack4Right");
+
+		Fire();
+	}
+
 	if (KEYUP("Fire")) {
 		Fire(); 
 	}
@@ -199,8 +254,6 @@ void CPlayer::Input(float fDeltaTime)
 		}*/
 		bJump = true;
 	}
-
-
 }
 
 int CPlayer::Update(float fDeltaTime)
@@ -227,14 +280,30 @@ int CPlayer::Update(float fDeltaTime)
 		// m_tPos.y += GRAVITY * fDeltaTime;
 		 Pow.bottom -= Pow.bottom * fDeltaTime;
 	}
+
+	if (bJump == true  &&
+		m_bAttack==false ) {
+
+		if (m_iDir == -1){
+			m_pAnimation->ChangeClip(L"PlayerJumpLeft");
+		}
+		else {
+			m_pAnimation->ChangeClip(L"PlayerJumpRight");
+		}
+	}
+
 	if (m_bAttack == true && m_pAnimation->GetMotionEnd()) {
 		m_bAttack = false;
 	}
 
-	if (m_bMove==false && m_bAttack==false) {
+	if (m_bMove==false && m_bAttack==false &&
+		bJump==false ) {
 		m_pAnimation->ReturnClip();
 	}
 
+	//if (bDead == true) {
+	//	MoveAngle(rand() % 360,fDeltaTime);
+	//}
 	return 0;
 }
 
@@ -252,13 +321,19 @@ void CPlayer::Collision(float fDeltaTime)
 void CPlayer::Render(HDC hDC, float fDeltaTime)
 {
 	CMoveObj::Render(hDC, fDeltaTime);
-	wchar_t strHP[32] = {};
-	wsprintf(strHP, L"HP : %d", m_iHP);
-	POSITION Pos = GetPos();
-	//Pos.x -= m_tImageOffset.x / 2;
 
-	TextOut(hDC, Pos.x, Pos.y,
-		strHP, lstrlen(strHP));
+#ifdef _DEBUG
+	{
+		wchar_t strHP[32] = {};
+		wsprintf(strHP, L"HP : %d", m_iHP);
+		POSITION Pos = GetCollisionPos();
+
+		TextOut(hDC, Pos.x, Pos.y,
+			strHP, lstrlen(strHP));
+	}
+#endif _DEBUG
+
+	//CObj::DebugCollisionPrint(hDC);
 }
 CPlayer* CPlayer::Clone()
 {
@@ -271,16 +346,38 @@ void CPlayer::Fire()
 
 	POSITION tPos;
 	
+	/*auto [ColX,ColY]  = GetCollisionPos();*/
+
 	if (m_iDir == -1) {
-		tPos.x = GetLeft() - pBullet->GetSize().x * (
+		tPos.x = GetCenter().x - pBullet->GetSize().x * (
 			1.f - pBullet->GetPivot().x);
 	}
-	else
-		tPos.x = GetRight() - pBullet->GetSize().x * pBullet->GetPivot().x;
-
+	else if(m_iDir==1){
+		tPos.x = GetCenter().x  + pBullet->GetSize().x * (
+		pBullet->GetPivot().x);
+	}
 	tPos.y = GetCenter().y;
 	pBullet->SetPos(tPos);
+
+	if (auto DirSetUp = dynamic_cast<CMoveObj*>(pBullet); DirSetUp!=nullptr) {
+		DirSetUp->SetDir(GetDir());
+	}
 	SAFE_RELEASE(pBullet); 
+}
+void CPlayer::Dead()&
+{
+	bDead = true; 
+	
+	if (GetDir() == -1) {
+		m_pAnimation->ChangeClip(L"PlayerDeadLeft");
+		m_pAnimation->SetDefaultClip(L"PlayerDeadLeft");
+	}
+	
+	if (GetDir() == 1) {
+		m_pAnimation->ChangeClip(L"PlayerDeadRight");
+		m_pAnimation->SetDefaultClip(L"PlayerDeadRight");
+	}
+	
 }
 void CPlayer::Hit(CObj* const Target, float fDeltaTime)
 {

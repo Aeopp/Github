@@ -10,6 +10,7 @@
 #include "Object/Stage.h"
 #include "../CMath.h"
 #include "../Pixel.h"
+#include "../DataTable.h"
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CSceneManager);

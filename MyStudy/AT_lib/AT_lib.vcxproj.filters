@@ -64,6 +64,9 @@
     <Filter Include="05.Colinder\04.Resources">
       <UniqueIdentifier>{52b5f7db-4780-49d4-9456-013ab9d460eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.UI">
+      <UniqueIdentifier>{d0b72f7f-0696-4ac8-a443-b7058fd0aaaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Game.h">
@@ -165,6 +168,15 @@
     <ClInclude Include="CAnimation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\Object\UI.h">
+      <Filter>04.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\UIPanel.h">
+      <Filter>04.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="StartScene.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AT_lib.rc">
@@ -252,6 +264,15 @@
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>06.Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\UI.cpp">
+      <Filter>04.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\UIPanel.cpp">
+      <Filter>04.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="StartScene.cpp">
+      <Filter>02.Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

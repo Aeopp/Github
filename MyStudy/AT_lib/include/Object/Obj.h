@@ -50,15 +50,15 @@ protected:
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
 	list<std::pair<class CObj*,ECOLLISION_STATE>> HitList;
-private:
+protected:
 	// 렌더이후에 출력해서 좌표 확인
 	void DebugCollisionPrint(HDC hDC) {
 		auto Center = GetCollisionCenter();
-		auto [left,top,right,bottom ] = GetCollisionRect();
+		auto [left, top, right, bottom] = GetCollisionRect();
 		auto Pos = GetCollisionPos();
-		Ellipse(hDC, Center.x, Center.y, Center.x+5, Center.y+5);		
-		Rectangle(hDC, left, top , right, bottom );
-		Rectangle(hDC, Pos.x, Pos.y , Pos.x+5, Pos.y+5);
+		Ellipse(hDC, Center.x, Center.y, Center.x + 5, Center.y + 5);
+		Rectangle(hDC, left, top, right, bottom);
+	 Rectangle(hDC, Pos.x, Pos.y, Pos.x + 5, Pos.y + 5);
 	}
 public:
 	

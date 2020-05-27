@@ -176,6 +176,8 @@
     <ClInclude Include="include\Object\Player.h" />
     <ClInclude Include="include\Object\Stage.h" />
     <ClInclude Include="include\Object\StaticObj.h" />
+    <ClInclude Include="include\Object\UI.h" />
+    <ClInclude Include="include\Object\UIPanel.h" />
     <ClInclude Include="include\resource.h" />
     <ClInclude Include="include\Resources\ResourcesManager.h" />
     <ClInclude Include="include\Resources\Texture.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="include\Types.h" />
     <ClInclude Include="Pixel.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StartScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AT_lib.rc" />
@@ -211,6 +214,8 @@
     <ClCompile Include="include\Object\Player.cpp" />
     <ClCompile Include="include\Object\Stage.cpp" />
     <ClCompile Include="include\Object\StaticObj.cpp" />
+    <ClCompile Include="include\Object\UI.cpp" />
+    <ClCompile Include="include\Object\UIPanel.cpp" />
     <ClCompile Include="include\Resources\ResourcesManager.cpp" />
     <ClCompile Include="include\Resources\Texture.cpp" />
     <ClCompile Include="include\Scene\CIngameScene.cpp" />
@@ -218,6 +223,7 @@
     <ClCompile Include="include\Scene\CSceneManager.cpp" />
     <ClCompile Include="include\Scene\Layer.cpp" />
     <ClCompile Include="Pixel.cpp" />
+    <ClCompile Include="StartScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bitmap1.bmp" />

@@ -12,11 +12,27 @@ protected:
 	bool m_bFalling;
 	float m_fForce; 
 	float m_fForceOrigin; 
+	int m_iDir;
 protected: 
 	CMoveObj();
 	virtual ~CMoveObj() noexcept {}; 
 	CMoveObj(const CMoveObj& Obj); 
 public :
+	float GetDirToPI() {
+		if (GetDir()== 1) {
+			return 0 / PI;
+		}
+		if (GetDir() == -1) {
+			return PI;
+		}
+		return 0;
+	}
+	int GetDir()const& {
+		return m_iDir;
+	}
+	virtual void SetDir(int Dir)& {
+		m_iDir = Dir; 
+	}
 	void SetForce(float fForce) {
 		m_fForceOrigin = fForce;
 	}
@@ -43,8 +59,9 @@ public :
 	void MoveX(float x,float fDeltaTime);
 	void MoveY(float y);
 	void MoveY(float y, float fDeltaTime);
-	void MoveAngle( float fDeltaTime); 
-	void MoveAngle();
+	virtual void MoveAngle(float Angle, float fDeltaTime);
+	virtual void MoveAngle( float fDeltaTime); 
+	virtual void MoveAngle();
 	void Jump();
 	void JumpEnd(); 
 public : 
