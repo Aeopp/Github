@@ -145,6 +145,26 @@ bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMAT
 
 	return true; 
 }
+bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const vector<wstring>& vecFileName, const wstring& strPathKey)
+{
+	if (!m_pAnimation)
+		return false;
+
+	m_pAnimation->AddClip(strName,
+		eType, eOption,
+		fAnimationLimitTime,
+		iFrameMaxX,
+		iFrameMaxY,
+		iStartX, iStartY,
+		iLengthX,
+		iLengthY,
+		fOptionLimitTime,
+		strTexKey,
+		vecFileName, strPathKey);
+
+
+	return true;
+}
 void CObj::SetAnimationClipColorkey(const wstring& strClip, unsigned char r, unsigned char g, unsigned char b)
 {
 	if(m_pAnimation)
@@ -213,40 +233,6 @@ int CObj::Update(float fDeltaTime)
 		m_pAnimation->Update(fDeltaTime);
 	}
 	return 0;
-	/*list<CColliderRect*>::iterator iter;
-	list<CColliderRect*>::iterator iterEnd = m_ColliderList.end();
-
-	for (iter = m_ColliderList.begin(); iter != iterEnd;) {
-		if (!(*iter)->GetEnable()) {
-			++iter;
-			continue;
-		}
-		(*iter)->Update(fDeltaTime);
-		if (!(*iter)->GetLife()) {
-			SAFE_RELEASE((*iter));
-			iter = m_ColliderList.erase(iter);
-			iterEnd = m_ColliderList.end();
-		}
-		else
-			++iter;
-	}
-
-	return 0;*/
-
-	/*for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
-		){
-		if (!(*iter)->GetEnable()) {
-			++iter;
-			continue;
-		}
-		(*iter)->Update(fDeltaTime);
-		if (!(*iter)->GetLife()) {
-			SAFE_RELEASE((*iter));
-			iter = m_CollinderList.erase(iter);
-		}
-		else ++iter;
-	}
-	return 0;*/
 }
 
 int CObj::LateUpdate(float fDeltaTime)
@@ -344,9 +330,10 @@ void CObj::Hit(CObj* const Target, float fDeltaTime)
 void CObj::Render(HDC hDC, float fDeltaTime)
 {
 	if (m_pTexture) {
+
 		/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
 		*/
-
+		
 		POSITION tPos = m_tPos - m_tSize * m_tPivot;
 		tPos -= GET_SINGLE(CCamera)->GetPos();
 
@@ -356,9 +343,14 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 			PANIMATIONCLIP pClip =
 				m_pAnimation->GetCurrentClip();
 
-			tImagePos.x = pClip->iFrameX * m_tSize.x;
-			tImagePos.y = pClip->iFrameY * m_tSize.y;
+			if (pClip->eType == AT_ATLAS) {
+				tImagePos.x = pClip->iFrameX * pClip->tFrameSize.x;
+				tImagePos.y = pClip->iFrameY * pClip->tFrameSize.y;
+			}
+			
 		}
+
+		tImagePos += m_tImageOffset;
 
 		if (m_pTexture->GetColorKeyEnable()==true) {
 			TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
@@ -391,24 +383,6 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 		else
 			++iter;
 	}
-
-	//list<CColliderRect*>::iterator iter;
-	//list<CColliderRect*>::iterator iterEnd = m_ColliderList.end();
-
-	//for (iter = m_ColliderList.begin(); iter != iterEnd;) {
-	//	if (!(*iter)->GetEnable()) {
-	//		++iter;
-	//		continue;
-	//	}
-	//	(*iter)->Render(hDC,fDeltaTime);
-	//	if (!(*iter)->GetLife()) {
-	//		SAFE_RELEASE((*iter));
-	//		iter = m_ColliderList.erase(iter);
-	//		iterEnd = m_ColliderList.end();
-	//	}
-	//	else
-	//		++iter;
-	//}
 }
 
 CObj* CObj::CreateCloneObj(const wstring& strTagPrototypeKey, const wstring& strTag, class CLayer* pLayer)

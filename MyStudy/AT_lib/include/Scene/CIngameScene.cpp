@@ -30,7 +30,7 @@ bool CIngameScene::Init()
 
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet");
 	pBullet->SetSize(369.f, 116.f);
-	pBullet->SetSpeed(100.f);
+	pBullet->SetSpeed(1.f);
 	SAFE_RELEASE(pBullet);
 
 	CLayer* pStageLayer = FindLayer(L"Stage");

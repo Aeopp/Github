@@ -12,9 +12,13 @@ private :
 	CPlayer(const CPlayer& Player); 
 private:
 	int m_iHP;
+	bool m_bAttack;
+	int m_iDir; 
 public:
 	RECTANGLE Pow = { 0,0,0,0 };
 	Vector JumpVector;
+	void Attack()&;
+
 	virtual bool Init();
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);

@@ -42,6 +42,7 @@ protected:
 	POSITION m_tRenderPos;
 	POSITION m_tRenderSize;
 	_SIZE m_tSize;
+	_SIZE m_tImageOffset;
 	POSITION m_tPivot;
 	list<class CCollider*> m_ColliderList;
 	class CAnimation* m_pAnimation; 
@@ -49,7 +50,45 @@ protected:
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
 	list<std::pair<class CObj*,ECOLLISION_STATE>> HitList;
+private:
+	// 렌더이후에 출력해서 좌표 확인
+	void DebugCollisionPrint(HDC hDC) {
+		auto Center = GetCollisionCenter();
+		auto [left,top,right,bottom ] = GetCollisionRect();
+		auto Pos = GetCollisionPos();
+		Ellipse(hDC, Center.x, Center.y, Center.x+5, Center.y+5);		
+		Rectangle(hDC, left, top , right, bottom );
+		Rectangle(hDC, Pos.x, Pos.y , Pos.x+5, Pos.y+5);
+	}
 public:
+	
+	POSITION __GetCollisionPos()const {
+		auto Pos = GetPos();
+		auto Size = GetSize();
+		auto Pivot = GetPivot();
+
+		POSITION tPos = Pos - Size * Pivot;
+		tPos -= GET_SINGLE(CCamera)->GetPos();
+
+		return tPos;
+	}
+	POSITION GetCollisionPos()const& {
+		auto [left,top,right,bottom ] = GetCollisionRect();
+		return POSITION{ left,top }; 
+	}
+	POSITION GetCollisionCenter()const& {
+		auto [left,top,right,bottom  ]  = GetCollisionRect();
+		return POSITION{ right - ((right - left) / 2 ),  bottom - ((bottom - top) / 2 )}; 
+	}
+	inline bool IsCorrection() const& noexcept{
+		return bCorrection;
+	}
+	inline POSITION GetCorrectionRenderToCollisionPos()const& {
+
+		auto [left, top, right, bottom] = GetCollisionRect();
+
+		return  POSITION{ (right-left)/2,(bottom-top)/2};
+	};
 	inline  RECTANGLE GetCorrectionRenderToCollision()const&{
 		return m_tCorrectionRenderToCollision; 
 	}
@@ -64,6 +103,13 @@ public:
 		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
 		int iLengthX, int iLengthY, float fOptionLimitTime,
 		const wstring& strTexKey, const wchar_t* pFileName,
+		const wstring& strPathKey = TEXTURE_PATH);
+
+	bool AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType,
+		ANIMATION_OPTION eOption, float fAnimationLimitTime,
+		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
+		int iLengthX, int iLengthY, float fOptionLimitTime,
+		const wstring& strTexKey, const vector<wstring >& vecFileName,
 		const wstring& strPathKey = TEXTURE_PATH);
 
 	void SetAnimationClipColorkey(const wstring& strClip, unsigned char r,
@@ -149,44 +195,21 @@ public:
 	/* list<class CCollider*>* GetColliderList() {
 		return &m_ColliderList;
 	}*/
-	POSITION GetCollisionPos()const {
-
-		if (bCorrection == true) {
-			auto Pos = GetPos();
-			auto Size = GetSize();
-			auto Pivot = GetPivot();
-
-			POSITION tPos = Pos - Size * Pivot;
-			tPos -= GET_SINGLE(CCamera)->GetPos();
-
-			tPos.x += GetCorrectionRenderToCollision().left;
-
-			tPos.y += GetCorrectionRenderToCollision().top;
-
-			return tPos;
-		}
-		if (bCorrection == false) {
-			auto Pos = GetPos();
-			auto Size = GetSize();
-			auto Pivot = GetPivot();
-
-			POSITION tPos = Pos - Size * Pivot;
-			tPos -= GET_SINGLE(CCamera)->GetPos();
-
-			return tPos;
-		}
-	}
 	RECTANGLE GetCollisionRect()const {
 		if (bCorrection == true) {
-			auto Pos = GetCollisionPos();
-			auto Correction = GetCorrectionRenderToCollision();
+			auto Pos = __GetCollisionPos();
+			//	left top origin plus
+			//	right bottom origin minus
+			RECTANGLE Origin = RECTANGLE{ Pos.x, Pos.y, Pos.x + m_tSize.x, Pos.y + m_tSize.y };
 
-			return RECTANGLE{ Pos.x , Pos.y, Pos.x + (Correction.right -
-				Correction.left), Pos.y + (Correction.bottom -
-				Correction.top) };
+			auto [left,top,right,bottom ] = GetCorrectionRenderToCollision();
+
+			RECTANGLE CollisionRect = RECTANGLE{ Origin.left + left, Origin.top + top, Origin.right- right, Origin.bottom- bottom };
+
+			return CollisionRect;
 		}
 		else if (bCorrection == false) {
-			auto Pos = GetCollisionPos();
+			auto Pos = __GetCollisionPos();
 			return RECTANGLE{ Pos.x, Pos.y, Pos.x + m_tSize.x, Pos.y + m_tSize.y };
 		}
 	}
@@ -240,6 +263,15 @@ public:
 	void SetPivot(float x,float y){
 		m_tPivot.x = x;
 		m_tPivot.y = y; 
+	}
+
+	void SetImageOffset(const _SIZE& tOffset) {
+		m_tImageOffset = tOffset;
+	}
+
+	void SetImageOffset(float x,float y) {
+		m_tImageOffset.x = x;
+		m_tImageOffset.y = y; 
 	}
 	void SetTag(wstring strTag) {
 		m_strTag = std::move(strTag);

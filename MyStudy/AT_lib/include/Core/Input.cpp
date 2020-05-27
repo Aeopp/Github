@@ -10,8 +10,9 @@ bool CInput::Init(HWND hWnd)
 	AddKey('S', "MoveBack");
 	AddKey("MoveLeft", VK_LEFT);
 	AddKey("MoveRight", VK_RIGHT);
-	AddKey("Fire", VK_SPACE);
+	AddKey("Fire",'Q');
 	AddKey(VK_CONTROL, "Skill1", '1');
+	AddKey(VK_CONTROL, "Attack");
 
 	return true; 
 }

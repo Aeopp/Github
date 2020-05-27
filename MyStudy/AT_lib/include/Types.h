@@ -195,6 +195,7 @@ struct AnimationClip {
 
 	float fOptionTime;
 	float fOptionLimitTime;
+	_SIZE tFrameSize; 
 };
 
 using ANIMATIONCLIP = AnimationClip;

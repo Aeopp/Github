@@ -24,6 +24,12 @@ public:
 	bool GetColorKeyEnable()const {
 		return m_bColorKeyEnable;
 	}
+	long GetWidth()const {
+		return m_tInfo.bmWidth;
+	}
+	long GetHeight()const {
+		return m_tInfo.bmHeight;
+	}
 	CTexture();
 	~CTexture();
 	bool LoadTexture(HINSTANCE hInst,HDC hDC,

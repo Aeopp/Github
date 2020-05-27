@@ -3,7 +3,8 @@
 #include "include/Resources/ResourcesManager.h"
 #include "include/Object/Obj.h"
 CAnimation::CAnimation():
-	m_pCurClip(NULL)
+	m_pCurClip(NULL),
+	m_bMotionEnd{ false } 
 {
 
 }
@@ -11,7 +12,7 @@ CAnimation::CAnimation():
 CAnimation::CAnimation(const CAnimation& anim)
 {
 	*this = anim;  
-
+	m_bMotionEnd = false;
 	m_mapClip.clear();
 	unordered_map<wstring, PANIMATIONCLIP>::const_iterator iter;
 	unordered_map<wstring, PANIMATIONCLIP>::const_iterator iterEnd = anim.m_mapClip.end();
@@ -68,8 +69,11 @@ bool CAnimation::AddClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION
 	CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey,
 		pFileName, strPathKey);
 
-	pClip->vecTexture.push_back(pTex);
+	pClip->tFrameSize.x = pTex->GetWidth()/iFrameMaxX;
+	pClip->tFrameSize.y = pTex->GetHeight()
+		/iFrameMaxY;
 
+	pClip->vecTexture.push_back(pTex);
 
 	pClip->fAnimationTime = 0.f;
 	pClip->iFrameX = iStartX;
@@ -85,6 +89,55 @@ bool CAnimation::AddClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION
 		SetCurrentClip(strName);
 	}
 	
+
+	return true;
+}
+bool CAnimation::AddClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const vector<wstring >& vecFileName, const wstring& strPathKey)
+{
+	PANIMATIONCLIP pClip = new ANIMATIONCLIP;
+
+	pClip->eType = eType;
+	pClip->eOption = eOption;
+	pClip->fAnimationLimitTime = fAnimationLimitTime;
+	pClip->iFrameMaxX = iFrameMaxX;
+	pClip->iFrameMaxY = iFrameMaxY;
+	pClip->iStartX = iStartX;
+	pClip->iStartY = iStartY;
+	pClip->iLengthX = iLengthX;
+	pClip->iLengthY = iLengthY;
+	pClip->fOptionLimitTime = fOptionLimitTime;
+	pClip->fAnimationFrameTime =
+		fAnimationLimitTime / (iLengthX * iLengthY);
+
+	for (size_t i = 0; i < vecFileName.size(); ++i) {
+		char strKey[256] = {};
+
+		sprintf_s(strKey, "%s%d", strTexKey.c_str(), i + 1);
+		CTexture* pTex = GET_SINGLE(CResourcesManager)->LoadTexture(strTexKey,
+			vecFileName[i].c_str(), strPathKey);	
+		
+		pClip->vecTexture.push_back(pTex);
+	}
+
+	pClip->tFrameSize.x = pClip->vecTexture[0]->GetWidth() / iFrameMaxX;
+	pClip->tFrameSize.y = pClip->vecTexture[0]->GetHeight()
+		/ iFrameMaxY;
+
+
+	pClip->fAnimationTime = 0.f;
+	pClip->iFrameX = iStartX;
+	pClip->iFrameY = iStartY;
+	pClip->fOptionTime = 0.f;
+
+	m_mapClip.insert(std::make_pair(strName, pClip));
+
+	if (m_strDefaultClip.empty()) {
+		SetDefaultClip(strName);
+	}
+	if (m_strCurClip.empty()) {
+		SetCurrentClip(strName);
+	}
+
 
 	return true;
 }
@@ -136,7 +189,12 @@ void CAnimation::ChangeClip(const wstring& strClip)
 
 
 	if (m_pCurClip->eType == AT_FRAME)
-		m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameX/*iFrameY*/]);
+		m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameY/*iFrameY*/]);
+}
+
+void CAnimation::ReturnClip()
+{
+	ChangeClip(m_strDefaultClip);
 }
 
 PANIMATIONCLIP CAnimation::FindClip(const wstring strName)
@@ -156,6 +214,8 @@ bool CAnimation::Init()
 
 void CAnimation::Update(float fTime)
 {
+	m_bMotionEnd = false;
+
 
 	m_pCurClip->fAnimationTime += fTime;
 
@@ -165,15 +225,20 @@ void CAnimation::Update(float fTime)
 
 		++m_pCurClip->iFrameY;
 
+	
 		if (m_pCurClip->iFrameY
 			- m_pCurClip->iStartY == m_pCurClip->iLengthY) {
 			m_pCurClip->iFrameY = m_pCurClip->iStartY;
 			++m_pCurClip->iFrameX;
 
+			if (m_pCurClip->eType == AT_FRAME)
+				m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameY/*iFrameY*/]);
+
+
 			if (m_pCurClip->iFrameX - m_pCurClip->iStartX ==
 				m_pCurClip->iLengthX) {
 				m_pCurClip->iFrameX = m_pCurClip->iStartX;
-
+				m_bMotionEnd = true;
 				switch (m_pCurClip->eOption) {
 				case AO_ONCE_RETURN:
 					ChangeClip(m_strDefaultClip);
@@ -187,6 +252,10 @@ void CAnimation::Update(float fTime)
 					break;
 				}
 			}
+		}
+		else {
+			if (m_pCurClip->eType == AT_FRAME)
+				m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameY/*iFrameY*/]);
 		}
 	}
 	/*m_pCurClip->fAnimationTime += fTime;

@@ -12,6 +12,8 @@ CMoveObj::CMoveObj():
 CMoveObj::CMoveObj(const CMoveObj& Obj) :
 	CObj(Obj)
 {
+	*this = Obj;
+
 	m_fAngle = Obj.m_fAngle;
 	m_fSpeed = Obj.m_fSpeed;
 
@@ -51,39 +53,47 @@ void CMoveObj::Move(float x, float y)
 
 void CMoveObj::Move(const POSITION& tMove)
 {
-	m_tPos += tMove; m_bMove = true;
+	m_tPos += tMove; 
+	m_bMove = true;
 };
 
 void CMoveObj::Move(const POSITION& tMove, float fDeltaTime)
 {
-	m_tPos += tMove * fDeltaTime; m_bMove = true;
+	m_tPos += tMove * fDeltaTime; 
+	m_bMove = true;
 }
 void CMoveObj::MoveX(float x)
 {
-	m_tPos.x += x; m_bMove = true;
+	m_tPos.x += x; 
+	m_bMove = true;
 }
 void CMoveObj::MoveX(float x, float fDeltaTime)
 {
-	m_tPos.x += x * fDeltaTime; m_bMove = true;
+	m_tPos.x += x * fDeltaTime;
+	m_bMove = true;
 }
 void CMoveObj::MoveY(float y)
 {
-	m_tPos.y += y ; m_bMove = true;
+	m_tPos.y += y ;
+	m_bMove = true;
 }
 void CMoveObj::MoveY(float y, float fDeltaTime)
 {
-	m_tPos.y += y * fDeltaTime; m_bMove = true;
+	m_tPos.y += y * fDeltaTime;
+	m_bMove = true;
 }
 void CMoveObj::MoveAngle( float fDeltaTime)
 {
 	m_tPos.x+=std::cosf(m_fAngle) * m_fSpeed * fDeltaTime;
-	m_tPos.y+=std::sinf(m_fAngle) *  m_fSpeed * fDeltaTime; m_bMove = true;
+	m_tPos.y+=std::sinf(m_fAngle) *  m_fSpeed * fDeltaTime;
+	m_bMove = true;
 };
 
 void CMoveObj::MoveAngle()
 {
 	m_tPos.x += std::cosf(m_fAngle) * m_fSpeed;
-	m_tPos.y += std::sinf(m_fAngle) * m_fSpeed; m_bMove = true;
+	m_tPos.y += std::sinf(m_fAngle) * m_fSpeed;
+	m_bMove = true;
 }
 void CMoveObj::Jump()
 {
@@ -108,10 +118,14 @@ void CMoveObj::Input(float fDeltaTime)
 int CMoveObj::Update(float fDeltaTime)
 {
 	if (m_bIsPhysics == true) {
-
-		m_fGravityTime += fDeltaTime ;
-
-		m_tPos.y += (GRAVITY * m_fGravityTime * m_fGravityTime);
+		/*if (bJump==true) {
+			m_fGravityTime += GRAVITY * fDeltaTime;
+			m_tPos.y += m_fGravityTime;
+		}*/
+		{
+			m_fGravityTime +=  fDeltaTime;
+		 m_tPos.y   += (GRAVITY * m_fGravityTime * m_fGravityTime);
+		}
 	};
 
 	CObj::Update(fDeltaTime);
