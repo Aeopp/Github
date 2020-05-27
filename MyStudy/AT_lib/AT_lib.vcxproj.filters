@@ -43,9 +43,6 @@
     <Filter Include="01.Core\02.Path">
       <UniqueIdentifier>{d05dab48-2a97-4808-9c5a-5ff7032f798e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Resources">
-      <UniqueIdentifier>{52b5f7db-4780-49d4-9456-013ab9d460eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Object\02.StaticObj\01.Stage">
       <UniqueIdentifier>{668402cd-cba3-40e2-804a-ea7453a5ad30}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,12 @@
     </Filter>
     <Filter Include="05.Colinder">
       <UniqueIdentifier>{a3dc4790-269f-46ca-8824-099e80413241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Animation">
+      <UniqueIdentifier>{670d3e86-9917-4276-b7bb-8772b39caeae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Colinder\04.Resources">
+      <UniqueIdentifier>{52b5f7db-4780-49d4-9456-013ab9d460eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,13 +118,13 @@
       <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
     </ClInclude>
     <ClInclude Include="include\Resources\ResourcesManager.h">
-      <Filter>04.Resources</Filter>
+      <Filter>05.Colinder\04.Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Core\PathManager.h">
-      <Filter>04.Resources</Filter>
+      <Filter>05.Colinder\04.Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Resources\Texture.h">
-      <Filter>04.Resources</Filter>
+      <Filter>05.Colinder\04.Resources</Filter>
     </ClInclude>
     <ClInclude Include="include\Object\Stage.h">
       <Filter>03.Object\02.StaticObj\01.Stage</Filter>
@@ -145,6 +148,21 @@
       <Filter>05.Colinder</Filter>
     </ClInclude>
     <ClInclude Include="include\Types.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DataTable.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CMath.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Pixel.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -191,13 +209,13 @@
       <Filter>03.Object\01.MoveObj\03.Bullet</Filter>
     </ClCompile>
     <ClCompile Include="include\Resources\ResourcesManager.cpp">
-      <Filter>04.Resources</Filter>
+      <Filter>05.Colinder\04.Resources</Filter>
     </ClCompile>
     <ClCompile Include="include\Core\PathManager.cpp">
-      <Filter>04.Resources</Filter>
+      <Filter>05.Colinder\04.Resources</Filter>
     </ClCompile>
     <ClCompile Include="include\Resources\Texture.cpp">
-      <Filter>04.Resources</Filter>
+      <Filter>05.Colinder\04.Resources</Filter>
     </ClCompile>
     <ClCompile Include="include\Object\Stage.cpp">
       <Filter>03.Object\02.StaticObj\01.Stage</Filter>
@@ -222,6 +240,18 @@
     </ClCompile>
     <ClCompile Include="include\Object\StaticObj.cpp">
       <Filter>03.Object\02.StaticObj\01.Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="CMath.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Pixel.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>06.Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

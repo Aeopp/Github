@@ -5,6 +5,9 @@
 #include "../Object/Stage.h"
 #include "../Core/Camera.h"
 #include "Layer.h"
+#include "../../Pixel.h"
+#include "../../Ground.h"
+
 CIngameScene::~CIngameScene() noexcept
 {}
 
@@ -17,7 +20,7 @@ bool CIngameScene::Init()
 
 	auto* pPlayer = CObj::CreateObj<CPlayer>(L"Player", pLayer); 
 	GET_SINGLE(CCamera)->SetTarget(pPlayer);
-	GET_SINGLE(CCamera)->SetPivot(0.8f, 0.3f);
+	GET_SINGLE(CCamera)->SetPivot(0.5f, 0.3f);
 
 	SAFE_RELEASE(pPlayer);
 
@@ -27,14 +30,22 @@ bool CIngameScene::Init()
 
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet");
 	pBullet->SetSize(369.f, 116.f);
-	pBullet->SetSpeed(660.f);
+	pBullet->SetSpeed(100.f);
 	SAFE_RELEASE(pBullet);
-	
+
 	CLayer* pStageLayer = FindLayer(L"Stage");
 
 	CStage* pStage = CObj::CreateObj<CStage>(L"Stage", pStageLayer);
-	SAFE_RELEASE(pStage); 
 
+	CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
+	Ground->SetPos(0,1400);
+	Ground->SetSize(POSITION{ 2695,20 });
+
+	//CPixel* pPixel = CObj::CreateObj<CPixel>(L"StageColl", pStageLayer);
+	//pPixel->SetPixelInfo("Happy.bmp");
+	//SAFE_RELEASE(pPixel);
+
+	SAFE_RELEASE(pStage); 
 
 	return true;
 }

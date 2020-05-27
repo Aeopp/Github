@@ -5,13 +5,21 @@ class CMoveObj :
 	public CObj
 {
 protected:
+	bool bJump = false; 
 	float m_fAngle; 
 	float m_fSpeed; 
+	bool m_bMove;
+	bool m_bFalling;
+	float m_fForce; 
+	float m_fForceOrigin; 
 protected: 
 	CMoveObj();
 	virtual ~CMoveObj() noexcept {}; 
 	CMoveObj(const CMoveObj& Obj); 
 public :
+	void SetForce(float fForce) {
+		m_fForceOrigin = fForce;
+	}
 	void SetAngle(float fAngle) {
 		m_fAngle = fAngle; 
 	}
@@ -37,6 +45,8 @@ public :
 	void MoveY(float y, float fDeltaTime);
 	void MoveAngle( float fDeltaTime); 
 	void MoveAngle();
+	void Jump();
+	void JumpEnd(); 
 public : 
 	virtual bool Init() = 0; 
 	virtual void Input(float fDeltaTime);

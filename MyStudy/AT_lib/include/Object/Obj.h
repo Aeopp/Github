@@ -11,6 +11,18 @@ protected:
 public:
 	static inline list<CObj*> m_ObjList;
 public:
+	float m_fForce = 0.f;
+	POSITION m_tHitPoint;
+	void ClearGravity() {
+		m_fGravityTime = 0.f;
+	}
+	RECTANGLE Pow = { 0,0,0,0 };
+	Vector vector2D = { 0,0,0 };
+
+	POSITION GetHitPoint()const {
+		return m_tHitPoint;
+	}
+
 	virtual ~CObj();
 	static void AddObj(CObj* pObj);
 	static CObj* FindObject(const wstring& strTag);
@@ -19,17 +31,63 @@ public:
 	static void EraseObj(const wstring& strTag);
 	static void EraseObj();
 protected:
+	RECTANGLE m_tCorrectionRenderToCollision = { 0,0,0,0 }; 
+	bool bCorrection = false; 
+	ECollision_Tag Collision_Tag = ECollision_Tag::Rect;
+	bool m_bIsPhysics;
+	float m_fGravityTime; 
 	int m_iRef;
 	wstring m_strTag;
 	POSITION m_tPos;
+	POSITION m_tRenderPos;
+	POSITION m_tRenderSize;
 	_SIZE m_tSize;
 	POSITION m_tPivot;
 	list<class CCollider*> m_ColliderList;
+	class CAnimation* m_pAnimation; 
 	class CScene* m_pScene;
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
 	list<std::pair<class CObj*,ECOLLISION_STATE>> HitList;
 public:
+	inline  RECTANGLE GetCorrectionRenderToCollision()const&{
+		return m_tCorrectionRenderToCollision; 
+	}
+	inline void SetCorrectionRenderToCollision(RECTANGLE Target)&{
+		bCorrection = true; 
+		m_tCorrectionRenderToCollision = std::move_if_noexcept(Target); 
+	}
+	class CAnimation* CreateAnimation(const wstring& strTag);
+
+	bool AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType,
+		ANIMATION_OPTION eOption, float fAnimationLimitTime,
+		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
+		int iLengthX, int iLengthY, float fOptionLimitTime,
+		const wstring& strTexKey, const wchar_t* pFileName,
+		const wstring& strPathKey = TEXTURE_PATH);
+
+	void SetAnimationClipColorkey(const wstring& strClip, unsigned char r,
+		unsigned char g, unsigned char b);
+
+
+	void SetGravityTime(float SetGravity)& {
+		m_fGravityTime = SetGravity;
+	}
+	float GetGravityTime()const& {
+		return m_fGravityTime;
+	}
+	ECollision_Tag GetCollisionTag()const& {
+		return Collision_Tag;
+	}
+	void SetCollisionTag(ECollision_Tag Tag) {
+		 Collision_Tag = Tag; 
+	}
+	void SetPhysics(bool bPhysics)& {
+		m_bIsPhysics = bPhysics;
+	}
+	bool GetPhysics() const& {
+		return m_bIsPhysics;
+	};
 	/*inline void SetHitList(class CObj* ObjKey,ECOLLISION_STATE NewEState)& {
 		auto is_find = std::find_if(HitList.begin(), HitList.end(),
 			[&ObjKey](auto Pair) {if (Pair.first == ObjKey) return true; else return false; });
@@ -74,21 +132,63 @@ public:
 			return {nullptr,ECOLLISION_STATE::Nothing};
 		}
 	}
+
+	inline list<std::pair<class CObj*, ECOLLISION_STATE>>::iterator GetHitListIter(class CObj* Obj) {
+		auto is_find = std::find_if(std::begin(HitList), std::end(HitList),
+			[Obj](auto Pair) {
+				if (Pair.first == Obj)return true;
+			});
+
+		if (is_find != std::end(HitList)) {
+			return is_find;
+		}
+		else {
+			return std::end(HitList);
+		}
+	}
 	/* list<class CCollider*>* GetColliderList() {
 		return &m_ColliderList;
 	}*/
 	POSITION GetCollisionPos()const {
-		auto Pos = GetPos();
-		auto Size = GetSize();
-		auto Pivot = GetPivot();
 
-		POSITION tPos = Pos - Size * Pivot;
-		tPos -= GET_SINGLE(CCamera)->GetPos();
-		return tPos; 
+		if (bCorrection == true) {
+			auto Pos = GetPos();
+			auto Size = GetSize();
+			auto Pivot = GetPivot();
+
+			POSITION tPos = Pos - Size * Pivot;
+			tPos -= GET_SINGLE(CCamera)->GetPos();
+
+			tPos.x += GetCorrectionRenderToCollision().left;
+
+			tPos.y += GetCorrectionRenderToCollision().top;
+
+			return tPos;
+		}
+		if (bCorrection == false) {
+			auto Pos = GetPos();
+			auto Size = GetSize();
+			auto Pivot = GetPivot();
+
+			POSITION tPos = Pos - Size * Pivot;
+			tPos -= GET_SINGLE(CCamera)->GetPos();
+
+			return tPos;
+		}
 	}
 	RECTANGLE GetCollisionRect()const {
-		auto Pos = GetCollisionPos();
-		return RECTANGLE{ Pos.x, Pos.y, Pos.x + m_tSize.x, Pos.y + m_tSize.y };
+		if (bCorrection == true) {
+			auto Pos = GetCollisionPos();
+			auto Correction = GetCorrectionRenderToCollision();
+
+			return RECTANGLE{ Pos.x , Pos.y, Pos.x + (Correction.right -
+				Correction.left), Pos.y + (Correction.bottom -
+				Correction.top) };
+		}
+		else if (bCorrection == false) {
+			auto Pos = GetCollisionPos();
+			return RECTANGLE{ Pos.x, Pos.y, Pos.x + m_tSize.x, Pos.y + m_tSize.y };
+		}
 	}
 	const list<class CCollider*>* GetColliderList()const {
 		return &m_ColliderList;
@@ -167,6 +267,7 @@ public:
 	void SetTexture(const wstring& strKey,
 		const wchar_t* pFileName = nullptr,
 		const wstring& strPathKey = TEXTURE_PATH); 
+	void SetColorKey(unsigned char r, unsigned char g, unsigned char b);
 public:
 	virtual bool Init() = 0;
 	virtual void Input(float fDeltaTime);
@@ -211,6 +312,7 @@ public:
 		m_ColliderList.push_back(pCollider);
 		return pCollider;
 	}
+
 
 	bool CheckCollider(){
 		return !m_ColliderList.empty(); 

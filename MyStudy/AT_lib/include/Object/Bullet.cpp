@@ -4,7 +4,6 @@
 CBullet::CBullet():
 	m_fDist(0.f),
 	m_fLimitDist{ 1000.f }{
-
 }
 
 CBullet::CBullet(const CBullet& Obj):
@@ -16,14 +15,14 @@ CBullet::CBullet(const CBullet& Obj):
 
 bool CBullet::Init()
 {
-	SetSpeed(500.f);
+	SetSpeed(100.f);
 	SetPivot(0.5f, 0.5f);
 	SetTexture(L"Bullet", L"Skill_1.bmp");
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
 	
-	CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
+	/*CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
 	pRC->SetRect(-184.5f, -58.f, 184.5f, 58.f);
-	SAFE_RELEASE(pRC);
+	SAFE_RELEASE(pRC);*/
 	//CColliderRect* pRC = AddCollider<CColliderRect>(L"Bullet");
 	// 369 116
 
@@ -58,12 +57,28 @@ void CBullet::Render(HDC hDC, float fDeltaTime)
 	CMoveObj::Render(hDC,fDeltaTime); 
 }
 
-void CBullet::Hit(CObj* const Target, float fDeltaTime)
+void CBullet::Hit(CObj* const pDest, float fDeltaTime)
 {
-	CObj::Hit(Target, fDeltaTime);
+	CObj::Hit(pDest,fDeltaTime);
+	
+	if (GetTag() == L"PlayerBullet"
+		&& pDest->GetTag() == L"Mushroom"   ){
+		Die();
+	}
+	else if (GetTag() == L"MushroomBullet"
+		&&pDest->GetTag() == L"Player") {
+		Die();
+	}
+	//if (Target->GetTag() == this->GetTag()) {
+
+	//}
+	//else {
+	//	Die();
+	//}
 }
 
 CBullet* CBullet::Clone()
 {
 	return new CBullet{ *this }; 
 }
+

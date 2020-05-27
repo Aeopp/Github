@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Windows.h>
 #include <utility>
 #include <list>
@@ -8,6 +7,7 @@
 #include <type_traits>
 #include <functional>
 #include <crtdbg.h>K
+#include <conio.h>
 
 #include "Macro.h"
 #include "../resource.h"
@@ -17,6 +17,7 @@
 #pragma comment(lib,"msimg32")
 
 #define PI   3.141592 
+#define GRAVITY  9.8f
 // Path Key 
 #define ROOT_PATH    L"RootPath"
 #define TEXTURE_PATH   L"TexturePath"

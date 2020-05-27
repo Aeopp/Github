@@ -2,7 +2,7 @@
 #include "../Resources/Texture.h"
 #include "../CCore.h"
 #include "../Core/Camera.h"
-
+#include "../../DataTable.h"
 CStage::CStage():
 	CStaticObj()
 {
@@ -20,10 +20,11 @@ CStage::CStage(const CStage& Obj):
 bool CStage::Init()
 {
 	SetPos(0.f, 0.f);
-	SetSize(5830.f,3279.f);
+	SetSize(Stage::SizeWidth,
+		Stage::SizeHeight);
 	SetPivot(0.f, 0.f);
 
-	SetTexture(L"Stage1", L"Hennessy.bmp");
+	SetTexture(Stage::Key.c_str(), Stage::Filename.c_str());
 
 	return true;
 }

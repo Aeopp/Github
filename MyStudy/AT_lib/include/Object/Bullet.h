@@ -22,7 +22,7 @@ public:
 	virtual int  LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
-	virtual void Hit(CObj* const Target, float fDeltaTime);
+	virtual void Hit(CObj* const pDest, float fDeltaTime);
 	virtual CBullet* Clone()override;
 };
 

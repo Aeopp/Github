@@ -153,6 +153,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CMath.h" />
+    <ClInclude Include="DataTable.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="include\CCore.h" />
     <ClInclude Include="include\Collision\Colinder.h" />
     <ClInclude Include="include\Collision\ColinderRect.h" />
@@ -180,12 +184,16 @@
     <ClInclude Include="include\Scene\CSceneManager.h" />
     <ClInclude Include="include\Scene\Layer.h" />
     <ClInclude Include="include\Types.h" />
+    <ClInclude Include="Pixel.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AT_lib.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CMath.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="include\CCore.cpp" />
     <ClCompile Include="include\Collision\Colinder.cpp" />
     <ClCompile Include="include\Collision\ColinderRect.cpp" />
@@ -209,6 +217,7 @@
     <ClCompile Include="include\Scene\CScene.cpp" />
     <ClCompile Include="include\Scene\CSceneManager.cpp" />
     <ClCompile Include="include\Scene\Layer.cpp" />
+    <ClCompile Include="Pixel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bitmap1.bmp" />

@@ -5,10 +5,11 @@ bool CInput::Init(HWND hWnd)
 {
 	m_hWnd = hWnd;
 
+	AddKey(VK_SPACE, "Jump");
 	AddKey('W', "MoveFront");
 	AddKey('S', "MoveBack");
-	AddKey("MoveLeft", 'A');
-	AddKey("MoveRight", 'D');
+	AddKey("MoveLeft", VK_LEFT);
+	AddKey("MoveRight", VK_RIGHT);
 	AddKey("Fire", VK_SPACE);
 	AddKey(VK_CONTROL, "Skill1", '1');
 

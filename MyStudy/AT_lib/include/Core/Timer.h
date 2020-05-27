@@ -4,13 +4,13 @@
 class CTimer
 {
 private:
+	HWND m_hWnd;
 	LARGE_INTEGER m_tSecond;
 	LARGE_INTEGER m_tTime;
 	float m_fDeltaTime;
 	float m_fTimeScale; 
 	float m_fFPS;
 	float m_fFPSTime;
-	int m_iFrameMax;
 	int m_iFrame;
 public :
 	float GetDeltaTime() const {
@@ -23,7 +23,7 @@ public :
 		return m_fTimeScale; 
 	}
 public : 
-	bool Init(); 
+	bool Init(HWND hWnd); 
 	void Update();
 	void SetTimeScale(float fTimeScale)
 	{

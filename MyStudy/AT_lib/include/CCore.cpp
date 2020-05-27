@@ -8,6 +8,8 @@
 #include "Collision\CollisionManager.h"
 #include "Object/Mushroom.h"
 #include "Object/Stage.h"
+#include "../CMath.h"
+#include "../Pixel.h"
 void CCore::DestroyInst() {
 	SAFE_DELETE(m_pInst);
 	DESTROY_SINGLE(CSceneManager);
@@ -19,6 +21,10 @@ void CCore::DestroyInst() {
 	DESTROY_SINGLE(CTimer);
 
 	ReleaseDC(m_hWnd, m_hDC);
+
+#ifdef _DEBUG
+	FreeConsole();
+#endif
 }
 
 bool CCore::Init(HINSTANCE hInst)
@@ -32,7 +38,7 @@ bool CCore::Init(HINSTANCE hInst)
 
 	m_hDC = GetDC(m_hWnd);
 
-	if (!GET_SINGLE(CTimer)->Init()){
+	if (!GET_SINGLE(CTimer)->Init(m_hWnd)){
 		return false;
 	}
 	if (!GET_SINGLE(CPathManager)->Init()){
@@ -45,7 +51,7 @@ bool CCore::Init(HINSTANCE hInst)
 		return false;
 	}
 	if (!GET_SINGLE(CCamera)->Init(POSITION{ 0.f, 0.f },
-		m_tRS, RESOLUTION(5830.f, 3279.f))){
+		m_tRS, RESOLUTION(2700.f, 1518.f))){
 		return false; 
 	}
 	if (!GET_SINGLE(CSceneManager)->Init()) {
@@ -140,13 +146,56 @@ void CCore::Collision(float fDeltaTime)
 
 	for (auto Outer = std::begin(CObj::m_ObjList);
 		Outer != std::end(CObj::m_ObjList);++Outer) {
+
 		auto Inner = Outer;
 		std::advance(Inner, 1);
 
 		for (Inner; Inner != std::end(CObj::m_ObjList); ++Inner) {
-			auto LhsRect = (*Inner)->GetCollisionRect();
-			auto RhsRect = (*Outer)->GetCollisionRect();
-			if (true == CollisionRectToRect(LhsRect, RhsRect)) {
+
+			if ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
+				(*Outer)->GetCollisionTag() == ECollision_Tag::Rect) {
+
+				auto LhsRect = (*Inner)->GetCollisionRect();
+				auto RhsRect = (*Outer)->GetCollisionRect();
+				if (true == CollisionRectToRect(LhsRect, RhsRect)) {
+					auto LhsTag = (*Inner)->GetTag();
+					auto RhsTag = (*Outer)->GetTag();
+
+					if (LhsTag == L"Stage" || RhsTag == L"Stage")continue;
+
+					(*Inner)->Hit(*Outer, fDeltaTime);
+					(*Outer)->Hit(*Inner, fDeltaTime);
+					//MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
+				}
+			}
+			else if ( ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
+				     (*Outer)->GetCollisionTag() == ECollision_Tag::Pixel  )
+						) {
+				auto LhsRect = (*Inner)->GetCollisionRect();
+				CPixel* RhsPixel = static_cast<CPixel*>(*Outer);
+					auto _Pixel = 	RhsPixel->GetPixel();
+
+				if (true == CollisionRectToPixel(LhsRect, _Pixel, RhsPixel->GetWidth(),
+					RhsPixel->GetHeight())) {
+					auto LhsTag = (*Inner)->GetTag();
+					auto RhsTag = (*Outer)->GetTag();
+
+					if (LhsTag == L"Stage" || RhsTag == L"Stage")continue;
+
+					(*Inner)->Hit(*Outer, fDeltaTime);
+					(*Outer)->Hit(*Inner, fDeltaTime);
+					MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
+				}
+			}
+			else if (((*Outer)->GetCollisionTag() == ECollision_Tag::Rect &&
+			(*Inner)->GetCollisionTag() == ECollision_Tag::Pixel)
+			) {
+			auto LhsRect = (*Outer)->GetCollisionRect();
+			CPixel* RhsPixel = static_cast<CPixel*>(*Inner);
+			auto _Pixel = RhsPixel->GetPixel();
+
+			if (true == CollisionRectToPixel(LhsRect, _Pixel,RhsPixel->GetWidth(),
+				RhsPixel->GetHeight())) {
 				auto LhsTag = (*Inner)->GetTag();
 				auto RhsTag = (*Outer)->GetTag();
 
@@ -154,45 +203,9 @@ void CCore::Collision(float fDeltaTime)
 
 				(*Inner)->Hit(*Outer, fDeltaTime);
 				(*Outer)->Hit(*Inner, fDeltaTime);
-				//MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
+				MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
+			    }
 			}
-			else {
-				/*auto InnerPair = (*Inner)->FindHitList(*Outer);
-
-				if (InnerPair.second == ECOLLISION_STATE::First ||
-					InnerPair.second == ECOLLISION_STATE::Keep) {
-					
-					auto hit_list = InnerPair.first->GetHitList();
-					auto is_find = std::find(std::begin(hit_list), 
-						std::end(hit_list),
-						[Outer](pair<CObj*,ECOLLISION_STATE> pair) {if (  pair.first == *Outer)
-						return true;  });
-					if (is_find != std::end(hit_list)) {
-						is_find->second = ECOLLISION_STATE::Release;
-					}*/
-					
-				}
-				/*else {*/
-					/*auto hit_list = InnerPair.first->GetHitList();
-					auto is_find = std::find(std::begin(hit_list), std::end(hit_list),
-						[Outer](pair<CObj*,ECOLLISION_STATE> pair) {if (pair.first == *Outer)
-						return true;  });
-					if (is_find != std::end(hit_list)) {
-						is_find->second = ECOLLISION_STATE::Nothing;
-					}*/
-				/*}*/
-
-			/*	auto OuterPair = (*Outer)->FindHitList(*Inner);
-
-				if (OuterPair.second == ECOLLISION_STATE::First ||
-					OuterPair.second == ECOLLISION_STATE::Keep) {
-
-					OuterPair.first->SetHitList(*Inner, ECOLLISION_STATE::Release);
-				}
-				else{
-					OuterPair.first->SetHitList(*Inner, ECOLLISION_STATE::Nothing);
-				}*/
-			/*}*/
 		}
 	}
 
@@ -221,12 +234,70 @@ void CCore::Render(float fDeltaTime)
 	
 	GET_SINGLE(CSceneManager)->Render(pBackBuffer->GetDC(),fDeltaTime);
 
-	
-
 	BitBlt(m_hDC, 0, 0, m_tRS.iW, m_tRS.iH, pBackBuffer->GetDC(),
 		0, 0, SRCCOPY);
 
 	SAFE_RELEASE(pBackBuffer); 
+}
+
+bool CCore::CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest)
+{
+	if (src.left > dest.right)
+		return false;
+	else if (src.right < dest.left)
+		return false;
+	else if (src.top > dest.bottom)
+		return false;
+	else if (src.bottom < dest.top)
+		return false;
+
+	return true;
+}
+
+bool CCore::CollisionSphereToSphere(const RECTANGLE& Lhs, const RECTANGLE& Rhs)
+{
+	POSITION LhsCenter{
+		(Lhs.right + Lhs.left)/2,
+		(Lhs.bottom + Lhs.top )/2};
+
+	POSITION RhsCenter{
+		(Rhs.right+Rhs.left)/2,
+		(Rhs.bottom+Rhs.top)/2};
+
+	float fDist = CMath::Distance(LhsCenter, RhsCenter);
+
+	float LhsRadius = Lhs.right - LhsCenter.x;
+
+	float RhsRadius = Rhs.right - RhsCenter.x;
+
+	return fDist <= LhsRadius + RhsRadius;
+}
+
+bool CCore::CollisionRectToPixel(const RECTANGLE& src, const vector<PIXEL>& vecPixel, int iWidth, int iHeight)
+{
+	int iStartX, iEndX;
+	int iStartY, iEndY;
+
+	iStartX = src.left < 0 ? 0 : src.left;
+	iEndX = src.right >= iWidth ?
+		iWidth - 1 : src.right;
+
+	iStartY = src.top < 0 ? 0 : src.top;
+	iEndY = src.bottom >= iHeight? iHeight - 1:
+		src.bottom;
+
+	for (int i = iStartY; i <= iEndY; ++i) {
+		for (int j = iStartX; j <= iStartX; ++j) {
+			int idx = i * iWidth + j;
+			const PIXEL& pixel = vecPixel[idx];
+			if (pixel.r == 255 && pixel.g == 0 && pixel.b == 255) {
+				
+				return true; 
+			}
+		}
+	}
+
+	return false; 
 }
 
 ATOM CCore::MyRegisterClass()
@@ -277,6 +348,9 @@ CCore::CCore()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(229);
+#ifdef _DEBUG
+	AllocConsole();
+#endif
 };
 
 CCore::~CCore() noexcept

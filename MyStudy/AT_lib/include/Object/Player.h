@@ -1,5 +1,6 @@
 #pragma once
 #include "MoveObj.h"
+
 class CPlayer :
 	public CMoveObj
 {
@@ -9,7 +10,11 @@ private :
 	CPlayer();
 	virtual ~CPlayer()noexcept;
 	CPlayer(const CPlayer& Player); 
+private:
+	int m_iHP;
 public:
+	RECTANGLE Pow = { 0,0,0,0 };
+	Vector JumpVector;
 	virtual bool Init();
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);
@@ -18,5 +23,7 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CPlayer* Clone()override;
 	void Fire(); 
+
+	virtual void Hit(CObj* const Target, float fDeltaTime)override;
 };
 

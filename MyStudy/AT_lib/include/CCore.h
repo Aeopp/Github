@@ -1,7 +1,7 @@
 #pragma once
 #include "Game.h"
 #include "../include/Core/PathManager.h"
-
+#include "../include/Types.h"
 class CCore
 {
 private:
@@ -33,19 +33,12 @@ private :
 	void Collision(float fDeltaTime);
 	void Render(float fDeltaTime);
 	 
-	bool CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest)
-	{
-		if (src.left > dest.right)
-			return false;
-		else if (src.right < dest.left)
-			return false;
-		else if (src.top > dest.bottom)
-			return false;
-		else if (src.bottom < dest.top)
-			return false;
+	bool CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest);;
 
-		return true;
-	};
+	// 구체 만들어서 구체로 바꾸기
+	bool CollisionSphereToSphere(const RECTANGLE& Lhs, const RECTANGLE& Rhs);
+
+	bool CollisionRectToPixel(const RECTANGLE& src, const vector<PIXEL>& vecPixel,int iWidth,int iHeight);
 
 	ATOM MyRegisterClass(); 
 	BOOL Create();

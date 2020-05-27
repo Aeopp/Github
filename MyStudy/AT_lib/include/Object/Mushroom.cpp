@@ -97,7 +97,7 @@ void CMushroom::CollisionBullet(CCollider* pSrc, CCollider* pDest, float fDeltaT
 void CMushroom::Fire()
 {
 	CObj* pBullet = CObj::CreateCloneObj(L"Bullet",
-		L"Bullet", m_pLayer);
+		L"MushroomBullet", m_pLayer);
 
 	dynamic_cast<CMoveObj*>(pBullet)->SetAngle(PI);
 

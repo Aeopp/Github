@@ -1,4 +1,26 @@
 #pragma once
+#include "Flag.h"
+#include <vector>
+struct Vector {
+	float x;
+	float y;
+	float DeltaTime;
+};
+
+enum class ECollision_Tag : UINT8 {
+  Rect,
+  Sphere,
+  Pixel,
+  Not,
+};
+
+struct Pixel {
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+};
+using PIXEL = Pixel;
+using PPIXEL = Pixel*;
 
 struct RESOLUTION {
 	unsigned int iW;
@@ -150,6 +172,34 @@ enum class ECOLLISION_STATE :uint8_t {
 	Release,
 	Nothing,
 };
+
+struct AnimationClip {
+	ANIMATION_TYPE eType;
+	ANIMATION_OPTION eOption;
+	std::vector<class CTexture*>vecTexture;
+	float fAnimationTime;
+	float fAnimationLimitTime; 
+	float fAnimationFrameTime;
+
+	int iFrameX;
+	int iFrameY;
+
+	int iFrameMaxX;
+	int iFrameMaxY;
+
+	int iStartX;
+	int iStartY;
+
+	int iLengthX;
+	int iLengthY;
+
+	float fOptionTime;
+	float fOptionLimitTime;
+};
+
+using ANIMATIONCLIP = AnimationClip;
+using PANIMATIONCLIP = AnimationClip*;
+ 
 
 
 

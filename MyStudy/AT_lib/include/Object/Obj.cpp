@@ -6,13 +6,17 @@
 #include "../Core/Camera.h"
 #include "../Collision/Colinder.h"
 #include "../CCore.h"
+#include "../../CAnimation.h"
 CObj::CObj() :
-	m_pTexture{ nullptr }
+	m_pTexture{ nullptr },
+	m_bIsPhysics{ false } ,
+	m_fGravityTime(0.f),
+	m_pAnimation{ nullptr}
 {};
 
 // Memory Leak Dected!! 
-CObj::~CObj()
-{
+CObj::~CObj(){
+	SAFE_RELEASE(m_pAnimation);
 	Safe_Release_VecList(m_ColliderList);
 	SAFE_RELEASE(m_pTexture);
  	/*SAFE_DELETE(m_pScene);
@@ -21,6 +25,13 @@ CObj::~CObj()
 CObj::CObj(const CObj & Obj)
 {
 	*this = Obj;
+
+	if (Obj.m_pAnimation) {
+		m_pAnimation = Obj.m_pAnimation->Clone(); 
+	}
+
+	m_fGravityTime = 0.f; 
+
 	if (m_pTexture) {
 		m_pTexture->AddRef();
 	}
@@ -97,6 +108,50 @@ void CObj::EraseObj()
 	Safe_Release_VecList(m_ObjList);
 }
 
+CAnimation* CObj::CreateAnimation(const wstring& strTag)
+{
+	SAFE_RELEASE(m_pAnimation);
+
+	m_pAnimation = new CAnimation;
+	m_pAnimation->SetTag(strTag);
+	m_pAnimation->SetObj(this);
+
+	if (!m_pAnimation->Init()) {
+		SAFE_RELEASE(m_pAnimation);
+		return nullptr;
+	}
+
+	m_pAnimation->AddRef();
+
+	return m_pAnimation;
+}
+bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const wchar_t* pFileName, const wstring& strPathKey)
+{
+	if(!m_pAnimation)
+	return false;
+
+	m_pAnimation->AddClip(strName,
+		eType, eOption,
+		fAnimationLimitTime,
+		iFrameMaxX,
+		iFrameMaxY,
+		iStartX, iStartY,
+		iLengthX,
+		iLengthY,
+		fOptionLimitTime,
+		strTexKey,
+		pFileName, strPathKey);
+
+
+	return true; 
+}
+void CObj::SetAnimationClipColorkey(const wstring& strClip, unsigned char r, unsigned char g, unsigned char b)
+{
+	if(m_pAnimation)
+	m_pAnimation->SetClipColorkey(strClip, r, g, b);
+}
+
+
 void CObj::SetTexture(CTexture* pTexture){
 	SAFE_RELEASE(m_pTexture);
 	m_pTexture = pTexture;
@@ -107,6 +162,11 @@ void CObj::SetTexture(CTexture* pTexture){
 void CObj::SetTexture(const wstring& strKey, const wchar_t* pFileName, const wstring& strPathKey){
 		SAFE_RELEASE(m_pTexture);
 		m_pTexture = GET_SINGLE(CResourcesManager)->LoadTexture(strKey,pFileName,strPathKey);
+}
+
+void CObj::SetColorKey(unsigned char r, unsigned char g, unsigned char b)
+{
+	m_pTexture->SetColorKey(r, g, b);
 }
 
 void CObj::Input(float fDeltaTime)
@@ -124,10 +184,11 @@ void CObj::Input(float fDeltaTime)
 		}
 		else ++iter;
 	}
-}
+};
 
 int CObj::Update(float fDeltaTime)
 {
+	
 	list<CCollider*>::iterator iter;
 	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 
@@ -146,6 +207,10 @@ int CObj::Update(float fDeltaTime)
 		}
 		else
 			++iter; 
+	}
+
+	if (m_pAnimation) {
+		m_pAnimation->Update(fDeltaTime);
 	}
 	return 0;
 	/*list<CColliderRect*>::iterator iter;
@@ -210,7 +275,6 @@ int CObj::LateUpdate(float fDeltaTime)
 
 void CObj::Collision(float fDeltaTime)
 {
-
 	/*for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
 		) {
 		if (!(*iter)->GetEnable()) {
@@ -250,24 +314,25 @@ void CObj::Hit(CObj* const Target, float fDeltaTime)
 		return;
 	};
 
-	auto State =FindHitList(Target);
+	auto State = GetHitListIter(Target);
 
 	// 리스트에서 찾지 못했으므로 처음 충돌
-	if (State.second == ECOLLISION_STATE::Nothing) {
-		MessageBox(NULL, Target->GetTag().c_str(), m_strTag.c_str(), MB_OK);
-		AddHitList(Target, ECOLLISION_STATE::First);
+	
+	/*if ((*State).second == ECOLLISION_STATE::Nothing) */
+
+	if (State == std::end(HitList)) {
+		//MessageBox(NULL, Target->GetTag().c_str(), m_strTag.c_str(), MB_OK);
+		AddHitList(Target,ECOLLISION_STATE::First);
 	}
 	// 리스트에서 찾았다 충돌 유지중
-	else if (State .second== ECOLLISION_STATE::First) {
-		MessageBox(NULL, Target->GetTag().c_str(), m_strTag.c_str(), MB_OK);
-		State.second = ECOLLISION_STATE::Keep;
+	else if ((*State).second== ECOLLISION_STATE::First) {
+		//MessageBox(NULL, Target->GetTag().c_str(), m_strTag.c_str(), MB_OK);
+		(*State).second = ECOLLISION_STATE::Keep;
 	}
 	else {
 		auto Test  = Target->GetTag() + m_strTag.c_str();
-		MessageBox(NULL,Test.c_str(), L"Release !! ", MB_OK);
+		//MessageBox(NULL,Test.c_str(), L"Release !! ", MB_OK);
 	}
-
-
 	//// 리스트에서 찾았다 충돌 유지중
 	//else if (State.second == ECOLLISION_STATE::First ||
 	//	State.second == ECOLLISION_STATE::Keep){
@@ -279,19 +344,30 @@ void CObj::Hit(CObj* const Target, float fDeltaTime)
 void CObj::Render(HDC hDC, float fDeltaTime)
 {
 	if (m_pTexture) {
-		POSITION tPos = m_tPos - m_tSize * m_tPivot; 
-		tPos -= GET_SINGLE(CCamera)->GetPos();
 		/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
 		*/
 
+		POSITION tPos = m_tPos - m_tSize * m_tPivot;
+		tPos -= GET_SINGLE(CCamera)->GetPos();
+
+		POSITION tImagePos;
+
+		if (m_pAnimation) {
+			PANIMATIONCLIP pClip =
+				m_pAnimation->GetCurrentClip();
+
+			tImagePos.x = pClip->iFrameX * m_tSize.x;
+			tImagePos.y = pClip->iFrameY * m_tSize.y;
+		}
+
 		if (m_pTexture->GetColorKeyEnable()==true) {
 			TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y, m_pTexture->GetDC(), 0, 0,
+				m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
 				m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
 		}
 		else {
 			BitBlt(hDC, tPos.x, tPos.y,
-				m_tSize.x, m_tSize.y, m_pTexture->GetDC(), 0, 0,
+				m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
 				SRCCOPY);
 		}
 	}
@@ -333,7 +409,6 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 	//	else
 	//		++iter;
 	//}
-
 }
 
 CObj* CObj::CreateCloneObj(const wstring& strTagPrototypeKey, const wstring& strTag, class CLayer* pLayer)

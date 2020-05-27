@@ -9,7 +9,14 @@ protected:
 	int m_iRef;
 	bool m_bEnable;
 	bool m_bLife;
+	wstring m_strTag;
 public:
+	wstring GetTag()const& noexcept {
+		return m_strTag;
+	}
+	void SetTag(wstring Tag) noexcept{
+		m_strTag = std::move(Tag); 
+	}
 	void AddRef(); 
 	int Release() {
 		--m_iRef;

@@ -3,10 +3,11 @@
 void CTexture::SetColorKey(unsigned char r, unsigned char g, unsigned char b)
 {
 	m_ColorKey = RGB(r, g, b);
+	m_bColorKeyEnable = true;
 }
 void CTexture::SetColorKey(COLORREF colorKey)
 {
-	m_ColorKey = std::move_if_noexcept(colorKey); 
+	m_ColorKey =colorKey; 
 	m_bColorKeyEnable = true; 
 }
 CTexture::CTexture() :
