@@ -28,7 +28,8 @@ bool CIngameScene::Init()
 		(L"Mushroom", pLayer); 
 	SAFE_RELEASE(pMushroom);
 
-	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet");
+	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet",
+		m_eSceneType);
 	pBullet->SetSize(369.f, 116.f);
 	pBullet->SetSpeed(1000.f);
 	SAFE_RELEASE(pBullet);
@@ -38,6 +39,7 @@ bool CIngameScene::Init()
 	CStage* pStage = CObj::CreateObj<CStage>(L"Stage", pStageLayer);
 
 	CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
+
 	Ground->SetPos(0,1400);
 	Ground->SetSize(POSITION{ 2700,100 });
 

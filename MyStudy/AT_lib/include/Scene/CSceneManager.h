@@ -6,20 +6,27 @@ class CSceneManager
 private:
 	class CScene* m_pScene;
 	class CScene* m_pNextScene;
+
+	SCENE_CHANGE  ChangeScene();
+
 public:
 	bool Init();
 	void Input(float fDeltaTime);
-	int  Update(float fDeltaTime);
-	int  LateUpdate(float fDeltaTime);
+	SCENE_CHANGE  Update(float fDeltaTime);
+	SCENE_CHANGE  LateUpdate(float fDeltaTime);
 	void Collision(float fDeltaTime);
 	void Render(HDC hDC,float fDeltaTime);
 
 	class CScene* GetScene() const;
 
 	template<typename T>
-	T* CreateScene(SCENE_CREATE sc)
+	T* CreateScene(SCENE_CREATE sc=
+	SC_CURRENT)
 	{
 		T* pScene = new T;
+
+		pScene->SetSceneType(sc);
+
 		if (!pScene->Init())
 		{
 			SAFE_DELETE(pScene);

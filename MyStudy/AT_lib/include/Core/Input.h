@@ -21,6 +21,16 @@ private:
 	HWND m_hWnd; 
 	std::unordered_map<string, KEYINFO*> m_mapKey;
 	KEYINFO*  m_pCreateKey;
+
+	POINT m_tMousePos;
+	POINT m_tMouseMove;
+	class CMouse* m_pMouse; 
+
+public :
+	class CMouse* GetMouse()const {
+		return m_pMouse;
+	}
+	//class CAnimation* m_pAnimation = nullptr; 
 public:
 	bool Init(HWND hWnd);
 	void Update(float fDeltaTime); 
@@ -28,6 +38,7 @@ public:
 	bool KeyPress(const string& strKey)const&;
 	bool KeyUp(const string& strKey)const&;
 public:
+	void MouseAnimPlay(const string& Tag)&;
 	template<typename T>
 	bool AddKey( T&& data) {
 		if constexpr (std::is_same_v<char, std::decay_t<T>>

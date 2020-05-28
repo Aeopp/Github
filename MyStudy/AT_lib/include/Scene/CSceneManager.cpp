@@ -1,5 +1,6 @@
 #include "CSceneManager.h"
-
+#include "../../StartScene.h"
+#include "../CCore.h"
 DEFINTION_SINGLE(CSceneManager) 
 
 CSceneManager::CSceneManager()
@@ -13,11 +14,31 @@ CSceneManager::~CSceneManager()
 	/*DESTROY_SINGLE(CSceneManager);*/
 }
 
+ SCENE_CHANGE CSceneManager::ChangeScene()
+{
+	 if (m_pNextScene) {
+		 SAFE_DELETE(m_pScene);
+		 m_pScene = m_pNextScene;
+		 m_pNextScene = NULL;
+
+		 GET_SINGLE(CCore)->Clear();
+
+		 m_pScene->SetSceneType(SC_CURRENT);
+		 CScene::ChangeProtoType();
+
+
+		 return SC_CHANGE;
+	 }
+
+
+	 return SC_NONE;
+}
+
 bool CSceneManager::Init()
 {
-	CreateScene<CIngameScene>(SC_CURRENT);
-
-
+	CreateScene<CStartScene>(SC_CURRENT);
+	// CreateScene<CIngameScene>(SC_CURRENT);
+	
 
 	return true; 
 }
@@ -27,18 +48,18 @@ void CSceneManager::Input(float fDeltaTime)
 	m_pScene->Input(fDeltaTime); 
 }
 
-int CSceneManager::Update(float fDeltaTime)
+SCENE_CHANGE CSceneManager::Update(float fDeltaTime)
 {
 	m_pScene->Update(fDeltaTime);
-
-	return 0;
+	
+	return ChangeScene();
 }
 
-int CSceneManager::LateUpdate(float fDeltaTime)
+SCENE_CHANGE CSceneManager::LateUpdate(float fDeltaTime)
 {
 	m_pScene->LateUpdate(fDeltaTime);
 
-	return 0;
+	return ChangeScene();
 }
 
 void CSceneManager::Collision(float fDeltaTime)

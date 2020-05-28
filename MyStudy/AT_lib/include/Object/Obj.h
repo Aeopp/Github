@@ -17,7 +17,7 @@ public:
 		m_fGravityTime = 0.f;
 	}
 	RECTANGLE Pow = { 0,0,0,0 };
-	Vector vector2D = { 0,0,0 };
+	//Vector vector2D = { 0,0,0 };
 
 	POSITION GetHitPoint()const {
 		return m_tHitPoint;
@@ -45,7 +45,8 @@ protected:
 	_SIZE m_tImageOffset;
 	POSITION m_tPivot;
 	list<class CCollider*> m_ColliderList;
-	class CAnimation* m_pAnimation; 
+	//POSITION m_tPos;
+	POSITION m_tDist;
 	class CScene* m_pScene;
 	class CLayer* m_pLayer;
 	class CTexture* m_pTexture;
@@ -61,7 +62,28 @@ protected:
 	 Rectangle(hDC, Pos.x, Pos.y, Pos.x + 5, Pos.y + 5);
 	}
 public:
-	
+	POSITION GetPoint()const {
+		return m_tPos; 
+	}
+	void SetDistance(float x, float y) {
+		m_tDist.x = x;
+		m_tDist.y = y;
+	}
+	void SetDistance(const POSITION& tDist) {
+		m_tDist = tDist;
+	}
+
+	class CAnimation* m_pAnimation;
+
+	void DebugPrintHP(HDC hDC,float HP) const&{	
+			wchar_t strHP[32] = {};
+			wsprintf(strHP, L"HP : %d", HP);
+			POSITION Pos = GetCollisionPos();
+
+			TextOut(hDC, Pos.x, Pos.y,
+				strHP, lstrlen(strHP));
+		
+	}
 	POSITION __GetCollisionPos()const {
 		auto Pos = GetPos();
 		auto Size = GetSize();
@@ -98,6 +120,9 @@ public:
 	}
 	class CAnimation* CreateAnimation(const wstring& strTag);
 
+	CCollider* GetCollider(const wstring& strTag)
+		;  
+
 	bool AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType,
 		ANIMATION_OPTION eOption, float fAnimationLimitTime,
 		int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY,
@@ -114,7 +139,6 @@ public:
 
 	void SetAnimationClipColorkey(const wstring& strClip, unsigned char r,
 		unsigned char g, unsigned char b);
-
 
 	void SetGravityTime(float SetGravity)& {
 		m_fGravityTime = SetGravity;
@@ -307,6 +331,8 @@ public:
 	virtual int  LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
 	virtual void Hit(CObj* const Target, float fDeltaTime); 
+	virtual void FirstHitEvent(CObj* const Target, float fDeltaTime);
+	virtual void ReleaseHitEvent(CObj* const Target, float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
 	virtual CObj* Clone() = 0; 
 public:
@@ -328,7 +354,7 @@ public:
 	};
 	
 	static CObj* CreateCloneObj(const wstring& strTagPrototypeKey,
-		const wstring& strTag,class CLayer* pLayer =nullptr);
+		const wstring& strTag,SCENE_CREATE sc,class CLayer* pLayer =nullptr);
 
 	// 충돌 메소드 필드
 	template<typename T>

@@ -2,6 +2,8 @@
 #include "../CCore.h"
 #include "../Resources/Texture.h"
 #include "../Collision/ColinderRect.h"
+#include "../Scene/CScene.h"
+
 CMushroom::CMushroom() :
 CMoveObj(),
 m_fFireTime(0.f),
@@ -16,11 +18,13 @@ CMushroom::CMushroom(const CMushroom& Obj) :
 
 bool CMushroom::Init()
 {
-	SetPos(800.f, 100.f);
+	SetPos(1596.f, 1363.f);
 	SetSize(100.f, 100.f);
 	SetSpeed(300.f);
 	SetPivot(0.5f, 0.5f);
 	SetTexture(L"Orange", L"Orange_1.bmp");
+	SetPhysics(true);
+
 	m_pTexture->SetColorKey(RGB(255, 0, 255));
 
 	m_eDir = MD_FRONT; 
@@ -29,6 +33,7 @@ bool CMushroom::Init()
 
 	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
 	pRC->AddCollisionFunction(CS_ENTER, this, &CMushroom::CollisionBullet);
+
 	SAFE_RELEASE(pRC);
 
 	//CColliderRect* pRC = AddCollider<CColliderRect>(L"Orange");
@@ -48,13 +53,13 @@ int CMushroom::Update(float fDeltaTime)
 
 	MoveYFromSpeed(fDeltaTime, m_eDir);
 
-	if (m_tPos.y + m_tSize.y >=
-		GETRESOLUTION.iH) {
-		m_tPos.y = GETRESOLUTION.iH - m_tSize.y;
+	if (m_tPos.x + m_tSize.x  >=
+		GETRESOLUTION.iW) {
+		m_tPos.x = GETRESOLUTION.iW - m_tSize.x;
 		m_eDir = MD_BACK;
 	}
-	else if (m_tPos.y <= 0.f) {
-		m_tPos.y = 0.f; 
+	else if (m_tPos.x <= 0.f) {
+		m_tPos.x = 0.f; 
 		m_eDir = MD_FRONT;
 	}
 	m_fFireTime += fDeltaTime;
@@ -84,6 +89,14 @@ void CMushroom::Render(HDC hDC, float fDeltaTime)
 	// TODO :: 디버그용 테스팅후 삭제
 }
 
+void CMushroom::Hit(CObj* const Target, float fDeltaTime)
+{
+	CObj::Hit(Target, fDeltaTime);
+	if (Target->GetTag() == L"Player") {
+		std::terminate();
+	}
+}
+
 CMushroom* CMushroom::Clone()
 {
 	return new CMushroom{*this };
@@ -97,7 +110,7 @@ void CMushroom::CollisionBullet(CCollider* pSrc, CCollider* pDest, float fDeltaT
 void CMushroom::Fire()
 {
 	CObj* pBullet = CObj::CreateCloneObj(L"Bullet",
-		L"MushroomBullet", m_pLayer);
+		L"MushroomBullet", m_pScene->GetSceneType() , m_pLayer);
 
 	dynamic_cast<CMoveObj*>(pBullet)->SetAngle(PI);
 

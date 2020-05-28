@@ -15,6 +15,15 @@ public:
 	RESOLUTION GetResolution()const {
 		return m_tRS;
 	}
+	HWND GetWindowHandle()const {
+		return m_hWnd;
+	}
+
+	void DestroyGame(){
+		DestroyWindow(m_hWnd);
+	}
+
+	void Clear(); 
 	static CCore* GetInst() {
 		if (!m_pInst)
 			m_pInst = new CCore{};
@@ -28,12 +37,23 @@ public:
 private :
 	void Logic(); 
 	void Input(float fDeltaTime );
-	int Update(float fDeltaTime); 
-	int LateUpdate(float fDeltaTime);
+	SCENE_CHANGE Update(float fDeltaTime);
+	SCENE_CHANGE LateUpdate(float fDeltaTime);
 	void Collision(float fDeltaTime);
 	void Render(float fDeltaTime);
 	 
+
+
 	bool CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest);;
+
+	bool CollisionRectToPoint(const RECTANGLE& src, const POSITION& dest);
+
+	bool CollisionSphereToPoint(const RECTANGLE& src, const POSITION& dest);
+
+	bool CollisionSphereToPixel(const RECTANGLE& src, const vector<PIXEL>& vecPixel,int iWidth,int iHeight);
+
+	bool CollisionPixelToPoint( const vector<PIXEL>& vecPixel, int iWidth, int iHeight, const POSITION& dest);
+
 
 	// 구체 만들어서 구체로 바꾸기
 	bool CollisionSphereToSphere(const RECTANGLE& Lhs, const RECTANGLE& Rhs);

@@ -1,7 +1,10 @@
 #pragma once
 #include "Flag.h"
 #include <vector>
-struct Vector {
+;;;
+
+struct Vector 
+{
 	float x;
 	float y;
 	float DeltaTime;

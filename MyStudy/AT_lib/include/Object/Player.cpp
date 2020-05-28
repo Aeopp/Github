@@ -3,7 +3,7 @@
 #include "../Core/Input.h"
 #include <cassert>
 #include "../../CAnimation.h"
-
+#include "../Scene/CScene.h"
 CPlayer::CPlayer()
 {};
 CPlayer::~CPlayer() noexcept
@@ -52,11 +52,11 @@ bool CPlayer::Init() {
 	// Jump 
 	{
 		AddAnimationClip(L"PlayerJumpLeft", AT_ATLAS, AO_LOOP,
-			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpLeft", L"Animation\\Player\\Left\\DEAD.bmp");
+			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpLeft", L"Animation\\Player\\Left\\JUMP.bmp");
 		SetAnimationClipColorkey(L"PlayerJumpLeft", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerJumpRight", AT_ATLAS, AO_LOOP,
-			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpRight", L"Animation\\Player\\Right\\DEAD.bmp");
+			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpRight", L"Animation\\Player\\Right\\JUMP.bmp");
 		SetAnimationClipColorkey(L"PlayerJumpRight", 255, 0, 255);
 	}
 
@@ -97,44 +97,44 @@ bool CPlayer::Init() {
 	// Swing1
 	{
 		AddAnimationClip(L"PlayerAttackLeft", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackLeft", L"Animation\\Player\\Left\\SWING1.bmp");
+			0.5f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackLeft", L"Animation\\Player\\Left\\SWING1.bmp");
 		SetAnimationClipColorkey(L"PlayerAttackLeft", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerAttackRight", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackRight", L"Animation\\Player\\Right\\SWING1.bmp");
+			0.5f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttackRight", L"Animation\\Player\\Right\\SWING1.bmp");
 		SetAnimationClipColorkey(L"PlayerAttackRight", 255, 0, 255);
 	}
 
 	// Swing2
 	{
 		AddAnimationClip(L"PlayerAttack2Left", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Left", L"Animation\\Player\\Left\\SWING2.bmp");
+			0.5f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Left", L"Animation\\Player\\Left\\SWING2.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack2Left", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerAttack2Right", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Right", L"Animation\\Player\\Right\\SWING2.bmp");
+			0.5f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack2Right", L"Animation\\Player\\Right\\SWING2.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack2Right", 255, 0, 255);
 	}
 
 	// Stab
 	{
 		AddAnimationClip(L"PlayerAttack3Left", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 2, 0, 0, 1, 2, 0.f, L"PlayerAttack3Left", L"Animation\\Player\\Left\\STAB.bmp");
+			0.5f, 1, 2, 0, 0, 1, 2, 0.f, L"PlayerAttack3Left", L"Animation\\Player\\Left\\STAB.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack3Left", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerAttack3Right", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 2, 0, 0, 1, 2, 0.f, L"PlayerAttack3Right", L"Animation\\Player\\Right\\STAB.bmp");
+			0.5f, 1, 2, 0, 0, 1, 2, 0.f, L"PlayerAttack3Right", L"Animation\\Player\\Right\\STAB.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack3Right", 255, 0, 255);
 	}
 
 	// Bow
 	{
 		AddAnimationClip(L"PlayerAttack4Left", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Left", L"Animation\\Player\\Left\\BOW.bmp");
+			0.5f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Left", L"Animation\\Player\\Left\\BOW.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack4Left", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerAttack4Right", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Right", L"Animation\\Player\\Right\\BOW.bmp");
+			0.5f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerAttack4Right", L"Animation\\Player\\Right\\BOW.bmp");
 		SetAnimationClipColorkey(L"PlayerAttack4Right", 255, 0, 255);
 	}
 
@@ -176,6 +176,7 @@ void CPlayer::Input(float fDeltaTime)
 	//	MoveYFromSpeed(fDeltaTime, MD_FRONT);
 	}
 	if (KEYPRESS("MoveLeft")) {
+		
 		if (!m_bAttack&& bJump==false ) {
 			m_pAnimation->ChangeClip(L"PlayerWalkLeft");
 			m_pAnimation->SetDefaultClip(L"PlayerIdleLeft");
@@ -246,9 +247,18 @@ void CPlayer::Input(float fDeltaTime)
 	if (KEYDOWN("Skill1")) {
 		MessageBox(NULL, L"Skill1", L"Skill1", MB_OK);
 	}
-	if (KEYUP("Jump") ) {
-		if(bJump==false) 
-		Pow.top = 600.f;
+	if (KEYDOWN("Jump") ) {
+		if (bJump == false) {
+			Pow.top +=600.f;
+		}
+		/*else if (bJump == true)  {
+			if (GetDir() == 1) {
+				Pow.right +=500.f;
+			}
+			if (GetDir() == -1) {
+				Pow.left +=500.f;
+			}
+		}*/
 		/*if (bJump ==true) {
 			Pow.top = 0.f;
 		}*/
@@ -323,17 +333,10 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 	CMoveObj::Render(hDC, fDeltaTime);
 
 #ifdef _DEBUG
-	{
-		wchar_t strHP[32] = {};
-		wsprintf(strHP, L"HP : %d", m_iHP);
-		POSITION Pos = GetCollisionPos();
-
-		TextOut(hDC, Pos.x, Pos.y,
-			strHP, lstrlen(strHP));
-	}
+		//DebugPrintHP(hDC, m_iHP);
+		//CObj::DebugCollisionPrint(hDC);
 #endif _DEBUG
 
-	//CObj::DebugCollisionPrint(hDC);
 }
 CPlayer* CPlayer::Clone()
 {
@@ -342,7 +345,7 @@ CPlayer* CPlayer::Clone()
 void CPlayer::Fire()
 {
 	CObj* pBullet = CObj::CreateCloneObj(L"Bullet",
-		L"PlayerBullet",m_pLayer);
+		L"PlayerBullet",m_pScene->GetSceneType(),m_pLayer);
 
 	POSITION tPos;
 	

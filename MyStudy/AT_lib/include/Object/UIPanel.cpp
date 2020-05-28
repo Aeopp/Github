@@ -2,6 +2,7 @@
 
 CUIPanel::CUIPanel()
 {
+
 }
 
 CUIPanel::CUIPanel(const CUIPanel& ui):
@@ -20,28 +21,36 @@ bool CUIPanel::Init()
 
 void CUIPanel::Input(float fDeltaTime)
 {
+	CUI::Input(fDeltaTime);
 }
 
 int CUIPanel::Update(float fDeltaTime)
 {
+	CUI::Update(fDeltaTime);
 	return 0;
+
 }
 
 int CUIPanel::LateUpdate(float fDeltaTime)
 {
-	return 0;
+	CUI::LateUpdate(fDeltaTime);
+	return 0; 
 }
 
 void CUIPanel::Collision(float fDeltaTime)
 {
+	CUI::Collision(fDeltaTime);
+
 }
 
 void CUIPanel::Hit(CObj* const Target, float fDeltaTime)
 {
+
 }
 
 void CUIPanel::Render(HDC hDC, float fDeltaTime)
 {
+	CUI::Render(hDC, fDeltaTime);
 }
 
 CUIPanel* CUIPanel::Clone()

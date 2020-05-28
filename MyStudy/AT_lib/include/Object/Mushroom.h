@@ -16,12 +16,13 @@ public:
 	float m_fFireTime;
 	float m_fFireLimitTime;
 
-	virtual bool Init();
-	virtual int  Update(float fDeltaTime);
-	virtual int  LateUpdate(float fDeltaTime);
-	virtual void Collision(float fDeltaTime);
-	virtual void Render(HDC hDC, float fDeltaTime);
-	virtual CMushroom* Clone()override;
+	bool Init()override;
+	int  Update(float fDeltaTime)override;
+	int  LateUpdate(float fDeltaTime)override;
+	void Collision(float fDeltaTime)override;
+	void Render(HDC hDC, float fDeltaTime)override;
+	void Hit(CObj* const Target, float fDeltaTime)override;
+	CMushroom* Clone()override;
 public :
 	void CollisionBullet(class CCollider* pSrc,
 		class CCollider* pDest, float fDeltaTime);

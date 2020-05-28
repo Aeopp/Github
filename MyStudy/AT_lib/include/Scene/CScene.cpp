@@ -5,13 +5,16 @@
 CScene::CScene()
 {
 	CLayer* pLayer = CreateLayer(L"UI",  INT_MAX);
+	pLayer = CreateLayer(L"HUD", INT_MAX-1);
+
 	pLayer = CreateLayer(L"Default",1);
 	pLayer = CreateLayer(L"Stage");
+	m_eSceneType = SC_CURRENT;
 }
 
 CScene::~CScene() noexcept
 {
-	ErasePrototype(); 
+	ErasePrototype(m_eSceneType);
 	Safe_Delete_VecList(m_LayerList);
 }
 
@@ -177,26 +180,36 @@ bool CScene::LayerSort(CLayer* pL1, CLayer* pL2)
 
 	return pL1->GetZOrder() < pL2->GetZOrder(); 
 }
-void CScene::ErasePrototype()
+void CScene::ErasePrototype(
+	SCENE_CREATE sc)
 {
-	Safe_Release_Map(m_mapPrototype);
+	Safe_Release_Map(m_mapPrototype[sc]);
 }
-void CScene::ErasePrototype(const wstring& strTag)
+void CScene::ErasePrototype(const wstring& strTag,
+	SCENE_CREATE sc)
 {
-	auto iter = m_mapPrototype.find(strTag);
+	auto iter = m_mapPrototype[sc].find(strTag);
 	if (!iter->second) {
 		return;
 	}
 	SAFE_RELEASE(iter->second);
-	m_mapPrototype.erase(iter);
+	m_mapPrototype[sc].erase(iter);
 }
 
 
-CObj* CScene::FindPtototype(const wstring& strKey)
+CObj* CScene::FindPtototype(const wstring& strKey,
+	SCENE_CREATE sc)
 {
-	auto iter = m_mapPrototype.find(strKey);
-	if (iter == m_mapPrototype.end())
+	auto iter = m_mapPrototype[sc].find(strKey);
+	if (iter == m_mapPrototype[sc].end())
 		return nullptr;
 
 	return iter->second;
+}
+
+void CScene::ChangeProtoType()
+{
+	ErasePrototype(SC_CURRENT);
+	m_mapPrototype[SC_CURRENT] = m_mapPrototype[SC_NEXT];
+	m_mapPrototype[SC_NEXT].clear();
 }

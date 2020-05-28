@@ -125,6 +125,20 @@ CAnimation* CObj::CreateAnimation(const wstring& strTag)
 
 	return m_pAnimation;
 }
+CCollider* CObj::GetCollider(const wstring& strTag)
+{
+	list<CCollider*>::iterator iter; 
+	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
+
+	for (iter = m_ColliderList.begin();
+		iter != iterEnd; ++iter) {
+		if ((*iter)->GetTag() == strTag) {
+			(*iter)->AddRef();
+			return *iter;
+		}
+	}
+	return nullptr;
+}
 bool CObj::AddAnimationClip(const wstring& strName, ANIMATION_TYPE eType, ANIMATION_OPTION eOption, float fAnimationLimitTime, int iFrameMaxX, int iFrameMaxY, int iStartX, int iStartY, int iLengthX, int iLengthY, float fOptionLimitTime, const wstring& strTexKey, const wchar_t* pFileName, const wstring& strPathKey)
 {
 	if(!m_pAnimation)
@@ -255,6 +269,14 @@ int CObj::LateUpdate(float fDeltaTime)
 		}
 		else
 			++iter;
+	};
+
+	for (auto iter = HitList.begin(); iter != std::end(HitList);) {
+		if (iter->second == ECOLLISION_STATE::Release) {
+			iter = HitList.erase(iter); 
+		}
+		else
+			++iter;  
 	}
 	return 0;
 }
@@ -292,7 +314,7 @@ void CObj::Collision(float fDeltaTime)
 			MessageBox(NULL, Test.c_str(), L"Release !! ", MB_OK);
 		}
 	}
-}
+};
 
 void CObj::Hit(CObj* const Target, float fDeltaTime)
 {
@@ -300,31 +322,53 @@ void CObj::Hit(CObj* const Target, float fDeltaTime)
 		return;
 	};
 
-	auto State = GetHitListIter(Target);
+	if (auto Finditer = std::find_if(std::begin(HitList), std::end(HitList),
+		[Target](decltype(HitList)::value_type value)
+		{
+			return Target == value.first;
+		}); Finditer != std::end(HitList)) {
 
-	// 리스트에서 찾지 못했으므로 처음 충돌
-	
-	/*if ((*State).second == ECOLLISION_STATE::Nothing) */
+		if (Finditer->second == ECOLLISION_STATE::First) {
 
-	if (State == std::end(HitList)) {
-		//MessageBox(NULL, Target->GetTag().c_str(), m_strTag.c_str(), MB_OK);
-		AddHitList(Target,ECOLLISION_STATE::First);
-	}
-	// 리스트에서 찾았다 충돌 유지중
-	else if ((*State).second== ECOLLISION_STATE::First) {
-		//MessageBox(NULL, Target->GetTag().c_str(), m_strTag.c_str(), MB_OK);
-		(*State).second = ECOLLISION_STATE::Keep;
+			Finditer->second = ECOLLISION_STATE::Keep;
+		}
 	}
 	else {
-		auto Test  = Target->GetTag() + m_strTag.c_str();
-		//MessageBox(NULL,Test.c_str(), L"Release !! ", MB_OK);
+		HitList.emplace_back(Target, ECOLLISION_STATE::First);
+		FirstHitEvent(Target,fDeltaTime);
 	}
+
+	//if (State == std::end(HitList)) {
+	//	AddHitList(Target,ECOLLISION_STATE::First);
+	//}
+	// 리스트에서 찾았다 충돌 유지중
+	/*else if ((*State).second== ECOLLISION_STATE::First) {
+		(*State).second = ECOLLISION_STATE::Keep;
+	}*/
+	//else {
+	//	auto Test  = Target->GetTag() + m_strTag.c_str();
+	//	
+	//}
+
+
 	//// 리스트에서 찾았다 충돌 유지중
 	//else if (State.second == ECOLLISION_STATE::First ||
 	//	State.second == ECOLLISION_STATE::Keep){
 
 	//	State.second = ECOLLISION_STATE::Release;
 	//}
+}
+
+void CObj::FirstHitEvent(CObj* const Target, float fDeltaTime)
+{
+
+}
+
+void CObj::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
+{
+	auto eraser = [Target](auto Pair) {return Pair.first == Target; };
+
+	HitList.remove_if(eraser);
 }
 
 void CObj::Render(HDC hDC, float fDeltaTime)
@@ -385,9 +429,9 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 	}
 }
 
-CObj* CObj::CreateCloneObj(const wstring& strTagPrototypeKey, const wstring& strTag, class CLayer* pLayer)
+CObj* CObj::CreateCloneObj(const wstring& strTagPrototypeKey, const wstring& strTag, SCENE_CREATE sc,class CLayer* pLayer)
 {
-	CObj* pProto = CScene::FindPtototype(strTagPrototypeKey);
+	  CObj* pProto = CScene::FindPtototype(strTagPrototypeKey, sc);
 
 	if (!pProto)
 		return nullptr;

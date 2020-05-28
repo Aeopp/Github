@@ -161,6 +161,7 @@
     <ClInclude Include="include\Collision\Colinder.h" />
     <ClInclude Include="include\Collision\ColinderRect.h" />
     <ClInclude Include="include\Collision\CollisionManager.h" />
+    <ClInclude Include="include\Collision\CollisionPoint.h" />
     <ClInclude Include="include\Core\Camera.h" />
     <ClInclude Include="include\Core\Input.h" />
     <ClInclude Include="include\Core\PathManager.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Macro.h" />
     <ClInclude Include="include\Object\Bullet.h" />
+    <ClInclude Include="include\Object\Mouse.h" />
     <ClInclude Include="include\Object\MoveObj.h" />
     <ClInclude Include="include\Object\Mushroom.h" />
     <ClInclude Include="include\Object\Obj.h" />
@@ -177,6 +179,7 @@
     <ClInclude Include="include\Object\Stage.h" />
     <ClInclude Include="include\Object\StaticObj.h" />
     <ClInclude Include="include\Object\UI.h" />
+    <ClInclude Include="include\Object\UIButton.h" />
     <ClInclude Include="include\Object\UIPanel.h" />
     <ClInclude Include="include\resource.h" />
     <ClInclude Include="include\Resources\ResourcesManager.h" />
@@ -201,6 +204,7 @@
     <ClCompile Include="include\Collision\Colinder.cpp" />
     <ClCompile Include="include\Collision\ColinderRect.cpp" />
     <ClCompile Include="include\Collision\CollisionManager.cpp" />
+    <ClCompile Include="include\Collision\CollisionPoint.cpp" />
     <ClCompile Include="include\Core\Camera.cpp" />
     <ClCompile Include="include\Core\Input.cpp" />
     <ClCompile Include="include\Core\PathManager.cpp" />
@@ -208,6 +212,7 @@
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
     <ClCompile Include="include\Object\Bullet.cpp" />
+    <ClCompile Include="include\Object\Mouse.cpp" />
     <ClCompile Include="include\Object\MoveObj.cpp" />
     <ClCompile Include="include\Object\Mushroom.cpp" />
     <ClCompile Include="include\Object\Obj.cpp" />
@@ -215,6 +220,7 @@
     <ClCompile Include="include\Object\Stage.cpp" />
     <ClCompile Include="include\Object\StaticObj.cpp" />
     <ClCompile Include="include\Object\UI.cpp" />
+    <ClCompile Include="include\Object\UIButton.cpp" />
     <ClCompile Include="include\Object\UIPanel.cpp" />
     <ClCompile Include="include\Resources\ResourcesManager.cpp" />
     <ClCompile Include="include\Resources\Texture.cpp" />
