@@ -4,6 +4,7 @@
 #include <cassert>
 #include "../../CAnimation.h"
 #include "../Scene/CScene.h"
+#include "../CCore.h"
 CPlayer::CPlayer()
 {};
 CPlayer::~CPlayer() noexcept
@@ -19,9 +20,9 @@ void CPlayer::Attack()&
 }
 
 bool CPlayer::Init() {
-	SetPos(878.f, 1300);
+	SetPos(0.f, 0);
 	SetSize(250.f, 224.f);
-	SetSpeed(400.f);
+	SetSpeed(200.f);
 	SetPivot(0.5f, 0.5f);
 	SetImageOffset(0.f, 0.f);
 	SetCorrectionRenderToCollision(RECTANGLE{ 112,60,101,96});
@@ -48,15 +49,20 @@ bool CPlayer::Init() {
 			1.0f, 1, 3, 0, 0, 1, 3, 0.f, L"PlayerIdleLeft", L"Animation\\Player\\Left\\IDLE1.bmp");
 		SetAnimationClipColorkey(L"PlayerIdleLeft", 255, 0, 255);
 	}
-
+	//ROPE
+	{
+		AddAnimationClip(L"PlayerRope", AT_ATLAS, AO_ONCE_RETURN,
+			1.0f, 1, 2, 0, 0, 1, 2, 0.f, L"PlayerRope", L"Animation\\Player\\Right\\ROPE.bmp");
+		SetAnimationClipColorkey(L"PlayerRope", 255, 0, 255);
+	}
 	// Jump 
 	{
 		AddAnimationClip(L"PlayerJumpLeft", AT_ATLAS, AO_LOOP,
-			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpLeft", L"Animation\\Player\\Left\\JUMP.bmp");
+			0.5f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpLeft", L"Animation\\Player\\Left\\JUMP.bmp");
 		SetAnimationClipColorkey(L"PlayerJumpLeft", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerJumpRight", AT_ATLAS, AO_LOOP,
-			1.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpRight", L"Animation\\Player\\Right\\JUMP.bmp");
+			0.5f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerJumpRight", L"Animation\\Player\\Right\\JUMP.bmp");
 		SetAnimationClipColorkey(L"PlayerJumpRight", 255, 0, 255);
 	}
 
@@ -166,18 +172,30 @@ void CPlayer::Input(float fDeltaTime)
 
 	if (KEYUP("Dead")) {
 		Dead();
-		//	MoveYFromSpeed(fDeltaTime, MD_BACK);
+	}
+	if (KEYUP("Debug")) {
+		bool& Debug = GET_SINGLE(CCore)->GetInst()->bDebug;
+		Debug = !Debug;
 	}
 
-	if (KEYPRESS("MoveFront")) {
-	 //	MoveYFromSpeed(fDeltaTime, MD_BACK);
+
+	if (bRope == true) {
+		if (KEYPRESS("Up")) {
+			m_pAnimation->m_bAnimStop = false; 
+			MoveY(-(m_fSpeed / 2), fDeltaTime);
+		}
+		else if (KEYPRESS("Down")) {
+			m_pAnimation->m_bAnimStop = false;
+			MoveY(m_fSpeed / 2, fDeltaTime);
+		}
+		else {
+			m_pAnimation->m_bAnimStop = true; 
+		}
 	}
-	if (KEYPRESS("MoveBack")) {
-	//	MoveYFromSpeed(fDeltaTime, MD_FRONT);
-	}
-	if (KEYPRESS("MoveLeft")) {
+
+	if (KEYPRESS("MoveLeft") && bRope == false &&m_bAttack==false) {
 		
-		if (!m_bAttack&& bJump==false ) {
+		if (!m_bAttack&& bJump==false && bRope==false ) {
 			m_pAnimation->ChangeClip(L"PlayerWalkLeft");
 			m_pAnimation->SetDefaultClip(L"PlayerIdleLeft");
 		}
@@ -187,8 +205,9 @@ void CPlayer::Input(float fDeltaTime)
 	if (KEYUP("MoveLeft")) {
 		m_bMove = false; 
 	}
-	if (KEYPRESS("MoveRight")) {
-		if (!m_bAttack && bJump==false ) {
+	if (KEYPRESS("MoveRight") && bRope == false && m_bAttack==false)
+		 {
+		if (!m_bAttack && bJump==false && bRope==false ) {
 			m_pAnimation->ChangeClip(L"PlayerWalkRight");
 			m_pAnimation->SetDefaultClip(L"PlayerIdleRight");
 		}
@@ -247,21 +266,17 @@ void CPlayer::Input(float fDeltaTime)
 	if (KEYDOWN("Skill1")) {
 		MessageBox(NULL, L"Skill1", L"Skill1", MB_OK);
 	}
-	if (KEYDOWN("Jump") ) {
-		if (bJump == false) {
-			Pow.top +=600.f;
+	if (KEYUP("Jump") ) {
+		if (bRope == true) {
+			return; 
 		}
-		/*else if (bJump == true)  {
-			if (GetDir() == 1) {
-				Pow.right +=500.f;
-			}
-			if (GetDir() == -1) {
-				Pow.left +=500.f;
-			}
-		}*/
-		/*if (bJump ==true) {
-			Pow.top = 0.f;
-		}*/
+		if (bJump == false) {
+			JumpDelta = 0.4f;
+			MovePos.top = 275.f;
+		}
+		if (bJump == true) {
+			
+		}
 		bJump = true;
 	}
 }
@@ -270,35 +285,16 @@ int CPlayer::Update(float fDeltaTime)
 {
 	CMoveObj::Update(fDeltaTime);
 
-	
-	if (Pow.right > 0) {
-		m_tPos.x += Pow.right * fDeltaTime;
-		Pow.right -= Pow.right * fDeltaTime;
-	}
-	
-	if (Pow.left > 0) {
-		m_tPos.x -= Pow.left * fDeltaTime;
-		Pow.left -= Pow.left * fDeltaTime;
-	}
-	
-	if (Pow.top > 0) {
-		m_tPos.y -= Pow.top * fDeltaTime;
-		Pow.top -= Pow.top * fDeltaTime;
-	}
-	if (Pow.bottom > 0) {
-		 m_tPos.y += Pow.bottom * fDeltaTime;
-		// m_tPos.y += GRAVITY * fDeltaTime;
-		 Pow.bottom -= Pow.bottom * fDeltaTime;
-	}
-
 	if (bJump == true  &&
-		m_bAttack==false ) {
+		m_bAttack==false && bRope==false  ) {
 
 		if (m_iDir == -1){
 			m_pAnimation->ChangeClip(L"PlayerJumpLeft");
+			m_pAnimation->SetDefaultClip(L"PlayerJumpLeft");
 		}
 		else {
 			m_pAnimation->ChangeClip(L"PlayerJumpRight");
+			m_pAnimation->SetDefaultClip(L"PlayerJumpRight");
 		}
 	}
 
@@ -306,20 +302,30 @@ int CPlayer::Update(float fDeltaTime)
 		m_bAttack = false;
 	}
 
-	if (m_bMove==false && m_bAttack==false &&
-		bJump==false ) {
+	if (m_bMove == false && m_bAttack == false &&
+		bJump == false && bRope==false ) {
+		if (m_iDir == -1) {
+			m_pAnimation->SetDefaultClip(L"PlayerIdleLeft");
+		}
+		else {
+			m_pAnimation->SetDefaultClip(L"PlayerIdleRight");
+		}
 		m_pAnimation->ReturnClip();
-	}
+	};
 
-	//if (bDead == true) {
-	//	MoveAngle(rand() % 360,fDeltaTime);
-	//}
+	if (bRope == true ) {
+	   m_pAnimation->ChangeClip(L"PlayerRope");
+		m_pAnimation->SetDefaultClip(L"PlayerRope");
+		
+		// 로프애니메이션 재생
+	}
 	return 0;
 }
 
 int CPlayer::LateUpdate(float fDeltaTime)
 {
 	 CMoveObj::LateUpdate(fDeltaTime);
+
 	 return  0; 
 }
 
@@ -337,6 +343,13 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 		//CObj::DebugCollisionPrint(hDC);
 #endif _DEBUG
 
+}
+void CPlayer::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
+{
+}
+void CPlayer::FirstHitEvent(CObj* const Target, float fDeltaTime)
+{
+	
 }
 CPlayer* CPlayer::Clone()
 {
@@ -375,12 +388,10 @@ void CPlayer::Dead()&
 		m_pAnimation->ChangeClip(L"PlayerDeadLeft");
 		m_pAnimation->SetDefaultClip(L"PlayerDeadLeft");
 	}
-	
 	if (GetDir() == 1) {
 		m_pAnimation->ChangeClip(L"PlayerDeadRight");
 		m_pAnimation->SetDefaultClip(L"PlayerDeadRight");
 	}
-	
 }
 void CPlayer::Hit(CObj* const Target, float fDeltaTime)
 {
@@ -388,12 +399,13 @@ void CPlayer::Hit(CObj* const Target, float fDeltaTime)
 
 	if(Target->GetTag()==L"MushroomBullet")
 		m_iHP -= 5;
-
 	// 그라운드 충돌
+	if (Target->GetTag() != L"StageColl") {
+		bGround = false; 
+	}
 	else if (Target->GetTag() == L"StageColl") {
-		ClearGravity();
-		Pow.top = 0;
 		bJump = false;
+		bGround = true;
 	}
 };
 

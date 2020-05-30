@@ -2,7 +2,10 @@
 #include "Flag.h"
 #include <vector>
 ;;;
-
+enum class EMapObjType :unsigned char {
+	ROPE,
+	GROUND,
+};
 struct Vector 
 {
 	float x;

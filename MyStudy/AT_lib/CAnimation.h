@@ -54,6 +54,7 @@ public:
 private:
 	PANIMATIONCLIP FindClip(const wstring strName);
 public:
+	bool m_bAnimStop = false; 
 	bool Init();
 	void Update(float fTime);
 	CAnimation* Clone();

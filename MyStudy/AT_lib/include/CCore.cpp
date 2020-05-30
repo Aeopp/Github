@@ -104,10 +104,7 @@ LRESULT CCore::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_SETCURSOR:{
 		
 	}
-	//case WM_ACTIVATE:
-	//{
-	//	MessageBox(m_hWnd, L"활성화!!", L"활성화!!", NULL);
-	//}
+
 	default:
 	{
 		return DefWindowProc(hWnd, message, wParam, lParam); }

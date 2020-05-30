@@ -38,7 +38,6 @@ bool CSceneManager::Init()
 {
 	CreateScene<CStartScene>(SC_CURRENT);
 	// CreateScene<CIngameScene>(SC_CURRENT);
-	
 
 	return true; 
 }

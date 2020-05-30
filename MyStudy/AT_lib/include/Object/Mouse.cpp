@@ -29,7 +29,6 @@ bool CMouse::Init()
 void CMouse::Input(float fDeltaTime)
 {
 	CUI::Input(fDeltaTime);
-
 }
 
 int CMouse::Update(float fDeltaTime)
@@ -48,8 +47,6 @@ int CMouse::Update(float fDeltaTime)
 	m_tPos = pt;
 
 	//CColliderPoint* pColl = AddCollider<CColliderPoint>(L"Mouse");
-
-
 	return 0;
 }
 

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "../include/Core/PathManager.h"
 #include "../include/Types.h"
+#include <random>
 class CCore
 {
 private:
@@ -12,6 +13,9 @@ private:
 	static inline HDC m_hDC;
 	RESOLUTION m_tRS;
 public:
+	bool bDebug = false; 
+	
+	
 	RESOLUTION GetResolution()const {
 		return m_tRS;
 	}

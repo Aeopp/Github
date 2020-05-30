@@ -1,5 +1,10 @@
 #pragma once
 #include "../Game.h"
+
+#include "../../Ground.h"
+#include "../../Rope.h"
+
+
 class CScene
 {
 public:
@@ -14,6 +19,8 @@ protected:
 
 	static inline	  unordered_map<wstring, class CObj*> m_mapPrototype[SC_END];
 public:
+
+	class CUIPanel* CurrentUIMinimap;
 	void SetSceneType(SCENE_CREATE eType) {
 		m_eSceneType = eType;  
 	}
@@ -45,7 +52,10 @@ public:
 	static CObj* FindPtototype(const wstring& strKey,
 		SCENE_CREATE sc);
 	static  void ChangeProtoType(); 
-
+protected:
+	inline void GroundSetUp(EMapObjType Type,CLayer* pStageLayer, const std::tuple<float, float, float>& Param);
+		
+		inline void GroundsSetUps(EMapObjType Type,CLayer* pStateLayer,const std::vector<std::tuple<float, float, float>>&Params);
 	
 public:
 	virtual bool Init();
@@ -56,3 +66,27 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 };
 
+inline void CScene::GroundSetUp(EMapObjType Type, CLayer* pStageLayer, const std::tuple<float, float, float>& Param)
+{
+	if(Type == EMapObjType::GROUND) {
+		CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
+		auto [x, y, size_x] = Param;
+		Ground->SetPos(x, y);
+		Ground->SetSize(POSITION{ std::abs(size_x - x),3 });
+		SAFE_RELEASE(Ground);
+	}
+	else if (Type == EMapObjType::ROPE) {
+		CRope* Rope = CObj::CreateObj<CRope>(L"StageColl", pStageLayer);
+		auto [x, y, size_y] = Param;
+		Rope->SetPos(x, y-10);
+		Rope->SetSize(POSITION{ 3,std::abs(size_y - y)-55 });
+		SAFE_RELEASE(Rope);
+	}
+}
+
+inline void CScene::GroundsSetUps(EMapObjType Type,CLayer* pStateLayer, const std::vector<std::tuple<float, float, float>>& Params)
+{
+	for (const auto& Element : Params) {
+		GroundSetUp(Type,pStateLayer, Element); 
+	}
+}

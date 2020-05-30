@@ -12,7 +12,6 @@ public:
 	virtual ~CMushroom() noexcept {};
 	CMushroom(const CMushroom& Obj);
 
-	MOVE_DIR m_eDir; 
 	float m_fFireTime;
 	float m_fFireLimitTime;
 

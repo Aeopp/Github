@@ -9,12 +9,14 @@ private:
 	
 private:
 	HDC m_hMemDC;
-	HBITMAP m_hBitmap; 
+	
 	HBITMAP m_hOldBitmap; 
 	BITMAP m_tInfo;
 	COLORREF m_ColorKey; 
 	bool m_bColorKeyEnable; 
 public:
+	bool bAlpha = false; 
+	HBITMAP m_hBitmap;
 	void SetColorKey(unsigned char r, unsigned char g,
 		unsigned char b);
 	void SetColorKey(COLORREF colorKey);

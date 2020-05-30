@@ -16,12 +16,19 @@ bool CInput::Init(HWND hWnd)
 	AddKey("MoveRight", VK_RIGHT);
 	AddKey("Fire", 'Q');
 	AddKey(VK_CONTROL, "Skill1", '1');
+	AddKey(VK_UP, "Rope");
+	AddKey(VK_DOWN, "Rope");
+
+	AddKey(VK_DOWN, "Down");
+	AddKey(VK_UP, "Up");
 
 	AddKey(VK_CONTROL, "Attack");
 	AddKey(VK_LBUTTON, "MouseLButton");
+	AddKey('P', "Portal");
 	AddKey('A', "Attack2");
 	AddKey('S', "Attack3");
 	AddKey('D', "Attack4");
+	AddKey(VK_F1, "Debug");
 
 	AddKey(VK_ESCAPE, "Dead");
 
@@ -146,8 +153,6 @@ void CInput::Update(float fDeltaTime)
 
 	m_pMouse->Update(fDeltaTime);
 	m_pMouse->LateUpdate(fDeltaTime);
-
-	
 }
 
 bool CInput::KeyDown(const string& strKey) const&
@@ -176,11 +181,10 @@ bool CInput::KeyUp(const string& strKey) const&
 	}
 	return pInfo->bUp;
 }
-
  void CInput::MouseAnimPlay(const string& Tag)& {
 	if (Tag == "Click") {
-		m_pMouse->m_pAnimation->ChangeClip(L"MouseCick");
-		m_pMouse->m_pAnimation->SetDefaultClip(L"MouseCick");
+		m_pMouse->m_pAnimation->ChangeClip(L"MouseClick");
+		m_pMouse->m_pAnimation->SetDefaultClip(L"MouseClick");
 	}
 	else if (Tag == "Mushroom") {
 		m_pMouse->m_pAnimation->ChangeClip(L"MouseMushroom");
@@ -206,7 +210,6 @@ bool CInput::KeyUp(const string& strKey) const&
 		m_pMouse->m_pAnimation->ChangeClip(L"MouseNormal");
 		m_pMouse->m_pAnimation->SetDefaultClip(L"MouseNormal");
 	}
-
 }
 
 KEYINFO* CInput::FindKey(const string& strKey)const
@@ -223,9 +226,7 @@ KEYINFO* CInput::FindKey(const string& strKey)const
 CInput::CInput():
 	m_pCreateKey{ nullptr },
 	m_pMouse{ nullptr }
-{
-	
-}
+{}
 
 CInput::~CInput() noexcept
 {

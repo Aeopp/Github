@@ -154,8 +154,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CDungeonScecne.h" />
     <ClInclude Include="CMath.h" />
     <ClInclude Include="DataTable.h" />
+    <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="include\CCore.h" />
     <ClInclude Include="include\Collision\Colinder.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Macro.h" />
     <ClInclude Include="include\Object\Bullet.h" />
+    <ClInclude Include="include\Object\Monster.h" />
     <ClInclude Include="include\Object\Mouse.h" />
     <ClInclude Include="include\Object\MoveObj.h" />
     <ClInclude Include="include\Object\Mushroom.h" />
@@ -190,7 +193,9 @@
     <ClInclude Include="include\Scene\Layer.h" />
     <ClInclude Include="include\Types.h" />
     <ClInclude Include="Pixel.h" />
+    <ClInclude Include="Portal.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Rope.h" />
     <ClInclude Include="StartScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +203,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="Dungeon.cpp" />
+    <ClCompile Include="CDungeonScecne.cpp" />
     <ClCompile Include="CMath.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="include\CCore.cpp" />
@@ -212,6 +219,7 @@
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
     <ClCompile Include="include\Object\Bullet.cpp" />
+    <ClCompile Include="include\Object\Monster.cpp" />
     <ClCompile Include="include\Object\Mouse.cpp" />
     <ClCompile Include="include\Object\MoveObj.cpp" />
     <ClCompile Include="include\Object\Mushroom.cpp" />
@@ -229,6 +237,8 @@
     <ClCompile Include="include\Scene\CSceneManager.cpp" />
     <ClCompile Include="include\Scene\Layer.cpp" />
     <ClCompile Include="Pixel.cpp" />
+    <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Rope.cpp" />
     <ClCompile Include="StartScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +247,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="HTMLPage.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

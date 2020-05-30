@@ -214,8 +214,9 @@ bool CAnimation::Init()
 
 void CAnimation::Update(float fTime)
 {
-	m_bMotionEnd = false;
+	if (m_bAnimStop == true)return;
 
+	m_bMotionEnd = false;
 
 	m_pCurClip->fAnimationTime += fTime;
 
@@ -224,7 +225,6 @@ void CAnimation::Update(float fTime)
 			m_pCurClip->fAnimationFrameTime;
 
 		++m_pCurClip->iFrameY;
-
 	
 		if (m_pCurClip->iFrameY
 			- m_pCurClip->iStartY == m_pCurClip->iLengthY) {
@@ -233,7 +233,6 @@ void CAnimation::Update(float fTime)
 
 			if (m_pCurClip->eType == AT_FRAME)
 				m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameY/*iFrameY*/]);
-
 
 			if (m_pCurClip->iFrameX - m_pCurClip->iStartX ==
 				m_pCurClip->iLengthX) {
@@ -258,38 +257,7 @@ void CAnimation::Update(float fTime)
 				m_pObj->SetTexture(m_pCurClip->vecTexture[m_pCurClip->iFrameY/*iFrameY*/]);
 		}
 	}
-	/*m_pCurClip->fAnimationTime += fTime;
-
-	while (m_pCurClip->fAnimationTime >= m_pCurClip->fAnimationFrameTime) {
-		m_pCurClip->fAnimationTime -=
-			m_pCurClip->fAnimationFrameTime;
-
-		++m_pCurClip->iFrameX;
-
-		if (m_pCurClip->iFrameX 
-			-m_pCurClip->iStartX== m_pCurClip->iLengthX) {
-			m_pCurClip->iFrameX = m_pCurClip->iStartX;
-			++m_pCurClip->iFrameY;
-
-			if (m_pCurClip->iFrameY - m_pCurClip->iStartY ==
-				m_pCurClip->iLengthY) {
-				m_pCurClip->iFrameY = m_pCurClip->iStartY;
-
-				switch (m_pCurClip->eOption) {
-				case AO_ONCE_RETURN:
-					ChangeClip(m_strDefaultClip);
-					break;
-				case AO_ONCE_DESTROY:
-					m_pObj->Die();
-					break;
-				case AO_TIME_RETURN:
-					break;
-				case AO_TIME_DESTROY:
-					break;
-				}
-			}
-		}
-	}*/
+	
 
 }
 

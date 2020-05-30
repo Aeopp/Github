@@ -7,6 +7,8 @@
 #include "../Collision/Colinder.h"
 #include "../CCore.h"
 #include "../../CAnimation.h"
+#include <algorithm>
+#include "../Object/Player.h"
 CObj::CObj() :
 	m_pTexture{ nullptr },
 	m_bIsPhysics{ false } ,
@@ -107,6 +109,45 @@ void CObj::EraseObj()
 {
 	Safe_Release_VecList(m_ObjList);
 }
+
+// 렌더이후에 출력해서 좌표 확인
+void CObj::DebugCollisionLinePrint(HDC hDC) {
+	auto Pos = GetPos();
+	auto Size = GetSize();
+
+	auto [left, top, right, bottom] = GetCollisionRect();
+	MoveToEx(hDC, left, top, NULL);
+	LineTo(hDC, right, top);
+	LineTo(hDC, right, bottom);
+	LineTo(hDC, left, bottom);
+	LineTo(hDC, left, top);
+}
+
+
+ void CObj::DebugCollisionPrint(HDC hDC) {
+	auto [left, top, right, bottom] = GetCollisionRect();//GetCollisionRect();
+	auto Pos = GetCollisionPos(); // GetCollisionPos() ; 
+	Rectangle(hDC, left, top, right, bottom);
+	Rectangle(hDC, Pos.x, Pos.y, Pos.x + 5, Pos.y + 5);
+}
+
+ void CObj::ClampPos()
+ {
+	 RESOLUTION WorldRs = GET_SINGLE(CCamera)->GetWorldRS();
+	 float Height = GET_SINGLE(CSceneManager)->CurrentStageGroundHeight;
+	 m_tPos.x = std::clamp<float>(m_tPos.x, 0, WorldRs.iW-GetCollisionSize().x);
+	 m_tPos.y = std::clamp<float>(m_tPos.y, 0, Height);
+ }
+
+ bool CObj::Init()
+ {
+	 return true;
+ }
+
+ CObj* CObj::Clone()
+ {
+	 return new CObj{ *this }; 
+ }
 
 CAnimation* CObj::CreateAnimation(const wstring& strTag)
 {
@@ -278,6 +319,11 @@ int CObj::LateUpdate(float fDeltaTime)
 		else
 			++iter;  
 	}
+
+	ClampPos();
+	
+	
+
 	return 0;
 }
 
@@ -377,7 +423,6 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 
 		/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
 		*/
-		
 		POSITION tPos = m_tPos - m_tSize * m_tPivot;
 		tPos -= GET_SINGLE(CCamera)->GetPos();
 
@@ -391,20 +436,42 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 				tImagePos.x = pClip->iFrameX * pClip->tFrameSize.x;
 				tImagePos.y = pClip->iFrameY * pClip->tFrameSize.y;
 			}
-			
 		}
 
 		tImagePos += m_tImageOffset;
-
-		if (m_pTexture->GetColorKeyEnable()==true) {
-			TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-				m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
+		
+		if (m_pTexture->bAlpha==true)
+		{
+			BLENDFUNCTION ftn;
+			ftn.BlendOp = AC_SRC_OVER;
+			ftn.BlendFlags = 0;
+			ftn.SourceConstantAlpha = 255;
+			ftn.AlphaFormat = AC_SRC_ALPHA;
+			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
+				m_tSize.y,
+				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);
 		}
-		else {
-			BitBlt(hDC, tPos.x, tPos.y,
-				m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-				SRCCOPY);
+		else
+		{
+			if (m_pTexture->GetColorKeyEnable() == true) {
+				TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
+					m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
+					m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
+			}
+			else {
+				BitBlt(hDC, tPos.x, tPos.y,
+					m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
+					SRCCOPY);
+			}
+			/*BLENDFUNCTION ftn;
+			ftn.BlendOp = AC_SRC_OVER;
+			ftn.BlendFlags = 0;
+			ftn.SourceConstantAlpha = 255;
+			ftn.AlphaFormat = AC_SRC_OVER;
+
+			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
+				m_tSize.y,
+				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);*/
 		}
 	}
 
@@ -426,6 +493,15 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 		}
 		else
 			++iter;
+	}
+
+	if (GET_SINGLE(CCore)->GetInst()->bDebug==true) {
+		if (auto IsPlayer = dynamic_cast<CPlayer*>(this);IsPlayer!=nullptr) {
+			IsPlayer->DebugCollisionLinePrint(hDC);
+		}
+		else {
+			DebugCollisionPrint(hDC);
+		}
 	}
 }
 

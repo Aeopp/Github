@@ -93,7 +93,7 @@ void CMushroom::Hit(CObj* const Target, float fDeltaTime)
 {
 	CObj::Hit(Target, fDeltaTime);
 	if (Target->GetTag() == L"Player") {
-		std::terminate();
+
 	}
 }
 

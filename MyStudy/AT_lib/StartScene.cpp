@@ -43,51 +43,22 @@ bool CStartScene::Init()
 
     SAFE_RELEASE(pBackPanel);
 
+    CUIButton* pStartBtn= CObj::CreateObj<CUIButton>(L"EndButton", pLayer);
 
-    CUIButton* pEndBtn = CObj::CreateObj<CUIButton>(L"EndButton", pLayer);
-
-    pEndBtn->SetPos(GETRESOLUTION.iW / 2 -
+    pStartBtn->SetPos(GETRESOLUTION.iW / 2 -
         350, GETRESOLUTION.iH / 2 - 100);
-    pEndBtn->SetSize(300, 200);
-    pEndBtn->SetTexture(L"EndButton",
+    pStartBtn->SetSize(300, 200);
+    pStartBtn->SetTexture(L"EndButton",
         L"StartButton.bmp");
-    pEndBtn->SetColorKey(255, 0, 255);
-    pEndBtn->bBorder = false;
+    pStartBtn->SetColorKey(255, 0, 255);
+    pStartBtn->bBorder = false;
 
 
-    pEndBtn->SetCallback(this,
+    pStartBtn->SetCallback(this,
         &CStartScene::StartButtonCallback);
 
 
-    SAFE_RELEASE(pEndBtn);
-
-
-    /*    CColliderRect* pRC = (CColliderRect*)pStartBtn->GetCollider(L"ButtonBody");
-
-        POSITION tPos = pStartBtn->GetPos();
-        pRC->SetRect(tPos.x,tPos.y,tPos.x+200,
-            tPos.y+100);*/
-
-
-        //CUIButton* pEndBtn= CObj::CreateObj<CUIButton>(L"EndButton", pLayer);
-
-        //pEndBtn->SetPos(GETRESOLUTION.iW / 2 -
-        //    100, GETRESOLUTION.iH / 2 +20);
-        //pEndBtn->SetSize(174, 140);
-        //pEndBtn->SetTexture(L"EndButton",
-        //    L"StartButton.bmp");
-        //pStartBtn->SetColorKey(255, 0, 255);
-
-
-      /*   pRC = (CColliderRect*)pEndBtn->GetCollider(L"ButtonBody");
-
-         tPos = pEndBtn->GetPos();
-        pRC->SetRect(tPos.x, tPos.y, tPos.x + 200,
-            tPos.y + 100);
-
-        SAFE_RELEASE(pRC);*/
-
-        //SAFE_RELEASE(pEndBtn);
+    SAFE_RELEASE(pStartBtn);
 
         return true;
 }

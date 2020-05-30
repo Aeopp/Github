@@ -27,12 +27,14 @@ CMoveObj::CMoveObj(const CMoveObj& Obj) :
 void CMoveObj::MoveXFromSpeed(float fDeltaTime, MOVE_DIR m_eDir)
 {
 	m_tPos.x += fDeltaTime * m_fSpeed
-		* m_eDir; m_bMove = true;
+		* m_eDir; 
+	m_bMove = true;
 }
 
 void CMoveObj::MoveYFromSpeed(float fDeltaTime, MOVE_DIR m_eDir)
 {
-	m_tPos.y += fDeltaTime * m_fSpeed* m_eDir; m_bMove = true;
+	m_tPos.y += fDeltaTime * m_fSpeed* m_eDir; 
+	m_bMove = true;
 }
 
 void CMoveObj::Move(float x, float y, float fDeltaTime)
@@ -125,16 +127,22 @@ void CMoveObj::Input(float fDeltaTime)
 
 int CMoveObj::Update(float fDeltaTime)
 {
-	if (m_bIsPhysics == true) {
-		/*if (bJump==true) {
-			m_fGravityTime += GRAVITY * fDeltaTime;
-			m_tPos.y += m_fGravityTime;
-		}*/
-		{
-			m_fGravityTime +=  fDeltaTime;
+	if (m_bIsPhysics == true && bRope==false ) {
+		m_fGravityTime +=  fDeltaTime;
 		 m_tPos.y   += (GRAVITY * m_fGravityTime * m_fGravityTime);
-		}
+		//m_tPos.y += (GRAVITY * m_fGravityTime) * 0.1f;
 	};
+	if (MovePos.top > 1) {
+		m_tPos.y -= MovePos.top * fDeltaTime;
+	}
+	JumpDelta -= fDeltaTime;
+	if (JumpDelta > 0) {
+		bJump = true; 
+	}
+	if (JumpDelta < 0) {
+		JumpDelta = 0;
+		bJump = false;
+	}
 
 	CObj::Update(fDeltaTime);
 

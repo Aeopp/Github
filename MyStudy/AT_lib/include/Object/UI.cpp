@@ -4,6 +4,9 @@
 #include "../Collision/Colinder.h"
 #include "../Core/Input.h"
 #include "../Macro.h"
+#include "Mouse.h"
+#include <algorithm>
+#include "../CCore.h"
 CUI::CUI():
 	CObj()
 {
@@ -18,7 +21,6 @@ CObj(ui)
 CUI::~CUI()
 {
 }
-
 
 void CUI::MouseOnEvent(CObj* const Target, float fDeltaTime){
 	if (Target->GetTag() == L"Mouse") {
@@ -35,7 +37,7 @@ void CUI::MouseReleaseEvent(CObj* const Target, float fDeltaTime) {
 
 void CUI::MouseClickEvent(CObj* const Target, float fDeltaTime)
 {
-
+	
 }
 
 void CUI::Input(float fDeltaTime)
@@ -63,12 +65,19 @@ int CUI::LateUpdate(float fDeltaTime)
 	if (m_eState == BS_CLICK && KEYUP("MouseLButton")) {
 		m_eState = BS_MOUSEON; SetImageOffset(m_tSize.x , 0.f);
 		if (m_bEnableCallback) {
-			m_BtnCallBack(fDeltaTime);
+			m_BtnCallBack(fDeltaTime); 
+
+			GET_SINGLE(CInput)->MouseAnimPlay("MouseNormal");
 		}
 	}
+
 	return 0;
 }
-
+void CUI::ClampPos() {
+	RESOLUTION WorldRs = GET_SINGLE(CCamera)->GetWorldRS();
+	m_tPos.x = std::clamp<float>(m_tPos.x, 0, GETRESOLUTION.iW - GetSize().x);
+	m_tPos.y = std::clamp<float>(m_tPos.y, 0, GETRESOLUTION.iH - GetSize().y);
+}
 void CUI::Collision(float fDeltaTime)
 {
 	CObj::Collision(fDeltaTime);
@@ -77,6 +86,8 @@ void CUI::Collision(float fDeltaTime)
 void CUI::Hit(CObj* const Target, float fDeltaTime)
 {
 	CObj::Hit(Target, fDeltaTime);
+
+	
 }
 
 void CUI::FirstHitEvent(CObj* const Target, float fDeltaTime)

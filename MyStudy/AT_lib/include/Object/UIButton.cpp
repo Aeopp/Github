@@ -68,6 +68,10 @@ void CUIButton::Hit(CObj* const Target, float fDeltaTime)
 			MouseOnEvent(Target, fDeltaTime);
 		}
 	}
+
+	if (Target->GetTag() == L"Mouse") {
+		GET_SINGLE(CInput)->MouseAnimPlay("Click");
+	}
 }
 
 void CUIButton::FirstHitEvent(CObj* const Target, float fDeltaTime)
@@ -86,6 +90,10 @@ void CUIButton::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
 
 	if (Target->GetTag() == L"Mouse");
 	//MessageBox(WINDOWHANDLE, L"Release", L"Release", NULL);
+
+	if (Target->GetTag() == L"Mouse") {
+		GET_SINGLE(CInput)->MouseAnimPlay("MouseNormal");
+	}
 }
 
 void CUIButton::Render(HDC hDC, float fDeltaTime)

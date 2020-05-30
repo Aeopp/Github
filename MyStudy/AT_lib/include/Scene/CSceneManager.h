@@ -8,8 +8,9 @@ private:
 	class CScene* m_pNextScene;
 
 	SCENE_CHANGE  ChangeScene();
-
 public:
+	float CurrentStageGroundHeight = 0;
+
 	bool Init();
 	void Input(float fDeltaTime);
 	SCENE_CHANGE  Update(float fDeltaTime);

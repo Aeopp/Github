@@ -1,26 +1,34 @@
 #pragma once
 #include "MoveObj.h"
 
-class CPlayer :
-	public CMoveObj
+enum class EState :UINT8{
+IDLE,
+WALK,
+JUMP,
+HIT,
+DIE,
+};
+
+class CMonster : public CMoveObj
 {
-private : 
+private:
 	friend class CObj;
 	friend class CScene;
-	CPlayer();
-	virtual ~CPlayer()noexcept;
-	CPlayer(const CPlayer& Player); 
-private:
+	void RandomState(float fDeltaTime)& ;
+public :	 
+	EState CurrentState = EState::IDLE;
+	float StateRemaining = 2.f;
+	CMonster();
+	virtual ~CMonster()noexcept;
+	CMonster(const CMonster& Monster);
 	int m_iHP;
 	bool m_bAttack;
-	
-public:
 	RECTANGLE Pow = { 0,0,0,0 };
-	Vector JumpVector;
 	void Attack()&;
-	bool bPortal = false;
 	bool bDead;
-	virtual bool Init();
+	void Dead()&;
+	virtual bool Init(); 
+	virtual CMonster* Clone();
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);
 	virtual int  LateUpdate(float fDeltaTime);
@@ -28,10 +36,6 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 	void ReleaseHitEvent(CObj* const Target, float fDeltaTime)override;
 	void FirstHitEvent(CObj* const Target, float fDeltaTime)override;
-
-	virtual CPlayer* Clone()override;
-	void Fire(); 
-	void Dead()&;
 	virtual void Hit(CObj* const Target, float fDeltaTime)override;
 };
 

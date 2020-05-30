@@ -111,9 +111,6 @@
     <ClInclude Include="include\Object\StaticObj.h">
       <Filter>03.Object\02.StaticObj</Filter>
     </ClInclude>
-    <ClInclude Include="include\Object\Player.h">
-      <Filter>03.Object\01.MoveObj\01.Player</Filter>
-    </ClInclude>
     <ClInclude Include="include\Object\Mushroom.h">
       <Filter>03.Object\01.MoveObj\02.Monster</Filter>
     </ClInclude>
@@ -159,9 +156,6 @@
     <ClInclude Include="Pixel.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Ground.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CAnimation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -183,8 +177,29 @@
     <ClInclude Include="include\Collision\CollisionPoint.h">
       <Filter>05.Colinder</Filter>
     </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>03.Object\02.StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\Monster.h">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CDungeonScecne.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Dungeon.h">
+      <Filter>03.Object\02.StaticObj\01.Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\Player.h">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClInclude>
     <ClInclude Include="include\Core\Input.h">
-      <Filter>01.Core</Filter>
+      <Filter>01.Core\04.Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Rope.h">
+      <Filter>03.Object\02.StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>03.Object\02.StaticObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,9 +208,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\Main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="include\Scene\Layer.cpp">
       <Filter>02.Scene\01.Layer</Filter>
     </ClCompile>
@@ -268,9 +280,6 @@
     <ClCompile Include="Pixel.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Ground.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>06.Animation</Filter>
     </ClCompile>
@@ -292,6 +301,27 @@
     <ClCompile Include="include\Collision\CollisionPoint.cpp">
       <Filter>05.Colinder</Filter>
     </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>03.Object\02.StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\Monster.cpp">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CDungeonScecne.cpp">
+      <Filter>02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Dungeon.cpp">
+      <Filter>03.Object\02.StaticObj\01.Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Rope.cpp">
+      <Filter>03.Object\02.StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>03.Object\02.StaticObj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico">
@@ -303,5 +333,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="HTMLPage.htm" />
   </ItemGroup>
 </Project>

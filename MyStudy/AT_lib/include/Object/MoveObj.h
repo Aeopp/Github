@@ -5,7 +5,6 @@ class CMoveObj :
 	public CObj
 {
 protected:
-	bool bJump = false; 
 	float m_fAngle; 
 	float m_fSpeed; 
 	bool m_bMove;
@@ -17,7 +16,12 @@ protected:
 	CMoveObj();
 	virtual ~CMoveObj() noexcept {}; 
 	CMoveObj(const CMoveObj& Obj); 
-public :
+public :	bool bRope = false;
+
+	bool bJump = false;
+	float JumpDelta = 0;
+	RECTANGLE MovePos = { 0,0,0,0 };
+	MOVE_DIR m_eDir;
 	float GetDirToPI() {
 		if (GetDir()== 1) {
 			return 0 / PI;

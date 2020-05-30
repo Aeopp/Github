@@ -10,8 +10,14 @@ private:
 
 	class CObj* m_pTarget; 
 public :
+	RESOLUTION GetWorldRS()const{
+		return m_tWorldRS;
+	}
 	POSITION GetPos()const {
 		return m_tPos; 
+	}
+	void SetWorldRS(RESOLUTION WorldRS) &{
+		m_tWorldRS = std::move(WorldRS); 
 	}
 	void SetTarget(class CObj* pObj);
 	void SetPivot(const POSITION& tPivot) {

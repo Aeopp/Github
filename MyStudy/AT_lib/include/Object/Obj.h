@@ -3,6 +3,7 @@
 #include "../Types.h"
 #include "../Scene/Layer.h"
 #include "../Core/Camera.h"
+
 class CObj : public CRef
 {
 protected:
@@ -38,7 +39,7 @@ protected:
 	float m_fGravityTime; 
 	int m_iRef;
 	wstring m_strTag;
-	POSITION m_tPos;
+
 	POSITION m_tRenderPos;
 	POSITION m_tRenderSize;
 	_SIZE m_tSize;
@@ -53,15 +54,25 @@ protected:
 	list<std::pair<class CObj*,ECOLLISION_STATE>> HitList;
 protected:
 	// 렌더이후에 출력해서 좌표 확인
-	void DebugCollisionPrint(HDC hDC) {
-		auto Center = GetCollisionCenter();
-		auto [left, top, right, bottom] = GetCollisionRect();
-		auto Pos = GetCollisionPos();
-		Ellipse(hDC, Center.x, Center.y, Center.x + 5, Center.y + 5);
-		Rectangle(hDC, left, top, right, bottom);
-	 Rectangle(hDC, Pos.x, Pos.y, Pos.x + 5, Pos.y + 5);
-	}
+	void DebugCollisionPrint(HDC hDC);
+	virtual void ClampPos();
 public:
+	bool bGround = false; 
+	POSITION GetCollisionSize()const {
+		auto [left,top,right,bottom ] = GetCollisionRect();
+		return POSITION{right-left,bottom-top };
+	}
+	virtual bool Init();	
+	virtual CObj* Clone();
+	virtual void Input(float fDeltaTime);
+	virtual int  Update(float fDeltaTime);
+	virtual int  LateUpdate(float fDeltaTime);
+	virtual void Collision(float fDeltaTime);
+	virtual void Hit(CObj* const Target, float fDeltaTime);
+	virtual void FirstHitEvent(CObj* const Target, float fDeltaTime);
+	virtual void ReleaseHitEvent(CObj* const Target, float fDeltaTime);
+	virtual void Render(HDC hDC, float fDeltaTime);
+	POSITION m_tPos;
 	POSITION GetPoint()const {
 		return m_tPos; 
 	}
@@ -262,6 +273,9 @@ public:
 		return m_tSize;
 	};
 public:
+	RECTANGLE GetRect()const {
+		return RECTANGLE{ GetLeft(),GetTop(),GetRight(),GetBottom() };
+	}
 	float GetLeft()const {
 		return m_tPos.x - m_tSize.x * m_tPivot.x;
 	}
@@ -319,22 +333,14 @@ public:
 		m_tSize.y = y;
 	}
 
+	void DebugCollisionLinePrint(HDC hDC);
+
 	void SetTexture(class CTexture* pTexture);
 	void SetTexture(const wstring& strKey,
 		const wchar_t* pFileName = nullptr,
 		const wstring& strPathKey = TEXTURE_PATH); 
 	void SetColorKey(unsigned char r, unsigned char g, unsigned char b);
-public:
-	virtual bool Init() = 0;
-	virtual void Input(float fDeltaTime);
-	virtual int  Update(float fDeltaTime);
-	virtual int  LateUpdate(float fDeltaTime);
-	virtual void Collision(float fDeltaTime);
-	virtual void Hit(CObj* const Target, float fDeltaTime); 
-	virtual void FirstHitEvent(CObj* const Target, float fDeltaTime);
-	virtual void ReleaseHitEvent(CObj* const Target, float fDeltaTime);
-	virtual void Render(HDC hDC, float fDeltaTime);
-	virtual CObj* Clone() = 0; 
+
 public:
 	template<typename T>
 	static T* CreateObj(const wstring& strTag, class CLayer*

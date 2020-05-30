@@ -101,15 +101,6 @@ int CScene::Update(float fDeltaTime)
 		SAFE_DELETE(Obj); });
 	CObj::m_ObjList.erase(DieObject, std::end(CObj::m_ObjList));
 
-	/*for (auto iter = CObj::m_ObjList.begin(); iter != std::end(CObj::m_ObjList);
-		) {
-		if ((*iter)->GetLife() == false) {
-			SAFE_DELETE(*iter);
-			iter = CObj::m_ObjList.erase(iter);
-		}
-		else
-			++iter; 
-	}*/
 	return 0; 
 }
 
