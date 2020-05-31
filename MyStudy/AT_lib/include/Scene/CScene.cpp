@@ -130,6 +130,8 @@ int CScene::LateUpdate(float fDeltaTime)
 
 void CScene::Collision(float fDeltaTime)
 {
+	if (bCollisionUpdate == false)return;
+
 	list<CLayer*>::iterator iter;
 	list<CLayer*>::iterator iterEnd = m_LayerList.end();
 

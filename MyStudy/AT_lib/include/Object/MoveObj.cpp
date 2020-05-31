@@ -1,6 +1,10 @@
 #include "MoveObj.h"
 #include <cmath>
 #include <algorithm>
+#include "../../CHPBar.h"
+#include "../Scene/Layer.h"
+#include "../CCore.h"
+
 CMoveObj::CMoveObj():
 	CObj() ,
 	m_fAngle{ 0.f} ,m_fSpeed { 100.f},
@@ -23,7 +27,38 @@ CMoveObj::CMoveObj(const CMoveObj& Obj) :
 
 	/*m_fForceOrigin = Obj.m_fForceOrigin;
 	m_fForce = 0.f;*/
-};
+}
+void CMoveObj::HPBarSpawn( POSITION Pos, _SIZE Size,const std::pair<std::wstring, std::wstring>& Objectnames, const std::pair<std::wstring, std::wstring> & FileNames,
+	CLayer* UILayer)
+{
+	auto [HPBackGround, HPBar] = this->CurrentHPBar;
+	const auto& [Name1, Name2] = Objectnames;
+	const auto& [FileName1, FileName2] = FileNames;
+
+	HPBackGround = CObj::CreateObj<CHPBar>(Name1, UILayer);
+	HPBackGround->SetPos(Pos);
+	HPBackGround->SetSize(Size);
+	HPBackGround->SetTexture(Name1, FileName1.c_str());
+	HPBackGround->SetColorKey(255, 0, 255);
+ 	HPBackGround->bBorder = false;
+
+	HPBar = CObj::CreateObj<CHPBar>(Name2, UILayer);
+	HPBar->SetPos(Pos);
+	HPBar->SetSize(Size);
+	HPBar->SetTexture(Name2, FileName2.c_str());
+	HPBar->SetColorKey(255, 0, 255);
+	 HPBar->bBorder = false;
+
+	this->CurrentHPBar.first = HPBackGround;
+	this->CurrentHPBar.second = HPBar;
+
+	HPBackGround->Owner = this;
+	HPBar->Owner = this;
+
+	SAFE_RELEASE(HPBackGround);
+	SAFE_RELEASE(HPBar);
+}
+;
 
 void CMoveObj::MoveXFromSpeed(float fDeltaTime, MOVE_DIR m_eDir)
 {
@@ -133,6 +168,12 @@ void CMoveObj::Input(float fDeltaTime)
 
 int CMoveObj::Update(float fDeltaTime)
 {
+	CObj::Update(fDeltaTime);
+
+	if (CurrentHPBar.second != nullptr) {
+		CurrentHPBar.second->m_tSize.x = (((float)109.f / DefaultHP) * m_iHP);
+	};
+
 	if (m_bIsPhysics == true && bRope==false ) {
 		m_fGravityTime +=  fDeltaTime;
 	/*	m_fGravityTime = std::clamp<float>(m_fGravityTime, 0, 1);*/
@@ -151,8 +192,6 @@ int CMoveObj::Update(float fDeltaTime)
 		JumpDelta = 0;
 		bJump = false;
 	}
-
-	CObj::Update(fDeltaTime);
 
 	return 0; 
 }
@@ -178,4 +217,10 @@ CMoveObj* CMoveObj::Clone()
 	return new CMoveObj{ *this }; 
 }
 ;
-
+void CMoveObj::GetDamage(float Damage)
+{
+	if (Invincible_time < 0.f) {
+		Invincible_time = 0.5f;
+		m_iHP -= Damage;
+	}
+}

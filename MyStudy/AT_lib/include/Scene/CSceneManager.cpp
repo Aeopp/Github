@@ -5,8 +5,7 @@ DEFINTION_SINGLE(CSceneManager)
 
 CSceneManager::CSceneManager()
 	:m_pScene(nullptr) 
-{
-}
+{}
 
 CSceneManager::~CSceneManager()
 {
