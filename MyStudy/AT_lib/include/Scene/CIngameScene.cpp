@@ -36,10 +36,6 @@ bool CIngameScene::Init()
 
 	SAFE_RELEASE(pPlayer);
 
-	auto* pMushroom = CObj::CreateObj<CMushroom>
-		(L"Mushroom", pLayer); 
-	SAFE_RELEASE(pMushroom);
-
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet",
 		m_eSceneType);
 	pBullet->SetSize(369.f, 116.f);
@@ -55,21 +51,15 @@ bool CIngameScene::Init()
 
 	CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
 	Ground->SetPos(0,1400);
-	Ground->SetSize(POSITION{ 2700,100 });
+	Ground->SetSize(POSITION{ 2700,200 });
 
-	GroundSetUp(EMapObjType::GROUND,pStageLayer, { 650, 1322,750 });
-
-	/*CGround* Temp  = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
-	Temp->SetPos(650, 1322);
-	Temp->SetSize(POSITION{ 100,10});*/
 
 	SAFE_RELEASE(pStage); 
 	SAFE_RELEASE(Ground);
 
 	Portal* pPortal = CObj::CreateObj<Portal>(L"Portal", pStageLayer);
 
-	pPortal->SetPos(390, 1300);
-	pPortal->SetSize(100, 100);
+	pPortal->SetPos(427, 1346);
 	/*pPortal->SetTexture(L"Portal",
 		L"Portal.bmp");*/
 	pPortal->PortalEvent = []() { GET_SINGLE(CSceneManager)->CreateScene<CDungeonScecne>(SC_NEXT); };

@@ -180,9 +180,6 @@
     <ClInclude Include="Ground.h">
       <Filter>03.Object\02.StaticObj</Filter>
     </ClInclude>
-    <ClInclude Include="include\Object\Monster.h">
-      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
-    </ClInclude>
     <ClInclude Include="CDungeonScecne.h">
       <Filter>02.Scene</Filter>
     </ClInclude>
@@ -200,6 +197,18 @@
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>03.Object\02.StaticObj</Filter>
+    </ClInclude>
+    <ClInclude Include="CPig.h">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\Slime.h">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\Monster.h">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Object\Weapon.h">
+      <Filter>03.Object\01.MoveObj\01.Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,9 +316,6 @@
     <ClCompile Include="include\Main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="include\Object\Monster.cpp">
-      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
-    </ClCompile>
     <ClCompile Include="CDungeonScecne.cpp">
       <Filter>02.Scene</Filter>
     </ClCompile>
@@ -321,6 +327,18 @@
     </ClCompile>
     <ClCompile Include="Portal.cpp">
       <Filter>03.Object\02.StaticObj</Filter>
+    </ClCompile>
+    <ClCompile Include="CPig.cpp">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\Slime.cpp">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\Monster.cpp">
+      <Filter>03.Object\01.MoveObj\02.Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Object\Weapon.cpp">
+      <Filter>03.Object\01.MoveObj\01.Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

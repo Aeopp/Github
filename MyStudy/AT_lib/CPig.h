@@ -1,27 +1,28 @@
 #pragma once
-#include "MoveObj.h"
+#include "include/Object/Monster.h"
+#include <utility>
+#include "include/Types.h"
 
-class CPlayer :
-	public CMoveObj
+class CPig : public CMonster
 {
-private : 
+private:
 	friend class CObj;
 	friend class CScene;
-	CPlayer();
-	virtual ~CPlayer()noexcept;
-	CPlayer(const CPlayer& Player); 
-private:
-	bool m_bAttack;
-	int HitRenderFlag = 0; 
-	bool bHit = false; 
-	float HitDelta = 0; 
-	class CObj* WeaponCollision = nullptr;
+	void RandomState(float fDeltaTime)&;
 public:
+	void AnimationCalc() & override; 
+	std::pair<int, int> MoveRange = {};
+	void SetMoveRange();
+	CPig();
+	virtual ~CPig()noexcept;
+	CPig(const CPig& Monster);
+	int m_iHP;
+	bool m_bAttack;
 	RECTANGLE Pow = { 0,0,0,0 };
-	Vector JumpVector;
 	void Attack()&;
-	bool bPortal = false;
+	
 	virtual bool Init();
+	virtual CPig* Clone();
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);
 	virtual int  LateUpdate(float fDeltaTime);
@@ -29,10 +30,6 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 	void ReleaseHitEvent(CObj* const Target, float fDeltaTime)override;
 	void FirstHitEvent(CObj* const Target, float fDeltaTime)override;
-
-	virtual CPlayer* Clone()override;
-	void Fire(); 
-	void Dead()&;
 	virtual void Hit(CObj* const Target, float fDeltaTime)override;
 };
 

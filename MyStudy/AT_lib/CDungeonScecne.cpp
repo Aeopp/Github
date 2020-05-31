@@ -20,14 +20,29 @@
 #include "include/Object/Stage.h"
 #include "Portal.h"
 #include "Dungeon.h"
-
+#include "include/Object/Slime.h"
 bool CDungeonScecne::Init()
 {
-    if (!CScene::Init())
-        return false;
+	if (!CScene::Init())
+		return false;
 	CLayer* pLayer = FindLayer(L"Default");
 
 	auto* pPlayer = CObj::CreateObj<CPlayer>(L"Player", pLayer);
+
+	MonstersSpawn<CSlime>(pLayer, L"Slime", { {421,593},{552,593} }, { 280,680 });
+	MonstersSpawn<CSlime>(pLayer, L"Slime", { {1840,501},{2004,501},{2103,501} }, { 1739,2221 });
+
+	MonstersSpawn<CPig>(pLayer, L"Pig", { {1040,472},{1236,472}
+		,{938,197},{1298,197},{1393,197} }, { 837,1440 });
+
+	MonstersSpawn<CPig>(pLayer, L"Pig", { {1040,472},{1236,472}
+		,{938,197},{1298,197},{1393,197} }, { 837,1440 });
+
+	MonstersSpawn<CMushroom>(pLayer, L"Mushroom", { {1057, 900}, { 1256,900 }, { 1400,900 } }, { 838,1443 });
+	
+	MonstersSpawn<CMushroom>(pLayer, L"Mushroom", {  {176, 1052}, { 399,1052 }
+		, { 838,1052 }}, { 40,2163 });
+
 	GET_SINGLE(CCamera)->SetTarget(pPlayer);
 	GET_SINGLE(CCamera)->SetPivot(0.5f, 0.3f);
 	GET_SINGLE(CCamera)->SetWorldResolution(2250, 1375);
@@ -35,10 +50,6 @@ bool CDungeonScecne::Init()
 	pPlayer->SetPos(1600, 800);
 
 	SAFE_RELEASE(pPlayer);
-
-	//auto* pMushroom = CObj::CreateObj<CMushroom>
-	//	(L"Mushroom", pLayer);
-	//SAFE_RELEASE(pMushroom);
 
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet",
 		m_eSceneType);
@@ -58,8 +69,8 @@ bool CDungeonScecne::Init()
 	GET_SINGLE(CSceneManager)->CurrentStageGroundHeight = 1120;
 
 	CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
-	Ground->SetPos(0, 1120);
-	Ground->SetSize(POSITION{ 2250,100 });
+	Ground->SetPos(0, 1110);
+	Ground->SetSize(POSITION{ 2250,200});
 
 	CRope* Rope = CObj::CreateObj<CRope>(L"StageColl", pStageLayer);
 	Rope->SetPos(548, 850);
@@ -95,6 +106,8 @@ bool CDungeonScecne::Init()
 	CurrentUIMinimap->SetSize(160, 150);
 	CurrentUIMinimap->SetTexture(L"MinimapUI2",
 		L"Minimap.bmp");
+
+	// 1129 938 
 
 	SAFE_RELEASE(CurrentUIMinimap);
 

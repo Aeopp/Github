@@ -1,5 +1,6 @@
 #include "MoveObj.h"
 #include <cmath>
+#include <algorithm>
 CMoveObj::CMoveObj():
 	CObj() ,
 	m_fAngle{ 0.f} ,m_fSpeed { 100.f},
@@ -110,8 +111,6 @@ void CMoveObj::Jump()
 	if (m_bFalling) {
 		m_bFalling = true;
 		m_fForce = m_fForceOrigin;
-
-		
 	}
 }
 void CMoveObj::JumpEnd()
@@ -119,6 +118,13 @@ void CMoveObj::JumpEnd()
 		/*m_bFalling = false;
 		m_fForce = 0.f;*/
 };
+
+bool CMoveObj::Init()
+{
+	CObj::Init();
+
+	return true;
+}
 
 void CMoveObj::Input(float fDeltaTime)
 {
@@ -129,6 +135,8 @@ int CMoveObj::Update(float fDeltaTime)
 {
 	if (m_bIsPhysics == true && bRope==false ) {
 		m_fGravityTime +=  fDeltaTime;
+	/*	m_fGravityTime = std::clamp<float>(m_fGravityTime, 0, 1);*/
+
 		 m_tPos.y   += (GRAVITY * m_fGravityTime * m_fGravityTime);
 		//m_tPos.y += (GRAVITY * m_fGravityTime) * 0.1f;
 	};
@@ -164,5 +172,10 @@ void CMoveObj::Render(HDC hDC, float fDeltaTime)
 	CObj::Render(hDC, fDeltaTime);
 
 	//m_bMove = false;
-};
+}
+CMoveObj* CMoveObj::Clone()
+{
+	return new CMoveObj{ *this }; 
+}
+;
 

@@ -156,6 +156,7 @@
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CDungeonScecne.h" />
     <ClInclude Include="CMath.h" />
+    <ClInclude Include="CPig.h" />
     <ClInclude Include="DataTable.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Ground.h" />
@@ -173,7 +174,9 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Macro.h" />
     <ClInclude Include="include\Object\Bullet.h" />
+    <ClInclude Include="include\Object\Weapon.h" />
     <ClInclude Include="include\Object\Monster.h" />
+    <ClInclude Include="include\Object\Slime.h" />
     <ClInclude Include="include\Object\Mouse.h" />
     <ClInclude Include="include\Object\MoveObj.h" />
     <ClInclude Include="include\Object\Mushroom.h" />
@@ -203,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CPig.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="CDungeonScecne.cpp" />
     <ClCompile Include="CMath.cpp" />
@@ -219,7 +223,9 @@
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
     <ClCompile Include="include\Object\Bullet.cpp" />
+    <ClCompile Include="include\Object\Weapon.cpp" />
     <ClCompile Include="include\Object\Monster.cpp" />
+    <ClCompile Include="include\Object\Slime.cpp" />
     <ClCompile Include="include\Object\Mouse.cpp" />
     <ClCompile Include="include\Object\MoveObj.cpp" />
     <ClCompile Include="include\Object\Mushroom.cpp" />

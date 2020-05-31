@@ -39,7 +39,7 @@ public:
 	bool GetLife() const {
 		return  m_bLife;
 	}
-	void Die()
+	virtual void Die()
 	{
 		m_bLife = false; 
 	}

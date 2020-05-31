@@ -18,7 +18,7 @@
 
 #define PI   3.141592 
 #define GRAVITY  9.8f
-// Path Key 
+// Path Key  
 #define ROOT_PATH    L"RootPath"
 #define TEXTURE_PATH   L"TexturePath"
 using namespace std;

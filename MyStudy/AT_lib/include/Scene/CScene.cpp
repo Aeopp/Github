@@ -2,6 +2,9 @@
 #include "Layer.h"
 #include "../Object/Obj.h"
 #include <algorithm>
+#include <tuple>
+#include <vector>
+
 CScene::CScene()
 {
 	CLayer* pLayer = CreateLayer(L"UI",  INT_MAX);
@@ -197,6 +200,11 @@ CObj* CScene::FindPtototype(const wstring& strKey,
 
 	return iter->second;
 }
+
+
+
+
+
 
 void CScene::ChangeProtoType()
 {
