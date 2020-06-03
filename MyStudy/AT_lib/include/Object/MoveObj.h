@@ -11,20 +11,30 @@ protected:
 	bool m_bFalling;
 	float m_fForce; 
 	float m_fForceOrigin; 
-	int m_iDir;
+	
 	
 protected: 
 	CMoveObj();
 	virtual ~CMoveObj() noexcept {}; 
 	CMoveObj(const CMoveObj& Obj); 
 public :	
-	float m_iHP;
+	void HPBarSpawn( POSITION Pos,
+		_SIZE Size, const std::pair<std::wstring, std::wstring>& Objectnames, const std::pair<std::wstring,
+		std::wstring>& FileNames, CLayer* UILayer);
+
+	float DefaultHP = 100'000;
+	int Level = 1;
+	std::pair<float, float> DamageRange{ 777.f,7777.f};
+	std::pair<class CHPBar*, class CHPBar*>CurrentHPBar{ nullptr,nullptr };
+	int m_iDir;
+	float Invincible_time = 0.5f;
+	int m_iHP = 10000.f;
 	bool bRope = false;
 	bool bJump = false;
 	float JumpDelta = 0;
 	RECTANGLE MovePos = { 0,0,0,0 };
-	std::pair<float, float > Velocity;
-	MOVE_DIR m_eDir;
+	POSITION Velocity;
+	MOVE_DIR m_eDir; void GetDamage(float  Damage);
 	float GetDirToPI() {
 		if (GetDir()== 1) {
 			return 0 / PI;

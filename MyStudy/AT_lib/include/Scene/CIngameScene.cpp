@@ -16,7 +16,7 @@
 #include "../../Portal.h"
 #include <tuple>
 #include <utility>
-
+#include "../../CHPBar.h"
 
 CIngameScene::~CIngameScene() noexcept
 {}
@@ -34,8 +34,6 @@ bool CIngameScene::Init()
 	GET_SINGLE(CCamera)->SetWorldResolution(2700, 1518);
 	pPlayer->SetPos(1012,1274);
 
-	SAFE_RELEASE(pPlayer);
-
 	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet",
 		m_eSceneType);
 	pBullet->SetSize(369.f, 116.f);
@@ -52,7 +50,6 @@ bool CIngameScene::Init()
 	CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
 	Ground->SetPos(0,1400);
 	Ground->SetSize(POSITION{ 2700,200 });
-
 
 	SAFE_RELEASE(pStage); 
 	SAFE_RELEASE(Ground);
@@ -73,7 +70,33 @@ bool CIngameScene::Init()
 	CurrentUIMinimap->SetTexture(L"MinimapUI",
 		L"HappyMinimap.bmp");
 
-	//SAFE_RELEASE(CurrentUIMinimap);
+	pPlayer->HPBarSpawn({ 0,(float)GET_SINGLE(CCore)->GetResolution().iH - 71 },
+		{ 570,71 }, { L"Bar1",L"Bar2" }, { L"BAR1.bmp",L"BAR2.bmp" }, pUILayer);
+
+	//auto [HPBackGround,HPBar] = pPlayer->CurrentHPBar;
+
+	//HPBackGround = CObj::CreateObj<CHPBar>(L"Bar1", pUILayer);
+	//HPBackGround->SetPos(0,GET_SINGLE(CCore)->GetResolution().iH-71);
+	//HPBackGround->SetSize(570, 71);
+	//HPBackGround->SetTexture(L"Bar1",L"BAR1.bmp");
+	//HPBackGround->SetColorKey(255, 0, 255);
+	//HPBackGround->bBorder = false;
+
+	//HPBar = CObj::CreateObj<CHPBar>(L"Bar2", pUILayer);
+	//HPBar->SetPos(0, GET_SINGLE(CCore)->GetResolution().iH - 71);
+	//HPBar->SetSize(570, 71);
+	//HPBar->SetTexture(L"Bar2", L"BAR2.bmp");
+	//HPBar->SetColorKey(255, 0, 255);
+	//HPBar->bBorder = false;
+
+	//pPlayer->CurrentHPBar.first = HPBackGround;
+	//pPlayer->CurrentHPBar.second= HPBar;
+
+
+
+	SAFE_RELEASE(pPlayer);
+	SAFE_RELEASE(CurrentUIMinimap);
+	
 
 	return true;
 }

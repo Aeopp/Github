@@ -15,7 +15,7 @@ bool CPig::Init()
 	m_tCorrectionRenderToCollision = RECTANGLE{0,13,0,0};
 	float SizeX = 69;
 	float SizeY = 56;
-	float DefaultHP = 100;
+	
 	std::wstring monsterName = L"Pig";
 
 	// 몬스터 스폰 위치 지정
@@ -32,7 +32,9 @@ bool CPig::Init()
 	//SetCorrectionRenderToCollision(RECTANGLE{110,54,151,128});
 
 	// HP 지정
+	DefaultHP = 50'000;
 	m_iHP = DefaultHP;
+	DamageRange = {10'000,15'000};
 	SetPhysics(true);
 	SetForce(200.f);
 
@@ -52,11 +54,11 @@ bool CPig::Init()
 	//DIE
 	{
 		AddAnimationClip(L"PigDieleft", AT_ATLAS, AO_ONCE_RETURN,
-			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"PigDieleft", L"Animation\\Monster\\Pig\\Left\\DIE.bmp");
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PigDieleft", L"Animation\\Monster\\Pig\\Left\\DIE.bmp");
 		SetAnimationClipColorkey(L"PigDieleft", 255, 0, 255);
 
 		AddAnimationClip(L"PigDieright", AT_ATLAS, AO_ONCE_RETURN,
-			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"PigDieright", L"Animation\\Monster\\Pig\\Right\\DIE.bmp");
+			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"PigDieright", L"Animation\\Monster\\Pig\\Right\\DIE.bmp");
 		SetAnimationClipColorkey(L"PigDieright", 255, 0, 255);
 	}
 	// HIT 
@@ -228,11 +230,12 @@ void CPig::FirstHitEvent(CObj* const Target, float fDeltaTime)
 void CPig::Hit(CObj* const Target, float fDeltaTime)
 {
 	CMonster::Hit(Target, fDeltaTime);
-	if (Target->GetTag() == L"Player") {
-		CurrentState = EState::HIT;
-		StateRemaining = 0.3f;
-		//MessageBox(WINDOWHANDLE, L"공격!", L"공격!", NULL); 
-	};
+
+	//if (Target->GetTag() == L"Player" && CurrentState != EState::DIE) {
+	//	CurrentState = EState::HIT;
+	//	StateRemaining = 0.2f;
+	//	//MessageBox(WINDOWHANDLE, L"공격!", L"공격!", NULL); 
+	//};
 	if (Target->GetTag() != L"StageColl") {
 		bGround = false;
 	}

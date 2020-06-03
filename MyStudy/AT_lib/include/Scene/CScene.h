@@ -1,12 +1,12 @@
 #pragma once
 #include "../Game.h"
-
+#include "Layer.h"
 #include "../../Ground.h"
 #include "../../Rope.h"
 #include "../Object/Slime.h"
 #include "../../CPig.h"
 #include "../Object/Mushroom.h"
-
+#include <string>
 class CScene
 {
 public:
@@ -21,8 +21,25 @@ protected:
 
 	static inline	  unordered_map<wstring, class CObj*> m_mapPrototype[SC_END];
 public:
+	std::vector<CMonster*>MonsterList;
+	bool bCollisionUpdate = true;
+
+	void DeleteMonster(CMonster* Monster) {
+		for (auto iter = std::begin(MonsterList); iter != std::end(MonsterList);) {
+			if (Monster == *iter) {
+				iter = MonsterList.erase(iter);
+			}
+			else {
+				++iter; 
+			}
+		}
+	};
+	bool StageClear() {
+		return MonsterList.empty();
+	};
 
 	class CUIPanel* CurrentUIMinimap;
+	
 	void SetSceneType(SCENE_CREATE eType) {
 		m_eSceneType = eType;  
 	}
@@ -58,14 +75,24 @@ protected:
 	inline void GroundSetUp(EMapObjType Type,CLayer* pStageLayer, const std::tuple<float, float, float>& Param);
 		inline void GroundsSetUps(EMapObjType Type,CLayer* pStateLayer,const std::vector<std::tuple<float, float, float>>&Params);
 
-		template<typename MonsterType>
+		 template<typename MonsterType>
 		void MonstersSpawn(CLayer* Layer, const wstring& strTag, const std::vector<std::pair<int, int>>& MonsterPositions,std::pair<float,float> MonsterXRange)
 		{
+			int Count = 0;
+			static std::wstring MBar = L"M_BAR";
 			for (auto [x, y] : MonsterPositions) {
 				auto* Monster = CObj::CreateObj<MonsterType>(strTag, Layer);
 				Monster->SetPos(x, y);
 				Monster->MonsterXRange = std::move(MonsterXRange);
+				MonsterList.push_back(Monster);
+				/*auto * pUILayer = FindLayer(L"UI");
+
+				auto Bar1 = MBar += std::to_wstring(Count) + L"_1";
+				auto Bar2 = MBar += std::to_wstring(Count) + L"_2";
+				Monster->HPBarSpawn({ (float)x,(float)y },
+				{ 109,18}, { Bar1,Bar2}, { L"M_BAR1.bmp",L"M_BAR2.bmp" }, pUILayer);*/
 				SAFE_RELEASE(Monster);
+				++Count;
 			};
 		};
 public:

@@ -4,11 +4,14 @@
 CMouse::CMouse()
 	:CUI()
 {
+	CollisionTag = L"Mouse";
 }
 
 CMouse::CMouse(const CMouse& mouse):
 	CUI(mouse )
 {
+	CollisionTag = L"Mouse";
+
 }
 
 CMouse::~CMouse()

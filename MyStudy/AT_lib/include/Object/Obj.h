@@ -41,10 +41,10 @@ protected:
 	float m_fGravityTime; 
 	int m_iRef;
 	wstring m_strTag;
-
+	
 	POSITION m_tRenderPos;
 	POSITION m_tRenderSize;
-	_SIZE m_tSize;
+	
 	_SIZE m_tImageOffset;
 	POSITION m_tPivot;
 	list<class CCollider*> m_ColliderList;
@@ -52,13 +52,16 @@ protected:
 	POSITION m_tDist;
 	class CScene* m_pScene;
 	class CLayer* m_pLayer;
-	class CTexture* m_pTexture;
+	
 	list<std::pair<class CObj*,ECOLLISION_STATE>> HitList;
 protected:
 	// 렌더이후에 출력해서 좌표 확인
 	void DebugCollisionPrint(HDC hDC);
 	virtual void ClampPos();
 public:
+	_SIZE m_tSize;
+	class CTexture* m_pTexture;
+	wstring CollisionTag;
 	bool bGround = false; 
 	POSITION GetCollisionSize()const {
 		auto [left,top,right,bottom ] = GetCollisionRect();
@@ -215,7 +218,15 @@ public:
 			return {nullptr,ECOLLISION_STATE::Nothing};
 		}
 	}
-
+	static void DeleteObj(CObj* const Target) {
+		for (auto iter = m_ObjList.begin(); iter != m_ObjList.end();){
+			if (*iter == Target) {
+				iter = m_ObjList.erase(iter);
+			}
+			else
+				++iter; 
+		}
+	}
 	inline list<std::pair<class CObj*, ECOLLISION_STATE>>::iterator GetHitListIter(class CObj* Obj) {
 		auto is_find = std::find_if(std::begin(HitList), std::end(HitList),
 			[Obj](auto Pair) {

@@ -15,8 +15,10 @@ private:
 	int HitRenderFlag = 0; 
 	bool bHit = false; 
 	float HitDelta = 0; 
-	class CObj* WeaponCollision = nullptr;
+
 public:
+	class Weapon* CurWeapon = nullptr;
+	class DamagePont* DamagePrint = nullptr;
 	RECTANGLE Pow = { 0,0,0,0 };
 	Vector JumpVector;
 	void Attack()&;
@@ -29,7 +31,7 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 	void ReleaseHitEvent(CObj* const Target, float fDeltaTime)override;
 	void FirstHitEvent(CObj* const Target, float fDeltaTime)override;
-
+	void SetWeapon(class CLayer* pLayer);
 	virtual CPlayer* Clone()override;
 	void Fire(); 
 	void Dead()&;

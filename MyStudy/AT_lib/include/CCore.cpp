@@ -199,7 +199,7 @@ SCENE_CHANGE CCore::LateUpdate(float fDeltaTime)
 void CCore::Collision(float fDeltaTime)
 {
 	// TODO :: 여기서 충돌 검사하기전에 테이블 세팅 보장 해줘야함 !!!!!!!!!!!!
-	GET_SINGLE(CSceneManager)->Collision(fDeltaTime);
+	//GET_SINGLE(CSceneManager)->Collision(fDeltaTime);
 
 	if (CObj::m_ObjList.size() < 2) {
 		return; 
@@ -216,10 +216,14 @@ void CCore::Collision(float fDeltaTime)
 		std::advance(Inner, 1);
 
 		for (Inner; Inner != std::end(CObj::m_ObjList); ++Inner) {
-
+			
 			if ((*Inner)->bCollision == false) {
 				continue;
 			}
+			auto OuterTag = (*Outer)->CollisionTag;
+			auto InnerTag = (*Inner)->CollisionTag;
+			if (OuterTag == L"Monster" && InnerTag == L"Monster")continue;
+			
 
 			if ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
 				(*Outer)->GetCollisionTag() == ECollision_Tag::Rect) {
@@ -229,7 +233,6 @@ void CCore::Collision(float fDeltaTime)
 				if (true == CollisionRectToRect(LhsRect, RhsRect)) {
 					auto LhsTag = (*Inner)->GetTag();
 					auto RhsTag = (*Outer)->GetTag();
-
 					if (LhsTag == L"Stage" || RhsTag == L"Stage")continue;
 
 					if (auto InnerPair = (*Inner)->FindHitList(*Outer); InnerPair.first != nullptr) {

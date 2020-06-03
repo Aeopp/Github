@@ -17,7 +17,7 @@ public:
 	CSlime();
 	virtual ~CSlime()noexcept;
 	CSlime(const CSlime& Monster);
-	int m_iHP;
+
 	bool m_bAttack;
 	RECTANGLE Pow = { 0,0,0,0 };
 	void Attack()&;

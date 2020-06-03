@@ -9,6 +9,17 @@
 #include "Monster.h"
 #include <numeric>
 #include <algorithm>
+#include "../Scene/CScene.h"
+#include "../Scene/Layer.h"
+#include "Weapon.h"
+#include "../Core/Timer.h"
+#include "../Scene/CSceneManager.h"
+#include "../Object/UIButton.h"
+#include "../Scene/CIngameScene.h"
+#include "../../DamagePont.h"
+#include "../../CMath.h"
+#include "../../CHPBar.h"
+
 CPlayer::CPlayer()
 {};
 CPlayer::~CPlayer() noexcept
@@ -21,8 +32,16 @@ CPlayer::CPlayer(const CPlayer& Player) :
 
 void CPlayer::Attack()&
 {
-	m_bAttack = true; 
-}
+	m_bAttack = true;
+	if (CurWeapon != nullptr) {
+		CurWeapon->bAttack = true;
+		CurWeapon->CollDown = 0.3f;
+	};
+
+	//GET_SINGLE(CTimer)->PushTimer(0.5f, ETimerState::ONCE, [this](float) {
+	////	MessageBox(WINDOWHANDLE, L"공격끝", L"공격끝", NULL);
+	//	CurWeapon->bAttack = false;  });
+};
 
 bool CPlayer::Init() {
 	SetPos(0.f, 0);
@@ -31,13 +50,15 @@ bool CPlayer::Init() {
 	SetPivot(0.5f, 0.5f);
 	SetImageOffset(0.f, 0.f);
 	SetCorrectionRenderToCollision(RECTANGLE{ 112,60,101,96});
-
+	
 	SetTexture(L"Player", L"Animation/Player/Left/DEAD.bmp");
 	SetColorKey(255, 0, 255);
-
+	
 	//SetCorrectionRenderToCollision(RECTANGLE{110,54,151,128});
+	DefaultHP = 100'000;
+	m_iHP = DefaultHP;
+	DamageRange = { 10'000.f ,20'000.f };
 
-	m_iHP = 1000;
 	SetPhysics(true);
 	SetForce(200.f);
 
@@ -74,11 +95,11 @@ bool CPlayer::Init() {
 	//Dead
 	{
 		AddAnimationClip(L"PlayerDeadLeft", AT_ATLAS, AO_LOOP,
-			0.3f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerDeadLeft", L"Animation\\Player\\Left\\DEAD.bmp");
+			100.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerDeadLeft", L"Animation\\Player\\Left\\DEAD.bmp");
 		SetAnimationClipColorkey(L"PlayerDeadLeft", 255, 0, 255);
 
 		AddAnimationClip(L"PlayerDeadRight", AT_ATLAS, AO_LOOP,
-			0.3f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerDeadRight", L"Animation\\Player\\Right\\DEAD.bmp");
+			100.f, 1, 1, 0, 0, 1, 1, 0.f, L"PlayerDeadRight", L"Animation\\Player\\Right\\DEAD.bmp");
 		SetAnimationClipColorkey(L"PlayerDeadRight", 255, 0, 255);
 
 	}
@@ -175,14 +196,12 @@ void CPlayer::Input(float fDeltaTime)
 {
 	CMoveObj::Input(fDeltaTime); 
 
-	if (KEYUP("Dead")) {
-		Dead();
-	}
+	if (bDead == true) return;
+
 	if (KEYUP("Debug")) {
 		bool& Debug = GET_SINGLE(CCore)->GetInst()->bDebug;
 		Debug = !Debug;
 	}
-
 
 	if (bRope == true) {
 		if (KEYPRESS("Up")) {
@@ -223,7 +242,8 @@ void CPlayer::Input(float fDeltaTime)
 		m_bMove = false;
 	}
 
-	if (KEYDOWN("Attack")) {
+
+	if (KEYDOWN("Attack") && bGround) {
 		Attack();
 
 		if(m_iDir==-1)
@@ -233,7 +253,7 @@ void CPlayer::Input(float fDeltaTime)
 		m_pAnimation->ChangeClip(L"PlayerAttackRight");
 	}
 
-	if (KEYDOWN("Attack2")) {
+	if (KEYDOWN("Attack2") && bGround) {
 		Attack();
 
 		if (m_iDir == -1)
@@ -243,7 +263,7 @@ void CPlayer::Input(float fDeltaTime)
 			m_pAnimation->ChangeClip(L"PlayerAttack2Right");
 	}
 
-	if (KEYDOWN("Attack3")) {
+	if (KEYDOWN("Attack3") && bGround) {
 		Attack();
 
 		if (m_iDir == -1)
@@ -253,7 +273,7 @@ void CPlayer::Input(float fDeltaTime)
 			m_pAnimation->ChangeClip(L"PlayerAttack3Right");
 	}
 
-	if (KEYUP("Attack4")) {
+	if (KEYUP("Attack4") && bGround) {
 		Attack();
 
 		if (m_iDir == -1)
@@ -262,7 +282,7 @@ void CPlayer::Input(float fDeltaTime)
 		if (m_iDir == 1)
 			m_pAnimation->ChangeClip(L"PlayerAttack4Right");
 
-		Fire();
+		//Fire();
 	}
 
 	if (KEYUP("Fire")) {
@@ -276,8 +296,8 @@ void CPlayer::Input(float fDeltaTime)
 			return; 
 		}
 		if (bJump == false) {
-			JumpDelta = 0.4f;
-			MovePos.top = 275.f;
+			JumpDelta = 0.30f;
+			MovePos.top = 200.f;
 		}
 		if (bJump == true) {
 			
@@ -289,6 +309,12 @@ void CPlayer::Input(float fDeltaTime)
 int CPlayer::Update(float fDeltaTime)
 {
 	CMoveObj::Update(fDeltaTime);
+
+	if (CurrentHPBar.second != nullptr) {
+		CurrentHPBar.second->m_tSize.x = 208 + (((float)(570 - 208) / DefaultHP) * m_iHP);
+	};
+
+	if (bDead == true) return 0; 
 
 	if (bJump == true  &&
 		m_bAttack==false && bRope==false  ) {
@@ -336,6 +362,10 @@ int CPlayer::LateUpdate(float fDeltaTime)
 		 //HitDelta = 0;
 	 }
 	 HitDelta -= fDeltaTime;
+
+	 if (m_iHP <= 0) {
+		 Dead();
+	 }
 	 return  0; 
 }
 
@@ -347,7 +377,7 @@ void CPlayer::Collision(float fDeltaTime)
 void CPlayer::Render(HDC hDC, float fDeltaTime)
 {
 	HitRenderFlag = std::clamp<int>(HitRenderFlag + 1, 0, INT_MAX);
-	if (bHit == true && HitRenderFlag % 4 == 0) {
+	if (bHit == true && HitRenderFlag % 7== 0 && bDead==false) {
 		return; 
 	}
 
@@ -436,6 +466,7 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 		}
 	}
 
+
 #ifdef _DEBUG
 		//DebugPrintHP(hDC, m_iHP);
 		//CObj::DebugCollisionPrint(hDC);
@@ -444,10 +475,16 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 }
 void CPlayer::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
 {
+	CMoveObj::ReleaseHitEvent(Target, fDeltaTime);
 }
 void CPlayer::FirstHitEvent(CObj* const Target, float fDeltaTime)
 {
-	
+	CMoveObj::FirstHitEvent(Target, fDeltaTime);
+}
+void CPlayer::SetWeapon(CLayer* pLayer)
+{
+	CurWeapon = CObj::CreateObj<Weapon>(L"Weapon", pLayer); 
+	CurWeapon->SetOwner(this);
 }
 CPlayer* CPlayer::Clone()
 {
@@ -480,6 +517,8 @@ void CPlayer::Fire()
 }
 void CPlayer::Dead()&
 {
+	if (bDead == true) return ;
+
 	bDead = true; 
 	
 	if (GetDir() == -1) {
@@ -490,13 +529,47 @@ void CPlayer::Dead()&
 		m_pAnimation->ChangeClip(L"PlayerDeadRight");
 		m_pAnimation->SetDefaultClip(L"PlayerDeadRight");
 	}
+
+	auto CurrentScene = GET_SINGLE(CSceneManager)->GetCurrentScene();
+	CLayer* pLayer = CurrentScene->FindLayer(L"UI");
+
+	CUIButton* pDeathBtn = CObj::CreateObj<CUIButton>(L"DeathButton", pLayer);
+
+	pDeathBtn->SetPos(GETRESOLUTION.iW / 2 
+		, GETRESOLUTION.iH / 2 );
+	pDeathBtn->SetSize(297, 127);
+	pDeathBtn->SetTexture(L"DeathButton",
+		L"Death.bmp");
+	pDeathBtn->SetColorKey(255, 0, 255);
+
+	pDeathBtn->SetCallback([](float) {GET_SINGLE(CSceneManager)->CreateScene<CIngameScene>(SC_NEXT); });
+	pDeathBtn->bChange = false;
+	
+	SAFE_RELEASE(pDeathBtn);
 }
+
 void CPlayer::Hit(CObj* const Target, float fDeltaTime)
 {
+	if (bDead == true)return;
+
 	CMoveObj::Hit(Target, fDeltaTime);
 
 	if (auto IsMonster = dynamic_cast<CMonster*>(Target);  
-		IsMonster != nullptr&&HitDelta<0.f) {
+		IsMonster != nullptr&&HitDelta<0.f && IsMonster->m_bEnable==true) {
+		auto [left, right] = IsMonster->DamageRange;
+		auto CurrentDamage = CMath::GetRandomNumber(left, right);
+		m_iHP -= CurrentDamage;
+		auto DamagePos = GetPos();
+		DamagePos.y -= 100;
+		DamagePos.x -= 30;
+		GET_SINGLE(CSceneManager)->CurrentDamagePont->DamagePrint(DamagePos, CurrentDamage);
+
+		 // IsMonster->Damage;
+		if (m_iHP <= 0) {
+			HitDelta = 100000.f;
+			Dead();
+			return; 
+		}
 		HitDelta = 2.f;
 		bHit = true;
 	};
