@@ -123,29 +123,37 @@ void CObj::DebugCollisionLinePrint(HDC hDC) {
 	LineTo(hDC, left, top);
 }
 
-
- void CObj::DebugCollisionPrint(HDC hDC) {
+void CObj::DebugCollisionPrint(HDC hDC) {
 	auto [left, top, right, bottom] = GetCollisionRect();//GetCollisionRect();
 	auto Pos = GetCollisionPos(); // GetCollisionPos() ; 
 	Rectangle(hDC, left, top, right, bottom);
 	Rectangle(hDC, Pos.x, Pos.y, Pos.x + 5, Pos.y + 5);
-}
+};
 
  void CObj::ClampPos()
  {
+	 if (!m_bEnable)return;
+
 	 RESOLUTION WorldRs = GET_SINGLE(CCamera)->GetWorldRS();
 	 float Height = GET_SINGLE(CSceneManager)->CurrentStageGroundHeight;
-	 m_tPos.x = std::clamp<float>(m_tPos.x, 0, WorldRs.iW-GetCollisionSize().x);
-	 m_tPos.y = std::clamp<float>(m_tPos.y, 0, Height);
+	 float MaxX = WorldRs.iW - GetCollisionSize().x;
+	 float MaxY = Height - GetCollisionSize().y;
+	 if (MaxX > 0 && MaxY > 0) {
+		 m_tPos.x = std::clamp<float>(m_tPos.x, 0, MaxX);
+		 if(GetTag()==L"Player")
+		 m_tPos.y = std::clamp<float>(m_tPos.y, 0, Height);
+	 }
  }
 
  bool CObj::Init()
  {
+
 	 return true;
  }
 
  CObj* CObj::Clone()
  {
+	 if (!m_bEnable)return nullptr;
 	 return new CObj{ *this }; 
  }
 
@@ -246,6 +254,8 @@ void CObj::SetColorKey(unsigned char r, unsigned char g, unsigned char b)
 
 void CObj::Input(float fDeltaTime)
 {
+	if (!m_bEnable)return;
+
 	for (auto iter = std::begin(m_ColliderList); iter != std::end(m_ColliderList);
 		) {
 		if (!(*iter)->GetEnable()) {
@@ -263,7 +273,8 @@ void CObj::Input(float fDeltaTime)
 
 int CObj::Update(float fDeltaTime)
 {
-	
+	if (!m_bEnable)return 0;
+
 	list<CCollider*>::iterator iter;
 	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 
@@ -287,12 +298,16 @@ int CObj::Update(float fDeltaTime)
 	if (m_pAnimation) {
 		m_pAnimation->Update(fDeltaTime);
 	}
+
+
 	return 0;
 }
 
 int CObj::LateUpdate(float fDeltaTime)
 {
-	list<CCollider*>::iterator iter;
+	if (!m_bEnable)return 0;
+
+	/*list<CCollider*>::iterator iter;
 	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 
 	for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
@@ -310,7 +325,7 @@ int CObj::LateUpdate(float fDeltaTime)
 		}
 		else
 			++iter;
-	};
+	};*/
 
 	for (auto iter = HitList.begin(); iter != std::end(HitList);) {
 		if (iter->second == ECOLLISION_STATE::Release) {
@@ -320,35 +335,18 @@ int CObj::LateUpdate(float fDeltaTime)
 			++iter;  
 	}
 
+
 	ClampPos();
-	
-	
+
+
 
 	return 0;
 }
 
 void CObj::Collision(float fDeltaTime)
 {
-	/*for (auto iter = std::begin(m_CollinderList); iter != std::end(m_CollinderList);
-		) {
-		if (!(*iter)->GetEnable()) {
-			++iter;
-			continue;
-		}
-		(*iter)->Collision(fDeltaTime);
-		if (!(*iter)->GetLife()) {
-			SAFE_RELEASE((*iter));
-			iter = m_CollinderList.erase(iter);
-		}
-		else ++iter;
-	}*/
+	if (!m_bEnable)return;
 
-	//for (auto iter = std::begin(HitList); iter != std::end(HitList); ++iter) {
-	//	if (iter->second == ECOLLISION_STATE::Nothing) {
-	//		//SAFE_RELEASE(iter->first);
-	//		HitList.erase(iter);
-	//	}
-	//}
 	for (auto iter = std::begin(HitList); iter != std::end(HitList); ++iter) {
 		auto Target = iter->first;
 		auto State = FindHitList(iter->first);
@@ -364,6 +362,10 @@ void CObj::Collision(float fDeltaTime)
 
 void CObj::Hit(CObj* const Target, float fDeltaTime)
 {
+	if (Target == nullptr)return;
+
+	if (!m_bEnable)return;
+
 	if (m_strTag == L"Stage") {
 		return;
 	};
@@ -384,34 +386,18 @@ void CObj::Hit(CObj* const Target, float fDeltaTime)
 		FirstHitEvent(Target,fDeltaTime);
 	}
 
-	//if (State == std::end(HitList)) {
-	//	AddHitList(Target,ECOLLISION_STATE::First);
-	//}
-	// 리스트에서 찾았다 충돌 유지중
-	/*else if ((*State).second== ECOLLISION_STATE::First) {
-		(*State).second = ECOLLISION_STATE::Keep;
-	}*/
-	//else {
-	//	auto Test  = Target->GetTag() + m_strTag.c_str();
-	//	
-	//}
-
-
-	//// 리스트에서 찾았다 충돌 유지중
-	//else if (State.second == ECOLLISION_STATE::First ||
-	//	State.second == ECOLLISION_STATE::Keep){
-
-	//	State.second = ECOLLISION_STATE::Release;
-	//}
 }
 
 void CObj::FirstHitEvent(CObj* const Target, float fDeltaTime)
 {
+	if (!m_bEnable)return;
 
 }
 
 void CObj::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
 {
+	if (!m_bEnable)return;
+
 	auto eraser = [Target](auto Pair) {return Pair.first == Target; };
 
 	HitList.remove_if(eraser);
@@ -419,10 +405,28 @@ void CObj::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
 
 void CObj::Render(HDC hDC, float fDeltaTime)
 {
-	if (m_pTexture) {
+	if (!m_bEnable)return;
 
-		/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
-		*/
+	
+	//RESOLUTION tClientRect = GET_SINGLE(CCamera)->GetClientRect();
+
+	//bool bInClient = true;
+
+	////if (tPos.x + m_tSize.x < 0) {
+	////	bInClient = false; 
+	////}
+	////else if (tPos.x > tClientRect.iW) {
+	////	bInClient = false; 
+	////}
+	////else if (tPos.y + m_tSize.y < 0) {
+	////	bInClient = false;
+	////}
+	////else if (tPos.y  > tClientRect.iH) {
+	////	bInClient = false;
+	////}
+
+
+	if (m_pTexture ) {
 		POSITION tPos = m_tPos - m_tSize * m_tPivot;
 		tPos -= GET_SINGLE(CCamera)->GetPos();
 
@@ -475,32 +479,32 @@ void CObj::Render(HDC hDC, float fDeltaTime)
 		}
 	}
 
-	list<CCollider*>::iterator iter;
-	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
+	//list<CCollider*>::iterator iter;
+	//list<CCollider*>::iterator iterEnd = m_ColliderList.end();
 
-	for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
-		if (!(*iter)->GetEnable()) {
-			++iter;
-			continue;
-		}
+	//for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
+	//	if (!(*iter)->GetEnable()) {
+	//		++iter;
+	//		continue;
+	//	}
 
-		(*iter)->Render(hDC,fDeltaTime);
+	//	(*iter)->Render(hDC,fDeltaTime);
 
-		if (!(*iter)->GetLife()) {
-			SAFE_RELEASE((*iter));
-			iter = m_ColliderList.erase(iter);
-			iterEnd = m_ColliderList.end();
-		}
-		else
-			++iter;
-	}
+	//	if (!(*iter)->GetLife()) {
+	//		SAFE_RELEASE((*iter));
+	//		iter = m_ColliderList.erase(iter);
+	//		iterEnd = m_ColliderList.end();
+	//	}
+	//	else
+	//		++iter;
+	//}
 
 	if (GET_SINGLE(CCore)->GetInst()->bDebug==true) {
-		if (auto IsPlayer = dynamic_cast<CPlayer*>(this);IsPlayer!=nullptr) {
-			IsPlayer->DebugCollisionLinePrint(hDC);
+		if (GetTag() == L"StageColl") {
+			DebugCollisionPrint(hDC);
 		}
 		else {
-			DebugCollisionPrint(hDC);
+			DebugCollisionLinePrint(hDC);
 		}
 	}
 }

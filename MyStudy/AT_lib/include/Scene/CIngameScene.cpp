@@ -6,17 +6,20 @@
 #include "../Core/Camera.h"
 #include "Layer.h"
 #include "../../Pixel.h"
-
 #include "../Scene/CSceneManager.h"
 #include "../CCore.h"
 #include "../../Dungeon.h"
-#include "../../CDungeonScecne.h"
+
+#include "../Core/Input.h"
+
 #include "../../include/Object/UIPanel.h"
 #include "../../include/Object/UIButton.h"
 #include "../../Portal.h"
 #include <tuple>
 #include <utility>
-
+#include "../../CHPBar.h"
+#include "../../CDungeonScene2.h"
+#include "../../DataTable.h"
 
 CIngameScene::~CIngameScene() noexcept
 {}
@@ -29,22 +32,13 @@ bool CIngameScene::Init()
 	CLayer* pLayer = FindLayer(L"Default");
 
 	auto* pPlayer = CObj::CreateObj<CPlayer>(L"Player", pLayer); 
+	/*pPlayer->m_iHP = PlayerInfo::PlayerHP;
+	pPlayer->Level = PlayerInfo::PlayerLevel;*/
+
 	GET_SINGLE(CCamera)->SetTarget(pPlayer);
 	GET_SINGLE(CCamera)->SetPivot(0.5f, 0.7f);
 	GET_SINGLE(CCamera)->SetWorldResolution(2700, 1518);
 	pPlayer->SetPos(1012,1274);
-
-	SAFE_RELEASE(pPlayer);
-
-	auto* pMushroom = CObj::CreateObj<CMushroom>
-		(L"Mushroom", pLayer); 
-	SAFE_RELEASE(pMushroom);
-
-	CBullet* pBullet = CScene::CreateProtoType<CBullet>(L"Bullet",
-		m_eSceneType);
-	pBullet->SetSize(369.f, 116.f);
-	pBullet->SetSpeed(1000.f);
-	SAFE_RELEASE(pBullet);
 
 	CLayer* pStageLayer = FindLayer(L"Stage");
 
@@ -55,24 +49,33 @@ bool CIngameScene::Init()
 
 	CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
 	Ground->SetPos(0,1400);
-	Ground->SetSize(POSITION{ 2700,100 });
-
-	GroundSetUp(EMapObjType::GROUND,pStageLayer, { 650, 1322,750 });
-
-	/*CGround* Temp  = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
-	Temp->SetPos(650, 1322);
-	Temp->SetSize(POSITION{ 100,10});*/
+	Ground->SetSize(POSITION{ 2700,200 });
 
 	SAFE_RELEASE(pStage); 
 	SAFE_RELEASE(Ground);
 
 	Portal* pPortal = CObj::CreateObj<Portal>(L"Portal", pStageLayer);
 
-	pPortal->SetPos(390, 1300);
-	pPortal->SetSize(100, 100);
-	/*pPortal->SetTexture(L"Portal",
-		L"Portal.bmp");*/
-	pPortal->PortalEvent = []() { GET_SINGLE(CSceneManager)->CreateScene<CDungeonScecne>(SC_NEXT); };
+	pPortal->SetPos(427, 1346);
+	
+	
+
+	if(StageFlag==false )
+	pPortal->PortalEvent = []() {
+		/*PlayerInfo::PlayerHP = pPlayer->m_iHP;
+		PlayerInfo::PlayerLevel = pPlayer->Level;*/
+
+		GET_SINGLE(CSceneManager)->CreateScene<CDungeonScecne>(SC_NEXT); 
+	};
+	else if (StageFlag == true)
+	pPortal->PortalEvent = []() { 
+		/*PlayerInfo::PlayerHP = pPlayer->m_iHP;
+		PlayerInfo::PlayerLevel = pPlayer->Level;*/
+
+		GET_SINGLE(CSceneManager)->CreateScene<CDungeonScene2>(SC_NEXT); 
+	};
+
+	StageFlag = !StageFlag;
 
 	SAFE_RELEASE(pPortal);
 
@@ -83,9 +86,27 @@ bool CIngameScene::Init()
 	CurrentUIMinimap->SetTexture(L"MinimapUI",
 		L"HappyMinimap.bmp");
 
-	//SAFE_RELEASE(CurrentUIMinimap);
+	pPlayer->HPBarSpawn({ 0,(float)GET_SINGLE(CCore)->GetResolution().iH - 71 },
+		{ 570,71 }, { L"Bar1",L"Bar2" }, { L"BAR1.bmp",L"BAR2.bmp" }, pUILayer);
+
+	SAFE_RELEASE(pPlayer);
+	SAFE_RELEASE(CurrentUIMinimap);
+	
 
 	return true;
+}
+
+int CIngameScene::Update(float fDeltaTime)
+{
+	CScene::Update(fDeltaTime);
+
+	if (KEYDOWN("Stage1")) {
+		StageFlag = true; 
+	}
+	if (KEYDOWN("Stage2")) {
+		StageFlag = false; 
+	}
+	return 0;
 }
 
 

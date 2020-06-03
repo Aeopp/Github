@@ -10,6 +10,7 @@ private:
 
 	class CObj* m_pTarget; 
 public :
+
 	RESOLUTION GetWorldRS()const{
 		return m_tWorldRS;
 	}

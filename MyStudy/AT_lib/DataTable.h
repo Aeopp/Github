@@ -1,7 +1,10 @@
 #pragma once
 // TODO ::  스크립팅으로 바꾸어 주세요.
 
-
+inline namespace PlayerInfo {
+	static inline float PlayerHP = 100'000;
+	static inline int PlayerLV = 1;
+}
 inline namespace Stage{
 	static constexpr inline float SizeWidth = 2700.f;
 	static constexpr inline float SizeHeight = 1518.f;

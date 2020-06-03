@@ -14,8 +14,6 @@ private:
 	RESOLUTION m_tRS;
 public:
 	bool bDebug = false; 
-	
-	
 	RESOLUTION GetResolution()const {
 		return m_tRS;
 	}
@@ -45,8 +43,6 @@ private :
 	SCENE_CHANGE LateUpdate(float fDeltaTime);
 	void Collision(float fDeltaTime);
 	void Render(float fDeltaTime);
-	 
-
 
 	bool CollisionRectToRect(const RECTANGLE& src, const RECTANGLE& dest);;
 
@@ -57,7 +53,6 @@ private :
 	bool CollisionSphereToPixel(const RECTANGLE& src, const vector<PIXEL>& vecPixel,int iWidth,int iHeight);
 
 	bool CollisionPixelToPoint( const vector<PIXEL>& vecPixel, int iWidth, int iHeight, const POSITION& dest);
-
 
 	// 구체 만들어서 구체로 바꾸기
 	bool CollisionSphereToSphere(const RECTANGLE& Lhs, const RECTANGLE& Rhs);

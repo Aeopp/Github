@@ -12,6 +12,8 @@ private:
 	friend class CObj;
 	friend class CScene;
 public: 	
+	bool bChange = true;
+	
 	function<void(float)>m_BtnCallBack;
 	bool m_bEnableCallback = false;
 	  template<typename T>
@@ -36,8 +38,8 @@ public:
 	void ClampPos() override;
 
 	virtual void MouseOnEvent(CObj* const Target, float fDeltaTime);
-		virtual void MouseClickEvent(CObj* const Target, float fDeltaTime);
-		virtual void MouseReleaseEvent(CObj* const Target, float fDeltaTime);
+	virtual void MouseClickEvent(CObj* const Target, float fDeltaTime);
+	virtual void MouseReleaseEvent(CObj* const Target, float fDeltaTime);
 	virtual bool Init() abstract;
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);

@@ -10,11 +10,14 @@
 CUI::CUI():
 	CObj()
 {
+	CollisionTag = L"UI";
 }
 
 CUI::CUI(const CUI& ui):
 CObj(ui)
 {
+	CollisionTag = L"UI";
+
 	m_eState=  BS_NONE;
 }
 
@@ -25,12 +28,14 @@ CUI::~CUI()
 void CUI::MouseOnEvent(CObj* const Target, float fDeltaTime){
 	if (Target->GetTag() == L"Mouse") {
 		m_eState = BS_MOUSEON;
+		if(bChange==true ) 
 		SetImageOffset(m_tSize.x, 0.f);
 	}
 }
 void CUI::MouseReleaseEvent(CObj* const Target, float fDeltaTime) {
 	if (Target->GetTag() == L"Mouse") {
 		m_eState = BS_NONE;
+		if (bChange == true)
 		SetImageOffset(0.f, 0.f);
 	}
 }
@@ -59,6 +64,7 @@ int CUI::LateUpdate(float fDeltaTime)
 	if (m_eState != BS_NONE) {
 		if (KEYPRESS("MouseLButton")) {
 			m_eState = BS_CLICK; 
+			if (bChange == true)
 			SetImageOffset(m_tSize.x*2.f, 0.f);
 		}
 	}
@@ -75,8 +81,12 @@ int CUI::LateUpdate(float fDeltaTime)
 }
 void CUI::ClampPos() {
 	RESOLUTION WorldRs = GET_SINGLE(CCamera)->GetWorldRS();
-	m_tPos.x = std::clamp<float>(m_tPos.x, 0, GETRESOLUTION.iW - GetSize().x);
-	m_tPos.y = std::clamp<float>(m_tPos.y, 0, GETRESOLUTION.iH - GetSize().y);
+	float X = GETRESOLUTION.iW - GetSize().x;
+	float Y = GETRESOLUTION.iH - GetSize().y;
+	if(X>=0)
+	m_tPos.x = std::clamp<float>(m_tPos.x, 0, X);
+	if(Y>=0)
+	m_tPos.y = std::clamp<float>(m_tPos.y, 0, Y);
 }
 void CUI::Collision(float fDeltaTime)
 {

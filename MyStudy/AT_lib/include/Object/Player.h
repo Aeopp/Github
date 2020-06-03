@@ -11,15 +11,20 @@ private :
 	virtual ~CPlayer()noexcept;
 	CPlayer(const CPlayer& Player); 
 private:
-	int m_iHP;
 	bool m_bAttack;
-	
+	int HitRenderFlag = 0; 
+	bool bHit = false; 
+	float HitDelta = 0; 
+	bool JumpHit = false; 
+
+
 public:
+	class Weapon* CurWeapon = nullptr;
+	class DamagePont* DamagePrint = nullptr;
 	RECTANGLE Pow = { 0,0,0,0 };
 	Vector JumpVector;
 	void Attack()&;
 	bool bPortal = false;
-	bool bDead;
 	virtual bool Init();
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);
@@ -28,7 +33,7 @@ public:
 	virtual void Render(HDC hDC, float fDeltaTime);
 	void ReleaseHitEvent(CObj* const Target, float fDeltaTime)override;
 	void FirstHitEvent(CObj* const Target, float fDeltaTime)override;
-
+	void SetWeapon(class CLayer* pLayer);
 	virtual CPlayer* Clone()override;
 	void Fire(); 
 	void Dead()&;

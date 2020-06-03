@@ -5,8 +5,7 @@ DEFINTION_SINGLE(CSceneManager)
 
 CSceneManager::CSceneManager()
 	:m_pScene(nullptr) 
-{
-}
+{}
 
 CSceneManager::~CSceneManager()
 {
@@ -25,12 +24,8 @@ CSceneManager::~CSceneManager()
 
 		 m_pScene->SetSceneType(SC_CURRENT);
 		 CScene::ChangeProtoType();
-
-
 		 return SC_CHANGE;
 	 }
-
-
 	 return SC_NONE;
 }
 

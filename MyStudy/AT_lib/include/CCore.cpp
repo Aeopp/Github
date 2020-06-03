@@ -178,7 +178,6 @@ SCENE_CHANGE CCore::LateUpdate(float fDeltaTime)
 					auto inner_find=  std::find_if(std::begin(InnerHitList), std::end(InnerHitList),
 						[&](auto Pair) {return Pair.first == *Outer; });
 
-
 					auto OuterHitList = (*Outer)->GetHitList();
 					auto outer_find = std::find_if(std::begin(OuterHitList), std::end(OuterHitList),
 						[&](auto Pair) {return Pair.first == *Inner;  });
@@ -199,7 +198,7 @@ SCENE_CHANGE CCore::LateUpdate(float fDeltaTime)
 void CCore::Collision(float fDeltaTime)
 {
 	// TODO :: 여기서 충돌 검사하기전에 테이블 세팅 보장 해줘야함 !!!!!!!!!!!!
-	GET_SINGLE(CSceneManager)->Collision(fDeltaTime);
+	//GET_SINGLE(CSceneManager)->Collision(fDeltaTime);
 
 	if (CObj::m_ObjList.size() < 2) {
 		return; 
@@ -208,10 +207,21 @@ void CCore::Collision(float fDeltaTime)
 	for (auto Outer = std::begin(CObj::m_ObjList);
 		Outer != std::end(CObj::m_ObjList);++Outer) {
 
+		if ((*Outer)->bCollision == false && *Outer==nullptr) { 
+			continue; 
+		}
+
 		auto Inner = Outer;
 		std::advance(Inner, 1);
 
 		for (Inner; Inner != std::end(CObj::m_ObjList); ++Inner) {
+			
+			if ((*Inner)->bCollision == false && *Inner==nullptr) {
+				continue;
+			}
+			auto OuterTag = (*Outer)->CollisionTag;
+			auto InnerTag = (*Inner)->CollisionTag;
+			if (OuterTag == L"Monster" && InnerTag == L"Monster")continue;
 
 			if ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
 				(*Outer)->GetCollisionTag() == ECollision_Tag::Rect) {
@@ -221,7 +231,6 @@ void CCore::Collision(float fDeltaTime)
 				if (true == CollisionRectToRect(LhsRect, RhsRect)) {
 					auto LhsTag = (*Inner)->GetTag();
 					auto RhsTag = (*Outer)->GetTag();
-
 					if (LhsTag == L"Stage" || RhsTag == L"Stage")continue;
 
 					if (auto InnerPair = (*Inner)->FindHitList(*Outer); InnerPair.first != nullptr) {
@@ -230,13 +239,14 @@ void CCore::Collision(float fDeltaTime)
 					if (auto OuterPair = (*Outer)->FindHitList(*Inner); OuterPair.first != nullptr) {
 						OuterPair.second = ECOLLISION_STATE::Release;
 					}
-
-					(*Inner)->Hit(*Outer, fDeltaTime);
-					(*Outer)->Hit(*Inner, fDeltaTime);
+					
+						(*Inner)->Hit(*Outer, fDeltaTime);
+						(*Outer)->Hit(*Inner, fDeltaTime);
+					
 					//MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
 				}
 			}
-			else if ( ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
+			/*else if ( ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
 				     (*Outer)->GetCollisionTag() == ECollision_Tag::Pixel  )
 						) {
 				auto LhsRect = (*Inner)->GetCollisionRect();
@@ -273,7 +283,7 @@ void CCore::Collision(float fDeltaTime)
 				(*Outer)->Hit(*Inner, fDeltaTime);
 				MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
 			    }
-			}
+			}*/
 		}
 	}
 
@@ -377,7 +387,7 @@ bool CCore::CollisionSphereToSphere(const RECTANGLE& Lhs, const RECTANGLE& Rhs)
 
 bool CCore::CollisionRectToPixel(const RECTANGLE& src, const vector<PIXEL>& vecPixel, int iWidth, int iHeight)
 {
-	int iStartX, iEndX;
+	/*int iStartX, iEndX;
 	int iStartY, iEndY;
 
 	iStartX = src.left < 0 ? 0 : src.left;
@@ -397,7 +407,7 @@ bool CCore::CollisionRectToPixel(const RECTANGLE& src, const vector<PIXEL>& vecP
 				return true; 
 			}
 		}
-	}
+	}*/
 
 	return false; 
 }

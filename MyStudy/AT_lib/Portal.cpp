@@ -13,28 +13,27 @@ void Portal::Render(HDC hDC, float fDeltaTime)
 bool Portal::Init()
 {
 	SetPos(0.f, 0);
-	SetSize(333.f, 333.f);
+	SetSize(349.3f, 360.f);
 	SetPivot(0.5f, 0.5f);
 	SetImageOffset(0.f, 0.f);
+	SetCorrectionRenderToCollision(RECTANGLE{ 100,100,100,100 });
 
 	SetTexture(L"Portal", L"Portal.bmp");
 	SetColorKey(255, 0, 255);
 
-	CAnimation* pAni = CreateAnimation(L"PortalAnim");
-
-	// TODO :: ANIMATION Field
-	// Idle 
-	{
-		AddAnimationClip(L"PortalAnimation", AT_ATLAS, AO_LOOP,
-			1.0f, 1, 9, 0, 0, 1, 9, 0.f, L"PortalAnimation", L"Animation\\PORTAL.bmp");
-		SetAnimationClipColorkey(L"PortalAnimation", 255, 0, 255);
-	}
-	m_pTexture->bAlpha = true; 
-
-	m_pAnimation->ChangeClip(L"PortalAnimation");
-	m_pAnimation->SetDefaultClip(L"PortalAnimation");
-
-
+//	CAnimation* pAni = CreateAnimation(L"PortalAnim");
+//
+//	// TODO :: ANIMATION Field
+//	// Idle 
+//	{
+//		AddAnimationClip(L"PortalAnimation", AT_ATLAS, AO_LOOP,
+//			0.5f, 3, 3, 0, 0, 3, 3, 0.f, L"PortalAnimation", L"PortalAnim.bmp");
+//		SetAnimationClipColorkey(L"PortalAnimation", 255, 0, 255);
+//	}
+////	m_pTexture->bAlpha = true; 
+//
+//	m_pAnimation->ChangeClip(L"PortalAnimation");
+//	m_pAnimation->SetDefaultClip(L"PortalAnimation");
 
 	return true; 
 }

@@ -27,7 +27,27 @@ void CTimer::Update()
 	m_tTime = tTime; 
 
 	m_fFPSTime += m_fDeltaTime;
+	
+		//m_fDeltaTime = 0.016f;
+	
 	++m_iFrame;
+
+	for (auto Iter = std::begin(CallBacks); Iter != std::end(CallBacks);) {
+		auto& [RemainTime, DefaultTime, State, Function] = *Iter;
+		RemainTime -= m_fDeltaTime;
+		if (RemainTime < 0) {
+			Function(m_fDeltaTime);
+			if (State == ETimerState::ONCE) {
+				Iter = CallBacks.erase(Iter);
+				continue;
+			}
+			else if (State == ETimerState::LOOP) {
+				RemainTime = DefaultTime;
+				++Iter;
+			}
+		}
+
+	}
 
 	if (m_fFPSTime>=1.f) {
 		m_fFPS = m_iFrame / m_fFPSTime;
@@ -44,4 +64,5 @@ void CTimer::Update()
 		_cprintf(strFPS);
 #endif 
 	}
+
 }

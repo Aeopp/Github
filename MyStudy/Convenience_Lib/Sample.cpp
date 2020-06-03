@@ -1,17 +1,44 @@
-#include "Convenience_function.h"
-#include <memory>
+#include <iostream>
+#include <vector>
+#include <random>
+#include <algorithm>
+#include <iterator>
+#include <map>
+#include <iomanip>
 
-template<typename value_type, typename delete_type, template<typename> typename 
-ptr_type>
-auto foo()
-{
-	return ptr_type<value_type, delete_type>(new value_type, delete_type{});
-};
-auto var = [](auto) {};
-int main()
-{
-	auto wer = foo<int, decltype(var), std::unique_ptr>();
+using namespace std;
 
-	
-	
+int main() {
+
+	const size_t data_points{ 100'000 };
+	const size_t sample_points{ 10 };
+
+	const int mean{ 100 };
+	const size_t dev{ 1 };
+
+	random_device rd;
+	mt19937 gen{ rd() };
+	normal_distribution<> d{ mean,dev };
+
+	vector<int> v;
+	v.reserve(data_points);
+	generate_n(back_inserter(v), data_points,
+		[&] {return d(gen); });
+
+	vector<int> samples;
+	samples.reserve(sample_points);
+
+	sample(begin(v), end(v), back_inserter(samples),
+		sample_points, mt19937{ random_device{}() });
+
+	map<int, size_t> hist;
+
+	for (int i : samples) {
+		++hist[i];
+	};
+
+	for (const auto& [value, count] : hist) {
+		cout << setw(2) << value << " " << string(count, '*') << '\n';
+
+	}
 }

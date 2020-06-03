@@ -28,7 +28,12 @@ bool CInput::Init(HWND hWnd)
 	AddKey('A', "Attack2");
 	AddKey('S', "Attack3");
 	AddKey('D', "Attack4");
-	AddKey(VK_F1, "Debug");
+
+	AddKey(VK_F6, "HPFULL");
+	AddKey(VK_F5, "Debug");
+	//AddKey(VK_F5, "StageClear");
+	AddKey(VK_F1, "Stage1");
+	AddKey(VK_F2, "Stage2");
 
 	AddKey(VK_ESCAPE, "Dead");
 
@@ -97,7 +102,6 @@ bool CInput::Init(HWND hWnd)
 	m_pMouse->m_pAnimation->SetDefaultClip(L"MouseNormal");
 	m_pMouse->bBorder = false;
 	ShowCursor(false); 
-
 
 		 // FRAMEANIMATION 
 		{

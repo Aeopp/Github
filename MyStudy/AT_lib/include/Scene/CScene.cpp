@@ -2,13 +2,17 @@
 #include "Layer.h"
 #include "../Object/Obj.h"
 #include <algorithm>
+#include <tuple>
+#include <vector>
+
 CScene::CScene()
 {
 	CLayer* pLayer = CreateLayer(L"UI",  INT_MAX);
 	pLayer = CreateLayer(L"HUD", INT_MAX-1);
 
-	pLayer = CreateLayer(L"Default",1);
+	CurrentDefaultLayer =  pLayer = CreateLayer(L"Default",1);
 	pLayer = CreateLayer(L"Stage");
+	
 	m_eSceneType = SC_CURRENT;
 }
 
@@ -127,6 +131,8 @@ int CScene::LateUpdate(float fDeltaTime)
 
 void CScene::Collision(float fDeltaTime)
 {
+	if (bCollisionUpdate == false)return;
+
 	list<CLayer*>::iterator iter;
 	list<CLayer*>::iterator iterEnd = m_LayerList.end();
 
@@ -165,6 +171,15 @@ void CScene::Render(HDC hDC, float fDeltaTime)
 	}
 }
 
+void CScene::StageClear()& {
+	for (auto& element : MonsterList) {
+		element->m_bEnable = false; 
+		element->bCollision = false;
+	}
+	MonsterList.clear();
+	return; 
+}
+
 bool CScene::LayerSort(CLayer* pL1, CLayer* pL2)
 {
 	//CLayer* pLayer = new CLayer;
@@ -197,6 +212,11 @@ CObj* CScene::FindPtototype(const wstring& strKey,
 
 	return iter->second;
 }
+
+
+
+
+
 
 void CScene::ChangeProtoType()
 {

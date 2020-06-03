@@ -72,25 +72,24 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>Bin\</OutDir>
-    <IntDir>Bin\</IntDir>
-    <TargetName>$(ProjectName)Debug64</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
+    <OutDir>\Bin</OutDir>
+    <IntDir>\Bin</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>Bin\</OutDir>
-    <IntDir>Bin\</IntDir>
+    <OutDir>\Bin</OutDir>
+    <IntDir>\Bin</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>Bin\</OutDir>
-    <IntDir>Bin\</IntDir>
+    <OutDir>\Bin</OutDir>
+    <IntDir>\Bin</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>Bin\</OutDir>
-    <IntDir>Bin\</IntDir>
-    <TargetName>$(ProjectName)64</TargetName>
+    <OutDir>\Bin</OutDir>
+    <IntDir>\Bin</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -153,9 +152,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Bar.h" />
     <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CDungeon2.h" />
     <ClInclude Include="CDungeonScecne.h" />
+    <ClInclude Include="CDungeonScene2.h" />
+    <ClInclude Include="CEliniaScene.h" />
+    <ClInclude Include="CHPBar.h" />
     <ClInclude Include="CMath.h" />
+    <ClInclude Include="CPig.h" />
+    <ClInclude Include="DamagePont.h" />
     <ClInclude Include="DataTable.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Ground.h" />
@@ -173,7 +179,9 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Macro.h" />
     <ClInclude Include="include\Object\Bullet.h" />
+    <ClInclude Include="include\Object\Weapon.h" />
     <ClInclude Include="include\Object\Monster.h" />
+    <ClInclude Include="include\Object\Slime.h" />
     <ClInclude Include="include\Object\Mouse.h" />
     <ClInclude Include="include\Object\MoveObj.h" />
     <ClInclude Include="include\Object\Mushroom.h" />
@@ -202,7 +210,14 @@
     <ResourceCompile Include="AT_lib.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bar.cpp" />
     <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CDungeon2.cpp" />
+    <ClCompile Include="CDungeonScene2.cpp" />
+    <ClCompile Include="CEliniaScene.cpp" />
+    <ClCompile Include="CHPBar.cpp" />
+    <ClCompile Include="CPig.cpp" />
+    <ClCompile Include="DamagePont.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="CDungeonScecne.cpp" />
     <ClCompile Include="CMath.cpp" />
@@ -219,7 +234,9 @@
     <ClCompile Include="include\Core\Timer.cpp" />
     <ClCompile Include="include\Main.cpp" />
     <ClCompile Include="include\Object\Bullet.cpp" />
+    <ClCompile Include="include\Object\Weapon.cpp" />
     <ClCompile Include="include\Object\Monster.cpp" />
+    <ClCompile Include="include\Object\Slime.cpp" />
     <ClCompile Include="include\Object\Mouse.cpp" />
     <ClCompile Include="include\Object\MoveObj.cpp" />
     <ClCompile Include="include\Object\Mushroom.cpp" />
