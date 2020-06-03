@@ -17,9 +17,6 @@ bool CMushroom::Init()
 	float SizeY = 100;
 	float DefaultHP = 100;
 	std::wstring monsterName = L"Mushroom";
-	DefaultHP = 40'000;
-	m_iHP = DefaultHP;
-	DamageRange = {12'000,17'000};
 
 	// 몬스터 스폰 위치 지정
 	SetPos(0.f, 0);
@@ -35,6 +32,7 @@ bool CMushroom::Init()
 	//SetCorrectionRenderToCollision(RECTANGLE{110,54,151,128});
 
 	// HP 지정
+	m_iHP = DefaultHP;
 	SetPhysics(true);
 	SetForce(200.f);
 
@@ -54,11 +52,11 @@ bool CMushroom::Init()
 	//DIE
 	{
 		AddAnimationClip(L"MushroomDieleft", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomDieleft", L"Animation\\Monster\\Mushroom\\Left\\DIE.bmp");
+			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomDieleft", L"Animation\\Monster\\Mushroom\\Left\\DIE.bmp");
 		SetAnimationClipColorkey(L"MushroomDieleft", 255, 0, 255);
 
 		AddAnimationClip(L"MushroomDieright", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomDieright", L"Animation\\Monster\\Mushroom\\Right\\DIE.bmp");
+			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomDieright", L"Animation\\Monster\\Mushroom\\Right\\DIE.bmp");
 		SetAnimationClipColorkey(L"MushroomDieright", 255, 0, 255);
 	}
 	// HIT 
@@ -233,11 +231,11 @@ void CMushroom::FirstHitEvent(CObj* const Target, float fDeltaTime)
 void CMushroom::Hit(CObj* const Target, float fDeltaTime)
 {
 	CMonster::Hit(Target, fDeltaTime);
-	//if (Target->GetTag() == L"Player" && CurrentState != EState::DIE) {
-	//	CurrentState = EState::HIT;
-	//	StateRemaining = 0.2f;
-	//	//MessageBox(WINDOWHANDLE, L"공격!", L"공격!", NULL); 
-	//};
+	if (Target->GetTag() == L"Player") {
+		CurrentState = EState::HIT;
+		StateRemaining = 0.3f;
+		//MessageBox(WINDOWHANDLE, L"공격!", L"공격!", NULL); 
+	};
 	if (Target->GetTag() != L"StageColl") {
 		bGround = false;
 	}

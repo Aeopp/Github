@@ -44,10 +44,29 @@ void CGround::Hit(CObj* const Target, float fDeltaTime)
             }
         }
     }
-}
-void CGround::FirstHitEvent(CObj* const Target, float fDeltaTime)
-{
-    CObj::FirstHitEvent(Target, fDeltaTime);
+ /*   std::pair<CObj*, ECOLLISION_STATE> Pair = FindHitList(Target);
+
+    if (Pair.second == ECOLLISION_STATE::First) {
+        
+        Pair.first->SetGravityTime(0.f);
+
+        if (Target->IsCorrection() == false) {
+             Target->SetPos(Target->GetPos().x, std::clamp<float>(Target->GetPos().y, 0, GetPos().y - Target->GetSize().y / 2));
+        }
+        else {
+            auto [left, top, right, bottom] = Target->GetCorrectionRenderToCollision();
+        }
+    }
+    else  if (Pair.second == ECOLLISION_STATE::Keep) {
+        Pair.first->SetGravityTime(0.f);
+
+        if (Target->IsCorrection() == false) {
+              Target->SetPos(Target->GetPos().x, std::clamp<float>(Target->GetPos().y, 0, GetPos().y - Target->GetSize().y / 2));
+        }
+        else {
+            auto [left, top, right, bottom] = Target->GetCorrectionRenderToCollision();
+        }
+    }*/
 };
 
 void CGround::Render(HDC hDC, float fDeltaTime)

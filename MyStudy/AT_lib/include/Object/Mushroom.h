@@ -17,7 +17,7 @@ public:
 	CMushroom();
 	virtual ~CMushroom()noexcept;
 	CMushroom(const CMushroom& Monster);
-
+	int m_iHP;
 	bool m_bAttack;
 	RECTANGLE Pow = { 0,0,0,0 };
 	void Attack()&;

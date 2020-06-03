@@ -18,11 +18,6 @@ bool CSlime::Init()
 	float DefaultHP = 100; 
 	std::wstring monsterName = L"Slime";
 
-	DefaultHP = 30'000;
-	m_iHP = DefaultHP;
-
-	DamageRange = {7'000,10'000};
-
 	// 몬스터 스폰 위치 지정
 	SetPos(0.f, 0);
 	SetSize(SizeX, SizeY);
@@ -37,7 +32,7 @@ bool CSlime::Init()
 	//SetCorrectionRenderToCollision(RECTANGLE{110,54,151,128});
 
 	// HP 지정
-
+	m_iHP = DefaultHP;
 	SetPhysics(true);
 	SetForce(200.f);
 
@@ -57,11 +52,11 @@ bool CSlime::Init()
 	//DIE
 	{
 		AddAnimationClip(L"SlimeDieleft", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 4, 0, 0, 1, 4, 0.f, L"SlimeDieleft", L"Animation\\Monster\\Slime\\Left\\DIE.bmp");
+			1.f, 1, 4, 0, 0, 1, 4, 0.f, L"SlimeDieleft", L"Animation\\Monster\\Slime\\Left\\DIE.bmp");
 		SetAnimationClipColorkey(L"SlimeDieleft", 255, 0, 255);
 		
 		AddAnimationClip(L"SlimeDieright", AT_ATLAS, AO_ONCE_RETURN,
-			0.6f, 1, 4, 0, 0, 1, 4, 0.f, L"SlimeDieright", L"Animation\\Monster\\Slime\\Right\\DIE.bmp");
+			1.f, 1, 4, 0, 0, 1, 4, 0.f, L"SlimeDieright", L"Animation\\Monster\\Slime\\Right\\DIE.bmp");
 		SetAnimationClipColorkey(L"SlimeDieright", 255, 0, 255);
 	}
 	// HIT 
@@ -236,11 +231,11 @@ void CSlime::FirstHitEvent(CObj* const Target, float fDeltaTime)
 void CSlime::Hit(CObj* const Target, float fDeltaTime)
 {
 	CMonster::Hit(Target, fDeltaTime);
-	//if (Target->GetTag() == L"Player" && CurrentState != EState::DIE) {
-	//	CurrentState = EState::HIT;
-	//	StateRemaining = 0.2f;
-	//	//MessageBox(WINDOWHANDLE, L"공격!", L"공격!", NULL); 
-	//};
+	if (Target->GetTag() == L"Player") {
+		CurrentState = EState::HIT;
+		StateRemaining = 0.3f;
+		//MessageBox(WINDOWHANDLE, L"공격!", L"공격!", NULL); 
+	};
 	if (Target->GetTag() != L"StageColl") {
 		bGround = false;
 	}
