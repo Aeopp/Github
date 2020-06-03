@@ -10,7 +10,9 @@ private:
 
 	class CObj* m_pTarget; 
 public :
-
+	RESOLUTION GetClientRect()const {
+		return m_tClientRS;
+	}
 	RESOLUTION GetWorldRS()const{
 		return m_tWorldRS;
 	}

@@ -1,7 +1,6 @@
 #include "Window.h"
 #include "Utility.h"
 
-
 LRESULT CALLBACK WndProc(
 	HWND hWnd,
 	UINT msg,

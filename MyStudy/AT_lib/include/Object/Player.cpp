@@ -394,6 +394,8 @@ void CPlayer::Render(HDC hDC, float fDeltaTime)
 		/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
 		*/
 		POSITION tPos = m_tPos - m_tSize * m_tPivot;
+		POSITION  CameraPos = GET_SINGLE(CCamera)->GetPos();
+
 		tPos -= GET_SINGLE(CCamera)->GetPos();
 
 		POSITION tImagePos;

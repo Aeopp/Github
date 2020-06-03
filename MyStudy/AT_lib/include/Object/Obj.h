@@ -88,7 +88,6 @@ public:
 	void SetDistance(const POSITION& tDist) {
 		m_tDist = tDist;
 	}
-
 	class CAnimation* m_pAnimation;
 
 	void DebugPrintHP(HDC hDC,float HP) const&{	
@@ -98,7 +97,6 @@ public:
 
 			TextOut(hDC, Pos.x, Pos.y,
 				strHP, lstrlen(strHP));
-		
 	}
 	POSITION __GetCollisionPos()const {
 		auto Pos = GetPos();
@@ -203,7 +201,6 @@ public:
 			SAFE_RELEASE(is_find->first);
 			HitList.erase(is_find);
 		}*/
-	
 	}
 	inline std::pair<class CObj*, ECOLLISION_STATE> FindHitList(class CObj* Obj) {
 		auto is_find = std::find_if(std::begin(HitList), std::end(HitList),

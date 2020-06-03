@@ -401,34 +401,33 @@ void CObj::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
 	auto eraser = [Target](auto Pair) {return Pair.first == Target; };
 
 	HitList.remove_if(eraser);
-}
+};
 
 void CObj::Render(HDC hDC, float fDeltaTime)
 {
 	if (!m_bEnable)return;
 
-	
-	//RESOLUTION tClientRect = GET_SINGLE(CCamera)->GetClientRect();
+	POSITION tPos = m_tPos - m_tSize * m_tPivot;
+	tPos -= GET_SINGLE(CCamera)->GetPos();
 
-	//bool bInClient = true;
+	RESOLUTION tClientRect = GET_SINGLE(CCamera)->GetClientRect();
 
-	////if (tPos.x + m_tSize.x < 0) {
-	////	bInClient = false; 
-	////}
-	////else if (tPos.x > tClientRect.iW) {
-	////	bInClient = false; 
-	////}
-	////else if (tPos.y + m_tSize.y < 0) {
-	////	bInClient = false;
-	////}
-	////else if (tPos.y  > tClientRect.iH) {
-	////	bInClient = false;
-	////}
+	bool bInClient = true;
 
+	if (tPos.x + m_tSize.x < 0) {
+		bInClient = false; 
+	}
+	else if (tPos.x > tClientRect.iW) {
+		bInClient = false; 
+	}
+	else if (tPos.y + m_tSize.y < 0) {
+		bInClient = false;
+	}
+	else if (tPos.y  > tClientRect.iH) {
+		bInClient = false;
+	}
 
-	if (m_pTexture ) {
-		POSITION tPos = m_tPos - m_tSize * m_tPivot;
-		tPos -= GET_SINGLE(CCamera)->GetPos();
+	if (m_pTexture&& bInClient ) {
 
 		POSITION tImagePos;
 

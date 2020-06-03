@@ -49,7 +49,8 @@ bool		Actor::Load(std::shared_ptr<HDC__> hScreenDC, tstring szFileName)
 		Y = 0;
 		return true;
 	}
-	else return false;
+	else 
+		return false;
 }
 void Actor::SetMaskBitmap(std::shared_ptr<HDC__> hScreenDC, tstring Filename)
 {

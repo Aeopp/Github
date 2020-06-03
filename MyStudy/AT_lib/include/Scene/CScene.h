@@ -19,7 +19,7 @@ protected:
 	list<class CLayer*> m_LayerList; 
 	SCENE_CREATE m_eSceneType;
 
-	static inline	  unordered_map<wstring, class CObj*> m_mapPrototype[SC_END];
+	static inline	  unordered_map<wstring,class CObj*> m_mapPrototype[SC_END];
 public:
 	std::vector<CMonster*>MonsterList;
 	class CLayer* CurrentDefaultLayer{ nullptr };

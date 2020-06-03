@@ -221,8 +221,7 @@ void CAnimation::Update(float fTime)
 	m_pCurClip->fAnimationTime += fTime;
 
 	while (m_pCurClip->fAnimationTime >= m_pCurClip->fAnimationFrameTime) {
-		m_pCurClip->fAnimationTime -=
-			m_pCurClip->fAnimationFrameTime;
+		m_pCurClip->fAnimationTime -=   m_pCurClip->fAnimationFrameTime;
 
 		++m_pCurClip->iFrameY;
 	

@@ -9,7 +9,6 @@ class CIngameScene :
 public:
 	friend class CSceneManager;
 public : 
-
 	using ChangeMapType = CDungeonScecne;
 	static inline bool StageFlag = false;
 

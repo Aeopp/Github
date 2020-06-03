@@ -91,7 +91,6 @@ bool CIngameScene::Init()
 
 	SAFE_RELEASE(pPlayer);
 	SAFE_RELEASE(CurrentUIMinimap);
-	
 
 	return true;
 }
