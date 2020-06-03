@@ -3,9 +3,7 @@
 
 #include "../../Ground.h"
 #include "../../Rope.h"
-#include "../Object/Slime.h"
-#include "../../CPig.h"
-#include "../Object/Mushroom.h"
+
 
 class CScene
 {
@@ -56,18 +54,9 @@ public:
 	static  void ChangeProtoType(); 
 protected:
 	inline void GroundSetUp(EMapObjType Type,CLayer* pStageLayer, const std::tuple<float, float, float>& Param);
+		
 		inline void GroundsSetUps(EMapObjType Type,CLayer* pStateLayer,const std::vector<std::tuple<float, float, float>>&Params);
-
-		template<typename MonsterType>
-		void MonstersSpawn(CLayer* Layer, const wstring& strTag, const std::vector<std::pair<int, int>>& MonsterPositions,std::pair<float,float> MonsterXRange)
-		{
-			for (auto [x, y] : MonsterPositions) {
-				auto* Monster = CObj::CreateObj<MonsterType>(strTag, Layer);
-				Monster->SetPos(x, y);
-				Monster->MonsterXRange = std::move(MonsterXRange);
-				SAFE_RELEASE(Monster);
-			};
-		};
+	
 public:
 	virtual bool Init();
 	virtual void Input(float fDeltaTime);
@@ -82,7 +71,7 @@ inline void CScene::GroundSetUp(EMapObjType Type, CLayer* pStageLayer, const std
 	if(Type == EMapObjType::GROUND) {
 		CGround* Ground = CObj::CreateObj<CGround>(L"StageColl", pStageLayer);
 		auto [x, y, size_x] = Param;
-		Ground->SetPos(x, y-5);
+		Ground->SetPos(x, y);
 		Ground->SetSize(POSITION{ std::abs(size_x - x),3 });
 		SAFE_RELEASE(Ground);
 	}
@@ -101,4 +90,3 @@ inline void CScene::GroundsSetUps(EMapObjType Type,CLayer* pStateLayer, const st
 		GroundSetUp(Type,pStateLayer, Element); 
 	}
 }
-

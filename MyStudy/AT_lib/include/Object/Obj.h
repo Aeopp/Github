@@ -12,8 +12,6 @@ protected:
 public:
 	static inline list<CObj*> m_ObjList;
 public:
-	bool bCollision = true; 
-	bool bDead = false; 
 	float m_fForce = 0.f;
 	POSITION m_tHitPoint;
 	void ClearGravity() {

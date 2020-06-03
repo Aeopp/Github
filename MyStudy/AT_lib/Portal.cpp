@@ -13,7 +13,7 @@ void Portal::Render(HDC hDC, float fDeltaTime)
 bool Portal::Init()
 {
 	SetPos(0.f, 0);
-	SetSize(50.f, 100.f);
+	SetSize(333.f, 333.f);
 	SetPivot(0.5f, 0.5f);
 	SetImageOffset(0.f, 0.f);
 

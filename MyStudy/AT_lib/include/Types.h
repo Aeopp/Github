@@ -2,20 +2,6 @@
 #include "Flag.h"
 #include <vector>
 ;;;
-
-enum class EState :UINT8 {
-	IDLE = 0,
-	WALK = 1,
-	JUMP = 2,
-	HIT = 3,
-	DIE = 4,
-};
-
-enum class ETimerState : UINT8 {
-	ONCE,
-	LOOP,
-};
-
 enum class EMapObjType :unsigned char {
 	ROPE,
 	GROUND,

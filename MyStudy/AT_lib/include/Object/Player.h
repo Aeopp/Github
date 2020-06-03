@@ -11,16 +11,15 @@ private :
 	virtual ~CPlayer()noexcept;
 	CPlayer(const CPlayer& Player); 
 private:
+	int m_iHP;
 	bool m_bAttack;
-	int HitRenderFlag = 0; 
-	bool bHit = false; 
-	float HitDelta = 0; 
-	class CObj* WeaponCollision = nullptr;
+	
 public:
 	RECTANGLE Pow = { 0,0,0,0 };
 	Vector JumpVector;
 	void Attack()&;
 	bool bPortal = false;
+	bool bDead;
 	virtual bool Init();
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);

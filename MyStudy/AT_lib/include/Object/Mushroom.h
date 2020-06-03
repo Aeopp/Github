@@ -1,36 +1,31 @@
 #pragma once
-#include "Monster.h"
-#include <utility>
-#include "../Types.h"
+#include "MoveObj.h"
 
-class CMushroom : public CMonster
+class CMushroom :
+	public CMoveObj
 {
-private:
+private :
 	friend class CObj;
 	friend class CScene;
-	void RandomState(float fDeltaTime)&;
 public:
-	void AnimationCalc() & override;
+	CMushroom(); 
+	virtual ~CMushroom() noexcept {};
+	CMushroom(const CMushroom& Obj);
 
-	std::pair<int, int> MoveRange = {};
-	void SetMoveRange();
-	CMushroom();
-	virtual ~CMushroom()noexcept;
-	CMushroom(const CMushroom& Monster);
-	int m_iHP;
-	bool m_bAttack;
-	RECTANGLE Pow = { 0,0,0,0 };
-	void Attack()&;
-	
-	virtual bool Init();
-	virtual CMushroom* Clone();
-	virtual void Input(float fDeltaTime);
-	virtual int  Update(float fDeltaTime);
-	virtual int  LateUpdate(float fDeltaTime);
-	virtual void Collision(float fDeltaTime);
-	virtual void Render(HDC hDC, float fDeltaTime);
-	void ReleaseHitEvent(CObj* const Target, float fDeltaTime)override;
-	void FirstHitEvent(CObj* const Target, float fDeltaTime)override;
-	virtual void Hit(CObj* const Target, float fDeltaTime)override;
+	float m_fFireTime;
+	float m_fFireLimitTime;
+
+	bool Init()override;
+	int  Update(float fDeltaTime)override;
+	int  LateUpdate(float fDeltaTime)override;
+	void Collision(float fDeltaTime)override;
+	void Render(HDC hDC, float fDeltaTime)override;
+	void Hit(CObj* const Target, float fDeltaTime)override;
+	CMushroom* Clone()override;
+public :
+	void CollisionBullet(class CCollider* pSrc,
+		class CCollider* pDest, float fDeltaTime);
+private:
+	void Fire(); 
 };
 

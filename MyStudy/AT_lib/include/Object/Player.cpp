@@ -5,15 +5,10 @@
 #include "../../CAnimation.h"
 #include "../Scene/CScene.h"
 #include "../CCore.h"
-#include "../Collision/Colinder.h"
-#include "Monster.h"
-#include <numeric>
-#include <algorithm>
 CPlayer::CPlayer()
 {};
 CPlayer::~CPlayer() noexcept
-{};
-
+{}
 CPlayer::CPlayer(const CPlayer& Player) : 
 	CMoveObj(Player){
 	*this = Player;
@@ -331,11 +326,6 @@ int CPlayer::LateUpdate(float fDeltaTime)
 {
 	 CMoveObj::LateUpdate(fDeltaTime);
 
-	 if (HitDelta < 0) {
-		 bHit = false; 
-		 //HitDelta = 0;
-	 }
-	 HitDelta -= fDeltaTime;
 	 return  0; 
 }
 
@@ -346,95 +336,7 @@ void CPlayer::Collision(float fDeltaTime)
 
 void CPlayer::Render(HDC hDC, float fDeltaTime)
 {
-	HitRenderFlag = std::clamp<int>(HitRenderFlag + 1, 0, INT_MAX);
-	if (bHit == true && HitRenderFlag % 4 == 0) {
-		return; 
-	}
-
-	if (m_pTexture) {
-
-		/*Rectangle(hDC, tPos.x, tPos.y, tPos.x + m_tSize.x, tPos.y + m_tSize.y);
-		*/
-		POSITION tPos = m_tPos - m_tSize * m_tPivot;
-		tPos -= GET_SINGLE(CCamera)->GetPos();
-
-		POSITION tImagePos;
-
-		if (m_pAnimation) {
-			PANIMATIONCLIP pClip =
-				m_pAnimation->GetCurrentClip();
-
-			if (pClip->eType == AT_ATLAS) {
-				tImagePos.x = pClip->iFrameX * pClip->tFrameSize.x;
-				tImagePos.y = pClip->iFrameY * pClip->tFrameSize.y;
-			}
-		}
-
-		tImagePos += m_tImageOffset;
-
-		if (m_pTexture->bAlpha == true)
-		{
-			BLENDFUNCTION ftn;
-			ftn.BlendOp = AC_SRC_OVER;
-			ftn.BlendFlags = 0;
-			ftn.SourceConstantAlpha = 255;
-			ftn.AlphaFormat = AC_SRC_ALPHA;
-			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);
-		}
-		else
-		{
-			if (m_pTexture->GetColorKeyEnable() == true) {
-				TransparentBlt(hDC, tPos.x, tPos.y, m_tSize.x,
-					m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-					m_tSize.x, m_tSize.y, m_pTexture->GetColorKey());
-			}
-			else {
-				BitBlt(hDC, tPos.x, tPos.y,
-					m_tSize.x, m_tSize.y, m_pTexture->GetDC(), tImagePos.x, tImagePos.y,
-					SRCCOPY);
-			}
-			/*BLENDFUNCTION ftn;
-			ftn.BlendOp = AC_SRC_OVER;
-			ftn.BlendFlags = 0;
-			ftn.SourceConstantAlpha = 255;
-			ftn.AlphaFormat = AC_SRC_OVER;
-
-			AlphaBlend(hDC, tPos.x, tPos.y, m_tSize.x,
-				m_tSize.y,
-				m_pTexture->GetDC(), tImagePos.x, tImagePos.y, m_tSize.x, m_tSize.y, ftn);*/
-		}
-	}
-
-	list<CCollider*>::iterator iter;
-	list<CCollider*>::iterator iterEnd = m_ColliderList.end();
-
-	for (iter = m_ColliderList.begin(); iter != iterEnd; ) {
-		if (!(*iter)->GetEnable()) {
-			++iter;
-			continue;
-		}
-
-		(*iter)->Render(hDC, fDeltaTime);
-
-		if (!(*iter)->GetLife()) {
-			SAFE_RELEASE((*iter));
-			iter = m_ColliderList.erase(iter);
-			iterEnd = m_ColliderList.end();
-		}
-		else
-			++iter;
-	}
-
-	if (GET_SINGLE(CCore)->GetInst()->bDebug == true) {
-		if (auto IsPlayer = dynamic_cast<CPlayer*>(this); IsPlayer != nullptr) {
-			IsPlayer->DebugCollisionLinePrint(hDC);
-		}
-		else {
-			DebugCollisionPrint(hDC);
-		}
-	}
+	CMoveObj::Render(hDC, fDeltaTime);
 
 #ifdef _DEBUG
 		//DebugPrintHP(hDC, m_iHP);
@@ -493,14 +395,10 @@ void CPlayer::Dead()&
 }
 void CPlayer::Hit(CObj* const Target, float fDeltaTime)
 {
-	CMoveObj::Hit(Target, fDeltaTime);
+	CObj::Hit(Target, fDeltaTime);
 
-	if (auto IsMonster = dynamic_cast<CMonster*>(Target);  
-		IsMonster != nullptr&&HitDelta<0.f) {
-		HitDelta = 2.f;
-		bHit = true;
-	};
-
+	if(Target->GetTag()==L"MushroomBullet")
+		m_iHP -= 5;
 	// 그라운드 충돌
 	if (Target->GetTag() != L"StageColl") {
 		bGround = false; 

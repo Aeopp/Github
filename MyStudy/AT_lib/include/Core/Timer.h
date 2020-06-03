@@ -1,8 +1,6 @@
 #pragma once
 #include "../Game.h"
-#include <functional>
-#include <vector> 
-#include "../Types.h"
+
 class CTimer
 {
 private:
@@ -14,11 +12,7 @@ private:
 	float m_fFPS;
 	float m_fFPSTime;
 	int m_iFrame;
-	std::vector<std::tuple<float, float,ETimerState,std::function<void(float)>>> CallBacks;
 public :
-	void PushTimer(float Tick,ETimerState State,std::function<void(float)> Function) {
-		CallBacks.emplace_back(Tick, Tick, State, std::move(Function));
-	}
 	float GetDeltaTime() const {
 		return m_fDeltaTime * m_fTimeScale; 
 	}

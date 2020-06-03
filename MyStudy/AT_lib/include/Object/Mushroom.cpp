@@ -3,245 +3,121 @@
 #include "../Resources/Texture.h"
 #include "../Collision/ColinderRect.h"
 #include "../Scene/CScene.h"
-#include "../Core/Input.h"
-#include <cassert>
-#include "../../CAnimation.h"
-#include "../../CMath.h"
+
+CMushroom::CMushroom() :
+CMoveObj(),
+m_fFireTime(0.f),
+m_fFireLimitTime(1.13f) {}
+
+CMushroom::CMushroom(const CMushroom& Obj) :
+	CMoveObj(Obj){
+	m_eDir = Obj.m_eDir;
+	m_fFireTime = Obj.m_fFireTime;
+	m_fFireLimitTime = Obj.m_fFireLimitTime;
+};
 
 bool CMushroom::Init()
 {
-	CMonster::Init();
-
-	m_tCorrectionRenderToCollision = RECTANGLE{ 18,41,100-66,0 };
-	float SizeX = 100;
-	float SizeY = 100;
-	float DefaultHP = 100;
-	std::wstring monsterName = L"Mushroom";
-
-	// 몬스터 스폰 위치 지정
-	SetPos(0.f, 0);
-	SetSize(SizeX, SizeY);
-	SetSpeed(100.f);
+	SetPos(1596.f, 1363.f);
+	SetSize(100.f, 100.f);
+	SetSpeed(300.f);
 	SetPivot(0.5f, 0.5f);
-	SetImageOffset(0.f, 0.f);
-	SetCorrectionRenderToCollision(m_tCorrectionRenderToCollision);
-
-	SetTexture(monsterName, L"Animation/Monster/Mushroom/Left/HIT.bmp");
-	SetColorKey(255, 0, 255);
-
-	//SetCorrectionRenderToCollision(RECTANGLE{110,54,151,128});
-
-	// HP 지정
-	m_iHP = DefaultHP;
+	SetTexture(L"Orange", L"Orange_1.bmp");
 	SetPhysics(true);
-	SetForce(200.f);
 
-	CAnimation* pAni = CreateAnimation(L"MushroomAnimation");
+	m_pTexture->SetColorKey(RGB(255, 0, 255));
 
-	// TODO :: ANIMATION Field
-	// Idle 
-	{
-		AddAnimationClip(L"MushroomIdleright", AT_ATLAS, AO_LOOP,
-			1.0f, 1, 2, 0, 0, 1, 2, 0.f, L"MushroomIdleright", L"Animation\\Monster\\Mushroom\\Right\\IDLE.bmp");
-		SetAnimationClipColorkey(L"MushroomIdleright", 255, 0, 255);
+	m_eDir = MD_FRONT; 
 
-		AddAnimationClip(L"MushroomIdleleft", AT_ATLAS, AO_LOOP,
-			1.0f, 1, 2, 0, 0, 1, 2, 0.f, L"MushroomIdleleft", L"Animation\\Monster\\Mushroom\\Left\\IDLE.bmp");
-		SetAnimationClipColorkey(L"MushroomIdleleft", 255, 0, 255);
-	}
-	//DIE
-	{
-		AddAnimationClip(L"MushroomDieleft", AT_ATLAS, AO_ONCE_RETURN,
-			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomDieleft", L"Animation\\Monster\\Mushroom\\Left\\DIE.bmp");
-		SetAnimationClipColorkey(L"MushroomDieleft", 255, 0, 255);
+	CColliderRect* pRC = AddCollider <CColliderRect>(L"Orange");
 
-		AddAnimationClip(L"MushroomDieright", AT_ATLAS, AO_ONCE_RETURN,
-			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomDieright", L"Animation\\Monster\\Mushroom\\Right\\DIE.bmp");
-		SetAnimationClipColorkey(L"MushroomDieright", 255, 0, 255);
-	}
-	// HIT 
-	{
-		AddAnimationClip(L"MushroomHitleft", AT_ATLAS, AO_ONCE_RETURN,
-			0.3f, 1, 1, 0, 0, 1, 1, 0.f, L"MushroomHitleft", L"Animation\\Monster\\Mushroom\\Left\\HIT.bmp");
-		SetAnimationClipColorkey(L"MushroomHitleft", 255, 0, 255);
+	pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
+	pRC->AddCollisionFunction(CS_ENTER, this, &CMushroom::CollisionBullet);
 
-		AddAnimationClip(L"MushroomHitright", AT_ATLAS, AO_ONCE_RETURN,
-			0.3f, 1, 1, 0, 0, 1, 1, 0.f, L"MushroomHitright", L"Animation\\Monster\\Mushroom\\Right\\HIT.bmp");
-		SetAnimationClipColorkey(L"MushroomHitright", 255, 0, 255);
-	}
+	SAFE_RELEASE(pRC);
 
-	//JUMP
-	{
-		AddAnimationClip(L"MushroomJumpleft", AT_ATLAS, AO_ONCE_RETURN,
-			0.5f, 1, 1, 0, 0, 1, 1, 0.f, L"MushroomJumpleft", L"Animation\\Monster\\Mushroom\\Left\\JUMP.bmp");
-		SetAnimationClipColorkey(L"MushroomJumpleft", 255, 0, 255);
+	//CColliderRect* pRC = AddCollider<CColliderRect>(L"Orange");
+	//pRC->SetRect(-50.f, -50.f, 50.f, 50.f);
 
-		AddAnimationClip(L"MushroomJumpright", AT_ATLAS, AO_ONCE_RETURN,
-			0.5f, 1, 1, 0, 0, 1, 1, 0.f, L"MushroomJumpright", L"Animation\\Monster\\Mushroom\\Right\\JUMP.bmp");
-		SetAnimationClipColorkey(L"MushroomJumpright", 255, 0, 255);
+	//pRC->AddCollisionFunction(CS_ENTER, this, &CMushroom::CollisionBullet);
 
-	}
 
-	// Walk
-	{
-		AddAnimationClip(L"MushroomWalkleft", AT_ATLAS, AO_LOOP,
-			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomWalkleft", L"Animation\\Monster\\Mushroom\\Left\\WALK.bmp");
-		SetAnimationClipColorkey(L"MushroomWalkleft", 255, 0, 255);
-
-		AddAnimationClip(L"MushroomWalkright", AT_ATLAS, AO_LOOP,
-			1.f, 1, 3, 0, 0, 1, 3, 0.f, L"MushroomWalkright", L"Animation\\Monster\\Mushroom\\Right\\WALK.bmp");
-		SetAnimationClipColorkey(L"MushroomWalkright", 255, 0, 255);
-	}
-
-	SAFE_RELEASE(pAni);
-
-	m_iDir = 1;
-
+	//SAFE_RELEASE(pRC);
 	return true;
-};
-
-CMushroom* CMushroom::Clone()
-{
-	return new CMushroom{ *this };
 }
 
-void CMushroom::RandomState(float fDeltaTime)&
-{
-	StateRemaining -= fDeltaTime;
-
-	if (StateRemaining < 0.f) {
-		CurrentState = static_cast<EState>(CMath::GetRandomNumber(0, 2));
-		if (CurrentState == EState::JUMP) {
-			StateRemaining = 0.3f;
-		}
-		else
-			StateRemaining = CMath::GetRandomNumber(2, 4);
-
-		m_iDir = CMath::GetRandomNumber(-1, 1);
-	};
-}
-void CMushroom::AnimationCalc()&
-{
-	switch (CurrentState)
-	{
-	case EState::IDLE: {
-		if (m_iDir == -1)
-			m_pAnimation->ChangeClip(L"MushroomIdleleft");
-		else m_pAnimation->ChangeClip(L"MushroomIdleright");
-		break;
-	}
-	case EState::WALK: {
-		if (m_iDir == -1)
-			m_pAnimation->ChangeClip(L"MushroomWalkleft");
-		else m_pAnimation->ChangeClip(L"MushroomWalkright");
-		break;
-	}
-	case EState::JUMP: {
-		if (m_iDir == -1)
-			m_pAnimation->ChangeClip(L"MushroomJumpleft");
-		else m_pAnimation->ChangeClip(L"MushroomJumpright");
-		break;
-	}
-	case EState::HIT: {
-		if (m_iDir == -1)
-			m_pAnimation->ChangeClip(L"MushroomHitleft");
-		else m_pAnimation->ChangeClip(L"MushroomHitright");
-		break;
-	}
-	case EState::DIE: {
-		if (m_iDir == -1)
-			m_pAnimation->ChangeClip(L"MushroomDieleft");
-		else m_pAnimation->ChangeClip(L"MushroomDieright");
-		break;
-	}
-	default:
-		break;
-	}
-};
-
-void CMushroom::SetMoveRange()
-{
-
-}
-
-CMushroom::CMushroom() :
-	CMonster()
-{
-}
-
-CMushroom::~CMushroom() noexcept
-{
-};
-
-CMushroom::CMushroom(const CMushroom& Monster) :
-	CMonster(Monster) {
-	*this = Monster;
-};
-
-void CMushroom::Attack()&
-{
-	m_bAttack = true;
-};
-
-void CMushroom::Input(float fDeltaTime)
-{
-	CMonster::Input(fDeltaTime);
-}
 
 int CMushroom::Update(float fDeltaTime)
 {
-	CMonster::Update(fDeltaTime);
+	CMoveObj::Update(fDeltaTime);
 
+	MoveYFromSpeed(fDeltaTime, m_eDir);
 
+	if (m_tPos.x + m_tSize.x  >=
+		GETRESOLUTION.iW) {
+		m_tPos.x = GETRESOLUTION.iW - m_tSize.x;
+		m_eDir = MD_BACK;
+	}
+	else if (m_tPos.x <= 0.f) {
+		m_tPos.x = 0.f; 
+		m_eDir = MD_FRONT;
+	}
+	m_fFireTime += fDeltaTime;
+	if (m_fFireTime >= m_fFireLimitTime) {
+		Fire(); 
+		m_fFireTime -= m_fFireLimitTime;
+	}
 	return 0;
 }
 
 int CMushroom::LateUpdate(float fDeltaTime)
 {
-	CMonster::LateUpdate(fDeltaTime);
+	CMoveObj::LateUpdate(fDeltaTime);
 
-	return  0;
+	return 0;
 }
 
 void CMushroom::Collision(float fDeltaTime)
 {
-	CMonster::Collision(fDeltaTime);
-};
+	CMoveObj::Collision(fDeltaTime);
+}
 
 void CMushroom::Render(HDC hDC, float fDeltaTime)
 {
-	CMonster::Render(hDC, fDeltaTime);
+	CMoveObj::Render(hDC, fDeltaTime);
 
-#ifdef _DEBUG
-	//DebugPrintHP(hDC, m_iHP);
-	//CObj::DebugCollisionPrint(hDC);
-#endif _DEBUG
+	// TODO :: 디버그용 테스팅후 삭제
 }
-void CMushroom::ReleaseHitEvent(CObj* const Target, float fDeltaTime)
-{
-	CMonster::ReleaseHitEvent(Target, fDeltaTime);
-}
-void CMushroom::FirstHitEvent(CObj* const Target, float fDeltaTime)
-{
-	CMonster::FirstHitEvent(Target, fDeltaTime);
-
-};
-
 
 void CMushroom::Hit(CObj* const Target, float fDeltaTime)
 {
-	CMonster::Hit(Target, fDeltaTime);
+	CObj::Hit(Target, fDeltaTime);
 	if (Target->GetTag() == L"Player") {
-		CurrentState = EState::HIT;
-		StateRemaining = 0.3f;
-		//MessageBox(WINDOWHANDLE, L"공격!", L"공격!", NULL); 
-	};
-	if (Target->GetTag() != L"StageColl") {
-		bGround = false;
-	}
-	else if (Target->GetTag() == L"StageColl") {
-		bJump = false;
-		bGround = true;
-	}
-};
 
+	}
+}
+
+CMushroom* CMushroom::Clone()
+{
+	return new CMushroom{*this };
+}
+
+void CMushroom::CollisionBullet(CCollider* pSrc, CCollider* pDest, float fDeltaTime)
+{
+	MessageBox(NULL, L"충돌", L"충돌", MB_OK);
+}
+
+void CMushroom::Fire()
+{
+	CObj* pBullet = CObj::CreateCloneObj(L"Bullet",
+		L"MushroomBullet", m_pScene->GetSceneType() , m_pLayer);
+
+	dynamic_cast<CMoveObj*>(pBullet)->SetAngle(PI);
+
+	float x = GetLeft() - (pBullet->GetSize().x * (1.f - pBullet->GetPivot().x));
+	float y = GetCenter().y; 
+
+	pBullet->SetPos(x, y);
+
+	SAFE_RELEASE(pBullet);
+}

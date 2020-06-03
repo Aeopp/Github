@@ -12,18 +12,15 @@ protected:
 	float m_fForce; 
 	float m_fForceOrigin; 
 	int m_iDir;
-	
 protected: 
 	CMoveObj();
 	virtual ~CMoveObj() noexcept {}; 
 	CMoveObj(const CMoveObj& Obj); 
-public :	
-	float m_iHP;
-	bool bRope = false;
+public :	bool bRope = false;
+
 	bool bJump = false;
 	float JumpDelta = 0;
 	RECTANGLE MovePos = { 0,0,0,0 };
-	std::pair<float, float > Velocity;
 	MOVE_DIR m_eDir;
 	float GetDirToPI() {
 		if (GetDir()== 1) {
@@ -72,12 +69,12 @@ public :
 	void Jump();
 	void JumpEnd(); 
 public : 
-	virtual bool Init();
+	virtual bool Init() = 0; 
 	virtual void Input(float fDeltaTime);
 	virtual int  Update(float fDeltaTime);
 	virtual int  LateUpdate(float fDeltaTime);
 	virtual void Collision(float fDeltaTime);
 	virtual void Render(HDC hDC, float fDeltaTime);
-	virtual CMoveObj* Clone();
+	virtual CMoveObj* Clone() = 0;
 };
 

@@ -208,18 +208,10 @@ void CCore::Collision(float fDeltaTime)
 	for (auto Outer = std::begin(CObj::m_ObjList);
 		Outer != std::end(CObj::m_ObjList);++Outer) {
 
-		if ((*Outer)->bCollision == false) { 
-			continue; 
-		}
-
 		auto Inner = Outer;
 		std::advance(Inner, 1);
 
 		for (Inner; Inner != std::end(CObj::m_ObjList); ++Inner) {
-
-			if ((*Inner)->bCollision == false) {
-				continue;
-			}
 
 			if ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
 				(*Outer)->GetCollisionTag() == ECollision_Tag::Rect) {
@@ -244,7 +236,7 @@ void CCore::Collision(float fDeltaTime)
 					//MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
 				}
 			}
-			/*else if ( ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
+			else if ( ((*Inner)->GetCollisionTag() == ECollision_Tag::Rect &&
 				     (*Outer)->GetCollisionTag() == ECollision_Tag::Pixel  )
 						) {
 				auto LhsRect = (*Inner)->GetCollisionRect();
@@ -281,7 +273,7 @@ void CCore::Collision(float fDeltaTime)
 				(*Outer)->Hit(*Inner, fDeltaTime);
 				MessageBox(NULL, LhsTag.c_str(), RhsTag.c_str(),MB_OK);
 			    }
-			}*/
+			}
 		}
 	}
 
