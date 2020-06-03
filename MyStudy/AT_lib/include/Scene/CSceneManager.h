@@ -10,13 +10,7 @@ private:
 	SCENE_CHANGE  ChangeScene();
 public:
 	float CurrentStageGroundHeight = 0;
-	class DamagePont* CurrentDamagePont{ nullptr };
-	class CScene* GetCurrentScene() {
-		return m_pScene; 
-	}
-	class DamagePont* GetCurrentDamagePont() const{
-		return CurrentDamagePont;
-	}
+
 	bool Init();
 	void Input(float fDeltaTime);
 	SCENE_CHANGE  Update(float fDeltaTime);

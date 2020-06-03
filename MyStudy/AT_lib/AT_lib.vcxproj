@@ -153,14 +153,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Bar.h" />
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CDungeonScecne.h" />
-    <ClInclude Include="CEliniaScene.h" />
-    <ClInclude Include="CHPBar.h" />
     <ClInclude Include="CMath.h" />
     <ClInclude Include="CPig.h" />
-    <ClInclude Include="DamagePont.h" />
     <ClInclude Include="DataTable.h" />
     <ClInclude Include="Dungeon.h" />
     <ClInclude Include="Ground.h" />
@@ -209,12 +205,8 @@
     <ResourceCompile Include="AT_lib.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Bar.cpp" />
     <ClCompile Include="CAnimation.cpp" />
-    <ClCompile Include="CEliniaScene.cpp" />
-    <ClCompile Include="CHPBar.cpp" />
     <ClCompile Include="CPig.cpp" />
-    <ClCompile Include="DamagePont.cpp" />
     <ClCompile Include="Dungeon.cpp" />
     <ClCompile Include="CDungeonScecne.cpp" />
     <ClCompile Include="CMath.cpp" />

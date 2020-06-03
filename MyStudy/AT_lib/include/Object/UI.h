@@ -12,8 +12,6 @@ private:
 	friend class CObj;
 	friend class CScene;
 public: 	
-	bool bChange = true;
-	
 	function<void(float)>m_BtnCallBack;
 	bool m_bEnableCallback = false;
 	  template<typename T>

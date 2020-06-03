@@ -7,11 +7,10 @@ protected:
 	virtual ~CRef() {};
 protected:
 	int m_iRef;
-	
+	bool m_bEnable;
 	bool m_bLife;
 	wstring m_strTag;
 public:
-	bool m_bEnable;
 	wstring GetTag()const& noexcept {
 		return m_strTag;
 	}

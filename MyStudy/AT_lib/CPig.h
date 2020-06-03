@@ -16,7 +16,7 @@ public:
 	CPig();
 	virtual ~CPig()noexcept;
 	CPig(const CPig& Monster);
-	
+	int m_iHP;
 	bool m_bAttack;
 	RECTANGLE Pow = { 0,0,0,0 };
 	void Attack()&;
