@@ -10,12 +10,16 @@ public :
 	IDXGIFactory* m_pGIFactory;
 	D3D11_VIEWPORT m_vp;
 public :
+	bool SetD3DDevice(UINT width, UINT height);
 	bool CreateGIFactory();
 	bool CreateDevice();
-	bool CreateSwapChain();
+	bool CreateSwapChain(UINT width, UINT height);
 	bool CreateRenderTarget();
 	bool CreateViewport();
 	bool ReleaseDevice();
+	virtual void ResizeDevice(UINT width, UINT height);
+	virtual void CreateDXResource();
+	virtual void DeleteDXResource();
 public :
 	Device();
 	virtual ~Device(); 

@@ -4,7 +4,8 @@
 
 class Sample : public Core
 {
-
+public :
+	bool Render()override; 
 };
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {

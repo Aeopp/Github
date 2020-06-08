@@ -3,6 +3,7 @@
 HINSTANCE	g_hInstance = 0;
 HWND		g_hWnd = 0;
 RECT		g_rtClient;
+Window* g_pWindow = nullptr;
 
 LRESULT CALLBACK WndProc(
 	HWND hWnd,
@@ -10,17 +11,12 @@ LRESULT CALLBACK WndProc(
 	WPARAM wParam,
 	LPARAM lParam)
 {
-	switch (msg)
-	{
-	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
-	}break;
-	}
-	return DefWindowProc(hWnd, msg, wParam, lParam);
+	assert(g_pWindow);
+	return g_pWindow->MsgProc(hWnd, msg, wParam, lParam);
 }
 Window::Window()
 {
+	g_pWindow = this;
 
 	ZeroMemory(&msg, sizeof(MSG));
 }
@@ -83,4 +79,25 @@ bool Window::WinRun()
 		return false;
 	}
 	return true;
+}
+
+LRESULT Window::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+	case WM_SIZE:
+	{
+		UINT width = LOWORD(lParam);
+		UINT height = HIWORD(lParam);
+		ResizeDevice(width, height);
+		GetClientRect(m_hWnd, &m_rtClient);
+		GetWindowRect(m_hWnd, &m_rtWindow);
+		g_rtClient = m_rtClient;
+	}break;
+	case WM_DESTROY:
+	{
+		PostQuitMessage(0);
+	}break;
+	}
+	return DefWindowProc(hWnd, msg, wParam, lParam);
 }

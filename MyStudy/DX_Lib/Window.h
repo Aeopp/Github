@@ -14,6 +14,11 @@ private:
 public:
 	bool SetWindow(HINSTANCE hInstance);
 	bool WinRun();
+	virtual LRESULT MsgProc(
+		HWND hWnd,
+		UINT msg,
+		WPARAM wParam,
+		LPARAM lParam);
 	virtual bool GameRun();
 public:
 	 Window
