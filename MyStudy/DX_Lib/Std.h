@@ -10,6 +10,9 @@
 #include <functional>
 #include <set>
 #include <assert.h>
+#include <d3d11.h>
+#include <dxgi.h>
+
 using namespace std;
 typedef basic_string<TCHAR> T_STR;
 //using T_STR = basic_string <TCHAR>;
@@ -21,6 +24,8 @@ typedef std::vector<T_STR> T_STR_VECTOR;
 #pragma comment (lib, "winmm.lib")
 #pragma comment (lib, "CoreDx_d.lib")
 #pragma comment (lib, "fmod_vc.lib")
+#pragma comment (lib, "d3d11.lib")
+#pragma comment (lib, "dxgi.lib")
 
 struct TInputActionMap
 {

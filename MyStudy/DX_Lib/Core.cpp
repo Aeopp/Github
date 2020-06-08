@@ -3,20 +3,28 @@ bool Core::Init() { return true; }
 bool Core::Frame() { return true; }
 bool Core::PreRender()
 {
+	float clearcolor[4] = { 0.45f,0.45f,0.75f , 1 };
+	m_pContext->ClearRenderTargetView(m_pRTV, clearcolor);
+
 	return true;
 }
 bool Core::Render() { return true; }
 bool Core::PostRender()
 {
+	m_pSwapChain->Present(0, 0);
+
 	return true;
 }
 bool Core::Release() { return true; }
 
 bool Core::CoreInit()
 {
-	//m_Timer.Init();
-	//I_SoundMgr.Init();
-	//I_Input.Init();	
+	if (!CreateGIFactory()) return false;
+	if (!CreateDevice()) return false;
+	if (!CreateSwapChain()) return false;
+	if (!CreateRenderTarget()) return false;
+	if (!CreateViewport()) return false;
+
 	Init();
 	return true;
 }

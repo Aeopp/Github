@@ -1,6 +1,7 @@
 #pragma once
-#include "Std.h"
-class Window
+#include "Device.h"
+
+class Window : public Device 
 {
 public:
 	HINSTANCE	m_hInstance;

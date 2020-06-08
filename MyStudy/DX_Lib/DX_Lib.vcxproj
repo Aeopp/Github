@@ -20,10 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Device.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h" />
+    <ClInclude Include="Device.h" />
     <ClInclude Include="Std.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
@@ -128,7 +130,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>../../../fmod/inc;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../fmod/inc;../../../dx/Include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,7 +138,7 @@
     </Link>
     <Lib>
       <OutputFile>CoreDx_d.lib</OutputFile>
-      <AdditionalLibraryDirectories>../../../fmod/lib/x64;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../fmod/lib/x64;../../../dx/Lib/x64;</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
       <Command>copy "*.h" "../../../CoreDx/Include/"

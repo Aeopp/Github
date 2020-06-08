@@ -6,6 +6,7 @@
 class Core : public Window
 {
 public:
+	/*TWrite m_Write;*/
 	//TTimer		m_Timer;
 public:
 	virtual bool	Init();
@@ -14,6 +15,8 @@ public:
 	virtual bool	Render();
 	virtual bool	PostRender();
 	virtual bool	Release();
+	/*virtual void    CreateDXResource() override;
+	virtual void    DeleteDXResource() override;*/
 private:
 	bool CoreInit();
 	bool CoreFrame();
