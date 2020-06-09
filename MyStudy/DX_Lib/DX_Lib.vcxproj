@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Device.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h" />
     <ClInclude Include="Device.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Std.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Write.h" />

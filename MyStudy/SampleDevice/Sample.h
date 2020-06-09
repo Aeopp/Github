@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
- #include "Core.h"
+#include "Core.h"
 
 class Sample : public Core
 {

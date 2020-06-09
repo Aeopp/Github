@@ -37,6 +37,10 @@ bool Write::Init()
 	}
 
 	m_pD2DFactory->GetDesktopDpi(&m_fDpiX, &m_fDpiY);
+
+	m_fDpiX;
+	m_fDpiY;
+
 	return true;
 }
 
