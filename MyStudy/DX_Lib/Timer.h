@@ -22,29 +22,9 @@ public:
 public :
 	// 노티파이 이벤트 , 체킹을 원하는 키상태 , 체킹을 원하는 키인덱스
 	void InputEventRegist_Implementation(std::function<void(float)> Event,
-		ECategory    TimerState, float EventTime) & noexcept {
-		TimerEventTable.emplace_back(std::move(Event), std::move(TimerState),
-			std::move(EventTime), std::move(EventTime));
-	};
+		ECategory    TimerState, float EventTime) & noexcept;;
 	// 이벤트 요구조건을 충족한다면 콜백
-	void EventNotify(const float DeltaTime)& noexcept override {
-		for (auto iter = std::begin(TimerEventTable); iter != std::end(TimerEventTable);) {
-			auto& [Event, TimerState, CurrentRemainTime, EventTime] =  *iter; 
-			CurrentRemainTime -=  DeltaTime;
-
-			if (CurrentRemainTime < 0) {
-				Event(DeltaTime);
-				if (TimerState == Timer::ECategory::Once) {
-					iter = TimerEventTable.erase(iter);  
-					continue; 
-				}
-				else if (TimerState == Timer::ECategory::Loop) {
-					CurrentRemainTime = CurrentRemainTime + EventTime;
-				}
-			}
-			++iter;  
-		}
-	};
+	void EventNotify(const float DeltaTime) & noexcept override;;
 public:
 	typedef std::chrono::high_resolution_clock	TClock;
 	typedef std::chrono::milliseconds			TMilliSeconds;

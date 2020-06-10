@@ -4,7 +4,6 @@ bool Device::SetD3DDevice(UINT width, UINT height)
 {
     if (!CreateDevice()) return false;
     if (!CreateGIFactory()) return false;
-
     if (!CreateSwapChain(width, height)) return false;
     if (!CreateRenderTarget()) return false;
     if (!CreateViewport()) return false;
@@ -93,21 +92,21 @@ bool Device::CreateRenderTarget()
         (void**)&pBackBuffer);
 
     if (FAILED(hr)) {
-        return false;  
+        return false;
     }
 
     if (FAILED(m_pd3dDevice->CreateRenderTargetView(
         pBackBuffer,
         NULL,
         &m_pRTV))) {
-        return false;  
+        return false;
     }
     pBackBuffer->Release();
 
     m_pContext->OMSetRenderTargets(1, &m_pRTV, NULL);
 
     return true;
-}
+};
 
 bool Device::CreateViewport()
 {

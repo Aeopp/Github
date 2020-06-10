@@ -27,6 +27,7 @@ bool Core::Render() { return true; }
 bool Core::PostRender()
 {
 	m_Write.Render();
+	// 해당 함수 호출이후 스왑체인 버퍼 스왑
 	m_pSwapChain->Present(0, 0);
 	return true;
 }
