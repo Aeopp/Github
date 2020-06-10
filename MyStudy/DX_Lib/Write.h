@@ -29,11 +29,14 @@ public:
 public:
 	ID2D1Factory* m_pD2DFactory;
 	IDWriteFactory* m_pDWriteFactory;
-	IDWriteTextFormat* m_pTextFormat[3];
+	IDWriteTextFormat* m_pTextFormat[4];
 	ID2D1RenderTarget* m_pd2dRT;
 	ID2D1SolidColorBrush* m_pDefaultBrush;
 	float m_fDpiX;
 	float m_fDpiY;
+
+	IDWriteTextLayout* m_pTextLayout; 
+	bool SetTextLayout(const TCHAR* text);
 public:
 	bool	Init();
 	bool	OnResize(IDXGISurface* pSurface);

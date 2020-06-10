@@ -24,4 +24,8 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VS.hlsl" />
+    <FxCompile Include="PS.hlsl" />
+  </ItemGroup>
 </Project>

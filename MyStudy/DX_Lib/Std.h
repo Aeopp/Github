@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <d3d11.h>
 #include <dxgi.h>
+#include <d3dx11.h>
 
 using namespace std;
 typedef basic_string<TCHAR> T_STR;
@@ -26,6 +27,13 @@ typedef std::vector<T_STR> T_STR_VECTOR;
 #pragma comment (lib, "fmod_vc.lib")
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "dxgi.lib")
+
+// DirectX Utility
+#if defined(_DEBUG)
+	#pragma comment (lib, "d3dx11d.lib")
+#else
+	#pragma comment (lib, "d3dx11.lib")
+#endif 
 
 struct TInputActionMap
 {
@@ -61,7 +69,7 @@ static std::string wtm(std::wstring str)
 }
 // Singleton
 template <class T>
-class TSingleton
+class Singleton
 {
 public://TSoundMgr': private ¸â¹ö -> friend
 	static T& GetInstance()

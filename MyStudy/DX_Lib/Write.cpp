@@ -1,5 +1,5 @@
 #include "Write.h"
-
+#include "Std.h"
 void Write::Draw(UINT iSize, const TCHAR* szBuffer, RECT rt, D2D1::ColorF color)
 {
 	TextArray text;
@@ -13,12 +13,39 @@ void Write::Draw(UINT iSize, const TCHAR* szBuffer, RECT rt, D2D1::ColorF color)
 	m_TextList.push_back(text);
 }
 
+bool Write::SetTextLayout(const TCHAR* text)
+{
+	if (m_pTextLayout) m_pTextLayout->Release();
+	HRESULT hr = m_pDWriteFactory->CreateTextLayout(
+		text,
+		wcslen(text),
+		m_pTextFormat[3],
+		g_rtClient.right,
+		g_rtClient.bottom,
+		&m_pTextLayout);
+
+	IDWriteTypography* pGraphy = nullptr;
+	hr = m_pDWriteFactory->CreateTypography(&pGraphy);
+	DWRITE_FONT_FEATURE fontFeature = { DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_7,1 };
+	pGraphy->AddFontFeature(fontFeature);
+	DWRITE_TEXT_RANGE range = { 0, wcslen(text) };
+	m_pTextLayout->SetTypography(pGraphy, range);
+	pGraphy->Release();
+	return true;
+
+	
+}
+
 bool Write::Init()
 {
 	HRESULT hr;
 	hr = D2D1CreateFactory(
 		D2D1_FACTORY_TYPE_SINGLE_THREADED,
 		&m_pD2DFactory);
+
+	m_pD2DFactory->GetDesktopDpi(&m_fDpiX, &m_fDpiY);
+
+
 
 	hr = DWriteCreateFactory(
 		DWRITE_FACTORY_TYPE_SHARED,
@@ -34,13 +61,14 @@ bool Write::Init()
 			DWRITE_FONT_STRETCH_NORMAL,
 			10 + iFont * 10, L"ko-kr",
 			&m_pTextFormat[iFont]);
-	}
+	};
 
-	m_pD2DFactory->GetDesktopDpi(&m_fDpiX, &m_fDpiY);
-
-	m_fDpiX;
-	m_fDpiY;
-
+	hr = m_pDWriteFactory->CreateTextFormat(
+		L"Gabriola", NULL,
+		DWRITE_FONT_WEIGHT_NORMAL,
+		DWRITE_FONT_STYLE_NORMAL,
+		DWRITE_FONT_STRETCH_NORMAL,
+		80, L"en-us", &m_pTextFormat[3]);
 	return true;
 }
 
@@ -78,6 +106,7 @@ bool Write::Release()
 	if (m_pTextFormat[0])m_pTextFormat[0]->Release();
 	if (m_pTextFormat[1])m_pTextFormat[1]->Release();
 	if (m_pTextFormat[2])m_pTextFormat[2]->Release();
+	if (m_pTextFormat[3])m_pTextFormat[3 ]->Release();
 
 	if (m_pDWriteFactory)m_pDWriteFactory->Release();
 	if (m_pD2DFactory)m_pD2DFactory->Release();
@@ -113,6 +142,7 @@ Write::Write()
 {
 	m_pDWriteFactory = nullptr;
 	m_pD2DFactory = nullptr;
+	m_pTextLayout = nullptr;   
 }
 
 Write::~Write()

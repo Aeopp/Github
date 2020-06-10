@@ -19,17 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CallBackInterface.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CallBackInterface.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Std.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Write.h" />
   </ItemGroup>

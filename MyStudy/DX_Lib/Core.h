@@ -1,14 +1,14 @@
 #pragma once
 #include "Window.h"
 #include "Write.h"
-//#include "TSoundMgr.h"
-//#include "TTimer.h"
-//#include "TInput.h"
+#include "Timer.h"
+#include "Input.h"
+
 class Core : public Window
 {
 public:
 	Write m_Write;
-	//TTimer		m_Timer;
+	Timer m_Timer;
 public:
 	virtual bool	Init();
 	virtual bool	Frame();
