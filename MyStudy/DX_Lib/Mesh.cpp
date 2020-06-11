@@ -1,20 +1,20 @@
 #include "Mesh.h"
 
 bool Mesh::Create(
-	ID3D11Device* pd3dDevice, 
+	ID3D11Device* pd3dDevice,
 	ID3D11DeviceContext* pContext,
-	P3VERTEX* vertices, 
-	UINT iNumCount){
+	P3VERTEX* vertices,
+	UINT iNumCount) {
 
 	m_pd3dDevice = pd3dDevice;
 	m_pContext = pContext;
-	m_pVertexList = vertices;
+	m_pVertexList = vertices;	
 	m_iNumVertex = iNumCount;
+	// 호출순서 반드시 지켜야함 Create->Init;
 
 	Init();
-
-	return true; 
-}
+	return true;
+};
 
 bool Mesh::Init()
 {
@@ -38,43 +38,18 @@ bool Mesh::Init()
 	hr = m_pd3dDevice->CreateBuffer(&bd, &sd, &m_pVertexBuffer);
 
 	DWORD dwShaderFlags = 0;
-	ID3DBlob* pVSBuf = nullptr;
-	ID3DBlob* pErrorBuf = nullptr;
-
-	// 파일을 읽어들여서 컴파일 시도
-	// 파일명 파일함수네임 컴파일 버전 
-	hr = D3DX11CompileFromFile(
-		L"VS.hlsl", NULL, NULL,
-		"VS", "vs_5_0", dwShaderFlags, NULL, NULL, &pVSBuf, &pErrorBuf, NULL);
-
-	// 컴파일 실패시 실패 정보 출력
-	if (FAILED(hr)) {
-		OutputDebugStringA((char*)pErrorBuf->GetBufferPointer());
-	}
 
 	// 컴파일 오브젝트 파일로부터 버텍스쉐이더를 생성
 	hr = m_pd3dDevice->CreateVertexShader(
-		pVSBuf->GetBufferPointer(),
-		pVSBuf->GetBufferSize(),
-		NULL,
+		Shader::g_VS,
+		sizeof(Shader::g_VS),
+		nullptr,
 		&m_pVS);
 
-	ID3DBlob* pPSBuf = nullptr;
-	
-	hr = D3DX11CompileFromFile(
-		L"PS.hlsl",NULL,NULL,
-		"PS",
-		"ps_5_0",
-		0, NULL, NULL,
-		&pPSBuf, &pErrorBuf, NULL);
-
-	if (FAILED(hr)) {
-		OutputDebugStringA((char*)pErrorBuf->GetBufferPointer());
-	};
-
-	hr = m_pd3dDevice->CreatePixelShader(pPSBuf->GetBufferPointer(),
-		pPSBuf->GetBufferSize(),
-		NULL,
+	hr = m_pd3dDevice->CreatePixelShader(
+		Shader::g_PS,
+		sizeof(Shader::g_PS),
+		nullptr,
 		&m_pPS);
 
 	D3D11_INPUT_ELEMENT_DESC layout[] =
@@ -86,16 +61,13 @@ bool Mesh::Init()
 	hr = m_pd3dDevice->CreateInputLayout(
 		layout,
 		1,
-		pVSBuf->GetBufferPointer(),
-		pVSBuf->GetBufferSize(),
+		Shader::g_VS,
+		sizeof(Shader::g_VS),
 		&m_pVertexLayout);
-
-	if (pVSBuf)pVSBuf->Release();
-	if (pPSBuf)pPSBuf->Release();
-	if (pErrorBuf)pErrorBuf->Release();
 
 	UINT stride = sizeof(P3VERTEX);
 	UINT offset = 0;
+
 	m_pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
 	m_pContext->IASetInputLayout(m_pVertexLayout);
 	m_pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -110,16 +82,17 @@ bool Mesh::Init()
 bool Mesh::Frame()
 {
 	return true;
-}
+};
 
 bool Mesh::Render()
 {
-	m_pContext->Draw(6, 0);
+	m_pContext->Draw(m_iNumVertex, 0);
 	return true;
 }
 
 bool Mesh::Release(){
 
+	if (m_SPV)m_SPV->Release();
 	if (m_pVertexBuffer)m_pVertexBuffer->Release();
 	if (m_pVertexLayout)m_pVertexLayout->Release();
 	if (m_pVS)m_pVS->Release();

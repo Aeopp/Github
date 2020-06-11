@@ -57,7 +57,8 @@
 
 		 if (HR != FMOD_OK) {
 			 return false;
-		 }
+		 };
+
 		 Channel->setVolume(DefaultVolume);
 		 Sounds.insert(iter,{ std::move(FullPath)  , InsertSound });
 	 }

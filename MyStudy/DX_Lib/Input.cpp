@@ -15,10 +15,11 @@ bool Input::Init()
 	m_pKey->SetDataFormat(&c_dfDIKeyboard);
 	m_pMouse->SetDataFormat(&c_dfDIMouse);
 	// ÇùÁ¶·¹º§
+	
 	hr = m_pKey->SetCooperativeLevel(g_hWnd,
-		DISCL_EXCLUSIVE | DISCL_FOREGROUND | DISCL_NOWINKEY);
+		DISCL_NONEXCLUSIVE | DISCL_FOREGROUND | DISCL_NOWINKEY );
 	hr = m_pMouse->SetCooperativeLevel(g_hWnd,
-		DISCL_EXCLUSIVE | DISCL_FOREGROUND | DISCL_NOWINKEY);
+		DISCL_NONEXCLUSIVE | DISCL_FOREGROUND | DISCL_NOWINKEY );
 	while (m_pKey->Acquire() == DIERR_INPUTLOST);
 	while (m_pMouse->Acquire() == DIERR_INPUTLOST);
 	return true;

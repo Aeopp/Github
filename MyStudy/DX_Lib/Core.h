@@ -7,7 +7,6 @@
 class Core : public Window
 {
 public:
-	Write m_Write;
 	Timer m_Timer;
 public:
 	virtual bool	Init();

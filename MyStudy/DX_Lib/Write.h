@@ -34,7 +34,6 @@ public:
 	ID2D1SolidColorBrush* m_pDefaultBrush;
 	float m_fDpiX;
 	float m_fDpiY;
-
 	IDWriteTextLayout* m_pTextLayout; 
 	bool SetTextLayout(const TCHAR* text);
 public:

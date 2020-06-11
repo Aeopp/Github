@@ -16,6 +16,7 @@ void Write::Draw(UINT iSize, const TCHAR* szBuffer, RECT rt, D2D1::ColorF color)
 bool Write::SetTextLayout(const TCHAR* text)
 {
 	if (m_pTextLayout) m_pTextLayout->Release();
+
 	HRESULT hr = m_pDWriteFactory->CreateTextLayout(
 		text,
 		wcslen(text),
@@ -28,12 +29,12 @@ bool Write::SetTextLayout(const TCHAR* text)
 	hr = m_pDWriteFactory->CreateTypography(&pGraphy);
 	DWRITE_FONT_FEATURE fontFeature = { DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_7,1 };
 	pGraphy->AddFontFeature(fontFeature);
+
 	DWRITE_TEXT_RANGE range = { 0, wcslen(text) };
 	m_pTextLayout->SetTypography(pGraphy, range);
+
 	pGraphy->Release();
 	return true;
-
-	
 }
 
 bool Write::Init()
@@ -44,8 +45,6 @@ bool Write::Init()
 		&m_pD2DFactory);
 
 	m_pD2DFactory->GetDesktopDpi(&m_fDpiX, &m_fDpiY);
-
-
 
 	hr = DWriteCreateFactory(
 		DWRITE_FACTORY_TYPE_SHARED,
@@ -69,6 +68,8 @@ bool Write::Init()
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
 		80, L"en-us", &m_pTextFormat[3]);
+
+
 	return true;
 }
 
@@ -103,6 +104,7 @@ bool Write::Release()
 	if (m_pDefaultBrush) m_pDefaultBrush->Release();
 	if (m_pd2dRT) m_pd2dRT->Release();
 
+
 	if (m_pTextFormat[0])m_pTextFormat[0]->Release();
 	if (m_pTextFormat[1])m_pTextFormat[1]->Release();
 	if (m_pTextFormat[2])m_pTextFormat[2]->Release();
@@ -126,7 +128,8 @@ bool Write::Render()
 			m_pTextFormat[m_TextList[i].iSize],
 			m_TextList[i].rt,
 			m_pDefaultBrush);
-	}
+	};
+
 	m_TextList.clear();
 	m_pd2dRT->EndDraw();
 	return true;
