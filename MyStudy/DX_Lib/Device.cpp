@@ -125,11 +125,14 @@ bool Device::CreateViewport()
 
 bool Device::ReleaseDevice()
 {
-    if (m_pRTV)m_pRTV->Release();
-    if (m_pSwapChain)m_pSwapChain->Release();
-    if (m_pd3dDevice)m_pd3dDevice->Release();
-    if (m_pContext)m_pContext->Release();
-    if (m_pGIFactory)m_pGIFactory->Release();
+    DX_CheckValidRelease(m_pRTV, m_pSwapChain,
+        m_pd3dDevice, m_pContext, m_pGIFactory);
+
+    //if (m_pRTV)m_pRTV->Release();
+    //if (m_pSwapChain)m_pSwapChain->Release();
+    //if (m_pd3dDevice)m_pd3dDevice->Release();
+    //if (m_pContext)m_pContext->Release();
+    //if (m_pGIFactory)m_pGIFactory->Release();
 
     return true;
 }
@@ -166,14 +169,6 @@ void Device::DeleteDXResource()
 {
 }
 
-Device::Device()
-{
-    m_pGIFactory = nullptr;
-    m_pd3dDevice = nullptr;
-    m_pContext = nullptr;
-    m_pSwapChain = nullptr;
-    m_pRTV = nullptr;
-}
 
 Device::~Device()
 {
