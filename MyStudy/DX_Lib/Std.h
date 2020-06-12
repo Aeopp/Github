@@ -14,6 +14,7 @@
 #include <dxgi.h>
 #include <d3dx11.h>
 #include <type_traits>
+<<<<<<< HEAD
 
 #pragma warning( disable : 26812 )
 #pragma warning( disable : 4005)
@@ -38,6 +39,28 @@ void DX_CheckValidRelease(_DX_PTR_TYPE&&... ptrs) {
 		}
 	}; 
 
+=======
+
+#pragma warning( disable : 26812 )
+#pragma warning( disable : 4005)
+
+// �ΰ˻�
+template<typename _ptrType>
+bool constexpr IsValid(_ptrType ptr) {
+	static_assert(std::is_pointer_v < _ptrType > == true && L"is not pointer type");
+	return (ptr != nullptr);
+};
+
+template<typename ..._DX_PTR_TYPE>
+void DX_CheckValidRelease(_DX_PTR_TYPE&&... ptrs) {
+	static auto CheckRelease=
+	[](auto ptr) noexcept {
+		if (IsValid(ptr)) {
+			ptr->Release();
+		}
+	}; 
+
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 	(CheckRelease(ptrs),...);
 }
 
@@ -55,6 +78,7 @@ void DX_CheckValidRelease(_DX_PTR_TYPE&&... ptrs) {
 	#pragma comment (lib, "d3dx11.lib")
 #endif 
 
+<<<<<<< HEAD
 //extern float		g_fSecondPerFrame;
 //extern float		g_fTimer;
 //extern HINSTANCE	g_hInstance;
@@ -89,6 +113,14 @@ Target(Target&&)noexcept = default;\
 Target& operator=(Target&&)noexcept = default;\
 Target(const Target&) = default;\
 Target& operator=(const Target&) = default;\
+=======
+extern float		g_fSecondPerFrame;
+extern float		g_fTimer;
+extern HINSTANCE	g_hInstance;
+extern HWND			g_hWnd;
+extern RECT			g_rtClient;
+extern POINT		g_MousePos;
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 
 // Singleton
 // �̵� ī�� ���� 
@@ -127,8 +159,11 @@ protected:
 private:
 	DECLARE_DELETE_MOVE_COPY(SingleTon)
 };
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 //
 //#ifndef SAFE_NEW
 //#define SAFE_NEW(A,B)  {if(!A) A= new B;}

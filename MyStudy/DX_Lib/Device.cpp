@@ -167,8 +167,11 @@ Device::Device() {
 
 
 
+<<<<<<< HEAD
 };
 
+=======
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 
 Device::~Device()noexcept
 {

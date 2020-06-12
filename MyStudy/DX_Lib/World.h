@@ -1,4 +1,5 @@
 #pragma once
+<<<<<<< HEAD
 #include "Std.h"
 class World : public SingleTon<World> 
 {
@@ -34,3 +35,11 @@ void World::AddActor(std::shared_ptr< ActorType> TargetActor) & noexcept {
 
 	ActorTable.push_back(TargetActor);
 }
+=======
+
+class World
+{
+
+};
+
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"

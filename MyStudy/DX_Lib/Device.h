@@ -30,7 +30,11 @@ public :
 	std::function<void(UINT, UINT)> ResizeDevice{};
 	//virtual void ResizeDevice(UINT width, UINT height);
 public :
+<<<<<<< HEAD
 
 	DECLARE_SINGLETON(Device);
+=======
+	virtual ~Device(); 
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 };
 

@@ -12,10 +12,20 @@ public:
 	Mesh m1;
 	Write m_Write;
 
+<<<<<<< HEAD
 	bool Render(float DeltaTime)override; 
+=======
+	bool Render()override; 
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 	bool Init()override;
 	bool Frame(float DeltaTime)override;
 	bool Release()override; 
+<<<<<<< HEAD
+=======
+
+	void    CreateDXResource() override;
+	void    DeleteDXResource() override;
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 private:
 	void PrintFont(const std::pair<FLOAT,FLOAT> Position,
 	const std::wstring_view Text, const FLOAT fontSize = 50) & noexcept;

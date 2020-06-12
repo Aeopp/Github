@@ -35,6 +35,35 @@ void Input::EventNotify(const float DeltaTime) & noexcept {
 	};
 }
 
+
+// 이벤트 요구조건을 충족한다면 콜백
+
+
+// 노티파이 이벤트 , 체킹을 원하는 키상태 , 체킹을 원하는 키인덱스
+
+ EKeyState Input::GetCurrentTargetKeyState(unsigned int TargetKeyIdx) const& {
+	if (TargetKeyIdx >= KeyNumber) {
+		std::stringstream ss;
+		ss << __FUNCTION__ << __LINE__ << __FILE__ << std::endl;
+		throw std::exception(ss.str().c_str());
+	};
+	return CurrentKeyState[TargetKeyIdx];
+}
+
+void Input::InputEventRegist_Implementation(std::function<void(float)> Event, EKeyState KeyState, unsigned int KeyIndex) & noexcept {
+	InputEventTable.emplace_back(std::move(Event),
+		(KeyState), (KeyIndex));
+}
+
+void Input::EventNotify(const float DeltaTime) & noexcept {
+	for (const auto& Element : InputEventTable) {
+		const auto& [Event, KeyState, KeyIdx] = Element;
+		if (CurrentKeyState[KeyIdx] == KeyState) {
+			Event(DeltaTime);
+		};
+	};
+}
+
 bool Input::Init()
 {
 	HRESULT hr = DirectInput8Create(Window::Instance().hInstance,

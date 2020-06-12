@@ -10,6 +10,7 @@ public:
 		Loop,
 		Once,
 	};
+<<<<<<< HEAD
 	std::wstring		m_csName{};
 	std::wstring m_csBuffer;
 	float		m_fSecondPerFrame{ 0 };
@@ -19,6 +20,16 @@ public:
 	DWORD		m_dwFrameCnt{ 0 };;
 	int			m_dwFPS{ 0 };;
 	float TimeScale  { 1.f } ;
+=======
+	std::wstring		m_csName;
+	TCHAR		m_csBuffer[MAX_PATH];
+	float		m_fSecondPerFrame;
+	float		m_fTimer;
+	float		m_fFrameTime;
+	DWORD		m_dwBeforeTick;
+	DWORD		m_dwFrameCnt;
+	int			m_dwFPS;
+>>>>>>> parent of 7fb459c... Revert "í…ìŠ¤ì²˜ ì´ë¯¸ì§€ ë„ìš°ëŠ”ë°ê¹Œì§€ êµ¬í˜„"
 	std::vector<std::tuple<std::function<void(float)>, ECategory, float,float>> TimerEventTable;
 public :
 	// ³ëÆ¼ÆÄÀÌ ÀÌº¥Æ® , Ã¼Å·À» ¿øÇÏ´Â Å°»óÅÂ , Ã¼Å·À» ¿øÇÏ´Â Å°ÀÎµ¦½º

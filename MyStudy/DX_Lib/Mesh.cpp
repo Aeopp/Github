@@ -6,8 +6,13 @@ bool Mesh::Create(
 	ID3D11Device* pd3dDevice,
 	ID3D11DeviceContext* pContext,
 	const std::wstring_view pTextureFileName,
+<<<<<<< HEAD
 	RECTANGLE rect,
 	Actor* Owner) {
+=======
+	P3VERTEX* vertices,
+	UINT iNumCount) {
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 
 	SetOwner(Owner);
 	RenderRect = rect;
@@ -33,6 +38,16 @@ bool Mesh::Create(
 
 	m_pVertexList[5].p = Math::ScreenToNDC({ rect.right, rect.bottom });
 	m_pVertexList[5].t = { 1, 1 };
+
+	HRESULT hr = D3DX11CreateShaderResourceViewFromFile(pd3dDevice, pTextureFileName.data(), NULL, NULL, &m_pSRV, NULL);
+
+	if (FAILED(hr)) {
+		// TODO :: �ε����н�.........
+	}
+	// �ε������� ���÷�������Ʈ ����
+	else {
+		_CreateSamplerState();
+	}
 
 	HRESULT hr = D3DX11CreateShaderResourceViewFromFile(pd3dDevice, pTextureFileName.data(), NULL, NULL, &m_pSRV, NULL);
 
@@ -92,10 +107,17 @@ bool Mesh::Init()
 		D3D11_INPUT_PER_VERTEX_DATA,0},
 
 		{"COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,
+<<<<<<< HEAD
 		PCT_VERTEX::POSITION,D3D11_INPUT_PER_VERTEX_DATA,0},
 
 		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
 		PCT_VERTEX::POSITION + PCT_VERTEX::COLOR,   D3D11_INPUT_PER_VERTEX_DATA,0}
+=======
+		P3VERTEX::POSITION,D3D11_INPUT_PER_VERTEX_DATA,0},
+
+		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
+		P3VERTEX::POSITION + P3VERTEX::COLOR,   D3D11_INPUT_PER_VERTEX_DATA,0}
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 	};
 
 	if (layout.empty() == true) {
@@ -118,6 +140,10 @@ bool Mesh::Init()
 	if (m_pSamplerState) {
 		m_pContext->PSSetSamplers(0, 1, &m_pSamplerState);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 
 	m_pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &stride, &offset);
 	m_pContext->IASetInputLayout(m_pVertexLayout);
@@ -144,6 +170,7 @@ bool Mesh::Render(float DeltaTime)
 	return true;
 }
 
+<<<<<<< HEAD
 void Mesh::OwnerPositionTORenderRECT()& {
 	if (IsValid(Owner) == false) {
 		return;
@@ -169,6 +196,10 @@ void Mesh::OwnerPositionTORenderRECT()& {
 
 bool Mesh::Release() {
 
+=======
+bool Mesh::Release() {
+
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 	DX_CheckValidRelease
 	(m_pSamplerState,
 	m_pSRV, 

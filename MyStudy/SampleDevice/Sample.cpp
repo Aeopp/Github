@@ -7,8 +7,11 @@
 #include "Timer.h"
 #include <string_view>
 
+<<<<<<< HEAD
 #include <string>
 
+=======
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 using namespace std::string_view_literals;
 
 bool Sample::Render(float DeltaTime) {
@@ -23,15 +26,34 @@ bool Sample::Render(float DeltaTime) {
 
 	m1.Render(DeltaTime);
 
+<<<<<<< HEAD
+=======
+	m1.Render();
+	
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 	m_Write.Render();
 	return true;
 }
 
+<<<<<<< HEAD
 bool Sample::Release() {
 	m1.Release();
 	return true;
 };
 
+=======
+bool Sample::Release(){
+	m1.Release
+	();
+	return true; 
+}
+void Sample::CreateDXResource()
+{
+	IDXGISurface* pSurface = nullptr;
+	m_pSwapChain->GetBuffer(0,
+		__uuidof(IDXGISurface),
+		(void**)&pSurface);
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 
 
  void Sample::PrintFont(const std::pair<FLOAT, FLOAT> Position, const std::wstring_view Text, const FLOAT fontSize) & noexcept {
@@ -51,11 +73,21 @@ bool Sample::Release() {
 
 	m_Write.m_pd2dRT->EndDraw();
 }
+<<<<<<< HEAD
 bool Sample::Frame(float DeltaTime) {
 
 
 	if (Input::Instance().m_KeyState[DIK_1] & 0x80);
 	if (Input::Instance().m_MouseState.rgbButtons[1] & 0x80);
+=======
+bool Sample::Frame() {
+	if (I_Input.m_KeyState[DIK_1] & 0x80);
+	if (I_Input.m_MouseState.rgbButtons[1] & 0x80);
+
+	m1.Frame
+	();
+	
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 
 	m1.Frame(DeltaTime);
 
@@ -110,10 +142,24 @@ bool Sample::Init() {
 
 	if (pSurface) pSurface->Release();
 
+<<<<<<< HEAD
 	World::Instance().CreateActor<Player>();
 
 
 
+=======
+	std::vector<P3VERTEX> vertices1{
+		{-1.0f, 1.0f, 0.0f,1,1,1,1, 0.f, 0.0f},  // 0
+		{0.0f, 1.f, 0.0f, 1,1,1,1, 1.f, 0.0f },// 1
+		{	-1.0f, 0.0f, 0.0f,1,1,1,1, 0.f, 1.f},// 2
+
+		{	0.0f, 1.f, 0.0f,1,1,1,1,  1.0f, 0.0f},// 0
+		{0.0f, 0.0f, 0.0f, 1,1,1,1, 1.0f, 1.0f},// 1
+		{-1.0f, 0.0f, 0.0f,1,1,1,1, 0.0f, 1.0f}// 2
+	};
+
+	m1.Create(m_pd3dDevice, m_pContext,L"../../MapleData/Lin.png"sv,vertices1.data(), 6);
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
 
 	
 	return true;

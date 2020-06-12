@@ -1,4 +1,5 @@
 #include "World.h"
+<<<<<<< HEAD
 #include "Object.h"
 #include "Actor.h"
 
@@ -41,3 +42,5 @@ bool World::Render(float DeltaTime)
 	}
 	return true;
 }
+=======
+>>>>>>> parent of 7fb459c... Revert "텍스처 이미지 띄우는데까지 구현"
