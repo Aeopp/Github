@@ -10,7 +10,7 @@ public:
 		Loop,
 		Once,
 	};
-	std::wstring		m_csName;
+	T_STR		m_csName;
 	TCHAR		m_csBuffer[MAX_PATH];
 	float		m_fSecondPerFrame;
 	float		m_fTimer;

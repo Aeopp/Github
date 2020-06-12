@@ -13,29 +13,13 @@
 #include <d3d11.h>
 #include <dxgi.h>
 #include <d3dx11.h>
-#include <type_traits>
 
-#pragma warning( disable : 26812 )
-#pragma warning( disable : 4005)
-
-// 널검사
-template<typename _ptrType>
-bool constexpr IsValid(_ptrType ptr) {
-	static_assert(std::is_pointer_v < _ptrType > == true && L"is not pointer type");
-	return (ptr != nullptr);
-};
-
-template<typename ..._DX_PTR_TYPE>
-void DX_CheckValidRelease(_DX_PTR_TYPE&&... ptrs) {
-	static auto CheckRelease=
-	[](auto ptr) noexcept {
-		if (IsValid(ptr)) {
-			ptr->Release();
-		}
-	}; 
-
-	(CheckRelease(ptrs),...);
-}
+using namespace std;
+typedef basic_string<TCHAR> T_STR;
+//using T_STR = basic_string <TCHAR>;
+typedef basic_string<char>  C_STR;
+typedef basic_string<wchar_t> W_STR;
+typedef std::vector<T_STR> T_STR_VECTOR;
 
 //추가종속성 winmm.lib; fmod_vc.lib; TCoreLib.lib;
 #pragma comment (lib, "winmm.lib")
@@ -51,13 +35,38 @@ void DX_CheckValidRelease(_DX_PTR_TYPE&&... ptrs) {
 	#pragma comment (lib, "d3dx11.lib")
 #endif 
 
+struct TInputActionMap
+{
+	DWORD bAttack;
+	DWORD bJump;
+	DWORD bExit;
+
+	DWORD bWKey;
+	DWORD bSKey;
+	DWORD bAKey;
+	DWORD bDKey;
+
+	DWORD bLeftClick;
+	DWORD bRightClick;
+	DWORD bMiddleClick;
+};
+
 extern float		g_fSecondPerFrame;
 extern float		g_fTimer;
 extern HINSTANCE	g_hInstance;
 extern HWND			g_hWnd;
 extern RECT			g_rtClient;
 extern POINT		g_MousePos;
+extern TInputActionMap  g_InputMap;
 
+static std::wstring mtw(std::string str)
+{
+	return std::wstring(str.begin(), str.end());
+}
+static std::string wtm(std::wstring str)
+{
+	return std::string(str.begin(), str.end());
+}
 // Singleton
 template <class T>
 class Singleton
@@ -69,28 +78,28 @@ public://TSoundMgr': private 멤버 -> friend
 		return theSingleton;
 	}
 };
-//
-//#ifndef SAFE_NEW
-//#define SAFE_NEW(A,B)  {if(!A) A= new B;}
-//#endif // !SAFE_NEW
-//
-//#ifndef SAFE_DEL
-//#define SAFE_DEL(A)    {if(A) delete A; (A) = 0;}
-//#endif // !SAFE_DEL
-//
-//
-//#ifndef SAFE_ZERO
-//#define SAFE_ZERO(A)    {(A) = 0;}
-//#endif // !SAFE_DEL
 
-//
-//#define CORE_START void main() {
-//#define CORE_RUN 	Sample sample;sample.Run();
-//#define CORE_END }
-//#define GAME CORE_START;CORE_RUN;CORE_END;
-//
-//#define WINCORE_START int WINAPI wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPWSTR lpCmdLine,int nCmdShow){
-//#define WINCORE_RUN 	Sample win;if(win.SetWindow(hInstance)){win.Run();}
-//#define WINCORE_END }
-//#define WINGAME WINCORE_START;WINCORE_RUN;WINCORE_END;
-//
+#ifndef SAFE_NEW
+#define SAFE_NEW(A,B)  {if(!A) A= new B;}
+#endif // !SAFE_NEW
+
+#ifndef SAFE_DEL
+#define SAFE_DEL(A)    {if(A) delete A; (A) = 0;}
+#endif // !SAFE_DEL
+
+
+#ifndef SAFE_ZERO
+#define SAFE_ZERO(A)    {(A) = 0;}
+#endif // !SAFE_DEL
+
+
+#define CORE_START void main() {
+#define CORE_RUN 	Sample sample;sample.Run();
+#define CORE_END }
+#define GAME CORE_START;CORE_RUN;CORE_END;
+
+#define WINCORE_START int WINAPI wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPWSTR lpCmdLine,int nCmdShow){
+#define WINCORE_RUN 	Sample win;if(win.SetWindow(hInstance)){win.Run();}
+#define WINCORE_END }
+#define WINGAME WINCORE_START;WINCORE_RUN;WINCORE_END;
+

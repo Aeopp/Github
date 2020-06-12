@@ -11,7 +11,9 @@ public:
 	Sample() {};
 
 	Mesh m1;
+	Mesh m2;
 	Write m_Write;
+
 
 	bool Render()override; 
 	bool Init()override;
@@ -20,6 +22,7 @@ public:
 
 	void    CreateDXResource() override;
 	void    DeleteDXResource() override;
+
 private:
 	void PrintFont(const std::pair<FLOAT,FLOAT> Position,
 		const std::wstring_view Text, const FLOAT fontSize = 50) & noexcept;
