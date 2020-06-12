@@ -1,6 +1,8 @@
 #include "Write.h"
 #include "Std.h"
-void Write::Draw(UINT iSize, const TCHAR* szBuffer, RECT rt, D2D1::ColorF color)
+#include "Window.h"
+
+void Write::Draw(UINT iSize, const std::wstring_view szBuffer, RECT rt, D2D1::ColorF color)
 {
 	TextArray text;
 	text.iSize = iSize;
@@ -13,7 +15,7 @@ void Write::Draw(UINT iSize, const TCHAR* szBuffer, RECT rt, D2D1::ColorF color)
 	m_TextList.push_back(text);
 }
 
-bool Write::SetTextLayout(const TCHAR* text)
+bool Write::SetTextLayout(const wchar_t* text)
 {
 	if (m_pTextLayout) m_pTextLayout->Release();
 
@@ -21,8 +23,8 @@ bool Write::SetTextLayout(const TCHAR* text)
 		text,
 		wcslen(text),
 		m_pTextFormat[3],
-		g_rtClient.right,
-		g_rtClient.bottom,
+		Window::Instance().ClientRect.right,
+		Window::Instance().ClientRect.bottom,
 		&m_pTextLayout);
 
 	IDWriteTypography* pGraphy = nullptr;

@@ -1,6 +1,5 @@
 #include "Timer.h"
-float	g_fSecondPerFrame = 0.0f;
-float	g_fTimer = 0.0f;
+
 // 노티파이 이벤트 , 체킹을 원하는 키상태 , 체킹을 원하는 키인덱스
  void Timer::InputEventRegist_Implementation(std::function<void(float)> Event, ECategory TimerState, float EventTime) & noexcept {
 	TimerEventTable.emplace_back(std::move(Event), std::move(TimerState),
@@ -25,6 +24,8 @@ float	g_fTimer = 0.0f;
 		 ++iter;
 	 }
  }
+
+
 
 bool	Timer::Init()
 {
@@ -52,10 +53,7 @@ bool	Timer::Frame()
 	m_dwFrameCnt++;
 	m_dwBeforeTick = dwCurrentTick;
 
-	_stprintf_s(m_csBuffer, L"%10.4f:%d",
-		m_fTimer, m_dwFPS);
-
-	EventNotify(m_fSecondPerFrame);
+	EventNotify(GetDeltaTime());
 
 	return true;
 }
@@ -68,12 +66,10 @@ bool	Timer::Release()
 	return true;
 }
 
-Timer::Timer()
-{
-	m_fSecondPerFrame = 0.0f;
-	m_fTimer = 0.0f;
-	m_fFrameTime = 0.0f;
-	m_dwFrameCnt = 0;
-	m_dwFPS = 0;
+
+Timer::Timer() {
+	
 }
-Timer::~Timer() {}
+Timer::~Timer() noexcept {
+}
+

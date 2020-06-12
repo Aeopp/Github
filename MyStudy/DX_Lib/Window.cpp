@@ -1,23 +1,16 @@
 #include "Window.h"
 
-HINSTANCE	g_hInstance = 0;
-HWND		g_hWnd = 0;
-RECT		g_rtClient;
-Window* g_pWindow = nullptr;
-
 LRESULT CALLBACK WndProc(
 	HWND hWnd,
 	UINT msg,
 	WPARAM wParam,
 	LPARAM lParam)
 {
-	assert(g_pWindow);
-	return g_pWindow->MsgProc(hWnd, msg, wParam, lParam);
+	/*assert(g_pWindow);*/
+	return Window::Instance().MsgProc(hWnd, msg, wParam, lParam);
 }
 Window::Window()
 {
-	g_pWindow = this;
-
 	ZeroMemory(&msg, sizeof(MSG));
 }
 Window::~Window()
@@ -27,8 +20,8 @@ Window::~Window()
 bool Window::GameRun() { return true; }
 bool Window::SetWindow(HINSTANCE hInstance)
 {
-	m_hInstance = hInstance;
-	g_hInstance = hInstance;
+	this->hInstance = hInstance;
+	
 	// 1, 생성할 윈도우클래스 운영체제 등록
 	WNDCLASSEXW wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEXW));
@@ -57,11 +50,9 @@ bool Window::SetWindow(HINSTANCE hInstance)
 
 	if (m_hWnd == NULL) return 1;
 
-	GetClientRect(m_hWnd, &m_rtClient);
+	GetClientRect(m_hWnd, &ClientRect);
 	GetWindowRect(m_hWnd, &m_rtWindow);
-
-	g_rtClient = m_rtClient;
-	g_hWnd = m_hWnd;
+	hWnd = m_hWnd;
 
 	ShowWindow(m_hWnd, SW_SHOW);
 	return true;
@@ -89,10 +80,9 @@ LRESULT Window::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		UINT width = LOWORD(lParam);
 		UINT height = HIWORD(lParam);
-		ResizeDevice(width, height);
-		GetClientRect(m_hWnd, &m_rtClient);
+		Device::Instance().ResizeDevice(width, height);
+		GetClientRect(m_hWnd, &ClientRect);
 		GetWindowRect(m_hWnd, &m_rtWindow);
-		g_rtClient = m_rtClient;
 	}break;
 	case WM_DESTROY:
 	{

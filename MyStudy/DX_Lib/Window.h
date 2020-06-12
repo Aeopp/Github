@@ -1,17 +1,27 @@
 #pragma once
 #include "Device.h"
+#include "Std.h"
 
-class Window : public Device 
+class Window  : public  SingleTon<Window>
 {
 public:
 	HINSTANCE	m_hInstance;
 	HWND		m_hWnd;
 	bool		m_bExit;
-	RECT		m_rtClient;
 	RECT		m_rtWindow;
+
+	HINSTANCE	hInstance ;
+	HWND		hWnd ;
+	RECT		ClientRect;
 private:
 	MSG			msg;
 public:
+	auto GetClientRT() {
+		return ClientRect;
+	}
+	auto GetWindowRT() {
+		return m_rtWindow;
+	}
 	bool SetWindow(HINSTANCE hInstance);
 	bool WinRun();
 	virtual LRESULT MsgProc(

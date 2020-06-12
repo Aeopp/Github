@@ -4,6 +4,8 @@
 #include <dwrite.h>
 #include <vector>
 #include <string> 
+#include <string_view>
+
 #pragma comment (lib,"d2d1.lib")
 #pragma comment (lib,"dwrite.lib")
 
@@ -24,7 +26,7 @@ class Write
 {
 public:
 	std::vector<TextArray> m_TextList;
-	void Draw(UINT iSize, const TCHAR* szBuffer, RECT rt,
+	void Draw(UINT iSize, const std::wstring_view szBuffer, RECT rt,
 		D2D1::ColorF color = D2D1::ColorF(1, 0, 0, 1));
 public:
 	ID2D1Factory* m_pD2DFactory;
@@ -35,7 +37,7 @@ public:
 	float m_fDpiX;
 	float m_fDpiY;
 	IDWriteTextLayout* m_pTextLayout; 
-	bool SetTextLayout(const TCHAR* text);
+	bool SetTextLayout(const wchar_t* text);
 public:
 	bool	Init();
 	bool	OnResize(IDXGISurface* pSurface);

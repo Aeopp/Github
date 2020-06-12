@@ -1,4 +1,5 @@
 #include "Device.h"
+#include "Window.h"
 
 bool Device::SetD3DDevice(UINT width, UINT height)
 {
@@ -52,6 +53,8 @@ bool Device::CreateDevice()
         &m_pd3dDevice,
         &FeatureLevel,
         &m_pContext);
+
+  
     if (FAILED(hr))
     {
         return false;
@@ -69,7 +72,7 @@ bool Device::CreateSwapChain(UINT width, UINT height)
     sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     sd.BufferDesc.RefreshRate.Numerator = 60;
     sd.BufferDesc.RefreshRate.Denominator = 1;
-    sd.OutputWindow = g_hWnd;
+    sd.OutputWindow = Window::Instance().hWnd;
     sd.Windowed = TRUE;
     sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     sd.SampleDesc.Count = 1;
@@ -108,6 +111,8 @@ bool Device::CreateRenderTarget()
     return true;
 };
 
+
+
 bool Device::CreateViewport()
 {
     DXGI_SWAP_CHAIN_DESC currentSD;
@@ -125,19 +130,21 @@ bool Device::CreateViewport()
 
 bool Device::ReleaseDevice()
 {
-    if (m_pRTV)m_pRTV->Release();
-    if (m_pSwapChain)m_pSwapChain->Release();
-    if (m_pd3dDevice)m_pd3dDevice->Release();
-    if (m_pContext)m_pContext->Release();
-    if (m_pGIFactory)m_pGIFactory->Release();
+    DX_CheckValidRelease(m_pRTV, m_pSwapChain,
+        m_pd3dDevice, m_pContext, m_pGIFactory);
+
+    //if (m_pRTV)m_pRTV->Release();
+    //if (m_pSwapChain)m_pSwapChain->Release();
+    //if (m_pd3dDevice)m_pd3dDevice->Release();
+    //if (m_pContext)m_pContext->Release();
+    //if (m_pGIFactory)m_pGIFactory->Release();
 
     return true;
 }
 
-void Device::ResizeDevice(UINT width, UINT height)
-{
-    if (m_pd3dDevice == nullptr)return;
-
+Device::Device() {
+    ResizeDevice = [this](UINT width,UINT height) {
+        if (m_pd3dDevice == nullptr)return;
     DeleteDXResource();
 
     m_pContext->OMSetRenderTargets(0, NULL, NULL);
@@ -147,8 +154,8 @@ void Device::ResizeDevice(UINT width, UINT height)
     m_pSwapChain->GetDesc(&currentSD);
 
     HRESULT hr = m_pSwapChain->ResizeBuffers(
-        currentSD.BufferCount, width, height, 
-        currentSD.BufferDesc.Format, 
+        currentSD.BufferCount, width, height,
+        currentSD.BufferDesc.Format,
         currentSD.Flags);
 
     if (FAILED(hr))return;
@@ -156,25 +163,13 @@ void Device::ResizeDevice(UINT width, UINT height)
     CreateRenderTarget();
     CreateViewport();
     CreateDXResource();
-}
+    };
 
-void Device::CreateDXResource()
-{
-}
 
-void Device::DeleteDXResource()
-{
-}
 
-Device::Device()
-{
-    m_pGIFactory = nullptr;
-    m_pd3dDevice = nullptr;
-    m_pContext = nullptr;
-    m_pSwapChain = nullptr;
-    m_pRTV = nullptr;
-}
+};
 
-Device::~Device()
+
+Device::~Device()noexcept
 {
 }

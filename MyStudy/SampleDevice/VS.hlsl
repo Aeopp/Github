@@ -1,34 +1,44 @@
 // 버텍스 쉐이더는 정점개수만큼 호출되며 반드시 float4 로 반환해야함
 // 정점 쉐이더는 반드시 정점의 위치 SV_POSITION 을 반환해야함
 
-//float4 VS(in float3 pos : POSITION) : SV_POSITION
-//{
-//    return float4(pos, 1.f);
-//};
-
-struct VS_IN
+struct POSITION
 {
     float3 Pos: POSITION;
 };
-struct VS_OUT
+struct COORD
+{
+    float2 Coord : TEXCOORD;
+};
+struct COLOR
+{
+    float4 Color : COLOR;
+};
+
+struct OUT_POSITION
 {
     float4 Pos : SV_Position;
 };
-struct PS_OUT
+struct OUT_TEXCOORD
 {
-    float4 Pos : SV_Target;
+    float2 TexCoord : TEXCOORD0;
 };
-VS_OUT VS(in VS_IN pos : POSITION) : SV_Position
+struct OUT_COLOR
 {
-    VS_OUT VertexOut;
-    VertexOut.Pos = float4(pos.Pos.x, pos.Pos.y, pos.Pos.z, 1);
-    return VertexOut;
+    float4 Color : COLOR0;
 };
 
-PS_OUT PS(in VS_OUT VertexOut : SV_Position) :SV_Target
+void VS(in POSITION inpos : POSITION,
+        in COLOR incolor : COLOR,
+        in COORD incoord : TEXCOORD,
+        out OUT_POSITION outpos : SV_Position,
+        out OUT_COLOR outcolor : COLOR0,
+        out OUT_TEXCOORD outtexcoord : TEXCOORD0)
 {
-    PS_OUT PixelOut;
-    PixelOut.Pos = float4(1, 0, 0, 1);
-    return PixelOut;
-}
+    outpos.Pos = float4(inpos.Pos.x, inpos.Pos.y, inpos.Pos.z, 1.f);
+    outcolor.Color = incolor.Color;
+    outtexcoord.TexCoord = incoord.Coord;
+};
+
+
+
 

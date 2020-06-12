@@ -13,13 +13,33 @@
 #include <d3d11.h>
 #include <dxgi.h>
 #include <d3dx11.h>
+#include <type_traits>
 
-using namespace std;
-typedef basic_string<TCHAR> T_STR;
-//using T_STR = basic_string <TCHAR>;
-typedef basic_string<char>  C_STR;
-typedef basic_string<wchar_t> W_STR;
-typedef std::vector<T_STR> T_STR_VECTOR;
+#pragma warning( disable : 26812 )
+#pragma warning( disable : 4005)
+
+// 널검사
+template<typename _ptrType>
+bool constexpr IsValid(_ptrType ptr) {
+	
+	static_assert((std::is_pointer_v < _ptrType > == true 
+		|| std::is_same_v<std::shared_ptr<_ptrType>::element_type, _ptrType> )
+		&& L"is not pointer type");
+	
+	return (ptr != nullptr);
+};
+
+template<typename ..._DX_PTR_TYPE>
+void DX_CheckValidRelease(_DX_PTR_TYPE&&... ptrs) {
+	static auto CheckRelease=
+	[](auto ptr) noexcept {
+		if (IsValid(ptr)) {
+			ptr->Release();
+		}
+	}; 
+
+	(CheckRelease(ptrs),...);
+}
 
 //추가종속성 winmm.lib; fmod_vc.lib; TCoreLib.lib;
 #pragma comment (lib, "winmm.lib")
@@ -35,71 +55,102 @@ typedef std::vector<T_STR> T_STR_VECTOR;
 	#pragma comment (lib, "d3dx11.lib")
 #endif 
 
-struct TInputActionMap
-{
-	DWORD bAttack;
-	DWORD bJump;
-	DWORD bExit;
+//extern float		g_fSecondPerFrame;
+//extern float		g_fTimer;
+//extern HINSTANCE	g_hInstance;
+//extern HWND			g_hWnd;
+//extern RECT			g_rtClient;
+//extern POINT		g_MousePos;
 
-	DWORD bWKey;
-	DWORD bSKey;
-	DWORD bAKey;
-	DWORD bDKey;
+//// Singleton
+//template <class T>
+//class Singleton
+//{
+//public://TSoundMgr': private 멤버 -> friend
+//	static T& GetInstance()
+//	{
+//		static T theSingleton;
+//		return theSingleton;
+//	}
+//};
 
-	DWORD bLeftClick;
-	DWORD bRightClick;
-	DWORD bMiddleClick;
-};
+// 헤더에 선언되니 CPP에 소멸자 생성자 반드시구현
+#define DECLARE_SINGLETON(Target)        \
+private:\
+friend class std::unique_ptr<Target>::deleter_type;      \
+friend class std::unique_ptr<Target>;         \
+friend class SingleTon<Target>;\
+Target();\
+virtual ~Target()noexcept;       \
 
-extern float		g_fSecondPerFrame;
-extern float		g_fTimer;
-extern HINSTANCE	g_hInstance;
-extern HWND			g_hWnd;
-extern RECT			g_rtClient;
-extern POINT		g_MousePos;
-extern TInputActionMap  g_InputMap;
+#define DECLARE_DEFAULT_MOVE_COPY(Target)       \
+public:\
+Target(Target&&)noexcept = default;\
+Target& operator=(Target&&)noexcept = default;\
+Target(const Target&) = default;\
+Target& operator=(const Target&) = default;\
 
-static std::wstring mtw(std::string str)
-{
-	return std::wstring(str.begin(), str.end());
-}
-static std::string wtm(std::wstring str)
-{
-	return std::string(str.begin(), str.end());
-}
 // Singleton
-template <class T>
-class Singleton
+// 이동 카피 삭제 
+#define DECLARE_DELETE_MOVE_COPY(Manager)   \
+public:\
+Manager(Manager&&)noexcept = delete;\
+Manager& operator=(Manager&&)noexcept = delete;\
+Manager(const Manager&) = delete;\
+Manager& operator=(const Manager&) = delete;\
+
+#include <memory>
+#include <type_traits>
+#include <mutex>
+// TODO :: Sub 클래스 Super 클래스 프렌드 지정해줘야함
+// TODO :: 생성자 상속 사용하면 안됨
+// TODO :: private 기본 생성자 소멸자 선언하고 반드시 cpp에 구현
+// TODO :: SINGLETON_DECLARE(SubClass) DELETE_MOVE_COPY(Subclass) 
+// TODO :: friend class std::unique_ptr<SubClass>::deleter_type;
+template <class ManagerType>
+class SingleTon
 {
-public://TSoundMgr': private 멤버 -> friend
-	static T& GetInstance()
+public:
+	template<typename...Types>
+	static ManagerType& Instance(Types&&... params)
 	{
-		static T theSingleton;
-		return theSingleton;
-	}
+		static std::unique_ptr<ManagerType> InstancePtr;
+		static std::once_flag OnceFlag;
+		std::call_once(OnceFlag, [](auto&&... params) {
+			InstancePtr.reset(new ManagerType(std::forward<Types>(params)...)); },
+			std::forward<Types>(params)...);
+		return *(InstancePtr.get());
+	};
+protected:
+	SingleTon() = default;
+	~SingleTon()noexcept = default;
+private:
+	DECLARE_DELETE_MOVE_COPY(SingleTon)
 };
 
-#ifndef SAFE_NEW
-#define SAFE_NEW(A,B)  {if(!A) A= new B;}
-#endif // !SAFE_NEW
 
-#ifndef SAFE_DEL
-#define SAFE_DEL(A)    {if(A) delete A; (A) = 0;}
-#endif // !SAFE_DEL
+//
+//#ifndef SAFE_NEW
+//#define SAFE_NEW(A,B)  {if(!A) A= new B;}
+//#endif // !SAFE_NEW
+//
+//#ifndef SAFE_DEL
+//#define SAFE_DEL(A)    {if(A) delete A; (A) = 0;}
+//#endif // !SAFE_DEL
+//
+//
+//#ifndef SAFE_ZERO
+//#define SAFE_ZERO(A)    {(A) = 0;}
+//#endif // !SAFE_DEL
 
-
-#ifndef SAFE_ZERO
-#define SAFE_ZERO(A)    {(A) = 0;}
-#endif // !SAFE_DEL
-
-
-#define CORE_START void main() {
-#define CORE_RUN 	Sample sample;sample.Run();
-#define CORE_END }
-#define GAME CORE_START;CORE_RUN;CORE_END;
-
-#define WINCORE_START int WINAPI wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPWSTR lpCmdLine,int nCmdShow){
-#define WINCORE_RUN 	Sample win;if(win.SetWindow(hInstance)){win.Run();}
-#define WINCORE_END }
-#define WINGAME WINCORE_START;WINCORE_RUN;WINCORE_END;
-
+//
+//#define CORE_START void main() {
+//#define CORE_RUN 	Sample sample;sample.Run();
+//#define CORE_END }
+//#define GAME CORE_START;CORE_RUN;CORE_END;
+//
+//#define WINCORE_START int WINAPI wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPWSTR lpCmdLine,int nCmdShow){
+//#define WINCORE_RUN 	Sample win;if(win.SetWindow(hInstance)){win.Run();}
+//#define WINCORE_END }
+//#define WINGAME WINCORE_START;WINCORE_RUN;WINCORE_END;
+//

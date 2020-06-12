@@ -23,9 +23,8 @@ enum class EKeyState : uint8_t {
 	Free,
 };
 
-class Input : public Singleton<Input> , public Interface_CallBack<Input>
+class Input : public SingleTon<Input> , public Interface_CallBack<Input>
 {
-	friend class Singleton<Input>;
 public:
 	LPDIRECTINPUT8 m_pDI;
 	LPDIRECTINPUTDEVICE8  m_pKey;
@@ -39,37 +38,18 @@ public:
 	DIMOUSESTATE m_MouseState;
 	POINT		 m_MousePos;
 public :
-	inline EKeyState GetCurrentTargetKeyState(unsigned int TargetKeyIdx)const& {
-		if (TargetKeyIdx >= KeyNumber) {
-			std::stringstream ss;
-			ss << __FUNCTION__ << __LINE__ << __FILE__ << std::endl;
-			throw std::exception(ss.str().c_str());
-		};
-		return CurrentKeyState[TargetKeyIdx];
-	};
+	 EKeyState GetCurrentTargetKeyState(unsigned int TargetKeyIdx)const&;;
 	// 노티파이 이벤트 , 체킹을 원하는 키상태 , 체킹을 원하는 키인덱스
 	void InputEventRegist_Implementation(std::function<void(float)> Event,
-		EKeyState        KeyState, unsigned int KeyIndex) & noexcept {
-		InputEventTable.emplace_back(std::move(Event),
-			(KeyState), (KeyIndex));
-	};
+		EKeyState        KeyState, unsigned int KeyIndex) & noexcept;;
 	// 이벤트 요구조건을 충족한다면 콜백
-	void EventNotify(const float DeltaTime)& noexcept override{
-		for (const auto& Element : InputEventTable) {
-			const auto& [Event, KeyState, KeyIdx] = Element;
-			if (CurrentKeyState[KeyIdx] == KeyState) {
-				Event(DeltaTime);
-			};
-		};
-	};
+	void EventNotify(const float DeltaTime) & noexcept override;;
 public:
+inline 	POINT GetMousePosition() const& {
+		return m_MousePos;
+	}
 	bool  Init();
 	bool  Frame();
 	bool  Release();
-private:
-	Input();
-public:
-	~Input() {}
+	DECLARE_SINGLETON(Input)
 };
-
-#define I_Input Input::GetInstance()

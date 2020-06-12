@@ -3,35 +3,29 @@
 #include <utility>
 #include "Core.h"
 #include "Mesh.h"
+
 #include <string_view>
 
-class Sample : public Core
+class Sample : public Core, public SingleTon<Sample>
 {
 public:
-	Sample() {};
-
 	Mesh m1;
-	Mesh m2;
 	Write m_Write;
 
-
-	bool Render()override; 
+	bool Render(float DeltaTime)override; 
 	bool Init()override;
-	bool Frame()override;
+	bool Frame(float DeltaTime)override;
 	bool Release()override; 
-
-	void    CreateDXResource() override;
-	void    DeleteDXResource() override;
-
 private:
 	void PrintFont(const std::pair<FLOAT,FLOAT> Position,
-		const std::wstring_view Text, const FLOAT fontSize = 50) & noexcept;
+	const std::wstring_view Text, const FLOAT fontSize = 50) & noexcept;
+
+	DECLARE_SINGLETON(Sample)
 };
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
-	Sample win;
-	if (win.SetWindow(hInstance)) {
-		win.Run();
+	if (Window::Instance().SetWindow(hInstance)) {
+		Sample::Instance().Run();
 	}
 }
 

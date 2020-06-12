@@ -1,14 +1,22 @@
 #pragma once
 #include "Std.h"
-class Device
+#include <functional>
+class Device  : public SingleTon<Device>
 {
 public :
-	ID3D11Device* m_pd3dDevice;
-	ID3D11DeviceContext* m_pContext;
-	IDXGISwapChain* m_pSwapChain;
-	ID3D11RenderTargetView* m_pRTV;
-	IDXGIFactory* m_pGIFactory;
+	ID3D11Device* m_pd3dDevice = nullptr;
+	ID3D11DeviceContext* m_pContext = nullptr;
+	IDXGISwapChain* m_pSwapChain = nullptr;
+	ID3D11RenderTargetView* m_pRTV = nullptr;
+	IDXGIFactory* m_pGIFactory= nullptr;
 	D3D11_VIEWPORT m_vp;
+public:
+	inline ID3D11Device* GetDevice() const& {
+		return m_pd3dDevice;
+	};
+	inline ID3D11DeviceContext* GetContext()const& {
+		return m_pContext;
+	}
 public :
 	bool SetD3DDevice(UINT width, UINT height);
 	bool CreateGIFactory();
@@ -17,11 +25,12 @@ public :
 	bool CreateRenderTarget();
 	bool CreateViewport();
 	bool ReleaseDevice();
-	virtual void ResizeDevice(UINT width, UINT height);
-	virtual void CreateDXResource();
-	virtual void DeleteDXResource();
+	std::function<void()> CreateDXResource{};
+	std::function<void()> DeleteDXResource{};
+	std::function<void(UINT, UINT)> ResizeDevice{};
+	//virtual void ResizeDevice(UINT width, UINT height);
 public :
-	Device();
-	virtual ~Device(); 
+
+	DECLARE_SINGLETON(Device);
 };
 

@@ -97,3 +97,8 @@
 
 	 return true;
  }
+
+ SoundManager::SoundManager() {
+ }
+ SoundManager::~SoundManager() noexcept{
+ }

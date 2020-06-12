@@ -1,43 +1,43 @@
 #include "Core.h"
 #include "SoundManager.h"
+#include "World.h"
 // RTV 갱신에 따른 추가적인 생성 작업들.
-void	Core::CreateDXResource()
-{
-	
-}
+
 // RTV 갱신에 따른 사전 소멸 작업들.
-void	Core::DeleteDXResource()
-{
-	
-}
+
 bool Core::Init() { return true; }
-bool Core::Frame() { return true; }
-bool Core::PreRender()
+bool Core::Frame(float DeltaTime) { return true; }
+bool Core::PreRender(float DeltaTime)
 {
 	float clearcolor[4] = { 1.f,0.45f,0.75f,1 };
-	m_pContext->ClearRenderTargetView(m_pRTV, clearcolor);;
+	Device::Instance().m_pContext->ClearRenderTargetView(Device::Instance().m_pRTV, clearcolor);;
+	World::Instance().Render(DeltaTime);
+
 	return true;
 }
-bool Core::Render() { return true; }
-bool Core::PostRender()
+bool Core::Render(float DeltaTime) { 
+	return true; 
+}
+bool Core::PostRender(float DeltaTime)
 {
 	// 해당 함수 호출이후 스왑체인 버퍼 스왑
-	m_pSwapChain->Present(1, 0);
+	Device::Instance().m_pSwapChain->Present(1, 0);
 	return true;
 }
 bool Core::Release() { return true; }
 
 bool Core::CoreInit()
 {
-	m_Timer.Init();
-	I_Input.Init();	
-	GetSound.Init();
+	Timer::Instance().Init();
+	Input::Instance().Init();	
+	SoundManager::Instance().Init();
+	World::Instance().Init();
+	
+	if (!Device::Instance().SetD3DDevice(
+		Window::Instance().GetClientRT().right,
+		Window::Instance().GetClientRT().bottom)) return false;
 
-	if (!SetD3DDevice(
-		m_rtClient.right,
-		m_rtClient.bottom)) return false;
-
-	HRESULT hr = m_pGIFactory->MakeWindowAssociation(m_hWnd,0);
+	HRESULT hr = Device::Instance().m_pGIFactory->MakeWindowAssociation(Window::Instance().m_hWnd,0);
 
 	if (FAILED(hr)){
 		return false;
@@ -46,59 +46,58 @@ bool Core::CoreInit()
 	Init();
 	return true;
 }
-bool Core::CoreFrame()
+bool Core::CoreFrame(float DeltaTime)
 {
-	m_Timer.Frame();
-	I_Input.Frame();
-	GetSound.Frame();
+	Timer::Instance().Frame();
+	Input::Instance().Frame();
+	SoundManager::Instance().Frame();
+	World::Instance().Frame(DeltaTime);
 
-
-	if (I_Input.m_KeyState[DIK_ESCAPE] & 0x80) {
-		m_bExit = true;
+	if (Input::Instance().m_KeyState[DIK_ESCAPE] & 0x80) {
+		Window::Instance().m_bExit = true;
 		return false;
 	};
 
-
-	Frame();
+	Frame(DeltaTime);
 	return true;
 }
-bool Core::CoreRender()
+bool Core::CoreRender(float DeltaTime)
 {
-	PreRender();
-	Render();
-	PostRender();
+	PreRender(DeltaTime);
+	Render(DeltaTime);
+	PostRender(DeltaTime);
 	return true;
 }
 bool Core::CoreRelease()
 {
 	Release();
-	m_Timer.Release();
-	I_Input.Release();
-	GetSound.Release();
-
-
-
-
-	Device::ReleaseDevice();
+	Timer::Instance().Release();
+	Input::Instance().Release();
+	SoundManager::Instance().Release();
+	World::Instance().Release();
+	Device::Instance().ReleaseDevice();
 	return true;
 }
 bool Core::Run()
 {
 	CoreInit();
-	while (m_bExit==false)
+	while (Window::Instance().m_bExit == false)
 	{
-		if (WinRun())
+		if (Window::Instance().WinRun())
 		{
-			CoreFrame();
-			CoreRender();
+			const float CurrentDeltaTime = Timer::Instance().GetDeltaTime();
+
+			CoreFrame(CurrentDeltaTime);
+			CoreRender(CurrentDeltaTime);
 		}
 	}
 	CoreRelease();
 	return true;
-}
+};
+
 Core::Core()
 {
-	m_bExit = false;
+	Window::Instance().m_bExit = false;
 }
 Core::~Core()
 {

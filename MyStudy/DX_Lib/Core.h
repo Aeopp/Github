@@ -4,23 +4,19 @@
 #include "Timer.h"
 #include "Input.h"
 
-class Core : public Window
+class Core 
 {
 public:
-	Timer m_Timer;
-public:
 	virtual bool	Init();
-	virtual bool	Frame();
-	virtual bool	PreRender();
-	virtual bool	Render();
-	virtual bool	PostRender();
+	virtual bool	Frame(float DeltaTime);
+	virtual bool	PreRender(float DeltaTime);
+	virtual bool	Render(float DeltaTime);
+	virtual bool	PostRender(float DeltaTime);
 	virtual bool	Release();
-	virtual void    CreateDXResource() override;
-	virtual void    DeleteDXResource() override;
 private:
 	bool CoreInit();
-	bool CoreFrame();
-	bool CoreRender();
+	bool CoreFrame(float DeltaTime);
+	bool CoreRender(float DeltaTime);
 	bool CoreRelease();
 public:
 	bool Run();

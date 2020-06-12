@@ -1,10 +1,43 @@
 #include "Input.h"
 #include <algorithm>
-POINT		 g_MousePos;
+#include "Window.h"
+
+
+Input::~Input() noexcept {
+}
+
+
+// 이벤트 요구조건을 충족한다면 콜백
+
+
+// 노티파이 이벤트 , 체킹을 원하는 키상태 , 체킹을 원하는 키인덱스
+
+ EKeyState Input::GetCurrentTargetKeyState(unsigned int TargetKeyIdx) const& {
+	if (TargetKeyIdx >= KeyNumber) {
+		std::stringstream ss;
+		ss << __FUNCTION__ << __LINE__ << __FILE__ << std::endl;
+		throw std::exception(ss.str().c_str());
+	};
+	return CurrentKeyState[TargetKeyIdx];
+}
+
+void Input::InputEventRegist_Implementation(std::function<void(float)> Event, EKeyState KeyState, unsigned int KeyIndex) & noexcept {
+	InputEventTable.emplace_back(std::move(Event),
+		(KeyState), (KeyIndex));
+}
+
+void Input::EventNotify(const float DeltaTime) & noexcept {
+	for (const auto& Element : InputEventTable) {
+		const auto& [Event, KeyState, KeyIdx] = Element;
+		if (CurrentKeyState[KeyIdx] == KeyState) {
+			Event(DeltaTime);
+		};
+	};
+}
 
 bool Input::Init()
 {
-	HRESULT hr = DirectInput8Create(g_hInstance,
+	HRESULT hr = DirectInput8Create(Window::Instance().hInstance,
 		DIRECTINPUT_VERSION,
 		IID_IDirectInput8,
 		(void**)&m_pDI, NULL);
@@ -16,9 +49,9 @@ bool Input::Init()
 	m_pMouse->SetDataFormat(&c_dfDIMouse);
 	// 협조레벨
 	
-	hr = m_pKey->SetCooperativeLevel(g_hWnd,
+	hr = m_pKey->SetCooperativeLevel(Window::Instance().hWnd,
 		DISCL_NONEXCLUSIVE | DISCL_FOREGROUND | DISCL_NOWINKEY );
-	hr = m_pMouse->SetCooperativeLevel(g_hWnd,
+	hr = m_pMouse->SetCooperativeLevel(Window::Instance().hWnd,
 		DISCL_NONEXCLUSIVE | DISCL_FOREGROUND | DISCL_NOWINKEY );
 	while (m_pKey->Acquire() == DIERR_INPUTLOST);
 	while (m_pMouse->Acquire() == DIERR_INPUTLOST);
@@ -28,9 +61,8 @@ bool Input::Frame()
 {
 	HRESULT hr;
 	GetCursorPos(&m_MousePos);// 스크린좌표
-	ScreenToClient(g_hWnd, &m_MousePos);
-	g_MousePos = m_MousePos;
-
+	ScreenToClient(Window::Instance().hWnd, &m_MousePos);
+	
 	ZeroMemory(m_KeyState, sizeof(BYTE) * KeyNumber);
 
 	if (FAILED(m_pKey->GetDeviceState(KeyNumber, m_KeyState)))
